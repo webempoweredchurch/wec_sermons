@@ -1,0 +1,32 @@
+<T3DataStructure>
+  <sheets>
+    <sDEF>
+      <ROOT>
+        <TCEforms>
+        <sheetTitle>Test Sheet</sheetTitle>
+        </TCEforms>
+        <type>array</type>
+        <el>
+			<title>
+			    <TCEforms>
+			      <label>LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.title</label>
+			      <config>
+			        <type>select</type>
+					<items type="array">
+	                     <numIndex index=”0”>
+	                            <numIndex index=”0”></numIndex>
+	                    </numIndex>
+					</items>
+					<foreign_table>tx_wecsermons_sermons</foreign_table>
+					<foreign_table_where>
+						AND tx_wecsermons_sermons.pid=###CURRENT_PID### 
+						AND tx_wecsermons_sermons.sys_language_uid IN (-1,0)
+					</foreign_table_where>
+				</config>
+			</TCEforms>
+		</title>
+		</el>
+    </ROOT>
+    </sDEF>
+	</sheets>
+</T3DataStructure>
