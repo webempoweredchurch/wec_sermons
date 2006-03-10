@@ -48,27 +48,32 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	 */
 	function main($content,$conf)	{
 		$this->pi_initPIflexForm();
-//		debug( $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'prototype','sDEF') );
-	
+//		debug( $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'tutorial','sDEF') );
+
 			//	If Prototype enabled, walk through tutorial
 		if( $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'prototype','sDEF') > 0 ) {	
 
+			$content = '';
+			
 				//	Pull in the content from the apporpriate static HTML file
-			switch( $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'prototype','sDEF') )
+			switch( $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'tutorial','sDEF') )
 			{
 				case '1':	//	Ginghamsburg Proto
 					
 					switch($this->piVars['page']) {
 						case '2' :
-							$content = t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons').'tut/ging/study_view.htm');
+							$content .="<H1>Example page of a view on study material</H1>";
+							$content .= t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons').'tut/ging/study_view.htm');
 						break;
 						
 						case '3':
-							$content = t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons') .'tut/ging/study_exp.htm');
+							$content .="<H1>Example page of another view on study material</H1>";
+							$content .= t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons') .'tut/ging/study_exp.htm');
 						break;
 						
 						default:
-							$content = t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons') .'tut/ging/list_view.htm');
+							$content .="<H1>Example page of a view on a sermon listing</H1>";
+							$content .= t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons') .'tut/ging/list_view.htm');
 					
 					}
 
@@ -81,15 +86,18 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 					
 					switch($this->piVars['page']) {
 						case '2' :
-							$content = t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons').'tut/living_water/series_view.htm');
+							$content .="<H1>Example page of a view on sermon series</H1>";
+							$content .= t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons').'tut/living_water/series_view.htm');
 						break;
 						
 						case '3':
-							$content = t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons').'tut/living_water/archive_view.htm');
+							$content .="<H1>Example page of a view on sermons archive</H1>";
+							$content .= t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons').'tut/living_water/archive_view.htm');
 						break;
 						
 						default:
-							$content = t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons').'tut/living_water/single_view.htm');
+							$content .="<H1>Example page of a view on a single sermon</H1>";
+							$content .= t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons').'tut/living_water/single_view.htm');
 						
 					}
 				
