@@ -246,7 +246,7 @@ $TCA["tx_wecsermons_resource_type"] = Array (
 $TCA["tx_wecsermons_sermons"] = Array (
 	"ctrl" => $TCA["tx_wecsermons_sermons"]["ctrl"],
 	"interface" => Array (
-		"showRecordFieldList" => "sys_language_uid,l18n_parent,l18n_diffsource,hidden,starttime,endtime,fe_group,title,occurance_date,description,related_scripture,keywords,graphic,series_uid,topic_uid,entry_type,resources_uid"
+		"showRecordFieldList" => "sys_language_uid,l18n_parent,l18n_diffsource,hidden,starttime,endtime,fe_group,title,occurance_date,description,related_scripture,keywords,graphic,series_uid,topic_uid,record_type,resources_uid"
 	),
 	"feInterface" => $TCA["tx_wecsermons_sermons"]["feInterface"],
 	"columns" => Array (
@@ -409,9 +409,9 @@ $TCA["tx_wecsermons_sermons"] = Array (
 				"type" => "group",	
 				"internal_type" => "db",	
 				"allowed" => "tx_wecsermons_series",	
-				"size" => 1,	
+				"size" => 4,	
 				"minitems" => 0,
-				"maxitems" => 1,
+				"maxitems" => 100,
 			)
 		),
 		"topic_uid" => Array (		
@@ -421,20 +421,21 @@ $TCA["tx_wecsermons_sermons"] = Array (
 				"type" => "select",	
 				"foreign_table" => "tx_wecsermons_topics",	
 				"foreign_table_where" => "AND tx_wecsermons_topics.pid=###STORAGE_PID### ORDER BY tx_wecsermons_topics.uid",	
-				"size" => 1,	
+				"size" => 2,	
 				"minitems" => 0,
-				"maxitems" => 1,
+				"maxitems" => 10,
 			)
 		),
-		"entry_type" => Array (		
+		"record_type" => Array (		
 			"exclude" => 1,		
-			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.entry_type",		
+			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.record_type",		
 			"config" => Array (
 				"type" => "select",
 				"items" => Array (
-					Array("LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.entry_type.I.0", "0"),
-					Array("LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.entry_type.I.1", "1"),
-					Array("LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.entry_type.I.2", "2"),
+					Array("LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.record_type.I.0", "0", t3lib_extMgm::extRelPath("wec_sermons")."selicon_tx_wecsermons_sermons_record_type_0.gif"),
+					Array("LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.record_type.I.1", "1", t3lib_extMgm::extRelPath("wec_sermons")."selicon_tx_wecsermons_sermons_record_type_1.gif"),
+					Array("LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.record_type.I.2", "2", t3lib_extMgm::extRelPath("wec_sermons")."selicon_tx_wecsermons_sermons_record_type_2.gif"),
+					Array("LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.record_type.I.3", "3", t3lib_extMgm::extRelPath("wec_sermons")."selicon_tx_wecsermons_sermons_record_type_3.gif"),
 				),
 				"size" => 1,	
 				"maxitems" => 1,
@@ -455,7 +456,10 @@ $TCA["tx_wecsermons_sermons"] = Array (
 		),
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;1, title;;;;2-2-2, occurance_date;;;;3-3-3, description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts], related_scripture, keywords, graphic, series_uid, topic_uid, entry_type, resources_uid")
+		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;1, record_type, occurance_date, title;;;;2-2-2, description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts];3-3-3,keywords;;;;4-4-4, graphic,--div--;Related Records, related_scripture, series_uid, topic_uid, resources_uid"),
+		"1" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;1, record_type, title;;;;2-2-2, occurance_date;;;;3-3-3, description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts], related_scripture,--div--;Relations, keywords, graphic, series_uid, topic_uid, resources_uid"),
+		"2" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;1, record_type, title;;;;2-2-2, occurance_date;;;;3-3-3, description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts], related_scripture,--div--;Relations, keywords, graphic, series_uid, topic_uid, resources_uid"),
+		"3" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;1, record_type, title;;;;2-2-2, occurance_date;;;;3-3-3, description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts], related_scripture,--div--;Relations, keywords, graphic, series_uid, topic_uid, resources_uid")
 	),
 	"palettes" => Array (
 		"1" => Array("showitem" => "starttime, endtime, fe_group")

@@ -90,7 +90,7 @@ CREATE TABLE tx_wecsermons_sermons (
 	graphic blob NOT NULL,
 	series_uid blob NOT NULL,
 	topic_uid int(11) DEFAULT '0' NOT NULL,
-	entry_type int(11) DEFAULT '0' NOT NULL,
+	record_type int(11) DEFAULT '0' NOT NULL,
 	resources_uid int(11) DEFAULT '0' NOT NULL,
 	
 	PRIMARY KEY (uid),

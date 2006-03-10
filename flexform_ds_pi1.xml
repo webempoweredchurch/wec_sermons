@@ -3,28 +3,32 @@
     <sDEF>
       <ROOT>
         <TCEforms>
-        <sheetTitle>Test Sheet</sheetTitle>
+        <sheetTitle>General</sheetTitle>
         </TCEforms>
         <type>array</type>
         <el>
-			<title>
+			<tutorial>
 			    <TCEforms>
-			      <label>LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.title</label>
+			      <label>LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.tutorial</label>
 			      <config>
 			        <type>select</type>
 					<items type="array">
-	                     <numIndex index=”0”>
-	                            <numIndex index=”0”></numIndex>
+	                     <numIndex index="0" type="array">
+	                            <numIndex index="0"></numIndex>
+	                            <numIndex index="1">0</numIndex>
+	                    </numIndex>
+	                     <numIndex index="1" type="array">
+	                            <numIndex index="0">LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.tutorial.I.0</numIndex>
+	                            <numIndex index="1">1</numIndex>
+	                    </numIndex>
+	                     <numIndex index="2" type="array">
+	                            <numIndex index="0">LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.tutorial.I.1</numIndex>
+	                            <numIndex index="1">2</numIndex>
 	                    </numIndex>
 					</items>
-					<foreign_table>tx_wecsermons_sermons</foreign_table>
-					<foreign_table_where>
-						AND tx_wecsermons_sermons.pid=###CURRENT_PID### 
-						AND tx_wecsermons_sermons.sys_language_uid IN (-1,0)
-					</foreign_table_where>
 				</config>
 			</TCEforms>
-		</title>
+		</tutorial>
 		</el>
     </ROOT>
     </sDEF>

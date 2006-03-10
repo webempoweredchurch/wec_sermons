@@ -36,10 +36,83 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	var $extKey = 'wec_sermons';	// The extension key.
 	var $pi_checkCHash = TRUE;
 	
+	
+	/**
+	 * [Put your description here]
+	 */
+	function init()	{
+	}	
+	
 	/**
 	 * [Put your description here]
 	 */
 	function main($content,$conf)	{
+		$this->pi_initPIflexForm();
+//		debug( $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'prototype','sDEF') );
+	
+			//	If Prototype enabled, walk through tutorial
+		if( $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'prototype','sDEF') > 0 ) {	
+
+				//	Pull in the content from the apporpriate static HTML file
+			switch( $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'prototype','sDEF') )
+			{
+				case '1':	//	Ginghamsburg Proto
+					
+					switch($this->piVars['page']) {
+						case '2' :
+							$content = t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons').'tut/ging/study_view.htm');
+						break;
+						
+						case '3':
+							$content = t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons') .'tut/ging/study_exp.htm');
+						break;
+						
+						default:
+							$content = t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons') .'tut/ging/list_view.htm');
+					
+					}
+
+					//	Replace existing relative paths to files
+				$content = str_replace( 'images/', t3lib_extMgm::siteRelPath('wec_sermons').'tut/ging/images/', $content );
+					
+				break;
+
+				case '2':	//	Living Water Proto
+					
+					switch($this->piVars['page']) {
+						case '2' :
+							$content = t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons').'tut/living_water/series_view.htm');
+						break;
+						
+						case '3':
+							$content = t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons').'tut/living_water/archive_view.htm');
+						break;
+						
+						default:
+							$content = t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons').'tut/living_water/single_view.htm');
+						
+					}
+				
+
+						//	Replace existing relative paths
+					$content = str_replace( 'images/', t3lib_extMgm::siteRelPath('wec_sermons').'tut/living_water/images/', $content );
+				break;
+				default:
+				
+			}
+			
+				//	set piVar['page'] = 1, or increment to next page
+			is_null( $this->piVars['page'] ) ? $this->piVars['page'] = 2 : $this->piVars['page']++;
+			
+				//	reset counter to 1 when > 3
+			if( $this->piVars['page'] > 3 ) $this->piVars['page'] = 1;
+			
+				//	Modify all links in the static HTML file, linking to the next screen
+			$content = preg_replace('/href="#"/',  'href="'.$this->pi_linkTP_keepPIvars_url(array() , 1 ).'"', $content);
+			
+				
+				return $content;
+		}
 		switch((string)$conf['CMD'])	{
 			case 'singleView':
 				list($t) = explode(':',$this->cObj->currentRecord);
@@ -165,8 +238,8 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 					<td valign="top"><p>'.$this->getFieldContent('topic_uid').'</p></td>
 				</tr>
 				<tr>
-					<td nowrap valign="top"'.$this->pi_classParam('singleView-HCell').'><p>'.$this->getFieldHeader('entry_type').'</p></td>
-					<td valign="top"><p>'.$this->getFieldContent('entry_type').'</p></td>
+					<td nowrap valign="top"'.$this->pi_classParam('singleView-HCell').'><p>'.$this->getFieldHeader('record_type').'</p></td>
+					<td valign="top"><p>'.$this->getFieldContent('record_type').'</p></td>
 				</tr>
 				<tr>
 					<td nowrap valign="top"'.$this->pi_classParam('singleView-HCell').'><p>'.$this->getFieldHeader('resources_uid').'</p></td>
@@ -202,7 +275,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				<td valign="top"><p>'.$this->getFieldContent('graphic').'</p></td>
 				<td valign="top"><p>'.$this->getFieldContent('series_uid').'</p></td>
 				<td valign="top"><p>'.$this->getFieldContent('topic_uid').'</p></td>
-				<td valign="top"><p>'.$this->getFieldContent('entry_type').'</p></td>
+				<td valign="top"><p>'.$this->getFieldContent('record_type').'</p></td>
 				<td valign="top"><p>'.$this->getFieldContent('resources_uid').'</p></td>
 			</tr>';
 	}
@@ -219,7 +292,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				<td nowrap><p>'.$this->getFieldHeader('graphic').'</p></td>
 				<td nowrap><p>'.$this->getFieldHeader('series_uid').'</p></td>
 				<td nowrap><p>'.$this->getFieldHeader('topic_uid').'</p></td>
-				<td nowrap><p>'.$this->getFieldHeader('entry_type').'</p></td>
+				<td nowrap><p>'.$this->getFieldHeader('record_type').'</p></td>
 				<td nowrap><p>'.$this->getFieldHeader('resources_uid').'</p></td>
 			</tr>';
 	}

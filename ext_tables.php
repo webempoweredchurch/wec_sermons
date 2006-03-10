@@ -61,7 +61,9 @@ $TCA["tx_wecsermons_sermons"] = Array (
 		"tstamp" => "tstamp",
 		"crdate" => "crdate",
 		"cruser_id" => "cruser_id",
+		"type" => "record_type",	
 		"languageField" => "sys_language_uid",	
+		'dividers2tabs' => $confArr['noTabDividers']?FALSE:TRUE,
 		"transOrigPointerField" => "l18n_parent",	
 		"transOrigDiffSourceField" => "l18n_diffsource",	
 		"default_sortby" => "ORDER BY crdate",	
@@ -76,7 +78,7 @@ $TCA["tx_wecsermons_sermons"] = Array (
 		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_wecsermons_sermons.gif",
 	),
 	"feInterface" => Array (
-		"fe_admin_fieldList" => "sys_language_uid, l18n_parent, l18n_diffsource, hidden, starttime, endtime, fe_group, title, occurance_date, description, related_scripture, keywords, graphic, series_uid, topic_uid, entry_type, resources_uid",
+		"fe_admin_fieldList" => "sys_language_uid, l18n_parent, l18n_diffsource, hidden, starttime, endtime, fe_group, title, occurance_date, description, related_scripture, keywords, graphic, series_uid, topic_uid, record_type, resources_uid",
 	)
 );
 
@@ -103,7 +105,7 @@ $TCA["tx_wecsermons_series"] = Array (
 $TCA["tx_wecsermons_topics"] = Array (
 	"ctrl" => Array (
 		"title" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_topics",		
-		"label" => "uid",	
+		"label" => "name",	
 		"tstamp" => "tstamp",
 		"crdate" => "crdate",
 		"cruser_id" => "cruser_id",
@@ -150,8 +152,7 @@ t3lib_extMgm::addPlugin(Array('LLL:EXT:wec_sermons/locallang_db.php:tt_content.l
 
 
 t3lib_extMgm::addStaticFile($_EXTKEY,'pi1/static/','Sermon Repository');
-
-t3lib_extMgm::addPiFlexFormValue($_EXTKEY . '_pi1', 'FILE:EXT:wec_sermons/flexform_ds_pi1.xml');
+t3lib_extMgm::addPiFlexFormValue($_EXTKEY .'_pi1', 'FILE:EXT:wec_sermons/flexform_ds_pi1.xml');
 
 if (TYPO3_MODE=="BE")	$TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]["tx_wecsermons_pi1_wizicon"] = t3lib_extMgm::extPath($_EXTKEY).'pi1/class.tx_wecsermons_pi1_wizicon.php';
 ?>
