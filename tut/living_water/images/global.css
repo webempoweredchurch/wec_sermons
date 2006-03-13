@@ -1,0 +1,144 @@
+BODY {
+	FONT-SIZE: 12px; COLOR: #000000; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif
+}
+TABLE {
+	FONT-SIZE: 12px; COLOR: #000000; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif
+}
+BODY {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BACKGROUND-IMAGE: url(/images/interface/bkg.jpg); PADDING-BOTTOM: 0px; MARGIN: 16px; PADDING-TOP: 0px; BACKGROUND-REPEAT: repeat-x; BACKGROUND-COLOR: #3399cc
+}
+A:link {
+	COLOR: #003399
+}
+A:visited {
+	COLOR: #003399
+}
+A:hover {
+	COLOR: #0066cc
+}
+A:active {
+	COLOR: #cc0000
+}
+P {
+	MARGIN-TOP: 0px; PADDING-TOP: 0px
+}
+#header {
+	LEFT: 0px; WIDTH: 713px; POSITION: relative; TOP: 0px; HEIGHT: 101px
+}
+#nav {
+	LEFT: 0px; WIDTH: 713px; POSITION: relative; TOP: 0px; HEIGHT: 28px
+}
+#main {
+	PADDING-RIGHT: 15px; PADDING-LEFT: 15px; LEFT: 0px; PADDING-BOTTOM: 15px; WIDTH: 683px; LINE-HEIGHT: 18px; PADDING-TOP: 15px; POSITION: relative; TOP: 0px; HEIGHT: auto; BACKGROUND-COLOR: #ffffff
+}
+#main H1 {
+	MARGIN-TOP: 0px; FONT-WEIGHT: bold; FONT-SIZE: 18px; LINE-HEIGHT: normal; PADDING-TOP: 0px
+}
+#main H2 {
+	MARGIN-TOP: 0px; FONT-WEIGHT: bold; FONT-SIZE: 16px; LINE-HEIGHT: normal; PADDING-TOP: 0px
+}
+#main H3 {
+	MARGIN-TOP: 0px; FONT-WEIGHT: bold; FONT-SIZE: 14px; LINE-HEIGHT: normal; PADDING-TOP: 0px
+}
+#main H4 {
+	MARGIN-TOP: 0px; FONT-WEIGHT: bold; FONT-SIZE: 12px; LINE-HEIGHT: normal; PADDING-TOP: 0px
+}
+#main H5 {
+	MARGIN-TOP: 0px; FONT-WEIGHT: bold; FONT-SIZE: 11px; LINE-HEIGHT: normal; PADDING-TOP: 0px
+}
+#main H6 {
+	MARGIN-TOP: 0px; FONT-WEIGHT: bold; FONT-SIZE: 10px; LINE-HEIGHT: normal; PADDING-TOP: 0px
+}
+#sidebar {
+	CLEAR: both; PADDING-RIGHT: 8px; PADDING-LEFT: 8px; FONT-SIZE: 11px; FLOAT: right; MARGIN-BOTTOM: 10px; PADDING-BOTTOM: 8px; MARGIN-LEFT: 15px; WIDTH: 160px; LINE-HEIGHT: normal; PADDING-TOP: 8px; POSITION: relative; HEIGHT: auto; BACKGROUND-COLOR: #a6d8be
+}
+#sidebar H1 {
+	FONT-WEIGHT: bold; FONT-SIZE: 12px; MARGIN-BOTTOM: 5px
+}
+#sidebar H2 {
+	FONT-WEIGHT: bold; FONT-SIZE: 12px; MARGIN-BOTTOM: 5px
+}
+#sidebar H3 {
+	FONT-WEIGHT: bold; FONT-SIZE: 12px; MARGIN-BOTTOM: 5px
+}
+#sidebar H4 {
+	FONT-WEIGHT: bold; FONT-SIZE: 12px; MARGIN-BOTTOM: 5px
+}
+#sidebar H5 {
+	FONT-WEIGHT: bold; FONT-SIZE: 12px; MARGIN-BOTTOM: 5px
+}
+#sidebar H6 {
+	FONT-WEIGHT: bold; FONT-SIZE: 12px; MARGIN-BOTTOM: 5px
+}
+#sidebar P {
+	MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px
+}
+#subnav {
+	FONT-SIZE: 11px; BACKGROUND: url(/images/interface/sub_bkg.gif); FLOAT: right; MARGIN-BOTTOM: 10px; MARGIN-LEFT: 10px; WIDTH: 171px; LINE-HEIGHT: 16px; POSITION: relative; HEIGHT: auto
+}
+#subnav UL {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-WEIGHT: normal; LIST-STYLE-IMAGE: url(/images/interface/sub_bullet.gif); PADDING-BOTTOM: 0px; MARGIN: 5px 12px 5px 32px; PADDING-TOP: 0px; LIST-STYLE-TYPE: none
+}
+#subnav A:link {
+	COLOR: #003399; TEXT-DECORATION: none
+}
+#subnav A:visited {
+	COLOR: #003399; TEXT-DECORATION: none
+}
+#subnav A:hover {
+	COLOR: #003399; BACKGROUND-COLOR: #abc1e6; TEXT-DECORATION: none
+}
+#subnav A:active {
+	COLOR: #ffffff; BACKGROUND-COLOR: #003399; TEXT-DECORATION: none
+}
+#footer {
+	PADDING-RIGHT: 8px; PADDING-LEFT: 8px; FONT-SIZE: 10px; BACKGROUND-IMAGE: url(/images/interface/bkg_footer.jpg); PADDING-BOTTOM: 8px; WIDTH: 697px; COLOR: #333333; PADDING-TOP: 8px; BACKGROUND-REPEAT: no-repeat; POSITION: relative; HEIGHT: 14px; BACKGROUND-COLOR: #ffffff
+}
+#sermon-audio {
+	FONT-SIZE: 10px; FLOAT: right; MARGIN: 0px 0px 0px 10px; WIDTH: 125px; LINE-HEIGHT: normal; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif
+}
+#sermon-audio DIV {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 2px; MARGIN: 0px; PADDING-TOP: 0px; BACKGROUND-COLOR: #000000
+}
+#sermon-audio B {
+	FONT-WEIGHT: bold; MARGIN: 0px 0px 0px 3px; COLOR: #ffffff
+}
+#sermon-audio UL {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-WEIGHT: normal; PADDING-BOTTOM: 0px; MARGIN: 0px; COLOR: #333333; PADDING-TOP: 0px; LIST-STYLE-TYPE: none; BACKGROUND-COLOR: #ffffff
+}
+#sermon-audio LI {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 2px; PADDING-TOP: 3px; BORDER-BOTTOM: #cccccc 1px solid
+}
+#sermon-audio A:link {
+	COLOR: #333333; TEXT-DECORATION: none
+}
+#sermon-audio A:visited {
+	COLOR: #333333; TEXT-DECORATION: none
+}
+#sermon-audio A:hover {
+	COLOR: #666666; TEXT-DECORATION: none
+}
+#table-data {
+	FONT-WEIGHT: normal; FONT-SIZE: 12px; LINE-HEIGHT: normal
+}
+#table-data TD {
+	BACKGROUND-COLOR: #e1eaf7
+}
+#table-data TH {
+	FONT-WEIGHT: bold; BACKGROUND-COLOR: #92acd5; TEXT-ALIGN: left
+}
+#table-data A:link {
+	TEXT-DECORATION: none
+}
+#table-data A:visited {
+	TEXT-DECORATION: none
+}
+#table-data A:hover {
+	TEXT-DECORATION: none
+}
+.float-left {
+	FLOAT: left; MARGIN-BOTTOM: 10px; MARGIN-RIGHT: 10px
+}
+.float-right {
+	FLOAT: right; MARGIN-BOTTOM: 10px; MARGIN-LEFT: 10px
+}
