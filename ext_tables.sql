@@ -17,6 +17,7 @@ CREATE TABLE tx_wecsermons_resources (
 	title tinytext NOT NULL,
 	graphic blob NOT NULL,
 	type blob NOT NULL,
+	file blob NOT NULL,
 	
 	PRIMARY KEY (uid),
 	KEY parent (pid)

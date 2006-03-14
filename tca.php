@@ -117,9 +117,27 @@ $TCA["tx_wecsermons_resources"] = Array (
 				"maxitems" => 1,
 			)
 		),
+		'file' => Array (
+			'exclude' => 1,
+			'l10n_mode' => 'exclude',
+			'label' => 'LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resources.file',
+			'config' => Array (
+				'type' => 'group',
+				'internal_type' => 'file',
+				'allowed' => '',	// Must be empty for disallowed to work.
+				'disallowed' => 'php,php3',
+				'max_size' => 10000,
+				'uploadfolder' => 'uploads/tx_wecsermons',
+				'show_thumbs' => '1',
+				'size' => 1,
+				'autoSizeMax' => 1,
+				'maxitems' => 1,
+				'minitems' => 0,
+			)
+		),
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;1, description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts], title;;;;2-2-2, graphic;;;;3-3-3, type")
+		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;1, description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts], title;;;;2-2-2, graphic;;;;3-3-3, type,file")
 	),
 	"palettes" => Array (
 		"1" => Array("showitem" => "fe_group")
@@ -396,7 +414,8 @@ $TCA["tx_wecsermons_sermons"] = Array (
 				"internal_type" => "file",
 				"allowed" => "gif,png,jpeg,jpg",	
 				"max_size" => 500,	
-				"uploadfolder" => "uploads/tx_wecsermons",
+                "show_thumbs" => 1,    
+ 				"uploadfolder" => "uploads/tx_wecsermons",
 				"size" => 1,	
 				"minitems" => 0,
 				"maxitems" => 1,
@@ -406,9 +425,9 @@ $TCA["tx_wecsermons_sermons"] = Array (
 			"exclude" => 1,		
 			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.series_uid",		
 			"config" => Array (
-				"type" => "group",	
-				"internal_type" => "db",	
-				"allowed" => "tx_wecsermons_series",	
+				"type" => "select",	
+				"foreign_table" => "tx_wecsermons_series",	
+				"foreign_table_where" => "AND tx_wecsermons_series.pid=###STORAGE_PID### ORDER BY tx_wecsermons_series.uid",	
 				"size" => 4,	
 				"minitems" => 0,
 				"maxitems" => 100,
@@ -540,6 +559,7 @@ $TCA["tx_wecsermons_series"] = Array (
 				"internal_type" => "file",
 				"allowed" => "gif,png,jpeg,jpg",	
 				"max_size" => 500,	
+                "show_thumbs" => 1,    
 				"uploadfolder" => "uploads/tx_wecsermons",
 				"size" => 1,	
 				"minitems" => 0,

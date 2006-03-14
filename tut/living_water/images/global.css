@@ -5,7 +5,7 @@ TABLE {
 	FONT-SIZE: 12px; COLOR: #000000; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif
 }
 BODY {
-	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BACKGROUND-IMAGE: url(/images/interface/bkg.jpg); PADDING-BOTTOM: 0px; MARGIN: 16px; PADDING-TOP: 0px; BACKGROUND-REPEAT: repeat-x; BACKGROUND-COLOR: #3399cc
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BACKGROUND-IMAGE: url(interface/bkg.jpg); PADDING-BOTTOM: 0px; MARGIN: 16px; PADDING-TOP: 0px; BACKGROUND-REPEAT: repeat-x; BACKGROUND-COLOR: #3399cc
 }
 A:link {
 	COLOR: #003399
@@ -74,10 +74,10 @@ P {
 	MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px
 }
 #subnav {
-	FONT-SIZE: 11px; BACKGROUND: url(/images/interface/sub_bkg.gif); FLOAT: right; MARGIN-BOTTOM: 10px; MARGIN-LEFT: 10px; WIDTH: 171px; LINE-HEIGHT: 16px; POSITION: relative; HEIGHT: auto
+	FONT-SIZE: 11px; BACKGROUND: url(interface/sub_bkg.gif); FLOAT: right; MARGIN-BOTTOM: 10px; MARGIN-LEFT: 10px; WIDTH: 171px; LINE-HEIGHT: 16px; POSITION: relative; HEIGHT: auto
 }
 #subnav UL {
-	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-WEIGHT: normal; LIST-STYLE-IMAGE: url(/images/interface/sub_bullet.gif); PADDING-BOTTOM: 0px; MARGIN: 5px 12px 5px 32px; PADDING-TOP: 0px; LIST-STYLE-TYPE: none
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-WEIGHT: normal; LIST-STYLE-IMAGE: url(interface/sub_bullet.gif); PADDING-BOTTOM: 0px; MARGIN: 5px 12px 5px 32px; PADDING-TOP: 0px; LIST-STYLE-TYPE: none
 }
 #subnav A:link {
 	COLOR: #003399; TEXT-DECORATION: none
@@ -92,7 +92,7 @@ P {
 	COLOR: #ffffff; BACKGROUND-COLOR: #003399; TEXT-DECORATION: none
 }
 #footer {
-	PADDING-RIGHT: 8px; PADDING-LEFT: 8px; FONT-SIZE: 10px; BACKGROUND-IMAGE: url(/images/interface/bkg_footer.jpg); PADDING-BOTTOM: 8px; WIDTH: 697px; COLOR: #333333; PADDING-TOP: 8px; BACKGROUND-REPEAT: no-repeat; POSITION: relative; HEIGHT: 14px; BACKGROUND-COLOR: #ffffff
+	PADDING-RIGHT: 8px; PADDING-LEFT: 8px; FONT-SIZE: 10px; BACKGROUND-IMAGE: url(interface/bkg_footer.jpg); PADDING-BOTTOM: 8px; WIDTH: 697px; COLOR: #333333; PADDING-TOP: 8px; BACKGROUND-REPEAT: no-repeat; POSITION: relative; HEIGHT: 14px; BACKGROUND-COLOR: #ffffff
 }
 #sermon-audio {
 	FONT-SIZE: 10px; FLOAT: right; MARGIN: 0px 0px 0px 10px; WIDTH: 125px; LINE-HEIGHT: normal; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif

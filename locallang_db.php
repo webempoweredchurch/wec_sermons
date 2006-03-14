@@ -12,6 +12,7 @@ $LOCAL_LANG = Array (
 		'tx_wecsermons_resources.title' => 'Title',	
 		'tx_wecsermons_resources.graphic' => 'Graphic',	
 		'tx_wecsermons_resources.type' => 'Type',	
+		'tx_wecsermons_resources.file' => 'File',	
 		'tx_wecsermons_resource_type' => 'Resource Type',	
 		'tx_wecsermons_resource_type.description' => 'Description',	
 		'tx_wecsermons_resource_type.name' => 'Name',	
