@@ -426,6 +426,12 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 		return $this->cObj->substituteMarkerArrayCached( $content, $markerArray, array(), $wrappedSubpart );			
 		
 	}
+	
+	function subSeriesContent($lConf,$content) {
+		
+		
+		$markerArray['###SERMON_SERIES_TITLE###']
+	}
 	/**
 	 * [Put your description here]
 	 */
