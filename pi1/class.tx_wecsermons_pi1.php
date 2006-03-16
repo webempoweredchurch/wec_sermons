@@ -263,7 +263,6 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			$this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)	;		
 			$result = $this->subCurrentRow( $lConf, $template['sermon'] );
 			debug( $result );
-			debug($lConf['occurance_dateWrap.']);
 			exit;
 			
 				// Get number of records:
@@ -401,15 +400,26 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			</tr>';
 	}
 	
-	function subCurrentRow($lConf,$content,$count = 0) {
+	/**
+	  *	Substitute template markers with sermon record content from internal['currentRecord']
+	  *
+	  *	This function is used to populate a properly marked template with content from a sermon record
+	  *
+	  *	@param	string	A local conf	
+	  *	@param	string
+	  *	@param	integer
+	  */	
+	function subSermonContent($lConf,$content,$count = 0) {
 		$row = $this->internal['currentRow'];		
 		$markerArray = array();
 		$markerArray['###SERMON_TITLE###'] = $row['title'];
 		$markerArray['###ALTERNATING_CLASS###'] = $count % 2 ? $this->pi_classParam( $lConf['alternatingClass'] ) : '';
+			
+			//	Wrap the occurance date, choosing from one of three settings in typoscript
 		$dateWrap = $lConf['occurance_dateWrap.'] ? $lConf['occurance_dateWrap.'] : $lConf['general_dateWrap.'];
-		if( ! $dateWrap )$dateWrap = $this->conf['general_dateWrap.'];
-				debug($dateWrap);
+		if( ! $dateWrap ) $dateWrap = $this->conf['general_dateWrap.'];
 		$markerArray['###OCCURANCE_DATE###'] = $this->cObj->stdWrap( $row['occurance_date'], $dateWrap);
+	
 		$wrappedSubpart['###SERMON_LINK###'][] = '<a href=\'' .$this->pi_list_linkSingle('',$row['uid'],1,array(),1). '\'>';
 		$wrappedSubpart['###SERMON_LINK###'][] = '</a>';
 		
