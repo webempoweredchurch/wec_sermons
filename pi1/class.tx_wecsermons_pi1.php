@@ -35,29 +35,36 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	var $scriptRelPath = 'pi1/class.tx_wecsermons_pi1.php';	// Path to this script relative to the extension dir.
 	var $extKey = 'wec_sermons';	// The extension key.
 	var $pi_checkCHash = TRUE;
-	
-	
+
+
 	/**
 	 * [Put your description here]
+	 *
+	 * @param	[type]		$conf: ...
+	 * @return	[type]		...
 	 */
 	function init($conf)	{
 		$this->conf=$conf;		// Setting the TypoScript passed to this function in $this->conf
 		$this->pi_initPIflexForm(); // Init FlexForm configuration for plugin
 		$this->pi_setPiVarDefaults(); // Set default piVars from TS
 		$this->pi_loadLL();		// Loading the LOCAL_LANG values
-	}	
-	
+	}
+
 	/**
 	 * [Put your description here]
+	 *
+	 * @param	[type]		$content: ...
+	 * @param	[type]		$conf: ...
+	 * @return	[type]		...
 	 */
 	function main($content,$conf)	{
 		$this->local_cObj = t3lib_div::makeInstance('tslib_cObj'); // Local cObj.
 		$this->init($conf);
 			//	Check if typoscript config 'tutorial' is an integer, otherwise set to 0
 		if( t3lib_div::testInt( $this->conf['tutorial'] ) == false ) $this->conf['tutorial'] = 0;
-		
+
 		$tutorial = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'tutorial','sDEF');
-		
+
 			//	If tutorial enabled, walk through tutorial
 		if( $tutorial > 0 || $this->conf['tutorial'] > 0 ) {
 
@@ -65,114 +72,114 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			$tutorial  = ($tutorial > 0) ?
 				$tutorial
 				: $this->conf['tutorial'];
-				
+
 			$content = '';
-			
+
 				//	Check which tutorial was chosen, and pull in the content from the apporpriate static HTML file
 			switch( $tutorial )
 			{
 				case '1':	//	Ginghamsburg tutorial
-					
+
 					switch($this->piVars['page']) {
 						case '2' :
 							$content .="<H1>Example page of a view on study material</H1>";
 							$content .= t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons').'tut/ging/study_view.htm');
 						break;
-						
+
 						case '3':
 							$content .="<H1>Example page of another view on study material</H1>";
 							$content .= t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons') .'tut/ging/study_exp.htm');
 						break;
-						
+
 						default:
 							$content .="<H1>Example page of a view on a sermon listing</H1>";
 							$content .= t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons') .'tut/ging/list_view.htm');
-					
+
 					}
 
 					//	Replace existing relative paths to files
 				$content = str_replace( 'images/', t3lib_extMgm::siteRelPath('wec_sermons').'tut/ging/images/', $content );
-					
+
 				break;
 
 				case '2':	//	Living Water tutorial
-					
+
 					switch($this->piVars['page']) {
 						case '2' :
 							$content .="<H1>Example page of a view on sermon series</H1>";
 							$content .= t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons').'tut/living_water/series_view.htm');
 						break;
-						
+
 						case '3':
 							$content .="<H1>Example page of a view on sermons archive</H1>";
 							$content .= t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons').'tut/living_water/archive_view.htm');
 						break;
-						
+
 						default:
 							$content .="<H1>Example page of a view on a single sermon</H1>";
 							$content .= t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons').'tut/living_water/single_view.htm');
-						
+
 					}
-				
+
 
 						//	Replace existing relative paths
 					$content = str_replace( 'images/', t3lib_extMgm::siteRelPath('wec_sermons').'tut/living_water/images/', $content );
 				break;
 				default:
-				
+
 			}
-			
+
 				//	set piVar['page'] = 1, or increment to next page
 			is_null( $this->piVars['page'] ) ? $this->piVars['page'] = 2 : $this->piVars['page']++;
-			
+
 				//	reset counter to 1 when > 3
 			if( $this->piVars['page'] > 3 ) $this->piVars['page'] = 1;
-			
+
 				//	Modify all links in the static HTML file, linking to the next screen
 			$content = preg_replace('/href="#"/',  'href="'.$this->pi_linkTP_keepPIvars_url(array() , 1 ).'"', $content);
-			
-				
+
+
 				return $content;
 		}	// End tutorial block
-		
+
 			//	Get the 'what to display' value from plugin or typoscript, plugin overriding
 		$display = is_null( $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'display','sDEF') ) ?
 			$this->conf['code'] :
 			$this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'display','sDEF');
-		
+
 		$codes = t3lib_div::trimExplode(',',$display,0);
-		
+
 		foreach( $codes as $code ) {
 			switch( $code ) {	//	Primary switch for this plugin
 				case 'single':
 					$content .= '<h1>single case reached</h1><br/>';
 					break;
-					
+
 				case 'list':
 					$content .= $this->listView($content, $conf);
 					break;
-				
+
 				case 'rss':
 					$content .= '<h1>rss case reached</h1><br/>';
 					break;
-					
+
 				case 'archive':
 					$content .= '<h1>archive case reached</h1><br/>';
 					break;
-				
+
 				case 'search':
 					$content .= '<h1>search case reached</h1><br/>';
 					break;
-				
+
 				default:
 					$content .= '<h1>Please configure \'what to display\' in plugin or typoscript</h1><br/>';
-					break;	
+					break;
 			}	//	End Primary switch
 		}	//	End Primary foreach loop
-		
+
 		return $content;
-		
-	
+
+
 		switch((string)$conf['CMD'])	{
 			case 'singleView':
 				list($t) = explode(':',$this->cObj->currentRecord);
@@ -189,21 +196,25 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			break;
 		}
 	}
-	
+
 	/**
 	 * [Put your description here]
+	 *
+	 * @param	[type]		$content: ...
+	 * @param	[type]		$conf: ...
+	 * @return	[type]		...
 	 */
 	function listView($content,$conf)	{
-		
+
 		$lConf = $this->conf['listView.'];	// Local settings for the listView function
-	
+
 		if ($this->piVars['showUid'])	{	// If a single element should be displayed, jump to single view
 			$this->internal['currentTable'] = 'tx_wecsermons_sermons';
 			$this->internal['currentRow'] = $this->pi_getRecord('tx_wecsermons_sermons',$this->piVars['showUid']);
-	
+
 			$content = $this->singleView($content,$conf);
 			return $content;
-			
+
 		} else {	//	Otherwise continue with list view
 
 			$items=array(
@@ -213,7 +224,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			);
 			if (!isset($this->piVars['pointer']))	$this->piVars['pointer']=0;
 			if (!isset($this->piVars['mode']))	$this->piVars['mode']=1;
-	
+
 				// Initializing the query parameters:
 			list($this->internal['orderBy'],$this->internal['descFlag']) = explode(':',$this->piVars['sort']);
 			$this->internal['results_at_a_time']=t3lib_div::intInRange($lConf['results_at_a_time'],0,1000,3);		// Number of results to show in a listing.
@@ -222,9 +233,9 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			$this->internal['orderByList']='uid,title,related_scripture,keywords';
 
 				//	Recursive setting from plugin overrides typoscript
-			if( $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'recursive', 'sDEF') )	
+			if( $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'recursive', 'sDEF') )
 				$this->conf['recursive'] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'recursive', 'sDEF');
-			
+
 			$startingPoint =$this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'startingpoint', 'sDEF');
 
 				//	If configured to use the General Storage Folder of the site, include that in the list of pids
@@ -245,26 +256,26 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 				//	Load the HTML template from either plugin or typoscript configuration, plugin overrides
 			$templateflex_file = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'templateFile', 'sDEF');
-			
+
 				//	Load the Layout code, which chooses between templates
 			$layoutCode = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'layoutCode', 'sDEF');
 			if( !$layoutCode ) $layoutCode = '1';	//	LayoutCode default = 1
-			
+
 			$template['total'] = $this->cObj->fileResource($templateflex_file?'uploads/tx_wecsermons/' . $templateflex_file:$lConf['templateFile']);
 
 #			$subpartArray['###HEADER###'] = $this->cObj->substituteMarkerArray($this->getNewsSubpart($t['total'], '###HEADER###'), $markerArray);
-			
+
 			$template['list'] = $this->cObj->getSubpart( $template['total'], '###TEMPLATE_LIST'.$layoutCode.'###' );
 			$template['sermon'] = $this->cObj->getSubpart( $template['list'], '###SERMON###' );
 
 			$res = $this->pi_exec_query('tx_wecsermons_sermons');
 			$this->internal['currentTable'] = 'tx_wecsermons_sermons';
 
-			$this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)	;		
+			$this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)	;
 			$result = $this->subSermonContent( $lConf, $template['sermon'] );
 			debug( $result );
 			exit;
-			
+
 				// Get number of records:
 			$res = $this->pi_exec_query('tx_wecsermons_sermons',1);
 			list($this->internal['res_count']) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
@@ -272,39 +283,43 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				// Make listing query, pass query to SQL database:
 			$res = $this->pi_exec_query('tx_wecsermons_sermons');
 			$this->internal['currentTable'] = 'tx_wecsermons_sermons';
-	
+
 				// Put the whole list together:
 			$fullTable='';	// Clear var;
 		#	$fullTable.=t3lib_div::view_array($this->piVars);	// DEBUG: Output the content of $this->piVars for debug purposes. REMEMBER to comment out the IP-lock in the debug() function in t3lib/config_default.php if nothing happens when you un-comment this line!
-	
+
 				// Adds the mode selector.
 			$fullTable.=$this->pi_list_modeSelector($items);
-	
+
 				// Adds the whole list table
 			$fullTable.=$this->pi_list_makelist($res);
-	
+
 				// Adds the search box:
 			$fullTable.=$this->pi_list_searchBox();
-	
+
 				// Adds the result browser:
 			$fullTable.=$this->pi_list_browseresults();
-	
+
 				// Returns the content from the plugin.
 			return $fullTable;
 		}
 	}
 	/**
 	 * [Put your description here]
+	 *
+	 * @param	[type]		$content: ...
+	 * @param	[type]		$conf: ...
+	 * @return	[type]		...
 	 */
 	function singleView($content,$conf)	{
 		$this->conf=$conf;
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
-		
-	
+
+
 			// This sets the title of the page for use in indexed search results:
 		if ($this->internal['currentRow']['title'])	$GLOBALS['TSFE']->indexedDocTitle=$this->internal['currentRow']['title'];
-	
+
 		$content='<div'.$this->pi_classParam('singleView').'>
 			<H2>Record "'.$this->internal['currentRow']['uid'].'" from table "'.$this->internal['currentTable'].'":</H2>
 			<table>
@@ -359,16 +374,19 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			</table>
 		<p>'.$this->pi_list_linkSingle($this->pi_getLL('back','Back'),0).'</p></div>'.
 		$this->pi_getEditPanel();
-	
+
 		return $content;
 	}
 	/**
 	 * [Put your description here]
+	 *
+	 * @param	[type]		$c: ...
+	 * @return	[type]		...
 	 */
 	function pi_list_row($c)	{
 	$editPanel = $this->pi_getEditPanel();
 		if ($editPanel)	$editPanel='<TD>'.$editPanel.'</TD>';
-	
+
 		return '<tr'.($c%2 ? $this->pi_classParam('listrow-odd') : '').'>
 				<td><p>'.$this->getFieldContent('uid').'</p></td>
 				<td valign="top"><p>'.$this->getFieldContent('title').'</p></td>
@@ -384,6 +402,8 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	}
 	/**
 	 * [Put your description here]
+	 *
+	 * @return	[type]		...
 	 */
 	function pi_list_header()	{
 		return '<tr'.$this->pi_classParam('listrow-header').'>
@@ -399,41 +419,52 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				<th nowrap><p>'.$this->getFieldHeader('resources_uid').'</p></th>
 			</tr>';
 	}
-	
+
 	/**
-	  *	Substitute template markers with sermon record content from internal['currentRecord']
-	  *
-	  *	This function is used to populate a properly marked template with content from a sermon record
-	  *
-	  *	@param	string	A local conf	
-	  *	@param	string
-	  *	@param	integer
-	  */	
+	 * Substitute template markers with sermon record content from internal['currentRecord']
+	 *
+	 * 	This function is used to populate a properly marked template with content from a sermon record
+	 *
+	 * @param	string		A local conf
+	 * @param	string
+	 * @param	integer
+	 * @return	[type]		...
+	 */
 	function subSermonContent($lConf,$content,$count = 0) {
-		$row = $this->internal['currentRow'];		
+		$row = $this->internal['currentRow'];
 		$markerArray = array();
 		$markerArray['###SERMON_TITLE###'] = $row['title'];
 		$markerArray['###ALTERNATING_CLASS###'] = $count % 2 ? $this->pi_classParam( $lConf['alternatingClass'] ) : '';
-			
+
 			//	Wrap the occurance date, choosing from one of three settings in typoscript
 		$dateWrap = $lConf['occurance_dateWrap.'] ? $lConf['occurance_dateWrap.'] : $lConf['general_dateWrap.'];
 		if( ! $dateWrap ) $dateWrap = $this->conf['general_dateWrap.'];
 		$markerArray['###OCCURANCE_DATE###'] = $this->cObj->stdWrap( $row['occurance_date'], $dateWrap);
-	
+
 		$wrappedSubpart['###SERMON_LINK###'][] = '<a href=\'' .$this->pi_list_linkSingle('',$row['uid'],1,array(),1). '\'>';
 		$wrappedSubpart['###SERMON_LINK###'][] = '</a>';
-		
-		return $this->cObj->substituteMarkerArrayCached( $content, $markerArray, array(), $wrappedSubpart );			
-		
+
+		return $this->cObj->substituteMarkerArrayCached( $content, $markerArray, array(), $wrappedSubpart );
+
 	}
-	
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$lConf: ...
+	 * @param	[type]		$content: ...
+	 * @return	[type]		...
+	 */
 	function subSeriesContent($lConf,$content) {
-		
-		
+
+
 		$markerArray['###SERMON_SERIES_TITLE###']
 	}
 	/**
 	 * [Put your description here]
+	 *
+	 * @param	[type]		$fN: ...
+	 * @return	[type]		...
 	 */
 	function getFieldContent($fN)	{
 		switch($fN) {
@@ -455,6 +486,9 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	}
 	/**
 	 * [Put your description here]
+	 *
+	 * @param	[type]		$fN: ...
+	 * @return	[type]		...
 	 */
 	function getFieldHeader($fN)	{
 		switch($fN) {
@@ -466,14 +500,17 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			break;
 		}
 	}
-	
+
 	/**
 	 * [Put your description here]
+	 *
+	 * @param	[type]		$fN: ...
+	 * @return	[type]		...
 	 */
 	function getFieldHeader_sortLink($fN)	{
 		return $this->pi_linkTP_keepPIvars($this->getFieldHeader($fN),array('sort'=>$fN.':'.($this->internal['descFlag']?0:1)));
 	}
-	
+
 	/**
 	 * Format string with general_stdWrap from configuration
 	 *
@@ -486,7 +523,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			$str = $this->local_cObj->stdWrap($str, $this->conf['general_stdWrap.']);
 		}
 		return $str;
-	}	
+	}
 
 	/**
 	 * Returns the list of items based on the input SQL result pointer
@@ -527,6 +564,11 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	}
 }
 
+	/**
+	 * [Describe function...]
+	 *
+	 * @return	[type]		...
+	 */
 	function uniqueCsv()	{
 		$max = func_num_args();
 		$ttlString = '';
@@ -536,7 +578,12 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 		}
 		return implode(',', array_unique( t3lib_div::trimExplode(',', $ttlString, 1) ) );
 	}
-	
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @return	[type]		...
+	 */
 	function unique_array() {
 		$max = func_num_args();
 		$ttlString = '';
@@ -545,7 +592,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 		}
 		return array_unique( t3lib_div::trimExplode(',', $ttlString, 1) ) ;
-		
+
 	}
 
 	/**
