@@ -205,8 +205,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			return $content;
 			
 		} else {	//	Otherwise continue with list view
-			
-			
+
 			$items=array(
 				'1'=> $this->pi_getLL('list_mode_1','Mode 1'),
 				'2'=> $this->pi_getLL('list_mode_2','Mode 2'),
@@ -243,6 +242,29 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				$this->conf['pidList'] .= ','. $startingPoint;
 
 			}
+
+				//	Load the HTML template from either plugin or typoscript configuration, plugin overrides
+			$templateflex_file = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'templateFile', 'sDEF');
+			
+				//	Load the Layout code, which chooses between templates
+			$layoutCode = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'layoutCode', 'sDEF');
+			if( !$layoutCode ) $layoutCode = '1';	//	LayoutCode default = 1
+			
+			$template['total'] = $this->cObj->fileResource($templateflex_file?'uploads/tx_wecsermons/' . $templateflex_file:$lConf['templateFile']);
+
+#			$subpartArray['###HEADER###'] = $this->cObj->substituteMarkerArray($this->getNewsSubpart($t['total'], '###HEADER###'), $markerArray);
+			
+			$template['list'] = $this->cObj->getSubpart( $template['total'], '###TEMPLATE_LIST'.$layoutCode.'###' );
+			$template['sermon'] = $this->cObj->getSubpart( $template['list'], '###SERMON###' );
+
+			$res = $this->pi_exec_query('tx_wecsermons_sermons');
+			$this->internal['currentTable'] = 'tx_wecsermons_sermons';
+
+			$this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)	;		
+			$result = $this->subCurrentRow( $lConf, $template['sermon'] );
+			debug( $result );
+			debug($lConf['occurance_dateWrap.']);
+			exit;
 			
 				// Get number of records:
 			$res = $this->pi_exec_query('tx_wecsermons_sermons',1);
@@ -378,6 +400,22 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				<th nowrap><p>'.$this->getFieldHeader('resources_uid').'</p></th>
 			</tr>';
 	}
+	
+	function subCurrentRow($lConf,$content,$count = 0) {
+		$row = $this->internal['currentRow'];		
+		$markerArray = array();
+		$markerArray['###SERMON_TITLE###'] = $row['title'];
+		$markerArray['###ALTERNATING_CLASS###'] = $count % 2 ? $this->pi_classParam( $lConf['alternatingClass'] ) : '';
+		$dateWrap = $lConf['occurance_dateWrap.'] ? $lConf['occurance_dateWrap.'] : $lConf['general_dateWrap.'];
+		if( ! $dateWrap )$dateWrap = $this->conf['general_dateWrap.'];
+				debug($dateWrap);
+		$markerArray['###OCCURANCE_DATE###'] = $this->cObj->stdWrap( $row['occurance_date'], $dateWrap);
+		$wrappedSubpart['###SERMON_LINK###'][] = '<a href=\'' .$this->pi_list_linkSingle('',$row['uid'],1,array(),1). '\'>';
+		$wrappedSubpart['###SERMON_LINK###'][] = '</a>';
+		
+		return $this->cObj->substituteMarkerArrayCached( $content, $markerArray, array(), $wrappedSubpart );			
+		
+	}
 	/**
 	 * [Put your description here]
 	 */
@@ -492,6 +530,19 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 		}
 		return array_unique( t3lib_div::trimExplode(',', $ttlString, 1) ) ;
 		
+	}
+
+	/**
+	 * Returns a subpart from the input content stream.
+	 * Enables pre-/post-processing of templates/templatefiles
+	 *
+	 * @param	string		$Content stream, typically HTML template content.
+	 * @param	string		$Marker string, typically on the form "###...###"
+	 * @param	array		$Optional: the active row of data - if available
+	 * @return	string		The subpart found, if found.
+	 */
+	function getTemplateSubpart($myTemplate, $myKey, $row = Array()) {
+		return ($this->cObj->getSubpart($myTemplate, $myKey));
 	}
 
 
