@@ -261,7 +261,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			$this->internal['currentTable'] = 'tx_wecsermons_sermons';
 
 			$this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)	;		
-			$result = $this->subCurrentRow( $lConf, $template['sermon'] );
+			$result = $this->subSermonContent( $lConf, $template['sermon'] );
 			debug( $result );
 			exit;
 			
