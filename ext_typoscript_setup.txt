@@ -1,0 +1,15 @@
+plugin.tx_wecsermons_pi1 {
+	userFunc = tx_wecsermons_pi1->main
+	useStoragePid	 = {$plugin.tx_wecsermons_pi1.useStoragePid}
+	
+	# Rendering of text items. re-use the RTE parseFunc configuration for normal content
+	general_stdWrap {
+		parseFunc < tt_content.text.20.parseFunc
+	}
+	
+	listView {
+		results_at_a_time = {$plugin.tx_wecsermons_pi1.listView.results_at_a_time}
+		maxPages = {$plugin.tx_wecsermons_pi1.listView.maxPages}
+		templateFile = {$plugin.tx_wecsermons_pi1.listView.templateFile}
+	}
+}

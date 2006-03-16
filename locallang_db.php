@@ -46,9 +46,15 @@ $LOCAL_LANG = Array (
 		'tx_wecsermons_liturgical_season' => 'Liturgical Season',	
 		'tx_wecsermons_liturgical_season.season_name' => 'Season Name',	
 		'tt_content.list_type_pi1' => 'Sermon Repository',	
-		'tx_wecsermons_sermons.tutorial' => 'Choose your Tutorial:',	
-		'tx_wecsermons_sermons.tutorial.I.0' => 'Ginghamsburg',	
-		'tx_wecsermons_sermons.tutorial.I.1' => 'Living Water',	
+		'tx_wecsermons.pi_flexform.tutorial' => 'Choose your Tutorial:',	
+		'tx_wecsermons.pi_flexform.tutorial.I.0' => 'Ginghamsburg',	
+		'tx_wecsermons.pi_flexform.tutorial.I.1' => 'Living Water',	
+		'tx_wecsermons.pi_flexform.display' => 'What to Display:',
+		'tx_wecsermons.pi_flexform.display.I.0' => 'SINGLE',
+		'tx_wecsermons.pi_flexform.display.I.1' => 'LIST',
+		'tx_wecsermons.pi_flexform.display.I.2' => 'RSS',
+		'tx_wecsermons.pi_flexform.display.I.3' => 'ARCHIVE',
+		'tx_wecsermons.pi_flexform.display.I.4' => 'SEARCH',
 	),
 );
 ?>
