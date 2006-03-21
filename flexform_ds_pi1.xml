@@ -94,6 +94,19 @@
 				</config>
 			</TCEforms>
 		  </recursive>  
+
+		<templateFile>
+		  	<TCEforms>
+			<label>LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.template</label>
+				<config>
+					<type>group</type>
+					<internal_type>file</internal_type>
+					<allowed>html,htm,tmpl,txt</allowed>
+					<uploadfolder>uploads/tx_wecsermons</uploadfolder>
+					<size>1</size>
+				</config>
+			</TCEforms>
+		  </templateFile>  
 		</el>
     </ROOT>
     </sDEF>

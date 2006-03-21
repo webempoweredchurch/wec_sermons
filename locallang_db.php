@@ -55,6 +55,7 @@ $LOCAL_LANG = Array (
 		'tx_wecsermons.pi_flexform.display.I.2' => 'RSS',
 		'tx_wecsermons.pi_flexform.display.I.3' => 'ARCHIVE',
 		'tx_wecsermons.pi_flexform.display.I.4' => 'SEARCH',
+		'tx_wecsermons.pi_flexform.template' => 'Template File:',	
 	),
 );
 ?>

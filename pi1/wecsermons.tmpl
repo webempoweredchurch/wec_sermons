@@ -1,0 +1,83 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>News example template</title>
+</head>
+
+<body>
+
+<h1>NEWS TEMPLATES</h1>
+<h2>EXAMPLE</h2>
+
+
+
+
+
+
+<br />
+<br />
+<br />
+<pre>
+
+<strong>Common markers:</strong>
+These are substituted in all news item displaying templates:
+
+<em>Markers:</em>
+SERMON_SERIES_TITLE - Title of a sermon series
+SERMON_TITLE - Title of a sermon
+OCCURANCE_DATE - Date the sermon was presented on
+ALTERNATING_CLASS - This is the class attribute inserted for alternating odd/even rows
+
+<em>Language Markers (see pi1/locallang.php):</em>
+LATEST_HEADER - header for the LATEST element
+BACK_TO_LIST - link back to list-view in single-view template
+
+
+
+<em>Wrapped Subparts:</em>
+SERMON_SERIES_LINK - link to sermon series' single view
+SERMON_LINK - link to a sermon's single view
+</pre>
+
+
+<br /><br /><br /><br /><hr />
+<br />
+<h3>TEMPLATE_LIST1</h3>
+<em>This is an example template for styling a sermon listing.</em>
+<br />
+<br />
+<br />
+<br />
+
+
+<!-- ###TEMPLATE_LIST1### begin 
+	This template is an example of how to use the sermons extension to create a custom list view
+-->
+<TABLE id=wecsermons-pi1-table-data cellSpacing='1' cellPadding='3' width='###TABLE_WIDTH###'>
+  <TBODY>
+    <!-- ###CONTENT### begin
+    	This begins the content wrapper for repeating content 
+    -->
+      <!-- ###SERMON_SERIES### begin 
+		This begins a sermon series grouping, for grouping sermons by series
+	-->
+    <TR vAlign='top'>
+      <TH colSpan='2'><!-- ###SERMON_SERIES_LINK### -->
+        ###SERMON_SERIES_TITLE###
+        <!-- ###SERMON_SERIES_LINK### --></TH>
+    </TR>
+      <!-- ###SERMON_SERIES### end -->
+    <!-- ###SERMON### begin
+  		This begins the template for a repeating a sermon record
+  	-->
+    <TR###ALTERNATING_CLASS### vAlign='top'>
+      <TD><!--###SERMON_LINK###-->
+        ###OCCURANCE_DATE###
+        <!--###SERMON_LINK###-->
+      </TD>
+      <TD>###SERMON_TITLE###</TD>
+    </TR>
+    <!-- ###SERMON### end -->
+    <!-- ###CONTENT### end -->
+  </TBODY>
+</TABLE>
+<!-- ###TEMPLATE_LIST1### end --> 
