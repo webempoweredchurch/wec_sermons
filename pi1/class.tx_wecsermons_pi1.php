@@ -275,6 +275,93 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			$template['series'] = $this->cObj->getSubpart( $template['content'], '###SERMON_SERIES###' );
 			$template['sermon'] = $this->cObj->getSubpart( $template['content'], '###SERMON###' );
 
+			$this->internal['results_at_a_time'] =100;
+
+				//	Get all sermon series records
+			$res = $this->pi_exec_query('tx_wecsermons_series');
+			$this->internal['currentTable'] = 'tx_wecsermons_series';
+			$listContent = '';
+	
+			$markerArray = array();
+			$wrappedMarkerArray = array();
+			$subpartArray = array();
+
+			while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
+
+
+					//	Load one instance of the repeated section of the template
+				$subpartArray['###SERMON_SERIES###'] = $template['series'];
+				$seriesUid = $this->internal['currentRow']['uid'];
+				
+				$singleLink = $this->pi_list_linkSingle(
+					'|',
+					$seriesUid,
+					TRUE
+				);		
+				$wrappedMarkerArray['###SERMON_SERIES_LINK###'] = explode('|', $singleLink);
+				$markerArray['###SERMON_SERIES_TITLE###'] = $this->internal['currentRow']['title'];
+
+					//	Query related sermon records
+				$sermonRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					'*',
+					'tx_wecsermons_sermons',
+					'series_uid = ' .$seriesUid
+				);
+
+				$counter = 0;
+				while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($sermonRes) ) {
+					
+					$markerArray['###SERMON_TITLE###'] = $row['title'];
+					$wrappedMarkerArray['###SERMON_LINK###'] = explode( '|', $this->pi_list_linkSingle(
+						'|',
+						$row['uid'],
+						TRUE
+						) 
+					);
+
+						//	Wrap the occurance date, choosing from one of three settings in typoscript
+					$dateWrap = $lConf['occurance_dateWrap.'] ? $lConf['occurance_dateWrap.'] : $lConf['general_dateWrap.'];
+					if( ! $dateWrap ) $dateWrap = $this->conf['general_dateWrap.'];
+					$markerArray['###OCCURANCE_DATE###'] = $this->cObj->stdWrap( $row['occurance_date'], $dateWrap);
+
+					$counter++;
+					$markerArray['###ALTERNATING_CLASS###'] = $counter % 2 ? $this->pi_classParam( $lConf['alternatingClass'] ) : '';
+ 
+					$subpartArray['###SERMON###'] .= $this->cObj->substituteMarkerArrayCached($template['sermon'], $markerArray, '', $wrappedMarkerArray);
+				}
+			$subpartArray['###SERMON_SERIES###'] = $this->cObj->substituteMarkerArrayCached($template['series'], $markerArray, '', $wrappedMarkerArray);
+
+				$listContent .= $this->cObj->substituteMarkerArrayCached($template['content'], $markerArray, $subpartArray, $wrappedMarkerArray);
+
+			}
+
+return $this->cObj->substituteSubpart($template['list'], '###CONTENT###', $listContent );
+
+			$this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+			
+	
+			$query = 'select count(*)
+				from tx_wecsermons_sermons
+				join tx_wecsermons_series on tx_wecsermons_sermons.series_uid = tx_wecsermons_series.uid
+				left join tx_wecsermons_topics on tx_wecsermons_sermons.topic_uid = tx_wecsermons_topics.uid
+				WHERE 1=1' 
+				. $this->enableFields;	
+
+			$res = $GLOBALS['TYPO3_DB']->sql(TYPO3_db, $query );
+			list($this->internal['res_count']) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
+
+			$query = 'select tx_wecsermons_sermons.uid, tx_wecsermons_sermons.title sermon_title, tx_wecsermons_sermons.occurance_date, tx_wecsermons_sermons.related_scripture, tx_wecsermons_sermons.graphic, tx_wecsermons_sermons.series_uid, tx_wecsermons_sermons.topic_uid, tx_wecsermons_sermons.resources_uid, tx_wecsermons_series.title series_title, tx_wecsermons_topics.name topic_name
+				from tx_wecsermons_sermons
+				join tx_wecsermons_series on tx_wecsermons_sermons.series_uid = tx_wecsermons_series.uid
+				left join tx_wecsermons_topics on tx_wecsermons_sermons.topic_uid = tx_wecsermons_topics.uid
+				WHERE 1=1' 
+				. $this->enableFields;
+
+			$res = $GLOBALS['TYPO3_DB']->sql(TYPO3_db, $query );
+			
+			$this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+			
+=======
 $this->internal['results_at_a_time'] =100;
 
 				//	Get all sermon series records
@@ -356,6 +443,7 @@ exit;
 			
 			$this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			
+>>>>>>> .r25
 			$res = $this->pi_exec_query('tx_wecsermons_sermons');
 			$this->internal['currentTable'] = 'tx_wecsermons_sermons';
 
