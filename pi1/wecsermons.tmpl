@@ -32,6 +32,9 @@ LATEST_HEADER - header for the LATEST element
 BACK_TO_LIST - link back to list-view in single-view template
 
 
+<em>Subparts:</em>
+CONTENT - This is the repeated area for each row of data
+ 
 
 <em>Wrapped Subparts:</em>
 SERMON_SERIES_LINK - link to sermon series' single view
@@ -66,6 +69,41 @@ SERMON_LINK - link to a sermon's single view
         <!-- ###SERMON_SERIES_LINK### --></TH>
     </TR>
       <!-- ###SERMON_SERIES### end -->
+    <!-- ###ITEM### begin
+  		This begins the template for a repeating a sermon record
+  	-->
+    <TR###ALTERNATING_CLASS### vAlign='top'>
+      <TD><!--###SERMON_LINK###-->
+        ###OCCURANCE_DATE###
+        <!--###SERMON_LINK###-->
+      </TD>
+      <TD>###SERMON_TITLE###</TD>
+    </TR>
+    <!-- ###ITEM### end -->
+    <!-- ###CONTENT### end -->
+  </TBODY>
+</TABLE>
+<!-- ###TEMPLATE_LIST1### end --> 
+
+<!-- ###TEMPLATE_LIST2### begin 
+	This template is in progress, developing a abstracted grouping mechanism for related records, simliar to a Crystal Reports 'group'
+-->
+<TABLE id=wecsermons-pi1-table-data cellSpacing='1' cellPadding='3' width='###TABLE_WIDTH###'>
+  <TBODY>
+    <!-- ###CONTENT### begin
+    	This begins the content wrapper for repeating content 
+    -->
+    
+    <!-- ###GROUP1###  begin -->
+      <!-- ###SERMON_SERIES### begin 
+		This begins a sermon series grouping, for grouping sermons by series
+	-->
+    <TR vAlign='top'>
+      <TH colSpan='2'><!-- ###SERMON_SERIES_LINK### -->
+        ###SERMON_SERIES_TITLE###
+        <!-- ###SERMON_SERIES_LINK### --></TH>
+    </TR>
+      <!-- ###SERMON_SERIES### end -->
     <!-- ###SERMON### begin
   		This begins the template for a repeating a sermon record
   	-->
@@ -80,4 +118,4 @@ SERMON_LINK - link to a sermon's single view
     <!-- ###CONTENT### end -->
   </TBODY>
 </TABLE>
-<!-- ###TEMPLATE_LIST1### end --> 
+<!-- ###TEMPLATE_LIST2### end --> 

@@ -161,7 +161,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 					break;
 
 				case 'list':
-					$content .= $this->listView($content, $conf);
+					$content .= $this->listView($content, $this->conf['listView.']);
 					break;
 
 				case 'rss':
@@ -175,7 +175,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				case 'search':
 					$content .= '<h1>search case reached</h1><br/>';
 					break;
-
+ 
 				default:
 					$content .= '<h1>Please configure \'what to display\' in plugin or typoscript</h1><br/>';
 					break;
@@ -209,15 +209,36 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	 * @param	[type]		$conf: ...
 	 * @return	[type]		...
 	 */
-	function listView($content,$conf)	{
+	function searchView($content,$lConf)	{
+		
+		if( $this->piVar['sword'] == '' )
+			return $this->cObj->stdWrap($lConf['searchError.'], htmlspecialchars( $lConf['groupByError'] ));
+			
+		$swords = explode(' ', $this->piVar['sword'] );
+		
+		
+	}
+	/**
+	 * [Put your description here]
+	 *
+	 * @param	[type]		$content: ...
+	 * @param	[type]		$conf: ...
+	 * @return	[type]		...
+	 */
+	function listView($content,$lConf)	{
 
-		$lConf = $this->conf['listView.'];	// Local settings for the listView function
+#$this->groupByList( $lConf, $content );
+
+
+				// Adds the search box:
+			$fullTable.=$this->pi_list_searchBox();
+return $fullTable;
 
 		if ($this->piVars['showUid'])	{	// If a single element should be displayed, jump to single view
 			$this->internal['currentTable'] = 'tx_wecsermons_sermons';
 			$this->internal['currentRow'] = $this->pi_getRecord('tx_wecsermons_sermons',$this->piVars['showUid']);
 
-			$content = $this->singleView($content,$conf);
+			$content = $this->singleView($content,$lConf);
 			return $content;
 
 		} else {	//	Otherwise continue with list view
@@ -236,6 +257,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			$this->internal['maxPages']=t3lib_div::intInRange($lConf['maxPages'],0,1000,2);;		// The maximum number of "pages" in the browse-box: "Page 1", "Page 2", etc.
 			$this->internal['searchFieldList']='title,description,related_scripture,keywords';
 			$this->internal['orderByList']='uid,title,related_scripture,keywords';
+
 
 				//	Recursive setting from plugin overrides typoscript
 			if( $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'recursive', 'sDEF') )
@@ -275,133 +297,60 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			$template['series'] = $this->cObj->getSubpart( $template['content'], '###SERMON_SERIES###' );
 			$template['sermon'] = $this->cObj->getSubpart( $template['content'], '###SERMON###' );
 
-			$this->internal['results_at_a_time'] =100;
+
+
+/*
+#This code block produces a list of sermons grouped by sermon series
+
+				//	Intitialize some variables
+			$listContent = '';
+			$markerArray = array();
+			$wrappedMarkerArray = array();
+			$subpartArray = array();
+			$subpartArray['###SERMON###'] = '';
+			$counter = 0;
+			$temp = array();
 
 				//	Get all sermon series records
 			$res = $this->pi_exec_query('tx_wecsermons_series');
 			$this->internal['currentTable'] = 'tx_wecsermons_series';
-			$listContent = '';
-	
-			$markerArray = array();
-			$wrappedMarkerArray = array();
-			$subpartArray = array();
 
+				//	Iterate every Sermon Series record
 			while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
 
 
-					//	Load one instance of the repeated section of the template
+					//	Load an instance of the series template subpart
 				$subpartArray['###SERMON_SERIES###'] = $template['series'];
 				$seriesUid = $this->internal['currentRow']['uid'];
 				
-				$singleLink = $this->pi_list_linkSingle(
-					'|',
-					$seriesUid,
-					TRUE
-				);		
+					//	Generate the link to the series single view
+				$singleLink = $this->pi_list_linkSingle('|', $seriesUid, TRUE );		
 				$wrappedMarkerArray['###SERMON_SERIES_LINK###'] = explode('|', $singleLink);
 				$markerArray['###SERMON_SERIES_TITLE###'] = $this->internal['currentRow']['title'];
-
-					//	Query related sermon records
+				
+					//	Retreive sermon records related to this series
 				$sermonRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'*',
 					'tx_wecsermons_sermons',
-					'series_uid = ' .$seriesUid
+					'series_uid = ' .$seriesUid,
+					'',
+					'occurance_date desc'
 				);
+#$temp['series'][] = explode(',', $this->internal['currentRow']['title'].','.$this->internal['currentRow']['uid']);
 
-				$counter = 0;
+					//	Iterate every sermon record
 				while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($sermonRes) ) {
-					
-					$markerArray['###SERMON_TITLE###'] = $row['title'];
-					$wrappedMarkerArray['###SERMON_LINK###'] = explode( '|', $this->pi_list_linkSingle(
-						'|',
-						$row['uid'],
-						TRUE
-						) 
-					);
+#$temp['sermon'][] = explode(',', $row['title'].','.$row['series_uid']);
+					$counter++;
+					$markerArray['###SERMON_TITLE###'] = htmlspecialchars( $this->cObj->stdWrap( $row['title'], $lConf['titleWrap.'] ) );
 
+					$markerArray['###ALTERNATING_CLASS###'] = $counter % 2 ? $this->pi_classParam( $lConf['alternatingClass'] ) : '';
+			
 						//	Wrap the occurance date, choosing from one of three settings in typoscript
 					$dateWrap = $lConf['occurance_dateWrap.'] ? $lConf['occurance_dateWrap.'] : $lConf['general_dateWrap.'];
 					if( ! $dateWrap ) $dateWrap = $this->conf['general_dateWrap.'];
 					$markerArray['###OCCURANCE_DATE###'] = $this->cObj->stdWrap( $row['occurance_date'], $dateWrap);
-
-					$counter++;
-					$markerArray['###ALTERNATING_CLASS###'] = $counter % 2 ? $this->pi_classParam( $lConf['alternatingClass'] ) : '';
- 
-					$subpartArray['###SERMON###'] .= $this->cObj->substituteMarkerArrayCached($template['sermon'], $markerArray, '', $wrappedMarkerArray);
-				}
-			$subpartArray['###SERMON_SERIES###'] = $this->cObj->substituteMarkerArrayCached($template['series'], $markerArray, '', $wrappedMarkerArray);
-
-				$listContent .= $this->cObj->substituteMarkerArrayCached($template['content'], $markerArray, $subpartArray, $wrappedMarkerArray);
-
-			}
-
-return $this->cObj->substituteSubpart($template['list'], '###CONTENT###', $listContent );
-
-			$this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			
-	
-			$query = 'select count(*)
-				from tx_wecsermons_sermons
-				join tx_wecsermons_series on tx_wecsermons_sermons.series_uid = tx_wecsermons_series.uid
-				left join tx_wecsermons_topics on tx_wecsermons_sermons.topic_uid = tx_wecsermons_topics.uid
-				WHERE 1=1' 
-				. $this->enableFields;	
-
-			$res = $GLOBALS['TYPO3_DB']->sql(TYPO3_db, $query );
-			list($this->internal['res_count']) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
-
-			$query = 'select tx_wecsermons_sermons.uid, tx_wecsermons_sermons.title sermon_title, tx_wecsermons_sermons.occurance_date, tx_wecsermons_sermons.related_scripture, tx_wecsermons_sermons.graphic, tx_wecsermons_sermons.series_uid, tx_wecsermons_sermons.topic_uid, tx_wecsermons_sermons.resources_uid, tx_wecsermons_series.title series_title, tx_wecsermons_topics.name topic_name
-				from tx_wecsermons_sermons
-				join tx_wecsermons_series on tx_wecsermons_sermons.series_uid = tx_wecsermons_series.uid
-				left join tx_wecsermons_topics on tx_wecsermons_sermons.topic_uid = tx_wecsermons_topics.uid
-				WHERE 1=1' 
-				. $this->enableFields;
-
-			$res = $GLOBALS['TYPO3_DB']->sql(TYPO3_db, $query );
-			
-			$this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-			
-=======
-$this->internal['results_at_a_time'] =100;
-
-				//	Get all sermon series records
-			$res = $this->pi_exec_query('tx_wecsermons_series');
-			$this->internal['currentTable'] = 'tx_wecsermons_series';
-			$listContent = '';
-	
-			$markerArray = array();
-			$wrappedMarkerArray = array();
-			$subpartArray = array();
-
-			while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
-
-
-					//	Load one instance of the repeated section of the template
-				$subpartArray['###SERMON_SERIES###'] = $template['series'];
-				$seriesUid = $this->internal['currentRow']['uid'];
-				
-				$singleLink = $this->pi_list_linkSingle(
-					'|',
-					$seriesUid,
-					TRUE
-				);		
-				$wrappedMarkerArray['###SERMON_SERIES_LINK###'] = explode('|', $singleLink);
-				$markerArray['###SERMON_SERIES_TITLE###'] = $this->internal['currentRow']['title'];
-
-
-#				$content .= $this->cObj->substituteMarkerArrayCached();				
-				
-					//	Query related sermon records
-				$sermonRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-					'*',
-					'tx_wecsermons_sermons',
-					'series_uid = ' .$seriesUid
-				);
-
-				$subpartArray['###SERMON###'] = '';
-				while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($sermonRes) ) {
-					
-					$markerArray['###SERMON_TITLE###'] = $row['title'];
 					$wrappedMarkerArray['###SERMON_LINK###'] = explode( '|', $this->pi_list_linkSingle(
 						'|',
 						$row['uid'],
@@ -410,45 +359,28 @@ $this->internal['results_at_a_time'] =100;
 					);
 					
 					$subpartArray['###SERMON###'] .= $this->cObj->substituteMarkerArrayCached($template['sermon'], $markerArray, '', $wrappedMarkerArray);
+
 				}
-
-				$listContent .= $this->cObj->substituteMarkerArrayCached($lContent, $markerArray, $subpartArray, $wrappedMarkerArray)
-
+					//	If no series has no sermons associated with it, skip adding it to $listContent
+				if( $subpartArray['###SERMON###'] != '') {
+					$subpartArray['###SERMON_SERIES###'] = $this->cObj->substituteMarkerArrayCached($template['series'], $markerArray, '', $wrappedMarkerArray);
+					$listContent .= $this->cObj->substituteMarkerArrayCached($template['content'], $markerArray, $subpartArray, $wrappedMarkerArray);
+		
+						//	Reset the sermon subpart, for next iteration
+					$subpartArray['###SERMON###'] = '';
+				}				
 			}
 
-debug( $markerArray );
-debug( $sermonRows );
-exit;
-			$this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-			
-	
-			$query = 'select count(*)
-				from tx_wecsermons_sermons
-				join tx_wecsermons_series on tx_wecsermons_sermons.series_uid = tx_wecsermons_series.uid
-				left join tx_wecsermons_topics on tx_wecsermons_sermons.topic_uid = tx_wecsermons_topics.uid
-				WHERE 1=1' 
-				. $this->enableFields;	
+return $this->cObj->substituteSubpart( $template['list'], '###CONTENT###', $listContent );
 
-			$res = $GLOBALS['TYPO3_DB']->sql(TYPO3_db, $query );
-			list($this->internal['res_count']) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
-
-			$query = 'select tx_wecsermons_sermons.uid, tx_wecsermons_sermons.title sermon_title, tx_wecsermons_sermons.occurance_date, tx_wecsermons_sermons.related_scripture, tx_wecsermons_sermons.graphic, tx_wecsermons_sermons.series_uid, tx_wecsermons_sermons.topic_uid, tx_wecsermons_sermons.resources_uid, tx_wecsermons_series.title series_title, tx_wecsermons_topics.name topic_name
-				from tx_wecsermons_sermons
-				join tx_wecsermons_series on tx_wecsermons_sermons.series_uid = tx_wecsermons_series.uid
-				left join tx_wecsermons_topics on tx_wecsermons_sermons.topic_uid = tx_wecsermons_topics.uid
-				WHERE 1=1' 
-				. $this->enableFields;
-
-			$res = $GLOBALS['TYPO3_DB']->sql(TYPO3_db, $query );
+*/
 			
-			$this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-			
->>>>>>> .r25
 			$res = $this->pi_exec_query('tx_wecsermons_sermons');
 			$this->internal['currentTable'] = 'tx_wecsermons_sermons';
 
 			$this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)	;
-			$result = $this->subSermonContent( $lConf, $template['sermon'] );
+
+			$result = $this->groupByList( $lConf, $template['sermon'] );
 
 
 				// Get number of records:
@@ -472,6 +404,10 @@ exit;
 				// Adds the search box:
 			$fullTable.=$this->pi_list_searchBox();
 
+/*
+Using $this->internal['res_count'], $this->internal['results_at_a_time'] and $this->internal['maxPages'] for count number, 
+how many results to show and the max number of pages to include in the browse bar. Using $this->internal['dontLinkActivePage']
+*/
 				// Adds the result browser:
 			$fullTable.=$this->pi_list_browseresults();
 
@@ -486,8 +422,7 @@ exit;
 	 * @param	[type]		$conf: ...
 	 * @return	[type]		...
 	 */
-	function singleView($content,$conf)	{
-		$this->conf=$conf;
+	function singleView($content,$lConf)	{
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
 
@@ -552,29 +487,50 @@ exit;
 
 		return $content;
 	}
-	/**
-	 * [Put your description here]
-	 *
-	 * @param	[type]		$c: ...
-	 * @return	[type]		...
-	 */
-	function pi_list_row($c)	{
-	$editPanel = $this->pi_getEditPanel();
-		if ($editPanel)	$editPanel='<TD>'.$editPanel.'</TD>';
 
-		return '<tr'.($c%2 ? $this->pi_classParam('listrow-odd') : '').'>
-				<td><p>'.$this->getFieldContent('uid').'</p></td>
-				<td valign="top"><p>'.$this->getFieldContent('title').'</p></td>
-				<td valign="top"><p>'.$this->getFieldContent('occurance_date').'</p></td>
-				<td valign="top"><p>'.$this->getFieldContent('related_scripture').'</p></td>
-				<td valign="top">'.$this->formatStr( $this->getFieldContent('description') ).'</td>
-				<td valign="top"><p>'.$this->getFieldContent('graphic').'</p></td>
-				<td valign="top"><p>'.$this->getFieldContent('series_uid').'</p></td>
-				<td valign="top"><p>'.$this->getFieldContent('topic_uid').'</p></td>
-				<td valign="top"><p>'.$this->getFieldContent('record_type').'</p></td>
-				<td valign="top"><p>'.$this->getFieldContent('resources_uid').'</p></td>
-			</tr>';
+	/**
+	 * Returns the list of items based on the input SQL result pointer
+	 * For each result row the internal var, $this->internal['currentRow'], is set with the row returned.
+	 * $this->pi_list_header() makes the header row for the list
+	 * $this->pi_list_row() is used for rendering each row
+	 *
+	 * @param	pointer		Result pointer to a SQL result which can be traversed.
+	 * @param	string		Marker based template, which will be processed and returned with populated data using $this->substituteMarkerArrayCached  ()
+	 * @return	string		Output HTML, wrapped in <div>-tags with a class attribute
+	 * @see pi_list_row(), pi_list_header()
+	 */
+	function pi_list_makelist($res,$template)	{
+		
+		$markerArray = array (
+			'###SERMON_TITLE###' => '',
+			'###SERMON_LINK###' => '',
+			'###OCCURANCE_DATE###' => '',
+		);
+			// Make list table header:
+		$tRows=array();
+		$this->internal['currentRow']='';
+		$tRows[] = $this->pi_list_header();
+
+			// Make list table rows
+		$c=0;
+		while($this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+			$tRows[] = $this->pi_list_row($c);
+			$c++;
+		}
+
+		$out = '
+		<!--
+			Record list:
+		-->
+		<div'.$this->pi_classParam('listrow').'>
+			<'.trim('table '.$tableParams).'>
+				'.implode('',$tRows).'
+			</table>
+		</div>';
+
+		return $out;
 	}
+
 	/**
 	 * [Put your description here]
 	 *
@@ -582,19 +538,93 @@ exit;
 	 */
 	function pi_list_header()	{
 		return '<tr'.$this->pi_classParam('listrow-header').'>
-				<th><p>'.$this->getFieldHeader_sortLink('uid').'</p></th>
 				<th><p>'.$this->getFieldHeader_sortLink('title').'</p></th>
 				<th nowrap><p>'.$this->getFieldHeader('occurance_date').'</p></th>
-				<th><p>'.$this->getFieldHeader_sortLink('related_scripture').'</p></th>
 				<th><p>'.$this->getFieldHeader_sortLink('description').'</p></th>
+			</tr>';
+	}
+
+
+	/**
+	 * [Put your description here]
+	 *
+	 * @param	string		$lConf: Local typoscript configuration array
+	 * @param	string		$markerArray: Array of typo3 tag markers as keys
+	 * @param	string		$rowTemplate: A marker based template, needing to be processed
+	 * @param	integer		$c: Number of current row, to determine even / odd rows
+	 * @return	string		A populated template, filled with data from the row
+	 */
+	function pi_list_row($lConf, $markerArray = array(), $rowTemplate, $c)	{
+		$wrappedMarkerArray = array();
+		
+		$editPanel = $this->pi_getEditPanel();
+		if ($editPanel)	$editPanel='<TD>'.$editPanel.'</TD>';
+		
+		
+		foreach( $markerArray as $key => $value ) {
+			
+			switch( $key ) {
+				
+			case '###SERMON_TITLE###':
+				$markerArray[$key] = $this->formatStr( $this->getFieldContent('title') );
+				break;
+				
+			case '###OCCURANCE_DATE###':
+				$markerArray[$key] = $this->formatStr( $this->getFieldContent('occurance_date') );
+				break;
+
+			case '###SERMON_LINK###':
+				$this->piVars = array();
+				$this->piVars['showUid'];
+				$wrappedMarkerArray[$key] = explode( 
+					'|',
+					$this->pi_list_linkSingle(
+						'|', 
+						$this->getFieldContent('uid'), 
+						$this->conf['allowCaching'], 
+						FALSE, 
+						$this->conf['pidSingleView'] ? $this->conf['pidSingleView']:0 
+						)
+				);
+				break;
+				
+			case '###ALTERNATING_CLASS###':
+				$markerArray['###ALTERNATING_CLASS###'] = $c % 2 ? $this->pi_classParam( $lConf['alternatingClass'] ) : '';
+				break;
+				
+			}
+			
+		}
+		
+		return $this->cObj->substituteMarkerArrayCached($rowTemplate, $markerArray, array(), $wrappedMarkerArray );
+
+		return '<tr'.($c%2 ? $this->pi_classParam('listrow-odd') : '').'>
+				<td valign="top"><p>'.$this->getFieldContent('title').'</p></td>
+				<td valign="top"><p>'.$this->getFieldContent('occurance_date').'</p></td>
+				<td valign="top">'.$this->formatStr( $this->getFieldContent('description') ).'</td>
+			</tr>';
+	}
+	
+/*
+				<td><p>'.$this->getFieldContent('uid').'</p></td>
+				<td valign="top"><p>'.$this->getFieldContent('related_scripture').'</p></td>
+				<td valign="top"><p>'.$this->getFieldContent('graphic').'</p></td>
+				<td valign="top"><p>'.$this->getFieldContent('series_uid').'</p></td>
+				<td valign="top"><p>'.$this->getFieldContent('topic_uid').'</p></td>
+				<td valign="top"><p>'.$this->getFieldContent('record_type').'</p></td>
+				<td valign="top"><p>'.$this->getFieldContent('resources_uid').'</p></td>
+*/
+
+/*
+				<th><p>'.$this->getFieldHeader_sortLink('uid').'</p></th>
+				<th><p>'.$this->getFieldHeader_sortLink('related_scripture').'</p></th>
 				<th nowrap><p>'.$this->getFieldHeader('graphic').'</p></th>
 				<th nowrap><p>'.$this->getFieldHeader('series_uid').'</p></th>
 				<th nowrap><p>'.$this->getFieldHeader('topic_uid').'</p></th>
 				<th nowrap><p>'.$this->getFieldHeader('record_type').'</p></th>
 				<th nowrap><p>'.$this->getFieldHeader('resources_uid').'</p></th>
-			</tr>';
-	}
 
+*/
 	/**
 	 * Substitute template markers with sermon record content from internal['currentRecord']
 	 *
@@ -605,7 +635,39 @@ exit;
 	 * @param	integer
 	 * @return	[type]		...
 	 */
-	function subSermonContent($lConf,$content,$count = 0) {
+	function groupByList($lConf,$content,$count = 0) {
+		
+			//	If grouping was requested, make sure we have the related typoscript set. If not set, return error
+		if( $lConf['groupByList'] == '' )
+			return $this->cObj->stdWrap($lConf['groupByError.'], htmlspecialchars( $lConf['groupByError'] ));
+
+//	TODO: Figure out how to automate the grouping of records
+
+		list( $group, $detail ) = explode( ',', $lConf['groupByList'] );
+		list( $groupTable, $groupOrderBy ) = explode ('.', $group );
+		list( $detailTable, $detailOrderBy ) = explode ('.', $detail );
+		
+		$query = '
+			select ' . $lConf['pi_listFields'] .'
+		
+		';
+		
+		$GLOBALS['TYPO3_DB']->sql_query( $query );
+		
+		$this->internal['currentTable'] = $groupTable;
+		$this->internal['orderBy'] = $groupOrderBy;
+		
+			//	If typoscript value is set that defines which fields to list, use that. Default is '*' set by pi_base.
+		if( $lConf['pi_listFields'] ) $this->pi_listFields = uniqueCsv( $lConf['pi_listFields'], 'uid, startdate' );
+
+		$groupRes = $this->pi_exec_query( $groupTable );
+
+		$groupArray = array();
+		while( $groupRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($groupRes) ) {
+			$groupArray[ $groupRow['uid'] ] = $groupRow;
+		}
+debug( $this->internal['orderBy'] );
+exit;
 		$row = $this->internal['currentRow'];
 		$markerArray = array();
 		$markerArray['###SERMON_TITLE###'] = $row['title'];
@@ -621,6 +683,103 @@ exit;
 
 		return $this->cObj->substituteMarkerArrayCached( $content, $markerArray, array(), $wrappedSubpart );
 
+	}
+
+	/**
+	 * Makes a standard query for listing of records based on standard input vars from the 'browser' ($this->internal['results_at_a_time'] and $this->piVars['pointer']) and 'searchbox' ($this->piVars['sword'] and $this->internal['searchFieldList'])
+	 * Set $count to 1 if you wish to get a count(*) query for selecting the number of results.
+	 * Notice that the query will use $this->conf['pidList'] and $this->conf['recursive'] to generate a PID list within which to search for records.
+	 *
+	 *	TODO: Adjust this function so that it accepts multiple tables in a query, allowing more flexible querying of db.
+	 *
+	 * @param	string		See pi_exec_query()
+	 * @param	boolean		See pi_exec_query()
+	 * @param	string		See pi_exec_query()
+	 * @param	mixed		See pi_exec_query()
+	 * @param	string		See pi_exec_query()
+	 * @param	string		See pi_exec_query()
+	 * @param	string		See pi_exec_query()
+	 * @param	boolean		If set, the function will return the query not as a string but array with the various parts.
+	 * @return	mixed		The query build.
+	 * @access private
+	 * @depreciated		Use pi_exec_query() instead!
+	 */
+	function pi_list_query($table,$count=0,$addWhere='',$mm_cat='',$groupBy='',$orderBy='',$query='',$returnQueryArray=FALSE)	{
+
+			// Begin Query:
+		if (!$query)	{
+				// Fetches the list of PIDs to select from.
+				// TypoScript property .pidList is a comma list of pids. If blank, current page id is used.
+				// TypoScript property .recursive is a int+ which determines how many levels down from the pids in the pid-list subpages should be included in the select.
+			$pidList = $this->pi_getPidList($this->conf['pidList'],$this->conf['recursive']);
+			if (is_array($mm_cat))	{
+				$query='FROM '.$table.','.$mm_cat['table'].','.$mm_cat['mmtable'].chr(10).
+						' WHERE '.$table.'.uid='.$mm_cat['mmtable'].'.uid_local AND '.$mm_cat['table'].'.uid='.$mm_cat['mmtable'].'.uid_foreign '.chr(10).
+						(strcmp($mm_cat['catUidList'],'')?' AND '.$mm_cat['table'].'.uid IN ('.$mm_cat['catUidList'].')':'').chr(10).
+						' AND '.$table.'.pid IN ('.$pidList.')'.chr(10).
+						$this->cObj->enableFields($table).chr(10);	// This adds WHERE-clauses that ensures deleted, hidden, starttime/endtime/access records are NOT selected, if they should not! Almost ALWAYS add this to your queries!
+			} else {
+				$query='FROM '.$table.' WHERE pid IN ('.$pidList.')'.chr(10).
+						$this->cObj->enableFields($table).chr(10);	// This adds WHERE-clauses that ensures deleted, hidden, starttime/endtime/access records are NOT selected, if they should not! Almost ALWAYS add this to your queries!
+			}
+		}
+
+			// Split the "FROM ... WHERE" string so we get the WHERE part and TABLE names separated...:
+		list($TABLENAMES,$WHERE) = spliti('WHERE', trim($query), 2);
+		$TABLENAMES = trim(substr(trim($TABLENAMES),5));
+		$WHERE = trim($WHERE);
+
+			// Add '$addWhere'
+		if ($addWhere)	{$WHERE.=' '.$addWhere.chr(10);}
+
+			// Search word:
+		if ($this->piVars['sword'] && $this->internal['searchFieldList'])	{
+			$WHERE.=$this->cObj->searchWhere($this->piVars['sword'],$this->internal['searchFieldList'],$table).chr(10);
+		}
+
+		if ($count) {
+			$queryParts = array(
+				'SELECT' => 'count(*)',
+				'FROM' => $TABLENAMES,
+				'WHERE' => $WHERE,
+				'GROUPBY' => '',
+				'ORDERBY' => '',
+				'LIMIT' => ''
+			);
+		} else {
+				// Order by data:
+			if (!$orderBy && $this->internal['orderBy'])	{
+				if (t3lib_div::inList($this->internal['orderByList'],$this->internal['orderBy']))	{
+					$orderBy = 'ORDER BY '.$table.'.'.$this->internal['orderBy'].($this->internal['descFlag']?' DESC':'');
+				}
+			}
+
+				// Limit data:
+			$pointer = $this->piVars['pointer'];
+			$pointer = intval($pointer);
+			$results_at_a_time = t3lib_div::intInRange($this->internal['results_at_a_time'],1,1000);
+			$LIMIT = ($pointer*$results_at_a_time).','.$results_at_a_time;
+
+				// Add 'SELECT'
+			$queryParts = array(
+				'SELECT' => $this->pi_prependFieldsWithTable($table,$this->pi_listFields),
+				'FROM' => $TABLENAMES,
+				'WHERE' => $WHERE,
+				'GROUPBY' => $GLOBALS['TYPO3_DB']->stripGroupBy($groupBy),
+				'ORDERBY' => $GLOBALS['TYPO3_DB']->stripOrderBy($orderBy),
+				'LIMIT' => $LIMIT
+			);
+		}
+
+		$query = $GLOBALS['TYPO3_DB']->SELECTquery (
+					$queryParts['SELECT'],
+					$queryParts['FROM'],
+					$queryParts['WHERE'],
+					$queryParts['GROUPBY'],
+					$queryParts['ORDERBY'],
+					$queryParts['LIMIT']
+				);
+		return $returnQueryArray ? $queryParts : $query;
 	}
 
 	/**
@@ -705,89 +864,52 @@ exit;
 		}
 		return $str;
 	}
+	
+}	// End class tx_wecsermons_pi1
 
-	/**
-	 * Returns the list of items based on the input SQL result pointer
-	 * For each result row the internal var, $this->internal['currentRow'], is set with the row returned.
-	 * $this->pi_list_header() makes the header row for the list
-	 * $this->pi_list_row() is used for rendering each row
-	 *
-	 * @param	pointer		Result pointer to a SQL result which can be traversed.
-	 * @param	string		Attributes for the table tag which is wrapped around the table rows containing the list
-	 * @return	string		Output HTML, wrapped in <div>-tags with a class attribute
-	 * @see pi_list_row(), pi_list_header()
-	 */
-	function pi_list_makelist($res,$tableParams='')	{
-			// Make list table header:
-		$tRows=array();
-		$this->internal['currentRow']='';
-		$tRows[] = $this->pi_list_header();
+/**
+ * [Describe function...]
+ *
+ * @return	[type]		...
+ */
+function uniqueCsv()	{
+	$max = func_num_args();
+	$ttlString = '';
+	for( $i =0; $i < $max; $i++ )  {
+		$ttlString .=func_get_arg($i) .  ',';
 
-			// Make list table rows
-		$c=0;
-		while($this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-			$tRows[] = $this->pi_list_row($c);
-			$c++;
-		}
-
-		$out = '
-
-		<!--
-			Record list:
-		-->
-		<div'.$this->pi_classParam('listrow').'>
-			<'.trim('table '.$tableParams).'>
-				'.implode('',$tRows).'
-			</table>
-		</div>';
-
-		return $out;
 	}
+	return implode(',', array_unique( t3lib_div::trimExplode(',', $ttlString, 1) ) );
 }
 
-	/**
-	 * [Describe function...]
-	 *
-	 * @return	[type]		...
-	 */
-	function uniqueCsv()	{
-		$max = func_num_args();
-		$ttlString = '';
-		for( $i =0; $i < $max; $i++ )  {
-			$ttlString .=func_get_arg($i) .  ',';
-
-		}
-		return implode(',', array_unique( t3lib_div::trimExplode(',', $ttlString, 1) ) );
-	}
-
-	/**
-	 * [Describe function...]
-	 *
-	 * @return	[type]		...
-	 */
-	function unique_array() {
-		$max = func_num_args();
-		$ttlString = '';
-		for( $i =0; $i < $max; $i++ )  {
-			$ttlString .=func_get_arg($i) .  ',';
-
-		}
-		return array_unique( t3lib_div::trimExplode(',', $ttlString, 1) ) ;
+/**
+ * [Describe function...]
+ *
+ * @return	[type]		...
+ */
+function unique_array() {
+	$max = func_num_args();
+	$ttlString = '';
+	for( $i =0; $i < $max; $i++ )  {
+		$ttlString .=func_get_arg($i) .  ',';
 
 	}
+	return array_unique( t3lib_div::trimExplode(',', $ttlString, 1) ) ;
 
-	/**
-	 * Returns a subpart from the input content stream.
-	 * Enables pre-/post-processing of templates/templatefiles
-	 *
-	 * @param	string		$Content stream, typically HTML template content.
-	 * @param	string		$Marker string, typically on the form "###...###"
-	 * @param	array		$Optional: the active row of data - if available
-	 * @return	string		The subpart found, if found.
-	 */
-	function getTemplateSubpart($myTemplate, $myKey, $row = Array()) {
-		return ($this->cObj->getSubpart($myTemplate, $myKey));
-	}
+}
+
+/**
+ * Returns a subpart from the input content stream.
+ * Enables pre-/post-processing of templates/templatefiles
+ *
+ * @param	string		$Content stream, typically HTML template content.
+ * @param	string		$Marker string, typically on the form "###...###"
+ * @param	array		$Optional: the active row of data - if available
+ * @return	string		The subpart found, if found.
+ */
+function getTemplateSubpart($myTemplate, $myKey, $row = Array()) {
+	return ($this->cObj->getSubpart($myTemplate, $myKey));
+}
 
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_sermons/pi1/class.tx_wecsermons_pi1.php'])	{
