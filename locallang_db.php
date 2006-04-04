@@ -56,6 +56,12 @@ $LOCAL_LANG = Array (
 		'tx_wecsermons.pi_flexform.display.I.3' => 'ARCHIVE',
 		'tx_wecsermons.pi_flexform.display.I.4' => 'SEARCH',
 		'tx_wecsermons.pi_flexform.template' => 'Template File:',	
+		'tx_wecsermons.pi_flexform.table_to_list' => 'Items to List',
+		'tx_wecsermons.pi_flexform.display.I.0' => 'Sermons',
+		'tx_wecsermons.pi_flexform.display.I.1' => 'Sermon Series',
+		'tx_wecsermons.pi_flexform.display.I.2' => 'Topics',
+		'tx_wecsermons.pi_flexform.display.I.3' => 'Resources',
+		'tx_wecsermons.pi_flexform.display.I.4' => 'Liturgical Seasons',
 	),
 );
 ?>

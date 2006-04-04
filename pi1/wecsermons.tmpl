@@ -94,7 +94,7 @@ SERMON_LINK - link to a sermon's single view
     	This begins the content wrapper for repeating content 
     -->
     
-    <!-- ###GROUP1###  begin -->
+    <!-- ###GROUP###  begin -->
       <!-- ###SERMON_SERIES### begin 
 		This begins a sermon series grouping, for grouping sermons by series
 	-->
@@ -104,17 +104,19 @@ SERMON_LINK - link to a sermon's single view
         <!-- ###SERMON_SERIES_LINK### --></TH>
     </TR>
       <!-- ###SERMON_SERIES### end -->
-    <!-- ###SERMON### begin
+    <!-- ###GROUP### end -->
+    
+    <!-- ###ITEM### begin
   		This begins the template for a repeating a sermon record
   	-->
-    <TR###ALTERNATING_CLASS### vAlign='top'>
+    <TR class='###ALTERNATING_CLASS###' vAlign='top'>
       <TD><!--###SERMON_LINK###-->
         ###OCCURANCE_DATE###
         <!--###SERMON_LINK###-->
       </TD>
       <TD>###SERMON_TITLE###</TD>
     </TR>
-    <!-- ###SERMON### end -->
+    <!-- ###ITEM### end -->
     <!-- ###CONTENT### end -->
   </TBODY>
 </TABLE>
