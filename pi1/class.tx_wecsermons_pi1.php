@@ -249,8 +249,8 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			list($this->internal['orderBy'],$this->internal['descFlag']) = explode(':',$this->piVars['sort']);
 			$this->internal['results_at_a_time']=t3lib_div::intInRange($lConf['results_at_a_time'],0,1000,3);		// Number of results to show in a listing.
 			$this->internal['maxPages']=t3lib_div::intInRange($lConf['maxPages'],0,1000,2);;		// The maximum number of "pages" in the browse-box: "Page 1", "Page 2", etc.
-			$this->internal['searchFieldList']='title,description,related_scripture,keywords';
-			$this->internal['orderByList']='uid,title,related_scripture,keywords';
+			$this->internal['searchFieldList']=$lConf['searchFieldList'];
+			$this->internal['orderByList']=$lConf['orderByList'];
 
 
 				//	Recursive setting from plugin overrides typoscript
@@ -495,10 +495,13 @@ how many results to show and the max number of pages to include in the browse ba
 	 */
 	function pi_list_makelist($lConf, $template)	{
 		
-			//	Initialize $this->template['group'] with template subpart using predefined tag '###GROUP###'
+			//	Initialize $this->template['group'] with template subpart using predefined tag '###GROUP###', if exists
 		$this->template['group'] = $this->cObj->getSubpart( $template, '###GROUP###' );
 		$content = '';
 		$subpartArray = array();
+		
+		//	List of allowed tables that can generate a list view.
+		$allowedTables = $lConf['allowedTables'];
 		
 			// TODO: Allow this to be passed as an array for processing.
 		$tagList = array( '###SERMON_SERIES###', '###SERMON###', '###RESOURCE###', '###LITURGICAL_SEASON###', '###TOPIC###' );
@@ -515,20 +518,27 @@ how many results to show and the max number of pages to include in the browse ba
 						$groupTemplate = $this->cObj->getSubpart($template, $tag);
 						$this->internal['currentTable'] = $this->internal['groupTable'] = 'tx_wecsermons_series';
 						$res = $this->pi_exec_query('tx_wecsermons_series');
+						$group = $markerArray = $wrappedSubpartArray = array();
 
 							//	Get the related table entries to the group, using 'tx_wecsermons_sermons' if none specified
-						$tableToList = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'table_to_list', 'sDEF');
+						$tableToList = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'table_to_list', 'sDEF') ?
+							$this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'table_to_list', 'sDEF') :
+							$lConf['table_to_list'];
+							
 						$tableToList = $tableToList ? $tableToList : 'tx_wecsermons_sermons';
+			
+						if( ! t3lib_div::inList( $allowedTables, $tableToList ) )
+							return  '<p>WEC Sermons Error!<br/> Table given for &quot;table_to_list&quot; is not in the allowed tables to list from, &quot;allowedTables&quot;</p>';
 
 							//	Search TCA for relation to previous table where columns.[colName].config.foreign_table = $this->internal['groupTable']
-							//	TODO: Should return error on no match
+							//	TODO: Provide more friendly error handling
 						$foreign_column = get_foreign_column( $tableToList, $this->internal['groupTable'] );
+						if( ! $foreign_column )
+							return '<p>WEC Sermons Error!<br/> Grouping tag, &quot;###GROUP###&quot; was found in template, but was not related to &quot;table_to_list&quot;</p>';
 
-						$group = array();
-						while( $group[] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res ) );
+							//	Iterate each record, storing in $group array
+						while( $group[] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) );
 
-						$markerArray = array();
-						$wrappedSubpartArray = array();
 
 							//	Begin processing each group
 						foreach( $group as $row ) {
@@ -547,7 +557,7 @@ how many results to show and the max number of pages to include in the browse ba
 									//	Begin processing detail for this group iteration
 								$this->internal['currentTable'] = $tableToList;
 								
-									//	TODO: Define markers named the same as fields, so easier to process
+									//	TODO: Define markers named the same as fields, so easier to process?
 								$lMarkerArray = array(
 									'###SERMON_TITLE###' => '',
 									'###OCCURANCE_DATE###' => '',
@@ -583,6 +593,11 @@ how many results to show and the max number of pages to include in the browse ba
 
 			return $content;
 		}	//	End if group
+		
+			//	No group found, just provide a straight list
+		else {
+			
+		}
 
 	}
 
@@ -657,8 +672,10 @@ how many results to show and the max number of pages to include in the browse ba
 			
 		}	// End Foreach
 
-		return $this->cObj->substituteMarkerArrayCached($rowTemplate, $markerArray, array(), $wrappedMarkerArray );
-
+			//	TODO: Include the edit icons for editing the records from the front end
+		$lContent = $this->cObj->substituteMarkerArrayCached($rowTemplate, $markerArray, array(), $wrappedMarkerArray );
+		
+		return $lContent;
 	}
 	
 /*
@@ -722,8 +739,7 @@ how many results to show and the max number of pages to include in the browse ba
 		while( $groupRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($groupRes) ) {
 			$groupArray[ $groupRow['uid'] ] = $groupRow;
 		}
-debug( $this->internal['orderBy'] );
-exit;
+
 		$row = $this->internal['currentRow'];
 		$markerArray = array();
 		$markerArray['###SERMON_TITLE###'] = $row['title'];

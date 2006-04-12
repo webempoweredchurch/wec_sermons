@@ -61,7 +61,6 @@ $TCA["tx_wecsermons_sermons"] = Array (
 		"tstamp" => "tstamp",
 		"crdate" => "crdate",
 		"cruser_id" => "cruser_id",
-		"type" => "record_type",	
 		"languageField" => "sys_language_uid",	
 		'dividers2tabs' => $confArr['noTabDividers']?FALSE:TRUE,
 		"transOrigPointerField" => "l18n_parent",	
@@ -78,7 +77,7 @@ $TCA["tx_wecsermons_sermons"] = Array (
 		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_wecsermons_sermons.gif",
 	),
 	"feInterface" => Array (
-		"fe_admin_fieldList" => "sys_language_uid, l18n_parent, l18n_diffsource, hidden, starttime, endtime, fe_group, title, occurance_date, description, related_scripture, keywords, graphic, series_uid, topic_uid, record_type, resources_uid",
+		"fe_admin_fieldList" => "sys_language_uid, l18n_parent, l18n_diffsource, hidden, starttime, endtime, fe_group, title, occurance_date, description, related_scripture, keywords, graphic, series_uid, topic_uid, record_type, resources_uid, speakers_uid",
 	)
 );
 
@@ -98,7 +97,7 @@ $TCA["tx_wecsermons_series"] = Array (
 		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_wecsermons_series.gif",
 	),
 	"feInterface" => Array (
-		"fe_admin_fieldList" => "hidden, title, description, scripture, startdate, enddate, graphic, liturgical_season_uid",
+		"fe_admin_fieldList" => "hidden, title, description, scripture, startdate, enddate, liturgical_season_uid, topics_uid, graphic",
 	)
 );
 
@@ -139,6 +138,28 @@ $TCA["tx_wecsermons_liturgical_season"] = Array (
 	),
 	"feInterface" => Array (
 		"fe_admin_fieldList" => "hidden, season_name",
+	)
+);
+
+$TCA["tx_wecsermons_speakers"] = Array (
+	"ctrl" => Array (
+		"title" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_speakers",		
+		"label" => "firstname",	
+		"label_alt" => "lastname, uid",
+		"label_alt_force" => TRUE,
+		"tstamp" => "tstamp",
+		"crdate" => "crdate",
+		"cruser_id" => "cruser_id",
+		"default_sortby" => "ORDER BY crdate",	
+		"delete" => "deleted",	
+		"enablecolumns" => Array (		
+			"disabled" => "hidden",
+		),
+		"dynamicConfigFile" => t3lib_extMgm::extPath($_EXTKEY)."tca.php",
+		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_wecsermons_speakers.gif",
+	),
+	"feInterface" => Array (
+		"fe_admin_fieldList" => "hidden, firstname, lastname, email, url, photo",
 	)
 );
 

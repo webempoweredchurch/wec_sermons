@@ -18,6 +18,7 @@ CREATE TABLE tx_wecsermons_resources (
 	graphic blob NOT NULL,
 	type blob NOT NULL,
 	file blob NOT NULL,
+	url tinytext NOT NULL,
 	
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -93,6 +94,7 @@ CREATE TABLE tx_wecsermons_sermons (
 	topic_uid int(11) DEFAULT '0' NOT NULL,
 	record_type int(11) DEFAULT '0' NOT NULL,
 	resources_uid int(11) DEFAULT '0' NOT NULL,
+	speakers_uid int(11) DEFAULT '0' NOT NULL,
 	
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -118,6 +120,8 @@ CREATE TABLE tx_wecsermons_series (
 	enddate int(11) DEFAULT '0' NOT NULL,
 	graphic blob NOT NULL,
 	liturgical_season_uid blob NOT NULL,
+	topics_uid int(11) DEFAULT '0' NOT NULL,
+	keywords tinytext NOT NULL,
 	
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -157,6 +161,27 @@ CREATE TABLE tx_wecsermons_liturgical_season (
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
 	season_name tinytext NOT NULL,
+	
+	PRIMARY KEY (uid),
+	KEY parent (pid)
+);
+
+#
+# Table structure for table 'tx_wecsermons_speakers'
+#
+CREATE TABLE tx_wecsermons_speakers (
+	uid int(11) NOT NULL auto_increment,
+	pid int(11) DEFAULT '0' NOT NULL,
+	tstamp int(11) DEFAULT '0' NOT NULL,
+	crdate int(11) DEFAULT '0' NOT NULL,
+	cruser_id int(11) DEFAULT '0' NOT NULL,
+	deleted tinyint(4) DEFAULT '0' NOT NULL,
+	hidden tinyint(4) DEFAULT '0' NOT NULL,
+	firstname tinytext NOT NULL,
+	lastname tinytext NOT NULL,
+	url tinytext NOT NULL,
+	photo blob NOT NULL,
+	email tinytext NOT NULL,
 	
 	PRIMARY KEY (uid),
 	KEY parent (pid)
