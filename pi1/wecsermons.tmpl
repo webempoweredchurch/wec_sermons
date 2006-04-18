@@ -27,6 +27,13 @@ SERMON_TITLE - Title of a sermon
 OCCURANCE_DATE - Date the sermon was presented on
 ALTERNATING_CLASS - This is the class attribute inserted for alternating odd/even rows
 
+--RESOURCES
+RESOURCE_TITLE	-	Title of resource
+RESOURCE_DESCRIPTION	-	Full resource description
+RESOURCE_DESCRIPTION_TRUNC	-	Truncated resource description with ...
+RESOURCE_GRAPHIC	-	Graphic of resource
+RESOURCE_CONTENT	-	The resource itself
+
 <em>Language Markers (see pi1/locallang.php):</em>
 LATEST_HEADER - header for the LATEST element
 BACK_TO_LIST - link back to list-view in single-view template
@@ -88,7 +95,7 @@ SERMON_LINK - link to a sermon's single view
 <!-- ###TEMPLATE_LIST2### begin 
 	This template is in progress, developing a abstracted grouping mechanism for related records, simliar to a Crystal Reports 'group'
 -->
-<TABLE id=wecsermons-pi1-table-data cellSpacing='1' cellPadding='3' width='###TABLE_WIDTH###'>
+<TABLE id="wecsermons-pi1-table-data">
   <TBODY>
     <!-- ###CONTENT### begin
     	This begins the content wrapper for repeating content 
@@ -121,3 +128,54 @@ SERMON_LINK - link to a sermon's single view
   </TBODY>
 </TABLE>
 <!-- ###TEMPLATE_LIST2### end --> 
+
+<br />
+<h3>TEMPLATE_LIST3</h3>
+<em>This is an example template for styling a list of resources.</em>
+<br />
+
+<!-- ###TEMPLATE_LIST3### begin --> 
+<!-- ###CONTENT### begin -->
+<!-- ###ITEM### begin -->
+<p style='border-bottom: 1px dotted black;'>
+<!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###-->
+###SERMON_OCCURANCE_DATE###
+###SERMON_DESCRIPTION###
+###SERMON_SCRIPTURE###
+###SERMON_TOPICS###
+###SERMON_SERIES###
+###SERMON_RESOURCES###
+###SERMON_SPEAKERS###
+###SERMON_GRAPHIC###
+</p>
+<!-- ###ITEM### end -->
+<!-- ###CONTENT### end -->
+<!-- ###SERMON_LINK### -->Link<!-- ###SERMON_LINK### -->
+
+<!-- ###TEMPLATE_LIST3### end --> 
+
+<br />
+<h3>TEMPLATE_RESOURCE_LIST</h3>
+<em>This is an example template for styling a list of resources.</em>
+<br />
+
+<!-- ###TEMPLATE_RESOURCE_LIST### begin --> 
+<DIV class="wecsermons-pi1-resource-list">
+	<DIV id="wecsermons-pi1-resources-title" class="resource-detail"><!-- ###RESOURCE_LINK### --> ###RESOURCE_TITLE###<!-- ###RESOURCE_LINK### --></DIV>
+	<DIV id="wecsermons-pi1-resources-description" class="resource-detail">###RESOURCE_DESCRIPTION_TRUNC###</DIV>
+</DIV>
+<!-- ###TEMPLATE_RESOURCE_LIST### end --> 
+
+<br />
+<h3>TEMPLATE_RESOURCE_SINGLE</h3>
+<em>This is an example template for styling a single resource item.</em>
+<br />
+
+<!-- ###TEMPLATE_RESOURCE_SINGLE### begin -->
+<DIV class="wecsermons-pi1-resource-single">
+###RESOURCE_TITLE### <br/>
+###RESOURCE_DESCRIPTION###<br/>
+###RESOURCE_GRAPHIC### <br/>
+###RESOURCE_CONTENT### <br/>
+</DIV>
+<!-- ###TEMPLATE_RESOURCE_SINGLE### end -->

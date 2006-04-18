@@ -29,7 +29,7 @@
 
 
 require_once(PATH_tslib.'class.tslib_pibase.php');
-require_once(PATH_typo3conf . 'ext/wec_api/class.wec_xml.php' );
+#require_once(PATH_typo3conf . 'ext/wec_api/class.wec_xml.php' );
 
 class tx_wecsermons_pi1 extends tslib_pibase {
 	var $prefixId = 'tx_wecsermons_pi1';		// Same as class name
@@ -237,25 +237,28 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 		} else {	//	Otherwise continue with list view
 
+				//	List View Modes
 			$items=array(
 				'1'=> $this->pi_getLL('list_mode_1','Mode 1'),
 				'2'=> $this->pi_getLL('list_mode_2','Mode 2'),
 				'3'=> $this->pi_getLL('list_mode_3','Mode 3'),
 			);
+			
+				//	Intialize query params if not set
 			if (!isset($this->piVars['pointer']))	$this->piVars['pointer']=0;
-			if (!isset($this->piVars['mode']))	$this->piVars['mode']=1;
+			//if (!isset($this->piVars['mode']))	$this->piVars['mode']=1;	//	Mode not used in this extension
 
 				// Initializing the query parameters:
 			list($this->internal['orderBy'],$this->internal['descFlag']) = explode(':',$this->piVars['sort']);
 			$this->internal['results_at_a_time']=t3lib_div::intInRange($lConf['results_at_a_time'],0,1000,3);		// Number of results to show in a listing.
 			$this->internal['maxPages']=t3lib_div::intInRange($lConf['maxPages'],0,1000,2);;		// The maximum number of "pages" in the browse-box: "Page 1", "Page 2", etc.
-			$this->internal['searchFieldList']=$lConf['searchFieldList'];
+			$this->internal['searchFieldList']=$lConf['searchFieldList'];		//	This should not be needed with templates
 			$this->internal['orderByList']=$lConf['orderByList'];
 
 
 				//	Recursive setting from plugin overrides typoscript
-			if( $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'recursive', 'sDEF') )
-				$this->conf['recursive'] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'recursive', 'sDEF');
+			$this->conf['recursive'] = getConfigVal( $this, 'recursive', 'sDEF', 'recursive', $lConf, 0 );
+
 
 			$startingPoint =$this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'startingpoint', 'sDEF');
 
@@ -276,99 +279,24 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			}
 
 				//	Load the HTML template from either plugin or typoscript configuration, plugin overrides
-			$templateflex_file = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'templateFile', 'sDEF');
+			$templateFile = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'templateFile', 'sDEF');
 
+			$templateFile = $templateFile ? 'uploads/tx_wecsermons/'.$templateFile : $this->conf['templateFile'];
+			
 				//	Load the Layout code, which chooses between templates
+				//	TODO: Determine if we need a layout code logic block or not
 			$layoutCode = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'layoutCode', 'sDEF');
-			if( !$layoutCode ) $layoutCode = '2';	//	LayoutCode default = 1 
+			if( !$layoutCode ) $layoutCode = '3';	//	LayoutCode default = 3
 
-			$template['total'] = $this->cObj->fileResource($templateflex_file?'uploads/tx_wecsermons/' . $templateflex_file:$lConf['templateFile']);
+			$template['total'] = $this->cObj->fileResource($templateFile);
 
-#			$subpartArray['###HEADER###'] = $this->cObj->substituteMarkerArray($this->getNewsSubpart($t['total'], '###HEADER###'), $markerArray);
 
 			$template['list'] = $this->cObj->getSubpart( $template['total'], '###TEMPLATE_LIST'.$layoutCode.'###' );
 			$template['content'] = $this->cObj->getSubpart( $template['list'], '###CONTENT###' );
-			$template['series'] = $this->cObj->getSubpart( $template['content'], '###SERMON_SERIES###' );
-			$template['sermon'] = $this->cObj->getSubpart( $template['content'], '###SERMON###' );
-			
-			return $this->cObj->substituteSubpart( $template['list'], '###CONTENT###', $this->pi_list_makelist($lConf, $template['content'] ) );
-			
-/*
-#This code block produces a list of sermons grouped by sermon series
-
-				//	Intitialize some variables
-			$listContent = '';
-			$markerArray = array();
-			$wrappedMarkerArray = array();
-			$subpartArray = array();
-			$subpartArray['###SERMON###'] = '';
-			$counter = 0;
-			$temp = array();
-
-				//	Get all sermon series records
-			$res = $this->pi_exec_query('tx_wecsermons_series');
-			$this->internal['currentTable'] = 'tx_wecsermons_series';
-
-				//	Iterate every Sermon Series record
-			while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
-
-
-					//	Load an instance of the series template subpart
-				$subpartArray['###SERMON_SERIES###'] = $template['series'];
-				$seriesUid = $this->internal['currentRow']['uid'];
-				
-					//	Generate the link to the series single view
-				$singleLink = $this->pi_list_linkSingle('|', $seriesUid, TRUE );		
-				$wrappedMarkerArray['###SERMON_SERIES_LINK###'] = explode('|', $singleLink);
-				$markerArray['###SERMON_SERIES_TITLE###'] = $this->internal['currentRow']['title'];
-				
-					//	Retreive sermon records related to this series
-				$sermonRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-					'*',
-					'tx_wecsermons_sermons',
-					'series_uid = ' .$seriesUid,
-					'',
-					'occurance_date desc'
-				);
-#$temp['series'][] = explode(',', $this->internal['currentRow']['title'].','.$this->internal['currentRow']['uid']);
-
-					//	Iterate every sermon record
-				while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($sermonRes) ) {
-#$temp['sermon'][] = explode(',', $row['title'].','.$row['series_uid']);
-					$counter++;
-					$markerArray['###SERMON_TITLE###'] = htmlspecialchars( $this->cObj->stdWrap( $row['title'], $lConf['titleWrap.'] ) );
-
-					$markerArray['###ALTERNATING_CLASS###'] = $counter % 2 ? $this->pi_classParam( $lConf['alternatingClass'] ) : '';
-			
-						//	Wrap the occurance date, choosing from one of three settings in typoscript
-					$dateWrap = $lConf['occurance_dateWrap.'] ? $lConf['occurance_dateWrap.'] : $lConf['general_dateWrap.'];
-					if( ! $dateWrap ) $dateWrap = $this->conf['general_dateWrap.'];
-					$markerArray['###OCCURANCE_DATE###'] = $this->cObj->stdWrap( $row['occurance_date'], $dateWrap);
-			
-					$wrappedMarkerArray['###SERMON_LINK###'] = explode( '|', $this->pi_list_linkSingle(
-						'|',
-						$row['uid'],
-						TRUE
-						) 
-					);
-					
-					$subpartArray['###SERMON###'] .= $this->cObj->substituteMarkerArrayCached($template['sermon'], $markerArray, '', $wrappedMarkerArray);
-
-				}
-					//	If no series has no sermons associated with it, skip adding it to $listContent
-				if( $subpartArray['###SERMON###'] != '') {
-					$subpartArray['###SERMON_SERIES###'] = $this->cObj->substituteMarkerArrayCached($template['series'], $markerArray, '', $wrappedMarkerArray);
-					$listContent .= $this->cObj->substituteMarkerArrayCached($template['content'], $markerArray, $subpartArray, $wrappedMarkerArray);
 		
-						//	Reset the sermon subpart, for next iteration
-					$subpartArray['###SERMON###'] = '';
-				}				
-			}
+			return $this->cObj->substituteSubpart( $template['list'], '###CONTENT###', $this->pi_list_makelist($lConf, $template['content'] ) );
 
-return $this->cObj->substituteSubpart( $template['list'], '###CONTENT###', $listContent );
-
-*/
-			
+/* Original Code generated by kickstarter			
 			$res = $this->pi_exec_query('tx_wecsermons_sermons');
 			$this->internal['currentTable'] = 'tx_wecsermons_sermons';
 
@@ -398,15 +326,17 @@ return $this->cObj->substituteSubpart( $template['list'], '###CONTENT###', $list
 				// Adds the search box:
 			$fullTable.=$this->pi_list_searchBox();
 
-/*
-Using $this->internal['res_count'], $this->internal['results_at_a_time'] and $this->internal['maxPages'] for count number, 
-how many results to show and the max number of pages to include in the browse bar. Using $this->internal['dontLinkActivePage']
-*/
+
+//	Using $this->internal['res_count'], $this->internal['results_at_a_time'] and $this->internal['maxPages'] for count number, 
+//	how many results to show and the max number of pages to include in the browse bar. Using $this->internal['dontLinkActivePage']
+
 				// Adds the result browser:
 			$fullTable.=$this->pi_list_browseresults();
 
 				// Returns the content from the plugin.
 			return $fullTable;
+			
+*/
 		}
 	}
 	/**
@@ -494,18 +424,15 @@ how many results to show and the max number of pages to include in the browse ba
 	 * @see pi_list_row(), pi_list_header()
 	 */
 	function pi_list_makelist($lConf, $template)	{
-		
+
 			//	Initialize $this->template['group'] with template subpart using predefined tag '###GROUP###', if exists
 		$this->template['group'] = $this->cObj->getSubpart( $template, '###GROUP###' );
 		$content = '';
 		$subpartArray = array();
 		
-		//	List of allowed tables that can generate a list view.
-		$allowedTables = $lConf['allowedTables'];
-		
 			// TODO: Allow this to be passed as an array for processing.
 		$tagList = array( '###SERMON_SERIES###', '###SERMON###', '###RESOURCE###', '###LITURGICAL_SEASON###', '###TOPIC###' );
-		
+
 			//	If we found a grouping declaration, process as such
 		if( $this->template['group'] ) {
 			$group = null;
@@ -521,13 +448,10 @@ how many results to show and the max number of pages to include in the browse ba
 						$group = $markerArray = $wrappedSubpartArray = array();
 
 							//	Get the related table entries to the group, using 'tx_wecsermons_sermons' if none specified
-						$tableToList = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'table_to_list', 'sDEF') ?
-							$this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'table_to_list', 'sDEF') :
-							$lConf['table_to_list'];
-							
-						$tableToList = $tableToList ? $tableToList : 'tx_wecsermons_sermons';
+							//	TODO: Provide more friendly error handling
+						$tableToList = getConfigVal( $this, 'table_to_list', 'sDEF', 'table_to_list', $lConf, 'tx_wecsermons_sermons' );
 			
-						if( ! t3lib_div::inList( $allowedTables, $tableToList ) )
+						if( ! t3lib_div::inList( $lConf['allowedTables'], $tableToList ) )
 							return  '<p>WEC Sermons Error!<br/> Table given for &quot;table_to_list&quot; is not in the allowed tables to list from, &quot;allowedTables&quot;</p>';
 
 							//	Search TCA for relation to previous table where columns.[colName].config.foreign_table = $this->internal['groupTable']
@@ -597,23 +521,31 @@ how many results to show and the max number of pages to include in the browse ba
 			//	No group found, just provide a straight list
 		else {
 			
+				//	Get the related table entries to the group, using 'tx_wecsermons_sermons' if none specified
+			$tableToList = getConfigVal( $this, 'table_to_list', 'sDEF', 'table_to_list', $lConf, 'tx_wecsermons_sermons' );
+			$markerArray = $this->getMarkerArray( $tableToList );
+		
+			$itemTemplate = $this->cObj->getSubpart( $template, '###ITEM###' );
+			$this->internal['currentTable'] = $this->internal['groupTable'] = 'tx_wecsermons_series';
+
+				// Get number of records:
+			$res = $this->pi_exec_query($tableToList,1);
+			list($this->internal['res_count']) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
+
+				// Make listing query, pass query to SQL database:
+			$res = $this->pi_exec_query($tableToList);
+			$this->internal['currentTable'] = $tableToList;
+
+			$count = 1;
+			while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) ) {
+				$content .= $this->pi_list_row( $lConf, $markerArray, $itemTemplate, $this->internal['currentRow'], $count );
+				$count++;
+			}
+			
 		}
-
+		
+		return $content;
 	}
-
-	/**
-	 * [Put your description here]
-	 *
-	 * @return	[type]		...
-	 */
-	function pi_list_header()	{
-		return '<tr'.$this->pi_classParam('listrow-header').'>
-				<th><p>'.$this->getFieldHeader_sortLink('title').'</p></th>
-				<th nowrap><p>'.$this->getFieldHeader('occurance_date').'</p></th>
-				<th><p>'.$this->getFieldHeader_sortLink('description').'</p></th>
-			</tr>';
-	}
-
 
 	/**
 	 * [Put your description here]
@@ -630,52 +562,91 @@ how many results to show and the max number of pages to include in the browse ba
 			//	Get Editpanel for $this->internal['currentRow']
 		$editPanel = $this->pi_getEditPanel();
 		if ($editPanel)	$editPanel='<TD>'.$editPanel.'</TD>';
-		
+			
 			//	Using passed markerArray, process each key and insert field content
 		foreach( $markerArray as $key => $value ) {
-			
-			switch( $key ) {
-				
-			case '###SERMON_TITLE###':
-				$markerArray[$key] = $this->formatStr( $row['title'] );
-				break;
-				
-			case '###OCCURANCE_DATE###':
-					//	Wrap the occurance date, choosing from one of three settings in typoscript
-				$dateWrap = $lConf['occurance_dateWrap.'] ? $lConf['occurance_dateWrap.'] : $lConf['general_dateWrap.'];
-				if( ! $dateWrap ) $dateWrap = $this->conf['general_dateWrap.'];
-				$markerArray[$key] = $this->cObj->stdWrap( $row['occurance_date'], $dateWrap);
-				break;
 
-			case '###SERMON_LINK###':
-				$this->piVars = array();
-				$this->piVars['showUid'] ='';
-				$wrappedMarkerArray[$key] = explode( 
-					'|',
-					$this->pi_list_linkSingle(
-						'|', 
-						$row['uid'], 
-						$this->conf['allowCaching'], 
-						FALSE, 
-						$this->conf['pidSingleView'] ? $this->conf['pidSingleView']:0 
-						)
-				);
-				break;
-				
-			case '###ALTERNATING_CLASS###':
-				$markerArray['###ALTERNATING_CLASS###'] = $c % 2 ? $this->pi_classParam( $lConf['alternatingClass'] ) : '';
-				break;
-				
-			}	// End Switch
+		if( is_array( $value ) ) {
+				$markerArray[$key] = '';
+		}
+		 else if( $row[$value] == '' ) {
+				$markerArray[$key] = '';
+		}
+		else if( t3lib_div::testInt( $row[$value] ) && $row[$value] < 1 ) {
+				$markerArray[$key] = '';
 			
-			//	TODO: Add a hook here for processing extra markers
+		}
+		else {
+		
+				switch( $key ) {
+					
+				case '###SERMON_TITLE###':
+					$markerArray[$key] = $this->cObj->stdWrap( $row[$value], $lConf['sermons.']['title_stdWrap.'] );
+				break;
+					
+				case '###SERMON_OCCURANCE_DATE###':
+						//	Wrap the occurance date, choosing from one of three settings in typoscript
+					$dateWrap = $lConf['occurance_dateWrap.'] ? $lConf['occurance_dateWrap.'] : $lConf['general_dateWrap.'];
+					if( ! $dateWrap ) $dateWrap = $this->conf['general_dateWrap.'];
+					$markerArray[$key] = $this->cObj->stdWrap( $row[$value], $dateWrap);
+				break;
+	
+				case '###SERMON_DESCRIPTION###':
+					$markerArray[$key] =  $this->cObj->stdWrap( $row[$value], $lConf['sermons.']['description_stdWrap.'] );
+				break;
+					
+				case '###SERMON_SCRIPTURE###':
+					$markerArray[$key] =  $this->cObj->stdWrap( $row[$value], $lConf['sermons.']['scripture_stdWrap.'] );
+				break;  
+				
+				case '###SERMON_GRAPHIC###':
+					// TODO: Use IMAGE object to draw? Implement so we can configure though typoscript
+					$image = t3lib_div::makeInstance('tslib_cObj');
+	
 			
+					$imageConf = array(
+						'file' => 'uploads/tx_wecsermons/' . $row[$value],
+						'altText' => 'AltText',
+					);
+	
+						//	Merge our local config with typoscript config
+					$imageConf = t3lib_div::array_merge( $imageConf, $lConf['sermons.']['graphic_IMAGE.'] );
+				
+						//	Render the image object
+					$markerArray[$key] = $image->IMAGE( $imageConf );			
+	
+					break;
+		
+	
+				case '###SERMON_LINK###':
+debug('touch');
+					$wrappedMarkerArray[$key] = explode( 
+						'|',
+						$this->pi_list_linkSingle(
+							'|', 
+							$row['uid'], 
+							$this->conf['allowCaching'],
+							array(), 
+							FALSE, 
+							$this->conf['pidSingleView'] ? $this->conf['pidSingleView']:0 
+							)
+					);
+				break;
+					
+				case '###ALTERNATING_CLASS###':
+					$markerArray['###ALTERNATING_CLASS###'] = $c % 2 ? $this->pi_classParam( $lConf['alternatingClass'] ) : '';
+				break;
+					
+				}	// End Switch
+				
+				//	TODO: Add a hook here for processing extra markers
+			} // End else
 		}	// End Foreach
 
 			//	TODO: Include the edit icons for editing the records from the front end
 		$lContent = $this->cObj->substituteMarkerArrayCached($rowTemplate, $markerArray, array(), $wrappedMarkerArray );
 		
-		return $lContent;
+	return $lContent;
 	}
 	
 /*
@@ -698,65 +669,100 @@ how many results to show and the max number of pages to include in the browse ba
 				<th nowrap><p>'.$this->getFieldHeader('resources_uid').'</p></th>
 
 */
+
 	/**
-	 * Substitute template markers with sermon record content from internal['currentRecord']
+	 * [Put your description here]
 	 *
-	 * 	This function is used to populate a properly marked template with content from a sermon record
-	 *
-	 * @param	string		A local conf
-	 * @param	string
-	 * @param	integer
 	 * @return	[type]		...
 	 */
-	function groupByList($lConf,$content,$count = 0) {
-		
-			//	If grouping was requested, make sure we have the related typoscript set. If not set, return error
-		if( $lConf['groupByList'] == '' )
-			return $this->cObj->stdWrap($lConf['groupByError.'], htmlspecialchars( $lConf['groupByError'] ));
-
-//	TODO: Figure out how to automate the grouping of records
-
-		list( $group, $detail ) = explode( ',', $lConf['groupByList'] );
-		list( $groupTable, $groupOrderBy ) = explode ('.', $group );
-		list( $detailTable, $detailOrderBy ) = explode ('.', $detail );
-		
-		$query = '
-			select ' . $lConf['pi_listFields'] .'
-		
-		';
-		
-		$GLOBALS['TYPO3_DB']->sql_query( $query );
-		
-		$this->internal['currentTable'] = $groupTable;
-		$this->internal['orderBy'] = $groupOrderBy;
-		
-			//	If typoscript value is set that defines which fields to list, use that. Default is '*' set by pi_base.
-		if( $lConf['pi_listFields'] ) $this->pi_listFields = uniqueCsv( $lConf['pi_listFields'], 'uid, startdate' );
-
-		$groupRes = $this->pi_exec_query( $groupTable );
-
-		$groupArray = array();
-		while( $groupRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($groupRes) ) {
-			$groupArray[ $groupRow['uid'] ] = $groupRow;
-		}
-
-		$row = $this->internal['currentRow'];
-		$markerArray = array();
-		$markerArray['###SERMON_TITLE###'] = $row['title'];
-		$markerArray['###ALTERNATING_CLASS###'] = $count % 2 ? $this->pi_classParam( $lConf['alternatingClass'] ) : '';
-
-			//	Wrap the occurance date, choosing from one of three settings in typoscript
-		$dateWrap = $lConf['occurance_dateWrap.'] ? $lConf['occurance_dateWrap.'] : $lConf['general_dateWrap.'];
-		if( ! $dateWrap ) $dateWrap = $this->conf['general_dateWrap.'];
-		$markerArray['###OCCURANCE_DATE###'] = $this->cObj->stdWrap( $row['occurance_date'], $dateWrap);
-
-		$wrappedSubpart['###SERMON_LINK###'][] = '<a href=\'' .$this->pi_list_linkSingle('',$row['uid'],1,array(),1). '\'>';
-		$wrappedSubpart['###SERMON_LINK###'][] = '</a>';
-
-		return $this->cObj->substituteMarkerArrayCached( $content, $markerArray, array(), $wrappedSubpart );
-
+	function pi_list_header()	{
+		return '<tr'.$this->pi_classParam('listrow-header').'>
+				<th><p>'.$this->getFieldHeader_sortLink('title').'</p></th>
+				<th nowrap><p>'.$this->getFieldHeader('occurance_date').'</p></th>
+				<th><p>'.$this->getFieldHeader_sortLink('description').'</p></th>
+			</tr>';
 	}
 
+
+	/**
+	 *	Returns the markerArray for a specific table
+	 *
+	 *	@param	string	Table name to retrieve markers for
+	 *	@return	array	Array filled with markers as keys, with empty values
+	 */
+	 function getMarkerArray( $tableName ) {
+	 	
+	 		$markerArray = array();
+	 		
+	 	switch ( $tableName ) {
+	 		case 'tx_wecsermons_sermons':
+	 			$markerArray = array (
+	 				'###SERMON_TITLE###' => 'title',
+	 				'###SERMON_OCCURANCE_DATE###' => 'occurance_date',
+	 				'###SERMON_DESCRIPTION###' => 'description',
+	 				'###SERMON_SCRIPTURE###' => 'related_scripture',
+	 				'###SERMON_TOPICS###' => 'topic_uid',
+	 				'###SERMON_SERIES###' => 'series_uid',
+	 				'###SERMON_RESOURCES###' => 'resources_uid',
+	 				'###SERMON_SPEAKERS###' => 'speakers_uid',
+					'###SERMON_GRAPHIC###' => 'graphic',
+					'###SERMON_LINK###' => array(
+						0 => '',
+						1 => '',
+					),
+	 			);
+	 		break;
+	 		
+	 		case 'tx_wecsermons_series':
+	 			$markerArray = array (
+					'###SERIES_TITLE###' => '',
+					'###SERIES_STARTDATE###' => '',
+					'###SERIES_ENDDATE###' => '',
+					'###SERIES_DESCRIPTION###' => '',
+					'###SERIES_SCRIPTURE###' => '',
+					'###SERIES_SEASON###' => '',
+					'###SERIES_TOPICS###' => '',
+					'###SERIES_GRAPHIC###' => '',
+					
+				);	 		
+	 		break;
+	 		
+	 		case 'tx_wecsermons_topics':
+	 			$markerArray = array (
+					'###TOPIC_NAME###' => '',
+					'###TOPIC_DESCRIPTION###' => '',
+				);
+	 		break;
+	 		
+	 		case 'tx_wecsermons_speakers':
+	 			$markerArray = array (
+					'###SPEAKER_FIRSTNAME###' => '',
+					'###SPEAKER_LASTNAME###' => '',
+					'###SPEAKER_EMAIL###' => '',
+					'###SPEAKER_HOMEPAGE###' => '',
+					'###SPEAKER_PHOTO###' => '',
+				);
+	 		break;
+
+	 		case 'tx_wecsermons_resources':
+	 			$markerArray = array (
+					'###RESOURCE_TITLE###' => '',
+					'###RESOURCE_DESCRIPTION###' => '',
+					'###RESOURCE_GRAPHIC###' => '',
+					'###RESOURCE_CONTENT###' => '',
+				);
+	 		break;
+	 		
+	 		case 'tx_wecsermons_liturgical_seasons':
+	 			$markerArray = array (
+					'###SEASON_NAME###' => '',
+				);
+	 		break;
+	 		
+	 	}	
+	 	
+	 	return $markerArray;
+	}
 	/**
 	 * [Put your description here]
 	 *
@@ -765,13 +771,32 @@ how many results to show and the max number of pages to include in the browse ba
 	 */
 	function getFieldContent($lConf, $fN)	{
 		switch($fN) {
+
+			case '###SERMON_LINK###' :
+					return explode (
+					'|',
+					$this->pi_list_linkSingle(
+						'|',
+						$row['uid'],
+						$this->conf['allowCaching'],
+						array (
+							'recordType' => 'sermons'
+						),
+						FALSE,
+						$this->conf['pidSingleView'] ? $this->conf['pidSingleView'] : 0
+					)
+				);
+			break;
+			
 			case 'uid':
 				return $this->pi_list_linkSingle($this->internal['currentRow'][$fN],$this->internal['currentRow']['uid'],1);	// The "1" means that the display of single items is CACHED! Set to zero to disable caching.
 			break;
+
 			case "title":
 					// This will wrap the title in a link.
 				return $this->pi_list_linkSingle($this->internal['currentRow']['title'],$this->internal['currentRow']['uid'],1);
 			break;
+
 			case "occurance_date":
 					//	Wrap the occurance date, choosing from one of three settings in typoscript
 				$dateWrap = $lConf['occurance_dateWrap.'] ? $lConf['occurance_dateWrap.'] : $lConf['general_dateWrap.'];
@@ -779,6 +804,7 @@ how many results to show and the max number of pages to include in the browse ba
 				
 				return $this->cObj->stdWrap( $this->internal['currentRow']['occurance_date'], $dateWrap);
 			break;
+
 			default:
 				return $this->internal['currentRow'][$fN];
 			break;
@@ -878,6 +904,29 @@ function get_foreign_column( $currentTable, $relatedTable ) {
 	
 	return '';
 
+}
+
+/**
+ *		Return the value from either plugin flexform, typoscript, or default value, in that order
+ *
+ *		@param	object	Parent object passes itself
+ *		@param	string	Field name of the flexform value
+ *		@param	string	Sheet name where flexform value is located
+ *		@param	string	Field name of typoscript value
+ *		@param	array	TypoScript parameters from local scope
+ *		@param	mixed	Default if no other values are assigned from TypoScript or Plugin Flexform
+ *
+ *		@return	mixed	Value found in any config, or default
+ */
+function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default = '' ) {
+		
+		//	Retrieve values stored in flexform and typoscript
+	$ffValue = $Obj->pi_getFFvalue($Obj->cObj->data['pi_flexform'], $ffField, $ffSheet);
+	$tsValue = $lConf[$TSfieldname];
+	
+	$retVal = $ffValue ? $ffValue : $tsValue;
+
+	return $retVal ? $retVal : $default;
 }
 
 /**
