@@ -131,39 +131,35 @@ RESOURCE_LINK - link to a resource's single view
 <!-- ###TEMPLATE_LIST2### begin 
 	This template is in progress, developing a abstracted grouping mechanism for related records, simliar to a Crystal Reports 'group'
 -->
+
 <TABLE id="wecsermons-pi1-table-data">
   <TBODY>
     <!-- ###CONTENT### begin
-    	This begins the content wrapper for repeating content 
+    	This begins the main content wrapper 
     -->
-    
     <!-- ###GROUP###  begin -->
-      <!-- ###SERMON_SERIES### begin 
-		This begins a sermon series grouping, for grouping sermons by series
-	-->
     <TR vAlign='top'>
-      <TH colSpan='2'><!-- ###SERMON_SERIES_LINK### -->
-        ###SERMON_SERIES_TITLE###
-        <!-- ###SERMON_SERIES_LINK### --></TH>
+      <TH colSpan='2'><!-- ###SERIES_LINK### -->
+        ###SERIES_TITLE###
+        <!-- ###SERIES_LINK### --></TH>
     </TR>
-      <!-- ###SERMON_SERIES### end -->
     <!-- ###GROUP### end -->
     
-    <!-- ###ITEM### begin
-  		This begins the template for a repeating a sermon record
+    <!-- ###DETAIL### begin
+  		This begins the template for record detail
   	-->
     <TR class='###ALTERNATING_CLASS###' vAlign='top'>
       <TD><!--###SERMON_LINK###-->
-        ###OCCURANCE_DATE###
+        ###SERMON_OCCURANCE_DATE###
         <!--###SERMON_LINK###-->
       </TD>
       <TD>###SERMON_TITLE###</TD>
     </TR>
-    <!-- ###ITEM### end -->
+    <!-- ###DETAIL### end -->
     <!-- ###CONTENT### end -->
   </TBODY>
 </TABLE>
-<!-- ###TEMPLATE_LIST2### end --> 
+<!-- ###TEMPLATE_LIST2### end -->
 
 <br />
 <h3>TEMPLATE_LIST3</h3>

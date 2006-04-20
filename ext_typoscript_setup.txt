@@ -51,10 +51,13 @@ plugin.tx_wecsermons_pi1 {
 		}
 		
 			# Table that records will be shown from
-		table_to_list = tx_wecsermons_sermons
+		detail_table = tx_wecsermons_sermons
+		
+			# Table that records in detail will be grouped by
+		group_table = 
 		
 			# List of tables that a list view can be generated from
-		allowedTables = tx_wecsermons_sermons, tx_wecsermons_series, tx_wecsermons_resources, tx_wecsermons_topics, tx_wecsermons_liturgical_season
+		allowedTables = tx_wecsermons_sermons,tx_wecsermons_series,tx_wecsermons_resources,tx_wecsermons_topics,tx_wecsermons_liturgical_season
 		
 		sermons {
 
