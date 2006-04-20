@@ -22,17 +22,47 @@
 These are substituted in all news item displaying templates:
 
 <em>Markers:</em>
-SERMON_SERIES_TITLE - Title of a sermon series
+
+--SERMONS
 SERMON_TITLE - Title of a sermon
-OCCURANCE_DATE - Date the sermon was presented on
-ALTERNATING_CLASS - This is the class attribute inserted for alternating odd/even rows
+SERMON_OCCURANCE_DATE - Date the sermon was presented on
+SERMON_DESCRIPTION - Description, or HTML detail of a sermon
+SERMON_SCRIPTURE - Scriptures that the sermon refers to
+SERMON_SERIES - The sermon series a sermon is related to
+SERMON_GRAPHIC - A graphic shown with the sermon
 
 --RESOURCES
 RESOURCE_TITLE	-	Title of resource
 RESOURCE_DESCRIPTION	-	Full resource description
-RESOURCE_DESCRIPTION_TRUNC	-	Truncated resource description with ...
 RESOURCE_GRAPHIC	-	Graphic of resource
 RESOURCE_CONTENT	-	The resource itself
+
+--SERIES
+SERIES_TITLE - Title of sermon series
+SERIES_DESCRIPTION - Description or HTML detail of series
+SERIES_SCRIPTURE - Scriptures that the series refers to
+SERIES_STARTDATE - First occurance of the series
+SERIES_ENDDATE - Last occurance of the series
+SERIES_SEASON - Season the series relates to
+SERIES_GRAPHIC - A graphic shown with the series
+
+--TOPIC
+TOPIC_TITLE - Title of the topic
+TOPIC_DESCRIPTION - Description or HTML detail of the topic
+
+--SEASONS
+SEASON_TITLE - Title of the season
+
+--SPEAKERS
+SPEAKER_FIRSTNAME - First name of the speaker
+SPEAKER_LASTNAME - Last name of the speaker
+SPEAKER_URL - Speakers home page, or URL to their bio
+SPEAKER_PHOTO - Photograph of the speaker
+SPEAKER_EMAIL - Speakers e-mail address they can be contacted at
+
+--MISC
+ALTERNATING_CLASS - This is the class attribute inserted for alternating odd/even rows in list views
+
 
 <em>Language Markers (see pi1/locallang.php):</em>
 LATEST_HEADER - header for the LATEST element
@@ -40,12 +70,18 @@ BACK_TO_LIST - link back to list-view in single-view template
 
 
 <em>Subparts:</em>
-CONTENT - This is the repeated area for each row of data
- 
+CONTENT - This is a container
+ITEM - Repeating content area that makes up a list of records
+SERMON_RESOURCES - Listing of resources related to a particular sermon
+SERMON_SPEAKERS - Listing of speakers related to a sermon
+SERMON_TOPICS - General topics that the sermon is associated with. Aka, category
+SERIES_TOPICS - General topic that the series is associated with. Aka, category
+
 
 <em>Wrapped Subparts:</em>
 SERMON_SERIES_LINK - link to sermon series' single view
 SERMON_LINK - link to a sermon's single view
+RESOURCE_LINK - link to a resource's single view
 </pre>
 
 
@@ -135,23 +171,31 @@ SERMON_LINK - link to a sermon's single view
 <br />
 
 <!-- ###TEMPLATE_LIST3### begin --> 
-<!-- ###CONTENT### begin -->
-<!-- ###ITEM### begin -->
-<p style='border-bottom: 1px dotted black;'>
-<!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###-->
-###SERMON_OCCURANCE_DATE###
-###SERMON_DESCRIPTION###
-###SERMON_SCRIPTURE###
-###SERMON_TOPICS###
-###SERMON_SERIES###
-###SERMON_RESOURCES###
-###SERMON_SPEAKERS###
-###SERMON_GRAPHIC###
-</p>
-<!-- ###ITEM### end -->
-<!-- ###CONTENT### end -->
-<!-- ###SERMON_LINK### -->Link<!-- ###SERMON_LINK### -->
+	<!-- ###CONTENT### begin -->
+		<!-- ###ITEM### begin -->
+			<div style='border-bottom: 1px dotted black;'>
+				<!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###-->
+				###SERMON_OCCURANCE_DATE###
+				###SERMON_DESCRIPTION###
+				###SERMON_SCRIPTURE###
+				###SERMON_SERIES###
+				###SERMON_RESOURCES###
+				###SERMON_GRAPHIC###
+				<br/><br/>				
+				<!--###SERMON_SPEAKERS###-->
+						###SPEAKER_PHOTO###
+						<div class="tx-wecsermons-speakers-caption">
+						<!--###SPEAKER_LINK###-->###SPEAKER_LASTNAME###, ###SPEAKER_FIRSTNAME### <!--###SPEAKER_LINK###-->
+						</div>
+				<!--###SERMON_SPEAKERS###-->
+				<!--###SERMON_TOPICS###-->
+						###TOPIC_TITLE###
+						###TOPIC_DESCRIPTION###
+				<!--###SERMON_TOPICS###-->
 
+			</div>
+		<!-- ###ITEM### end -->
+	<!-- ###CONTENT### end -->
 <!-- ###TEMPLATE_LIST3### end --> 
 
 <br />
@@ -179,3 +223,6 @@ SERMON_LINK - link to a sermon's single view
 ###RESOURCE_CONTENT### <br/>
 </DIV>
 <!-- ###TEMPLATE_RESOURCE_SINGLE### end -->
+
+<!-- ###TEMPLATE_SPEAKERS_LIST### end -->
+<!-- ###TEMPLATE_SPEAKERS_LIST### end -->

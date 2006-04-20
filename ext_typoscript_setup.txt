@@ -65,14 +65,14 @@ plugin.tx_wecsermons_pi1 {
 			}
 			
 				#	Specific date wrap for the occurance_date column in tx_wecsermons_sermons table
-			occurance_dateWrap {
+			occurance_stdWrap {
 				strftime = %A,  %b. %d %Y
 				wrap = |<br/>
 			}
 			
 			description_stdWrap {
-				wrap = |<br/>
-				crop = 70|
+				crop = 150|...
+				parseFunc < tt_content.text.20.parseFunc
 			}
 
 			scripture_stdWrap {
@@ -80,15 +80,15 @@ plugin.tx_wecsermons_pi1 {
 			}
 
 			topics_stdWrap {
-				wrap = |<br/>
+				wrap = <div class="tx-wecsermons-topics">|</div>
 			}
 			
 			series_stdWrap {
-				wrap = |<br/>
+				wrap = <div class="tx-wecsermons-series">|</div>
 			}
 			
 			resources_stdWrap {
-				wrap = |<br/>
+				wrap = <div class="tx-wecsermons-resources">|</div>
 			}
 			
 			
@@ -96,10 +96,112 @@ plugin.tx_wecsermons_pi1 {
 				wrap = |<br/>
 			}
 
-			speakersWrap {
-				wrap = |<br/>
+			speakers_stdWrap {
+				wrap = <div class="tx-wecsermons-speakers">|</div>
+
 			}
 				
+		}
+		
+		resources {
+		
+			title_stdWrap {
+				wrap = |<br/>
+			}
+			
+			graphic_IMAGE {
+				wrap = |<br/>
+			}
+
+			description_stdWrap {
+				crop = 150|...
+				parseFunc < tt_content.text.20.parseFunc
+			}
+	
+		}
+		
+		series {
+		
+			title_stdWrap {
+				wrap = |<br/>
+			}
+			
+			graphic_IMAGE {
+				wrap = |<br/>
+			}
+
+			description_stdWrap {
+				crop = 150|...
+				parseFunc < tt_content.text.20.parseFunc
+			}
+	
+			scripture_stdWrap {
+				wrap = |<br/>
+			}
+
+			topics_stdWrap {
+				wrap = |<br/>
+				parseFunc < tt_content.text.20.parseFunc
+			}
+
+			startdate_stdWrap {
+				strftime = %A,  %b. %d %Y
+				wrap = |<br/>
+			}
+
+			enddate_stdWrap {
+				strftime = %A,  %b. %d %Y
+				wrap = |<br/>
+			}
+		
+		}
+		
+		speakers {
+		
+			photo_IMAGE {
+				wrap = |
+				border = 1
+				file {
+					width = 64m
+					height = 64m
+				}
+				imageLinkWrap = 1
+				imageLinkWrap {
+					enable = 1
+					JSwindow = 1
+					JSwindow.expand = 20,20
+				}
+			}
+
+			firstname_stdWrap {
+				wrap = |
+			}
+			
+			lastname_stdWrap {
+				wrap = |
+			}
+
+			url_stdWrap {
+				wrap = |<br/>
+			}
+
+			email_stdWrap {
+				wrap = |<br/>
+			}
+
+		}
+		
+		topics {
+			
+			title_stdWrap {
+				wrap = |<br/>
+			}
+			
+			description_stdWrap {
+				crop = 150|...
+				parseFunc < tt_content.text.20.parseFunc
+			}
+
 		}
 
 	}

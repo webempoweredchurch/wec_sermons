@@ -556,95 +556,377 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	 * @param	integer		$c: Number of current row, to determine even / odd rows
 	 * @return	string		A populated template, filled with data from the row
 	 */
-	function pi_list_row($lConf, $markerArray = array(), $rowTemplate, $row, $c)	{
-		$wrappedMarkerArray = array();
+	function pi_list_row($lConf, $markerArray = array(), $rowTemplate, $row, $c = 2)	{
+		$wrappedSubpartArray = array();
+		$subpartArray = array();
 
 			//	Get Editpanel for $this->internal['currentRow']
 		$editPanel = $this->pi_getEditPanel();
 		if ($editPanel)	$editPanel='<TD>'.$editPanel.'</TD>';
 			
 			//	Using passed markerArray, process each key and insert field content
+			//	The reason we are have this looping structure is for future off-loading of this logic
 		foreach( $markerArray as $key => $value ) {
 
-		if( is_array( $value ) ) {
+				$fieldName = $value;
 				$markerArray[$key] = '';
-		}
-		 else if( $row[$value] == '' ) {
-				$markerArray[$key] = '';
-		}
-		else if( t3lib_div::testInt( $row[$value] ) && $row[$value] < 1 ) {
-				$markerArray[$key] = '';
-			
-		}
-		else {
-		
+	
 				switch( $key ) {
 					
 				case '###SERMON_TITLE###':
-					$markerArray[$key] = $this->cObj->stdWrap( $row[$value], $lConf['sermons.']['title_stdWrap.'] );
+					if( $row[$fieldName] )				
+						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['sermons.']['title_stdWrap.'] );
 				break;
 					
 				case '###SERMON_OCCURANCE_DATE###':
-						//	Wrap the occurance date, choosing from one of three settings in typoscript
-					$dateWrap = $lConf['occurance_dateWrap.'] ? $lConf['occurance_dateWrap.'] : $lConf['general_dateWrap.'];
-					if( ! $dateWrap ) $dateWrap = $this->conf['general_dateWrap.'];
-					$markerArray[$key] = $this->cObj->stdWrap( $row[$value], $dateWrap);
+					if( $row[$fieldName] )				
+					{
+							//	Wrap the date, choosing from one of three settings in typoscript
+						$dateWrap = $lConf['sermons.']['occurance_stdWrap.'] ? $lConf['sermons.']['occurance_stdWrap.'] : $lConf['general_dateWrap.'];
+						if( ! $dateWrap ) $dateWrap = $this->conf['general_dateWrap.'];
+		
+						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $dateWrap);
+					}
 				break;
 	
 				case '###SERMON_DESCRIPTION###':
-					$markerArray[$key] =  $this->cObj->stdWrap( $row[$value], $lConf['sermons.']['description_stdWrap.'] );
+					if( $row[$fieldName] )				
+						$markerArray[$key] =  $this->cObj->stdWrap( $row[$fieldName], $lConf['sermons.']['description_stdWrap.'] );
 				break;
 					
 				case '###SERMON_SCRIPTURE###':
-					$markerArray[$key] =  $this->cObj->stdWrap( $row[$value], $lConf['sermons.']['scripture_stdWrap.'] );
+					if( $row[$fieldName] )				
+						$markerArray[$key] =  $this->cObj->stdWrap( $row[$fieldName], $lConf['sermons.']['scripture_stdWrap.'] );
+
 				break;  
 				
 				case '###SERMON_GRAPHIC###':
-					// TODO: Use IMAGE object to draw? Implement so we can configure though typoscript
-					$image = t3lib_div::makeInstance('tslib_cObj');
-	
-			
-					$imageConf = array(
-						'file' => 'uploads/tx_wecsermons/' . $row[$value],
-						'altText' => 'AltText',
-					);
-	
-						//	Merge our local config with typoscript config
-					$imageConf = t3lib_div::array_merge( $imageConf, $lConf['sermons.']['graphic_IMAGE.'] );
+					if( $row[$fieldName] )				
+					{
+						// Use IMAGE object to draw. Implement so we can allow configuration though typoscript
+						$image = t3lib_div::makeInstance('tslib_cObj');
 				
-						//	Render the image object
-					$markerArray[$key] = $image->IMAGE( $imageConf );			
-	
+						$imageConf = array(
+							'file' => 'uploads/tx_wecsermons/' . $row[$fieldName],
+							'altText' => 'AltText',
+						);
+		
+							//	Merge our local config with typoscript config
+						$imageConf = t3lib_div::array_merge( $imageConf, $lConf['sermons.']['graphic_IMAGE.'] );
+					
+							//	Render the image object
+						$markerArray[$key] = $image->IMAGE( $imageConf );			
+					}
 					break;
 		
 	
 				case '###SERMON_LINK###':
-debug('touch');
-					$wrappedMarkerArray[$key] = explode( 
+					$wrappedSubpartArray[$key] = explode( 
 						'|',
 						$this->pi_list_linkSingle(
 							'|', 
 							$row['uid'], 
 							$this->conf['allowCaching'],
-							array(), 
+							array(
+								'record' => 'tx_wecsermons_sermons',
+							), 
 							FALSE, 
 							$this->conf['pidSingleView'] ? $this->conf['pidSingleView']:0 
 							)
 					);
 				break;
-					
+				
+				case '###SERMON_SPEAKERS###':
+		
+					$subpartArray[$key] = '';
+					if( $row[$fieldName] ) {
+
+							//	Get the speakers subpart
+						$speakerTemplate = $this->cObj->getSubpart( $rowTemplate, $key );
+						$speakerMarkerArray = $this->getMarkerArray('tx_wecsermons_speakers');
+						$speakerContent = '';
+
+							//	Retrieve all speaker records that are related to this sermon
+						$speakerRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery( 
+							'tx_wecsermons_speakers.*', 
+							'tx_wecsermons_speakers',
+							' uid in (' . $row[$fieldName] . ')' . $this->cObj->enableFields( 'tx_wecsermons_speakers' )
+						);
+
+						$count = 0;
+						while( $speakerRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $speakerRes ) ) {
+		
+								//	Recursive call to $this->pi_list_row() to populate each speaker marker
+							$speakerContent .= $this->pi_list_row( $lConf, $speakerMarkerArray, $speakerTemplate, $speakerRow );
+							$count++;
+						}
+			
+							//	Replace marker content with subpart, wrapping stdWrap
+						$subpartArray[$key] = $this->cObj->stdWrap( $speakerContent, $lConf['sermons.']['speakers_stdWrap.'] );
+
+					}
+				break;
+								
+				case '###SERMON_TOPICS###':
+
+					$subpartArray[$key] = '';
+
+					if( $row[$fieldName] ) {
+
+							//	TODO: Load the topics template
+						$topicTemplate = $this->cObj->getSubpart( $rowTemplate, $key );
+						$topicMarkerArray = $this->getMarkerArray('tx_wecsermons_topics');
+						$topicContent = '';
+						
+						$topicRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery( 
+							'tx_wecsermons_topics.*', 
+							'tx_wecsermons_topics',
+							' uid in (' . $row[$fieldName] . ')' . $this->cObj->enableFields( 'tx_wecsermons_topics' )
+						);
+
+						$count = 0;
+						while( $topicRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $topicRes ) ) {
+		
+								//	Recursive call to $this->pi_list_row() to populate each speaker marker
+							$topicContent .= $this->pi_list_row( $lConf, $topicMarkerArray, $topicTemplate, $topicRow );
+							$count++;
+						}
+			
+							//	Replace marker content with subpart
+						$subpartArray[$key] = $this->cObj->stdWrap( $topicContent, $lConf['sermons.']['topics_stdWrap.'] );
+
+					}
+
+				break;
+
 				case '###ALTERNATING_CLASS###':
 					$markerArray['###ALTERNATING_CLASS###'] = $c % 2 ? $this->pi_classParam( $lConf['alternatingClass'] ) : '';
 				break;
+				
+				case '###SERMON_RESOURCES###':
+				break;
+						//	Select the related resources and the resource type			
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query(
+						'tx_wecsermons_resources.*',
+						'tx_wecsermons_sermons',
+						'tx_wecsermons_sermons_resources_uid_mm',
+						'tx_wecsermons_resources',
+						' AND tx_wecsermons_sermons_resources_uid_mm.uid_local in (' . $row['uid'] . ')'
+					);
+
+					$count = 0;
+					while( $resource = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res ) ) {
+						
+						//	TODO: For any resource type, define a particular rendering method
+						
+						if( ! $resource['file'] && $resource['url'] )	{	//	No file attached and URL location given
+							
+							// TODO: simply wrap the url in an anchor tag
+						}
+					}
+				break;
+				
+				case '###RESOURCE_TITLE###':
+					if( $row[$fieldName] )
+						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['resources.']['title_stdWrap.'] );
+				break;
+
+				case '###RESOURCE_DESCRIPTION###':
+					if( $row[$fieldName] )
+						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['resources.']['description_stdWrap.'] );
+				break;
+				
+				case '###RESOURCE_GRAPHIC###':
+					if( $row[$fieldName] ) {
+						// Use IMAGE object to draw. Implement so we can allow configuration though typoscript
+						$image = t3lib_div::makeInstance('tslib_cObj');
+				
+						$imageConf = array(
+							'file' => 'uploads/tx_wecsermons/' . $row[$fieldName],
+						);
+						
+							//	Merge our local config with typoscript config, typoscript overriding
+						$imageConf = t3lib_div::array_merge( $imageConf, $lConf['resources.']['graphic_IMAGE.'] );
 					
+							//	Render the image object
+						$markerArray[$key] = $image->IMAGE( $imageConf );			
+					}
+				break;
+				
+				case '###RESOURCE_CONTENT###':
+						//	Branch if file exists, otherwise look for a url alternate location
+					if( $row['file'] ) {
+						//	TODO: Generate view to file, depending on file type and other criteria
+					}
+					else if( $row['url'] ) {
+						//	TODO: Link to the resource
+					}
+				break;
+				
+				case '###SERIES_TITLE###':
+					if( $row[$fieldName] )
+						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['series.']['title_stdWrap.'] );
+					
+				break;
+					
+				case '###SERIES_DESCRIPTION###':
+					if( $row[$fieldName] )
+						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['series.']['description_stdWrap.'] );
+					
+				break;
+					
+				case '###SERIES_SCRIPTURE###':
+					if( $row[$fieldName] )
+						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['series.']['scripture_stdWrap.'] );
+					
+				break;
+					
+				case '###SERIES_STARTDATE###':
+							//	Wrap the date, choosing from one of three settings in typoscript
+						$dateWrap = $lConf['series.']['startdate_stdWrap.'] ? $lConf['series.']['startdate_stdWrap.'] : $lConf['general_dateWrap.'];
+						if( ! $dateWrap ) $dateWrap = $this->conf['general_dateWrap.'];
+		
+						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $dateWrap);
+					
+				break;
+					
+				case '###SERIES_ENDDATE###':
+							//	Wrap the date, choosing from one of three settings in typoscript
+						$dateWrap = $lConf['series.']['enddate_stdWrap.'] ? $lConf['series.']['enddate_stdWrap.'] : $lConf['general_dateWrap.'];
+						if( ! $dateWrap ) $dateWrap = $this->conf['general_dateWrap.'];
+		
+						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $dateWrap);
+					
+				break;
+					
+				case '###RESOURCE_GRAPHIC###':
+					if( $row[$fieldName] ) {
+						// Use IMAGE object to draw. Implement so we can allow configuration though typoscript
+						$image = t3lib_div::makeInstance('tslib_cObj');
+				
+						$imageConf = array(
+							'file' => 'uploads/tx_wecsermons/' . $row[$fieldName],
+						);
+						
+							//	Merge our local config with typoscript config, typoscript overriding
+						$imageConf = t3lib_div::array_merge( $imageConf, $lConf['series.']['graphic_IMAGE.'] );
+					
+							//	Render the image object
+						$markerArray[$key] = $image->IMAGE( $imageConf );			
+					}
+				break;
+
+				case '###SERIES_SEASON###':
+				
+						//	TODO: Check for related season and insert season subpart
+					if( $row[$fieldName] > 0 ) {
+						
+						
+						
+					}
+					
+				break;
+					
+				case '###SERIES_TOPICS###':
+				
+						// TODO: Check for related topics and insert topic subpart
+					if( $row[$fieldName] )
+						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['series.']['season_stdWrap.'] );
+					
+				break;
+					
+				case '###TOPIC_TITLE###':
+					if( $row[$fieldName] )
+						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['topics.']['title_stdWrap.'] );
+					
+				break;
+					
+				case '###TOPIC_DESCRIPTION###':
+					if( $row[$fieldName] )
+						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['topics.']['description_stdWrap.'] );
+					
+				break;
+					
+				case '###SEASON_TITLE###':
+					if( $row[$fieldName] )
+						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['seasons.']['title_stdWrap.'] );
+					
+				break;
+					
+				case '###SPEAKER_FIRSTNAME###':
+					if( $row[$fieldName] )
+						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['speakers.']['firstname_stdWrap.'] );
+					
+				break;
+					
+				case '###SPEAKER_LASTNAME###':
+					if( $row[$fieldName] )
+						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['speakers.']['lastname_stdWrap.'] );
+					
+				break;
+					
+				case '###SPEAKER_URL###':
+				
+						//	TODO: Create a link out of this content
+					if( $row[$fieldName] )
+						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['speakers.']['url_stdWrap.'] );
+					
+				break;
+					
+				case '###SPEAKER_EMAIL###':
+						
+						//	TODO: Create link, making sure it is spam protected
+					if( $row[$fieldName] )
+						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['speakers.']['email_stdWrap.'] );
+					
+				break;
+					
+				case '###SPEAKER_PHOTO###':
+					if( $row[$fieldName] ) {
+						// Use IMAGE object to draw. Implement so we can allow configuration though typoscript
+						$image = t3lib_div::makeInstance('tslib_cObj');
+				
+						$imageConf = array(
+							'file' => 'uploads/tx_wecsermons/' . $row[$fieldName],
+						);
+						
+							//	Merge our local config with typoscript config, typoscript overriding
+						$imageConf = t3lib_div::array_merge( $imageConf, $lConf['speakers.']['photo_IMAGE.'] );
+					
+							//	Render the image object
+						$markerArray[$key] = $image->IMAGE( $imageConf );			
+					}
+				break;
+
+				case '###SPEAKER_LINK###':
+				
+						//	TODO: Create option to use 'url' field instead of link to single view?
+					$wrappedSubpartArray[$key] = explode( 
+						'|',
+						$this->pi_list_linkSingle(
+							'|', 
+							$row['uid'], 
+							$this->conf['allowCaching'],
+							array(
+								'record' => 'tx_wecsermons_speakers',
+							), 
+							FALSE, 
+							$this->conf['pidSingleView'] ? $this->conf['pidSingleView']:0 
+							)
+					);
+				break;
+
 				}	// End Switch
 				
 				//	TODO: Add a hook here for processing extra markers
-			} // End else
+
+//			} // End else
+
 		}	// End Foreach
 
 			//	TODO: Include the edit icons for editing the records from the front end
-		$lContent = $this->cObj->substituteMarkerArrayCached($rowTemplate, $markerArray, array(), $wrappedMarkerArray );
+
+		$lContent = $this->cObj->substituteMarkerArrayCached($rowTemplate, $markerArray, $subpartArray, $wrappedSubpartArray );
 		
 	return $lContent;
 	}
@@ -706,56 +988,55 @@ debug('touch');
 	 				'###SERMON_RESOURCES###' => 'resources_uid',
 	 				'###SERMON_SPEAKERS###' => 'speakers_uid',
 					'###SERMON_GRAPHIC###' => 'graphic',
-					'###SERMON_LINK###' => array(
-						0 => '',
-						1 => '',
-					),
+					'###SERMON_LINK###' => '',
 	 			);
 	 		break;
 	 		
 	 		case 'tx_wecsermons_series':
 	 			$markerArray = array (
-					'###SERIES_TITLE###' => '',
-					'###SERIES_STARTDATE###' => '',
-					'###SERIES_ENDDATE###' => '',
-					'###SERIES_DESCRIPTION###' => '',
-					'###SERIES_SCRIPTURE###' => '',
-					'###SERIES_SEASON###' => '',
-					'###SERIES_TOPICS###' => '',
-					'###SERIES_GRAPHIC###' => '',
+					'###SERIES_TITLE###' => 'title',
+					'###SERIES_STARTDATE###' => 'startdate',
+					'###SERIES_ENDDATE###' => 'enddate',
+					'###SERIES_DESCRIPTION###' => 'description',
+					'###SERIES_SCRIPTURE###' => 'scripture',
+					'###SERIES_SEASON###' => 'liturgical_season_uid',
+					'###SERIES_TOPICS###' => 'topics_uid',
+					'###SERIES_GRAPHIC###' => 'graphic',
+					'###SERIES_LINK###' => '',
 					
 				);	 		
 	 		break;
 	 		
 	 		case 'tx_wecsermons_topics':
 	 			$markerArray = array (
-					'###TOPIC_NAME###' => '',
-					'###TOPIC_DESCRIPTION###' => '',
+					'###TOPIC_TITLE###' => 'name',
+					'###TOPIC_DESCRIPTION###' => 'description',
 				);
 	 		break;
 	 		
 	 		case 'tx_wecsermons_speakers':
 	 			$markerArray = array (
-					'###SPEAKER_FIRSTNAME###' => '',
-					'###SPEAKER_LASTNAME###' => '',
-					'###SPEAKER_EMAIL###' => '',
-					'###SPEAKER_HOMEPAGE###' => '',
-					'###SPEAKER_PHOTO###' => '',
+					'###SPEAKER_FIRSTNAME###' => 'firstname',
+					'###SPEAKER_LASTNAME###' => 'lastname',
+					'###SPEAKER_EMAIL###' => 'email',
+					'###SPEAKER_URL###' => 'url',
+					'###SPEAKER_PHOTO###' => 'photo',
+					'###SPEAKER_LINK###' => '',
 				);
 	 		break;
 
 	 		case 'tx_wecsermons_resources':
 	 			$markerArray = array (
-					'###RESOURCE_TITLE###' => '',
-					'###RESOURCE_DESCRIPTION###' => '',
-					'###RESOURCE_GRAPHIC###' => '',
+					'###RESOURCE_TITLE###' => 'title',
+					'###RESOURCE_DESCRIPTION###' => 'description',
+					'###RESOURCE_GRAPHIC###' => 'graphic',
 					'###RESOURCE_CONTENT###' => '',
 				);
 	 		break;
 	 		
 	 		case 'tx_wecsermons_liturgical_seasons':
 	 			$markerArray = array (
-					'###SEASON_NAME###' => '',
+					'###SEASON_TITLE###' => 'season_name',
 				);
 	 		break;
 	 		

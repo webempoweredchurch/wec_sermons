@@ -91,10 +91,10 @@ CREATE TABLE tx_wecsermons_sermons (
 	keywords tinytext NOT NULL,
 	graphic blob NOT NULL,
 	series_uid blob NOT NULL,
-	topic_uid int(11) DEFAULT '0' NOT NULL,
+	topic_uid blob NOT NULL,
 	record_type int(11) DEFAULT '0' NOT NULL,
 	resources_uid int(11) DEFAULT '0' NOT NULL,
-	speakers_uid int(11) DEFAULT '0' NOT NULL,
+	speakers_uid blob NOT NULL,
 	
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -120,7 +120,7 @@ CREATE TABLE tx_wecsermons_series (
 	enddate int(11) DEFAULT '0' NOT NULL,
 	graphic blob NOT NULL,
 	liturgical_season_uid blob NOT NULL,
-	topics_uid int(11) DEFAULT '0' NOT NULL,
+	topics_uid blob NOT NULL,
 	keywords tinytext NOT NULL,
 	
 	PRIMARY KEY (uid),
