@@ -1,11 +1,24 @@
 plugin.tx_wecsermons_pi1 {
 
-	# cat=plugin.tx_wecsermons_pi1/links/1; type=int+; label= SinglePid: The PID of the page on which single items should be displayed
-	pidSingleView = 
+	# cat=plugin.tx_wecsermons_pi1/enable/1; type=boolean; label= Allow Caching: How many results are shown on each page.
+	allowCaching = 1
+
+	# cat=plugin.tx_wecsermons_pi1/enable/2; type=boolean; label= Use Storage Folder: Whether the SMS looks for records in the "General Storage Folder."
+	useStoragePid = 1
+
+	# cat=plugin.tx_wecsermons_pi1/dims/1; type=text; label= List View - Results Per Page: How many results are shown on each page. (Applied to lists.)
+	listView.results_at_a_time = 20
+	
+	# cat=plugin.tx_wecsermons_pi1/dims/2; type=text; label= List View - Max Pages Shown: How many pages are shown in the record browser between the <prev> and <next> links. (Applied to lists.)
+	listView.maxPages = 5
 
 	# cat=plugin.tx_wecsermons_pi1/file/1; type=file[html,htm,tmpl,txt]; label= Template File: HTML template file for display of a List View.
 	file.templateFile = EXT:wec_sermons/pi1/wecsermons.tmpl
 	
-	# cat=plugin.tx_wecsermons_pi1/file/2; type=text; label= Alternating class: string appended to the end of the alternating class, appearing as tx-wecsermons-pi1-{string}
-	listView.alternatingClass = odd	
+	# cat=plugin.tx_wecsermons_pi1/typo/2; type=text; label= List View - Alternating class: string appended to the end of the alternating class, appearing as tx-wecsermons-pi1-{string}
+	listView.alternatingClass = list-odd	
+	
+	# cat=plugin.tx_wecsermons_pi1/links/1; type=int+; label= SinglePid: The UID of the page where the Single View is displayed
+	pidSingleView = 
+
 }
