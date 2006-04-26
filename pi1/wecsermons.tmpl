@@ -28,7 +28,6 @@ SERMON_TITLE - Title of a sermon
 SERMON_OCCURANCE_DATE - Date the sermon was presented on
 SERMON_DESCRIPTION - Description, or HTML detail of a sermon
 SERMON_SCRIPTURE - Scriptures that the sermon refers to
-SERMON_SERIES - The sermon series a sermon is related to
 SERMON_GRAPHIC - A graphic shown with the sermon
 
 --RESOURCES
@@ -43,7 +42,6 @@ SERIES_DESCRIPTION - Description or HTML detail of series
 SERIES_SCRIPTURE - Scriptures that the series refers to
 SERIES_STARTDATE - First occurance of the series
 SERIES_ENDDATE - Last occurance of the series
-SERIES_SEASON - Season the series relates to
 SERIES_GRAPHIC - A graphic shown with the series
 
 --TOPIC
@@ -70,13 +68,14 @@ BACK_TO_LIST - link back to list-view in single-view template
 
 
 <em>Subparts:</em>
-CONTENT - This is a container
-ITEM - Repeating content area that makes up a list of records
+CONTENT - <strong>**REQUIRED**</strong> This is a container that houses the primary content of a template.
+ITEM - <strong>**REQUIRED**</strong> The repeating content area representing one record within a list.
 SERMON_RESOURCES - Listing of resources related to a particular sermon
 SERMON_SPEAKERS - Listing of speakers related to a sermon
 SERMON_TOPICS - General topics that the sermon is associated with. Aka, category
+SERMON_SERIES - The sermon series a sermon is related to
+SERIES_SEASON - Season a series is related to
 SERIES_TOPICS - General topic that the series is associated with. Aka, category
-
 
 <em>Wrapped Subparts:</em>
 SERMON_SERIES_LINK - link to sermon series' single view
@@ -180,7 +179,6 @@ RESOURCE_LINK - link to a resource's single view
 				###SERMON_OCCURANCE_DATE###
 				###SERMON_DESCRIPTION###
 				###SERMON_SCRIPTURE###
-				###SERMON_SERIES###
 				###SERMON_RESOURCES###
 				###SERMON_GRAPHIC###
 				<br/><br/>				
@@ -194,6 +192,12 @@ RESOURCE_LINK - link to a resource's single view
 						###TOPIC_TITLE###
 						###TOPIC_DESCRIPTION###
 				<!--###SERMON_TOPICS###-->
+				
+				<!--###SERMON_SERIES###-->
+						<!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###-->
+						###SERIES_STARTDATE###
+						###SERIES_ENDDATE###
+				<!--###SERMON_SERIES###-->
 
 			</div>
 		<!-- ###ITEM### end -->
@@ -239,17 +243,17 @@ RESOURCE_LINK - link to a resource's single view
 <!-- ###TEMPLATE_SINGLE1### begin --> 
 	<div class='tx-wecsermons-singleView'>
 	<!-- ###CONTENT### begin -->
-			<div style='border-bottom: 1px dotted black;' class='###ALTERNATING_CLASS###'>
+			<div style='border-bottom: 1px dotted black; margin-bottom: 12px;' class='###ALTERNATING_CLASS###'>
 				<!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###-->
 				###SERMON_OCCURANCE_DATE###
 				###SERMON_DESCRIPTION###
 				###SERMON_SCRIPTURE###
-				###SERMON_SERIES###
 				###SERMON_RESOURCES###
 				###SERMON_GRAPHIC###
 				<br/><br/>				
 				<!--###SERMON_SPEAKERS###-->
 						###SPEAKER_PHOTO###
+						###SPEAKER_EMAIL###
 						<div class="tx-wecsermons-speakers-caption">
 						<!--###SPEAKER_LINK###-->###SPEAKER_LASTNAME###, ###SPEAKER_FIRSTNAME### <!--###SPEAKER_LINK###-->
 						</div>
@@ -258,8 +262,14 @@ RESOURCE_LINK - link to a resource's single view
 						###TOPIC_TITLE###
 						###TOPIC_DESCRIPTION###
 				<!--###SERMON_TOPICS###-->
+				<!--###SERMON_SERIES###-->
+						<!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###-->
+						###SERIES_STARTDATE###
+						###SERIES_ENDDATE###
+				<!--###SERMON_SERIES###-->
 
 			</div>
 	<!-- ###CONTENT### end -->
 	</div>
+	<div><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></div>
 <!-- ###TEMPLATE_SINGLE1### end --> 

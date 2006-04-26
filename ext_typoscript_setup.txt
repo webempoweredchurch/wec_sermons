@@ -4,6 +4,7 @@ plugin.tx_wecsermons_pi1 {
 	
 	useStoragePid	 = {$plugin.tx_wecsermons_pi1.useStoragePid}
 	pidSingleView = {$plugin.tx_wecsermons_pi1.pidSingleView}
+	pidListView = {$plugin.tx_wecsermons_pi1.pidListView}
 	
 	# Whether the extension caches content or not
 	allowCaching = {$plugin.tx_wecsermons_pi1.allowCaching}
@@ -22,13 +23,20 @@ plugin.tx_wecsermons_pi1 {
 	templateFile = {$plugin.tx_wecsermons_pi1.file.templateFile}
 
 		# List of tables that a view can be generated from
-	allowedTables = tx_wecsermons_sermons,tx_wecsermons_series,tx_wecsermons_resources,tx_wecsermons_topics,tx_wecsermons_liturgical_season
+	allowedTables = tx_wecsermons_sermons,tx_wecsermons_series,tx_wecsermons_resources,tx_wecsermons_topics,tx_wecsermons_liturgical_season,tx_wecsermons_speakers
+	
 		
 
 	#	Single view configuration
 	singleView {
 	
-		sermons {
+		back {
+			parseFunc < tt_content.text.20.parseFunc
+		}
+		
+		layoutCode = 
+	
+		tx_wecsermons_sermons {
 
 				#	Wrap for the title column
 			title_stdWrap {
@@ -42,11 +50,13 @@ plugin.tx_wecsermons_pi1 {
 				wrap = |<br/>
 			}
 			
-			description_stdWrap {
+			description = TEXT
+			description {
 				crop = 75|...
 				stripHtml = 1
 				parseFunc < tt_content.text.20.parseFunc
 				wrap = <p class='bodytext'>|<p>
+				field = description
 			}
 
 			scripture_stdWrap {
@@ -74,10 +84,14 @@ plugin.tx_wecsermons_pi1 {
 				wrap = <div class="tx-wecsermons-speakers">|</div>
 
 			}
+			
+			series_stdWrap {
+				wrap = <div class="tx-wecsermons-series">|</div>
+			}
 				
 		}
 		
-		resources {
+		tx_wecsermons_resources {
 		
 			title_stdWrap {
 				wrap = |<br/>
@@ -94,7 +108,7 @@ plugin.tx_wecsermons_pi1 {
 	
 		}
 		
-		series {
+		tx_wecsermons_series {
 		
 			title_stdWrap {
 				wrap = |<br/>
@@ -104,7 +118,8 @@ plugin.tx_wecsermons_pi1 {
 				wrap = |<br/>
 			}
 
-			description_stdWrap {
+			description = TEXT
+			description {
 				crop = 150|...
 				parseFunc < tt_content.text.20.parseFunc
 			}
@@ -130,10 +145,14 @@ plugin.tx_wecsermons_pi1 {
 		
 		}
 		
-		speakers {
-		
-			photo_IMAGE {
-				wrap = |
+		tx_wecsermons_speakers {
+				
+				# Specifies whether we use the url field when generating the speaker_link wrappedSubart		
+			linktoUrl = 1
+			
+			photo = IMAGE
+			photo {
+				wrap = |<br/>
 				border = 1
 				file {
 					width = 64m
@@ -155,17 +174,29 @@ plugin.tx_wecsermons_pi1 {
 				wrap = |
 			}
 
-			url_stdWrap {
+			url = TEXT
+			url {
 				wrap = |<br/>
+				typolink = 1
+				typolink {
+					parameter.field = url
+					extTarget = _blank
+				}
+				value= |
 			}
 
-			email_stdWrap {
+			email = TEXT
+			email {
+				typolink = 1
+				typolink.parameter.field = email		
 				wrap = |<br/>
+				parseFunc < tt_content.text.20.parseFunc
+
 			}
 
 		}
 		
-		topics {
+		tx_wecsermons_topics {
 			
 			title_stdWrap {
 				wrap = |<br/>
@@ -205,8 +236,11 @@ plugin.tx_wecsermons_pi1 {
 			# Table that records in detail will be grouped by
 		group_table = 
 		
-		sermons {
+		tx_wecsermons_sermons {
 
+				# Allowed data columns to search in
+			searchFieldList = title,description,related_scripture,keywords
+		
 				#	Wrap for the title column
 			title_stdWrap {
 				wrap = |<br/>
@@ -219,11 +253,12 @@ plugin.tx_wecsermons_pi1 {
 				wrap = |<br/>
 			}
 			
-			description_stdWrap {
+			description = TEXT
+			description {
 				crop = 75|...
 				stripHtml = 1
-				parseFunc < tt_content.text.20.parseFunc
 				wrap = <p class='bodytext'>|<p>
+				field = description
 			}
 
 			scripture_stdWrap {
@@ -254,8 +289,11 @@ plugin.tx_wecsermons_pi1 {
 				
 		}
 		
-		resources {
+		tx_wecsermons_resources {
 		
+				# Allowed data columns to search in
+			searchFieldList = title,description,related_scripture,keywords
+			
 			title_stdWrap {
 				wrap = |<br/>
 			}
@@ -271,8 +309,11 @@ plugin.tx_wecsermons_pi1 {
 	
 		}
 		
-		series {
-		
+		tx_wecsermons_series {
+
+				# Allowed data columns to search in
+			searchFieldList = title,description,related_scripture,keywords		
+
 			title_stdWrap {
 				wrap = |<br/>
 			}
@@ -281,7 +322,8 @@ plugin.tx_wecsermons_pi1 {
 				wrap = |<br/>
 			}
 
-			description_stdWrap {
+			description = TEXT
+			description {
 				crop = 150|...
 				parseFunc < tt_content.text.20.parseFunc
 			}
@@ -307,10 +349,14 @@ plugin.tx_wecsermons_pi1 {
 		
 		}
 		
-		speakers {
+		tx_wecsermons_speakers {
 		
-			photo_IMAGE {
-				wrap = |
+				# Allowed data columns to search in
+			searchFieldList = title,description,related_scripture,keywords		
+
+			photo = IMAGE
+			photo {
+				wrap = |<br/>
 				border = 1
 				file {
 					width = 64m
@@ -332,18 +378,30 @@ plugin.tx_wecsermons_pi1 {
 				wrap = |
 			}
 
-			url_stdWrap {
+			url = TEXT
+			url {
+				typolink = 1
+				typolink.parameter.field = url	
 				wrap = |<br/>
+				value = |
 			}
 
-			email_stdWrap {
+			email = TEXT
+			email {
+				typolink = 1
+				typolink.parameter.field = email		
 				wrap = |<br/>
+				parseFunc < tt_content.text.20.parseFunc
+
 			}
 
 		}
 		
-		topics {
+		tx_wecsermons_topics {
 			
+				# Allowed data columns to search in
+			searchFieldList = title,description,related_scripture,keywords		
+
 			title_stdWrap {
 				wrap = |<br/>
 			}
@@ -358,7 +416,6 @@ plugin.tx_wecsermons_pi1 {
 	}
 	
 	searchView {
-		searchFieldList = title,description,related_scripture,keywords
 		orderByList = uid,title,related_scripture,keywords
 		
 		#	Error generated if piVars['sword'] is not set

@@ -7,6 +7,31 @@
         </TCEforms>
         <type>array</type>
         <el>
+        
+        	<layout>
+ 			    <TCEforms>
+			      <label>LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.layout</label>
+			      <config>
+			        <type>select</type>
+					<items type="array">
+	                     <numIndex index="1" type="array">
+	                            <numIndex index="0">LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.layout.I.0</numIndex>
+	                            <numIndex index="1">1</numIndex>
+	                    </numIndex>
+	                     <numIndex index="2" type="array">
+	                            <numIndex index="0">LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.layout.I.1</numIndex>
+	                            <numIndex index="1">2</numIndex>
+	                    </numIndex>
+	                     <numIndex index="3" type="array">
+	                            <numIndex index="0">LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.layout.I.2</numIndex>
+	                            <numIndex index="1">3</numIndex>
+	                    </numIndex>
+					</items>
+					<maxitems>1</maxitems>
+					<size>1</size>
+				</config>
+			</TCEforms>
+       	</layout>
 			<display>
 			    <TCEforms>
 			      <label>LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.display</label>
