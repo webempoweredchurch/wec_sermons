@@ -30,6 +30,7 @@ plugin.tx_wecsermons_pi1 {
 	#	Single view configuration
 	singleView {
 	
+		back = TEXT
 		back {
 			parseFunc < tt_content.text.20.parseFunc
 		}
@@ -39,13 +40,15 @@ plugin.tx_wecsermons_pi1 {
 		tx_wecsermons_sermons {
 
 				#	Wrap for the title column
-			title_stdWrap {
-				wrap = |<br/>
+			title = TEXT
+			title {
+				wrap = |
 				parseFunc < tt_content.text.20.parseFunc
 			}
 			
 				#	Specific date wrap for the occurance_date column in tx_wecsermons_sermons table
-			occurance_stdWrap {
+			occurance = TEXT
+			occurance {
 				strftime = %A,  %b. %d %Y
 				wrap = |<br/>
 			}
@@ -59,104 +62,18 @@ plugin.tx_wecsermons_pi1 {
 				field = description
 			}
 
-			scripture_stdWrap {
-				wrap = |<br/>
-			}
-
-			topics_stdWrap {
-				wrap = <div class="tx-wecsermons-topics">|</div>
-			}
-			
-			series_stdWrap {
-				wrap = <div class="tx-wecsermons-series">|</div>
-			}
-			
-			resources_stdWrap {
-				wrap = <div class="tx-wecsermons-resources">|</div>
-			}
-			
-			
-			graphic_IMAGE {
-				wrap = |<br/>
-			}
-
-			speakers_stdWrap {
-				wrap = <div class="tx-wecsermons-speakers">|</div>
-
-			}
-			
-			series_stdWrap {
-				wrap = <div class="tx-wecsermons-series">|</div>
-			}
-				
-		}
-		
-		tx_wecsermons_resources {
-		
-			title_stdWrap {
+			scripture = TEXT
+			scripture {
 				wrap = |<br/>
 			}
 			
-			graphic_IMAGE {
-				wrap = |<br/>
-			}
-
-			description_stdWrap {
-				crop = 150|...
-				parseFunc < tt_content.text.20.parseFunc
-			}
-	
-		}
-		
-		tx_wecsermons_series {
-		
-			title_stdWrap {
-				wrap = |<br/>
-			}
-			
-			graphic_IMAGE {
-				wrap = |<br/>
-			}
-
-			description = TEXT
-			description {
-				crop = 150|...
-				parseFunc < tt_content.text.20.parseFunc
-			}
-	
-			scripture_stdWrap {
-				wrap = |<br/>
-			}
-
-			topics_stdWrap {
-				wrap = |<br/>
-				parseFunc < tt_content.text.20.parseFunc
-			}
-
-			startdate_stdWrap {
-				strftime = %A,  %b. %d %Y
-				wrap = |<br/>
-			}
-
-			enddate_stdWrap {
-				strftime = %A,  %b. %d %Y
-				wrap = |<br/>
-			}
-		
-		}
-		
-		tx_wecsermons_speakers {
-				
-				# Specifies whether we use the url field when generating the speaker_link wrappedSubart		
-			linktoUrl = 1
-			
-			photo = IMAGE
-			photo {
+			graphic = IMAGE
+			graphic {
 				wrap = |<br/>
 				border = 1
 				file {
-					width = 64m
-					height = 64m
+					width = 128m
+					height = 128m
 				}
 				imageLinkWrap = 1
 				imageLinkWrap {
@@ -166,11 +83,113 @@ plugin.tx_wecsermons_pi1 {
 				}
 			}
 
-			firstname_stdWrap {
+			topics = TEXT
+			topics {
+				wrap = <div class="tx-wecsermons-sermon-topics">|</div>
+			}
+			
+			resources = TEXT
+			resources {
+				wrap = <div class="tx-wecsermons-sermon-resources">|</div>
+			}
+
+			speakers = TEXT 
+			speakers {
+				wrap = <div class="tx-wecsermons-sermon-speakers">|</div>
+
+			}
+			
+			series = TEXT
+			series {
+				wrap = <div class="tx-wecsermons-sermon-series">|</div>
+			}
+				
+		}
+		
+		tx_wecsermons_resources {
+		
+			title = TEXT
+			title {
+				wrap = |<br/>
+			}
+			
+			graphic = IMAGE
+			graphic {
+				file {
+					width = 32m
+					height = 32m
+				}
+
+			}
+
+			description = TEXT
+			description {
+				crop = 75|...
+				parseFunc < tt_content.text.20.parseFunc
+			}
+	
+		}
+		
+		tx_wecsermons_series {
+		
+			title = TEXT
+			title {
+				wrap = |<br/>
+			}
+			
+			graphic = IMAGE
+			graphic {
+				wrap = |<br/>
+			}
+
+			description = TEXT
+			description {
+				crop = 75|...
+				parseFunc < tt_content.text.20.parseFunc
+			}
+	
+			scripture = TEXT
+			scripture {
+				wrap = |<br/>
+			}
+
+			topics = TEXT 
+			topics {
+				wrap = |<br/>
+				parseFunc < tt_content.text.20.parseFunc
+			}
+
+			startdate = TEXT
+			startdate {
+				strftime = %A,  %b. %d %Y
+				wrap = |<br/>
+			}
+
+			enddate = TEXT
+			enddate {
+				strftime = %A,  %b. %d %Y
+				wrap = |<br/>
+			}
+		
+		}
+		
+		tx_wecsermons_speakers {
+				
+				# Specifies whether we use the url field when generating the speaker_link wrappedSubart		
+			linktoUrl = 
+			
+			photo < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_sermons.graphic
+			photo {
+				wrap = |<br/>
+			}
+
+			firstname = TEXT
+			firstname {
 				wrap = |
 			}
 			
-			lastname_stdWrap {
+			lastname = TEXT
+			lastname {
 				wrap = |
 			}
 
@@ -198,12 +217,14 @@ plugin.tx_wecsermons_pi1 {
 		
 		tx_wecsermons_topics {
 			
-			title_stdWrap {
+			title = TEXT
+			title {
 				wrap = |<br/>
 			}
 			
-			description_stdWrap {
-				crop = 150|...
+			description = TEXT
+			description {
+				crop = 75|...
 				parseFunc < tt_content.text.20.parseFunc
 			}
 
@@ -242,13 +263,15 @@ plugin.tx_wecsermons_pi1 {
 			searchFieldList = title,description,related_scripture,keywords
 		
 				#	Wrap for the title column
-			title_stdWrap {
+			title = TEXT
+			title {
 				wrap = |<br/>
 				parseFunc < tt_content.text.20.parseFunc
 			}
 			
 				#	Specific date wrap for the occurance_date column in tx_wecsermons_sermons table
-			occurance_stdWrap {
+			occurance_date = TEXT
+			occurance_date {
 				strftime = %A,  %b. %d %Y
 				wrap = |<br/>
 			}
@@ -261,28 +284,45 @@ plugin.tx_wecsermons_pi1 {
 				field = description
 			}
 
-			scripture_stdWrap {
+			scripture = TEXT
+			scripture {
 				wrap = |<br/>
 			}
 
-			topics_stdWrap {
+			topics = TEXT
+			topics {
 				wrap = <div class="tx-wecsermons-topics">|</div>
 			}
 			
-			series_stdWrap {
+			series = TEXT
+			series {
 				wrap = <div class="tx-wecsermons-series">|</div>
 			}
 			
-			resources_stdWrap {
+			resources = TEXT
+			resources {
 				wrap = <div class="tx-wecsermons-resources">|</div>
 			}
 			
 			
-			graphic_IMAGE {
+			graphic = IMAGE
+			graphic {
 				wrap = |<br/>
+				border = 1
+				file {
+					width = 128m
+					height = 128m
+				}
+				imageLinkWrap = 1
+				imageLinkWrap {
+					enable = 1
+					JSwindow = 1
+					JSwindow.expand = 20,20
+				}
 			}
 
-			speakers_stdWrap {
+			speakers = TEXT
+			speakers {
 				wrap = <div class="tx-wecsermons-speakers">|</div>
 
 			}
@@ -294,15 +334,18 @@ plugin.tx_wecsermons_pi1 {
 				# Allowed data columns to search in
 			searchFieldList = title,description,related_scripture,keywords
 			
-			title_stdWrap {
+			title = TEXT
+			title {
 				wrap = |<br/>
 			}
 			
-			graphic_IMAGE {
+			graphic = IMAGE
+			graphic {
 				wrap = |<br/>
 			}
 
-			description_stdWrap {
+			description = TEXT
+			description {
 				crop = 150|...
 				parseFunc < tt_content.text.20.parseFunc
 			}
@@ -314,12 +357,14 @@ plugin.tx_wecsermons_pi1 {
 				# Allowed data columns to search in
 			searchFieldList = title,description,related_scripture,keywords		
 
-			title_stdWrap {
+			title = TEXT
+			title {
 				wrap = |<br/>
 			}
 			
-			graphic_IMAGE {
-				wrap = |<br/>
+			graphic < plugin.tx_wecsermons_pi1.tx_wecsermons_sermons.graphic
+			graphic {
+				wrap = |
 			}
 
 			description = TEXT
@@ -328,21 +373,25 @@ plugin.tx_wecsermons_pi1 {
 				parseFunc < tt_content.text.20.parseFunc
 			}
 	
-			scripture_stdWrap {
+			scripture = TEXT
+			scripture {
 				wrap = |<br/>
 			}
 
-			topics_stdWrap {
+			topics = TEXT
+			topics {
 				wrap = |<br/>
 				parseFunc < tt_content.text.20.parseFunc
 			}
 
-			startdate_stdWrap {
+			startdate = TEXT
+			startdate {
 				strftime = %A,  %b. %d %Y
 				wrap = |<br/>
 			}
 
-			enddate_stdWrap {
+			enddate = TEXT
+			enddate {
 				strftime = %A,  %b. %d %Y
 				wrap = |<br/>
 			}
@@ -354,27 +403,20 @@ plugin.tx_wecsermons_pi1 {
 				# Allowed data columns to search in
 			searchFieldList = title,description,related_scripture,keywords		
 
-			photo = IMAGE
+			photo <  plugin.tx_wecsermons_pi1.listView.tx_wecsermons_sermons.graphic
 			photo {
-				wrap = |<br/>
-				border = 1
-				file {
-					width = 64m
-					height = 64m
-				}
-				imageLinkWrap = 1
-				imageLinkWrap {
-					enable = 1
-					JSwindow = 1
-					JSwindow.expand = 20,20
-				}
+				file.width = 64m
+				file.height = 64m
+				wrap = |
 			}
 
-			firstname_stdWrap {
+			firstname = TEXT
+			firstname {
 				wrap = |
 			}
 			
-			lastname_stdWrap {
+			lastname = TEXT
+			lastname {
 				wrap = |
 			}
 
@@ -399,15 +441,14 @@ plugin.tx_wecsermons_pi1 {
 		
 		tx_wecsermons_topics {
 			
-				# Allowed data columns to search in
-			searchFieldList = title,description,related_scripture,keywords		
-
-			title_stdWrap {
+			title = TEXT
+			title {
 				wrap = |<br/>
 			}
 			
-			description_stdWrap {
-				crop = 150|...
+			description = TEXT
+			description {
+				crop = 75|...
 				parseFunc < tt_content.text.20.parseFunc
 			}
 

@@ -262,13 +262,39 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 			//	Load the Layout code, which chooses between templates
 			//	TODO: Determine if we need a layout code logic block or not
-		$layoutCode = getConfigVal( $this, 'layoutCode', 'sDEF', 'layoutCode', $lConf, 1 );
+		$layoutCode = $this->internal['layoutCode'] = getConfigVal( $this, 'layoutCode', 'sDEF', 'layoutCode', $lConf, 1 );
 
-
-			//	TODO: Create a single view template for each table we need to represent
 		$templateFile = $this->getTemplateFile();
+		
+		//	TODO: Create a single view template for each table we need to represent
+		
+		$templateKey = $this->getTemplateKey( $this->internal['currentTable'] );
+		
 		$template['total'] = $this->cObj->fileResource($templateFile);
-		$template['single'] = $this->cObj->getSubpart( $template['total'], '###TEMPLATE_SINGLE'.$layoutCode.'###' );
+		$template['single'] = $this->getNamedTemplateContent( $templateKey, 'single' );
+
+		if(! $template['single'] ) {
+			
+				$error = array();
+				$error['type'] = htmlspecialchars( 'WEC Sermons Error!' );
+				$error['message'] = htmlspecialchars( 'Unable to retrieve content for specified template.' );
+				$error['detail'] = htmlspecialchars( 
+					sprintf (
+						'Requested Template: ###TEMPLATE_%s_%s%s###',
+						strtoupper( $templateKey ),
+						'SINGLE',
+						$layoutCode
+					)
+				 );
+				
+				return sprintf( 
+					'<p>%s<br/> %s</p>	<p>%s</p>', 
+					$error['type'], 
+					$error['message'], 
+					$error['detail'] 
+				);
+		}
+		
 		$template['content'] = $this->cObj->getSubpart( $template['single'], '###CONTENT###' );
 	
 		$markerArray = $this->getMarkerArray( $this->internal['currentTable'] );
@@ -286,10 +312,6 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			//	Call pi_list_row to substitute last markers and return results
 		return $this->pi_list_row( $lConf, $markerArray, $content );
 
-/*
-		<p>'.$this->pi_list_linkSingle($this->pi_getLL('back','Back'),0).'</p></div>'.
-		$this->pi_getEditPanel();
-*/
 	}
 
 	/**
@@ -305,7 +327,6 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 		exit;		
 			
 		$swords = explode(' ', $this->piVars['sword'] );
-		
 		
 	}
 	
@@ -578,14 +599,14 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 					
 				case '###SERMON_TITLE###':
 					if( $row[$fieldName] )				
-						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_sermons.']['title_stdWrap.'] );
+						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_sermons.']['title.'] );
 				break;
 					
 				case '###SERMON_OCCURANCE_DATE###':
 					if( $row[$fieldName] )				
 					{
 							//	Wrap the date, choosing from one of three settings in typoscript
-						$dateWrap = $lConf['tx_wecsermons_sermons.']['occurance_stdWrap.'] ? $lConf['tx_wecsermons_sermons.']['occurance_stdWrap.'] : $lConf['general_dateWrap.'];
+						$dateWrap = $lConf['tx_wecsermons_sermons.']['occurance.'] ? $lConf['tx_wecsermons_sermons.']['occurance.'] : $lConf['general_dateWrap.'];
 						if( ! $dateWrap ) $dateWrap = $this->conf['general_dateWrap.'];
 		
 						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $dateWrap);
@@ -601,7 +622,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 					
 				case '###SERMON_SCRIPTURE###':
 					if( $row[$fieldName] )				
-						$markerArray[$key] =  $this->cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_sermons.']['scripture_stdWrap.'] );
+						$markerArray[$key] =  $this->cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_sermons.']['scripture.'] );
 
 				break;  
 				
@@ -616,7 +637,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 						);
 		
 							//	Merge our local config with typoscript config
-						$imageConf = t3lib_div::array_merge( $imageConf, $lConf['tx_wecsermons_sermons.']['graphic_IMAGE.'] );
+						$imageConf = t3lib_div::array_merge( $imageConf, $lConf['tx_wecsermons_sermons.']['graphic.'] );
 					
 							//	Render the image object
 						$markerArray[$key] = $image->IMAGE( $imageConf );			
@@ -666,7 +687,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 					//	Replace marker content with subpart, wrapping stdWrap
 						if( $count > 0 )
-							$subpartArray[$key] = $this->cObj->stdWrap( $seriesContent, $lConf['tx_wecsermons_sermons.']['series_stdWrap.'] );
+							$subpartArray[$key] = $this->cObj->stdWrap( $seriesContent, $lConf['tx_wecsermons_sermons.']['series.'] );
 							
 					}
 				
@@ -699,7 +720,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			
 							//	Replace marker content with subpart, wrapping stdWrap
 						if( $count > 0 )
-							$subpartArray[$key] = $this->cObj->stdWrap( $speakerContent, $lConf['tx_wecsermons_sermons.']['speakers_stdWrap.'] );
+							$subpartArray[$key] = $this->cObj->stdWrap( $speakerContent, $lConf['tx_wecsermons_sermons.']['speakers.'] );
 
 					}
 				break;
@@ -731,7 +752,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			
 							//	Replace marker content with subpart
 						if( $count > 0 )
-							$subpartArray[$key] = $this->cObj->stdWrap( $topicContent, $lConf['tx_wecsermons_sermons.']['topics_stdWrap.'] );
+							$subpartArray[$key] = $this->cObj->stdWrap( $topicContent, $lConf['tx_wecsermons_sermons.']['topics.'] );
 
 					}
 
@@ -762,12 +783,12 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				
 				case '###RESOURCE_TITLE###':
 					if( $row[$fieldName] )
-						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_resources.']['title_stdWrap.'] );
+						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_resources.']['title.'] );
 				break;
 
 				case '###RESOURCE_DESCRIPTION###':
 					if( $row[$fieldName] )
-						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_resources.']['description_stdWrap.'] );
+						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_resources.']['description.'] );
 				break;
 				
 				case '###RESOURCE_GRAPHIC###':
@@ -780,7 +801,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 						);
 						
 							//	Merge our local config with typoscript config, typoscript overriding
-						$imageConf = t3lib_div::array_merge( $imageConf, $lConf['tx_wecsermons_resources.']['graphic_IMAGE.'] );
+						$imageConf = t3lib_div::array_merge( $imageConf, $lConf['tx_wecsermons_resources.']['graphic.'] );
 					
 							//	Render the image object
 						$markerArray[$key] = $image->IMAGE( $imageConf );			
@@ -799,7 +820,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 					
 				case '###SERIES_TITLE###':
 					if( $row[$fieldName] )
-						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_series.']['title_stdWrap.'] );
+						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_series.']['title.'] );
 					
 				break;
 					
@@ -821,7 +842,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 						);
 						
 							//	Merge our local config with typoscript config, typoscript overriding
-						$imageConf = t3lib_div::array_merge( $imageConf, $lConf['tx_wecsermons_series.']['graphic_IMAGE.'] );
+						$imageConf = t3lib_div::array_merge( $imageConf, $lConf['tx_wecsermons_series.']['graphic.'] );
 					
 							//	Render the image object
 						$markerArray[$key] = $image->IMAGE( $imageConf );			
@@ -830,14 +851,14 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				
 				case '###SERIES_SCRIPTURE###':
 					if( $row[$fieldName] )
-						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_series.']['scripture_stdWrap.'] );
+						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_series.']['scripture.'] );
 					
 				break;
 					
 				case '###SERIES_STARTDATE###':
 					if( $row[$fieldName] ) {
 							//	Wrap the date, choosing from one of three settings in typoscript
-						$dateWrap = $lConf['tx_wecsermons_series.']['startdate_stdWrap.'] ? $lConf['tx_wecsermons_series.']['startdate_stdWrap.'] : $lConf['general_dateWrap.'];
+						$dateWrap = $lConf['tx_wecsermons_series.']['startdate.'] ? $lConf['tx_wecsermons_series.']['startdate.'] : $lConf['general_dateWrap.'];
 						if( ! $dateWrap ) $dateWrap = $this->conf['general_dateWrap.'];
 		
 						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $dateWrap);
@@ -848,7 +869,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 					if( $row[$fieldName] ) {
 
 							//	Wrap the date, choosing from one of three settings in typoscript
-						$dateWrap = $lConf['tx_wecsermons_series.']['enddate_stdWrap.'] ? $lConf['tx_wecsermons_series.']['enddate_stdWrap.'] : $lConf['general_dateWrap.'];
+						$dateWrap = $lConf['tx_wecsermons_series.']['enddate.'] ? $lConf['tx_wecsermons_series.']['enddate.'] : $lConf['general_dateWrap.'];
 						if( ! $dateWrap ) $dateWrap = $this->conf['general_dateWrap.'];
 		
 						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $dateWrap);
@@ -883,7 +904,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			
 							//	Replace marker content with subpart
 						if( $count > 0 )
-							$subpartArray[$key] = $this->cObj->stdWrap( $seasonContent, $lConf['tx_wecsermons_liturgical_sermons.']['seasons_stdWrap.'] );
+							$subpartArray[$key] = $this->cObj->stdWrap( $seasonContent, $lConf['tx_wecsermons_liturgical_sermons.']['seasons.'] );
 
 					}
 
@@ -918,7 +939,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			
 							//	Replace marker content with subpart
 						if( $count > 0 )
-							$subpartArray[$key] = $this->cObj->stdWrap( $topicContent, $lConf['tx_wecsermons_series.']['topics_stdWrap.'] );
+							$subpartArray[$key] = $this->cObj->stdWrap( $topicContent, $lConf['tx_wecsermons_series.']['topics.'] );
 
 					}
 					
@@ -944,31 +965,31 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 					
 				case '###TOPIC_TITLE###':
 					if( $row[$fieldName] )
-						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_topics.']['title_stdWrap.'] );
+						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_topics.']['title.'] );
 					
 				break;
 					
 				case '###TOPIC_DESCRIPTION###':
 					if( $row[$fieldName] )
-						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_topics.']['description_stdWrap.'] );
+						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_topics.']['description.'] );
 					
 				break;
 					
 				case '###SEASON_TITLE###':
 					if( $row[$fieldName] )
-						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_seasons.']['title_stdWrap.'] );
+						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_seasons.']['title.'] );
 					
 				break;
 					
 				case '###SPEAKER_FIRSTNAME###':
 					if( $row[$fieldName] )
-						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_speakers.']['firstname_stdWrap.'] );
+						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_speakers.']['firstname.'] );
 					
 				break;
 					
 				case '###SPEAKER_LASTNAME###':
 					if( $row[$fieldName] )
-						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_speakers.']['lastname_stdWrap.'] );
+						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_speakers.']['lastname.'] );
 					
 				break;
 					
@@ -976,7 +997,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				
 						//	TODO: Create a link out of this content
 					if( $row[$fieldName] ) {
-							$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_speakers.']['url_stdWrap.'] );
+							$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_speakers.']['url.'] );
 					}
 				break;
 					
@@ -1012,7 +1033,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 						//	TODO: Figure out how to use this for all fields.
 					$wrappedSubpartArray[$key] = explode( '|', $this->local_cObj->cObjGetSingle($lConf['tx_wecsermons_speakers.']['url'], $lConf['tx_wecsermons_speakers.']['url.'] ) );
 break;
-					$markerArray[$key] = explode( '|', $this->cObj->stdWrap( $marker, $lConf['tx_wecsermons_speakers.']['url_stdWrap.'] ) );
+					$markerArray[$key] = explode( '|', $this->cObj->stdWrap( $marker, $lConf['tx_wecsermons_speakers.']['url.'] ) );
 	
 						//	TODO: Create option to use 'url' field instead of link to single view?
 					$wrappedSubpartArray[$key] = explode( 
@@ -1067,8 +1088,6 @@ break;
 				
 				//	TODO: Add a hook here for processing extra markers
 
-//			} // End else
-
 		}	// End Foreach
 
 			//	TODO: Include the edit icons for editing the records from the front end
@@ -1077,27 +1096,6 @@ break;
 		
 	return $lContent;
 	}
-	
-/*
-				<td><p>'.$this->getFieldContent('uid').'</p></td>
-				<td valign="top"><p>'.$this->getFieldContent('related_scripture').'</p></td>
-				<td valign="top"><p>'.$this->getFieldContent('graphic').'</p></td>
-				<td valign="top"><p>'.$this->getFieldContent('series_uid').'</p></td>
-				<td valign="top"><p>'.$this->getFieldContent('topic_uid').'</p></td>
-				<td valign="top"><p>'.$this->getFieldContent('record_type').'</p></td>
-				<td valign="top"><p>'.$this->getFieldContent('resources_uid').'</p></td>
-*/
-
-/*
-				<th><p>'.$this->getFieldHeader_sortLink('uid').'</p></th>
-				<th><p>'.$this->getFieldHeader_sortLink('related_scripture').'</p></th>
-				<th nowrap><p>'.$this->getFieldHeader('graphic').'</p></th>
-				<th nowrap><p>'.$this->getFieldHeader('series_uid').'</p></th>
-				<th nowrap><p>'.$this->getFieldHeader('topic_uid').'</p></th>
-				<th nowrap><p>'.$this->getFieldHeader('record_type').'</p></th>
-				<th nowrap><p>'.$this->getFieldHeader('resources_uid').'</p></th>
-
-*/
 
 	/**
 	 * [Put your description here]
@@ -1211,7 +1209,7 @@ break;
 	 * @param	[type]		$fN: ...
 	 * @return	[type]		...
 	 */
-	function getFieldHeader($fN)	{
+	function getFieldHeader($fN)	 {
 		switch($fN) {
 			case "title":
 				return $this->pi_getLL('listFieldHeader_title','<em>title</em>');
@@ -1240,10 +1238,77 @@ break;
 	 */
 	function formatStr($str) {
 
-		if (is_array($this->conf['general_stdWrap.'])) 
+		if ( is_array( $this->conf['general_stdWrap.'] ) ) 
 			return $this->local_cObj->stdWrap($str, $this->conf['general_stdWrap.']);
 		else
 			return $str;
+	}
+		
+	/**
+	 *		Retrieves the content for a named template. Used to pull a template subpart from a template file
+	 *
+	 * @param	string		$tableName. This is the tablename to retrieve the keyname for.
+	 */
+	function getTemplateKey($tableName) {
+		
+		switch( $tableName ) {
+			case 'tx_wecsermons_sermons':
+				$key = 'sermon';
+			break;
+			
+			case 'tx_wecsermons_resources':
+				$key = 'resource';
+			break;
+			
+			case 'tx_wecsermons_topics':
+				$key = 'topic';		
+			break;
+			
+			case 'tx_wecsermons_liturgical_season':
+				$key = 'season';
+			break;
+	
+			case 'tx_wecsermons_series':
+				$key = 'series';
+			break;
+	
+			case 'tx_wecsermons_speakers':
+				$key = 'speaker';
+			break;
+			
+			}
+			
+			//	TODO: Add hook for custom tables
+			
+			return $key;
+
+	}
+	
+	/**
+	 *		Retrieves the content for a named template. Used to pull a template subpart from a template file
+	 *
+	 * @param	string		$key. This is the keyname of the type of template to retrieve such as SERMON, SERIES, TOPIC, etc.
+	 * @return	string		$view. This is the name of the view to retrieve, SINGLE, LIST, etc.
+	 */
+	function getNamedTemplateContent($key = 'sermon', $view = 'single') {
+		
+		if( !$this->internal['templateFile'] ) $this->getTemplateFile();
+		if( !$this->internal['layoutCode'] ) getConfigVal( $this, 'layoutCode', 'sDEF', 'layoutCode', $lConf, 1 );
+		
+		$template = $this->cObj->fileResource($this->internal['templateFile'] );
+		$key = strtoupper( $key );
+		$view = strtoupper( $view );
+		
+		$templateContent = $this->cObj->getSubpart( 
+			$template, 
+			sprintf( '###TEMPLATE_%s_%s%s###', 
+				$key,
+				$view,
+				$this->internal['layoutCode']
+			)
+		);
+		
+		return $templateContent;
 	}
 	
 	function getTemplateFile() {

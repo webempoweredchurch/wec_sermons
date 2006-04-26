@@ -207,10 +207,38 @@ RESOURCE_LINK - link to a resource's single view
 <!-- ###TEMPLATE_LIST3### end --> 
 
 <br />
+<h3>TEMPLATE_SERMON_SINGLE</h3>
+<em>Template for single view of a sermon.</em>
+<br />
+
+
+<!-- ###TEMPLATE_SERMON_SINGLE1### begin -->
+<!--###CONTENT###--> 
+###SERMON_TITLE###
+###SERMON_OCCURANCE_DATE###
+###SERMON_DESCRIPTION###
+###SERMON_SCRIPTURE###
+###SERMON_GRAPHIC###
+
+<!--###SERMON_SERIES###-->
+###SERIES_TITLE###
+<!--###SERMON_SERIES###-->
+
+<!--###SERMON_SPEAKERS###-->
+###SPEAKER_LASTNAME### ###SPEAKER_FIRSTNAME###<br/>
+<!--###SERMON_SPEAKERS###-->
+
+<!--###SERMON_TOPICS###-->
+###TOPIC_TITLE###
+<!--###SERMON_TOPICS###-->
+<!--###CONTENT###-->
+<!-- ###TEMPLATE_SERMON_SINGLE1### end --> 
+
+
+<br />
 <h3>TEMPLATE_RESOURCE_LIST</h3>
 <em>This is an example template for styling a list of resources.</em>
 <br />
-
 <!-- ###TEMPLATE_RESOURCE_LIST### begin --> 
 <DIV class="wecsermons-pi1-resource-list">
 	<DIV id="wecsermons-pi1-resources-title" class="resource-detail"><!-- ###RESOURCE_LINK### --> ###RESOURCE_TITLE###<!-- ###RESOURCE_LINK### --></DIV>
@@ -224,12 +252,12 @@ RESOURCE_LINK - link to a resource's single view
 <br />
 
 <!-- ###TEMPLATE_RESOURCE_SINGLE### begin -->
-<DIV class="wecsermons-pi1-resource-single">
+<div class="tx-wecsermons-pi1-resource-single">
 ###RESOURCE_TITLE### <br/>
 ###RESOURCE_DESCRIPTION###<br/>
 ###RESOURCE_GRAPHIC### <br/>
 ###RESOURCE_CONTENT### <br/>
-</DIV>
+</div>
 <!-- ###TEMPLATE_RESOURCE_SINGLE### end -->
 
 <!-- ###TEMPLATE_SPEAKERS_LIST### end -->
