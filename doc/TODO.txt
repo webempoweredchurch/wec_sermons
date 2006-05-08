@@ -1,0 +1,28 @@
+**********************************
+***  DESCRIPTIONS
+**********************************
+
+
+*********************************
+** FUTURE RELEASES
+*********************************
+
+
+General Stuff
+-------------
+
+* May 01, 2006 - Create a way for sermons to have custom resources attached to them, and a way to display these per each custom type
+
+I.e.
+Sermon - | Study Guides | Audio | Video | Sermon Notes | Prayer Guide | Small Group Cirriculum (Word Doc) | Builitin | 
+
+* May 01, 2006 - Review how the comment plugin line 670, ve_guestbook, references tt_news articles and filters it's output based on what news article is on the page. We need this in order to tie our other extensions together at the TypoScript Level.
+
+* May 02, 2006 - 2 major challenges. First figure out to how to allow a 'type' field on a resource that changes the visible fields. - Jeff researching as well. 
+Second, find a way to allow resources to be their own plugins which draw thier own content, and have a way to aggregate the content into one 'view'
+
+API
+---
+
+Frontend-Stuff
+----------------

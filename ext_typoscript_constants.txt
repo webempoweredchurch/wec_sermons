@@ -18,7 +18,13 @@ plugin.tx_wecsermons_pi1 {
 	# cat=plugin.tx_wecsermons_pi1/typo/2; type=text; label= List View - Alternating class: string appended to the end of the alternating class, appearing as tx-wecsermons-pi1-{string}
 	listView.alternatingClass = list-odd	
 	
-	# cat=plugin.tx_wecsermons_pi1/links/1; type=int+; label= SinglePid: The UID of the page where the Single View is displayed
+	# cat=plugin.tx_wecsermons_pi1/links/1; type=int+; label= Single View - Single PID: The UID of the page where the Single View is displayed
 	pidSingleView = 
+
+	# cat=plugin.tx_wecsermons_pi1/links/2; type=int+; label= List View - List PID: The UID of the page where the List View is displayed
+	pidListView = 
+
+	# cat=plugin.tx_wecsermons_pi1/links/3; type=int+; label= Search View - Search PID: The UID of the page where the Search View is displayed
+	pidSearchView = 
 
 }

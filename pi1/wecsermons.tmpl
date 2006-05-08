@@ -64,7 +64,7 @@ BROWSE_LINKS - A results browser, allowing pagination of results in list view
 
 <em>Language Markers (see pi1/locallang.php):</em>
 LATEST_HEADER - header for the LATEST element
-BACK_TO_LIST - link back to list-view in single-view template
+BACK_TO_LIST - Text to return to list-view from single-view template
 
 
 <em>Subparts:</em>
@@ -81,51 +81,18 @@ SERIES_TOPICS - General topic that the series is associated with. Aka, category
 SERMON_SERIES_LINK - link to sermon series' single view
 SERMON_LINK - link to a sermon's single view
 RESOURCE_LINK - link to a resource's single view
+BACK_LINK	- link back to the list view
 </pre>
 
 
 <br /><br /><br /><br /><hr />
 <br />
-<h3>TEMPLATE_LIST1</h3>
-<em>This is an example template for styling a sermon listing.</em>
+<h3>TEMPLATE_LIST2</h3>
+<em>This is an example template for styling a sermon listing, grouped by series.</em>
 <br />
 <br />
 <br />
 <br />
-
-
-<!-- ###TEMPLATE_LIST1### begin 
-	This template is an example of how to use the sermons extension to create a custom list view
--->
-<TABLE id=wecsermons-pi1-table-data cellSpacing='1' cellPadding='3' width='###TABLE_WIDTH###'>
-  <TBODY>
-    <!-- ###CONTENT### begin
-    	This begins the content wrapper for repeating content 
-    -->
-      <!-- ###SERMON_SERIES### begin 
-		This begins a sermon series grouping, for grouping sermons by series
-	-->
-    <TR vAlign='top'>
-      <TH colSpan='2'><!-- ###SERMON_SERIES_LINK### -->
-        ###SERMON_SERIES_TITLE###
-        <!-- ###SERMON_SERIES_LINK### --></TH>
-    </TR>
-      <!-- ###SERMON_SERIES### end -->
-    <!-- ###ITEM### begin
-  		This begins the template for a repeating a sermon record
-  	-->
-    <TR###ALTERNATING_CLASS### vAlign='top'>
-      <TD><!--###SERMON_LINK###-->
-        ###OCCURANCE_DATE###
-        <!--###SERMON_LINK###-->
-      </TD>
-      <TD>###SERMON_TITLE###</TD>
-    </TR>
-    <!-- ###ITEM### end -->
-    <!-- ###CONTENT### end -->
-  </TBODY>
-</TABLE>
-<!-- ###TEMPLATE_LIST1### end --> 
 
 <!-- ###TEMPLATE_LIST2### begin 
 	This template is in progress, developing a abstracted grouping mechanism for related records, simliar to a Crystal Reports 'group'
@@ -170,33 +137,39 @@ RESOURCE_LINK - link to a resource's single view
 <em>This is an example template for styling a list of resources.</em>
 <br />
 
-<!-- ###TEMPLATE_LIST3### begin --> 
+<!-- ###TEMPLATE_LIST1### begin --> 
 	<!-- ###CONTENT### begin -->
 	begin
 		<!-- ###ITEM### begin -->
+
 			<div style='border-bottom: 1px dotted black;' class='###ALTERNATING_CLASS###'>
 				<!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###-->
 				###SERMON_OCCURANCE_DATE###
 				###SERMON_DESCRIPTION###
 				###SERMON_SCRIPTURE###
-				###SERMON_RESOURCES###
-				###SERMON_GRAPHIC###
-				<br/><br/>				
+				###SERMON_GRAPHIC###		
 				<!--###SERMON_SPEAKERS###-->
 						###SPEAKER_PHOTO###
 						<div class="tx-wecsermons-speakers-caption">
 						<!--###SPEAKER_LINK###-->###SPEAKER_LASTNAME###, ###SPEAKER_FIRSTNAME### <!--###SPEAKER_LINK###-->
 						</div>
 				<!--###SERMON_SPEAKERS###-->
+
+				<!--###SERMON_RESOURCES###-->
+
+				<!--###SERMON_RESOURCES###-->
+
+
 				<!--###SERMON_TOPICS###-->
 						###TOPIC_TITLE###
 						###TOPIC_DESCRIPTION###
 				<!--###SERMON_TOPICS###-->
-				
+
 				<!--###SERMON_SERIES###-->
 						<!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###-->
 						###SERIES_STARTDATE###
 						###SERIES_ENDDATE###
+						<!--###SERIES_SEASON###-->###SEASON_TITLE###<!--###SERIES_SEASON###-->
 				<!--###SERMON_SERIES###-->
 
 			</div>
@@ -204,10 +177,36 @@ RESOURCE_LINK - link to a resource's single view
 		end
 	<!-- ###CONTENT### end -->
 			###BROWSE_LINKS###
-<!-- ###TEMPLATE_LIST3### end --> 
+<!-- ###TEMPLATE_LIST1### end --> 
 
 <br />
-<h3>TEMPLATE_SERMON_SINGLE</h3>
+<h3>TEMPLATE_SERIES_SINGLE1</h3>
+<em>Template for single view of a sermon.</em>
+<br />
+
+
+<!-- ###TEMPLATE_SERIES_SINGLE1### begin -->
+<!--###CONTENT###--> 
+###SERIES_TITLE###
+###SERIES_DESCRIPTION###
+###SERIES_SCRIPTURE###
+###SERIES_STARTDATE###
+###SERIES_ENDDATE###
+###SERIES_GRAPHIC###
+
+<!--###SERIES_SEASON###-->
+###SEASON_TITLE###
+<!--###SERIES_SEASON###-->
+
+<!--###SERIES_TOPICS###-->
+###TOPIC_TITLE###
+<!--###SERIES_TOPICS###-->
+
+<!--###CONTENT###--> 
+<!-- ###TEMPLATE_SERIES_SINGLE1### end -->
+
+<br />
+<h3>TEMPLATE_SERMON_SINGLE1</h3>
 <em>Template for single view of a sermon.</em>
 <br />
 
@@ -221,7 +220,7 @@ RESOURCE_LINK - link to a resource's single view
 ###SERMON_GRAPHIC###
 
 <!--###SERMON_SERIES###-->
-###SERIES_TITLE###
+<!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###-->
 <!--###SERMON_SERIES###-->
 
 <!--###SERMON_SPEAKERS###-->
@@ -229,9 +228,10 @@ RESOURCE_LINK - link to a resource's single view
 <!--###SERMON_SPEAKERS###-->
 
 <!--###SERMON_TOPICS###-->
-###TOPIC_TITLE###
+Sermon Topic: ###TOPIC_TITLE###
 <!--###SERMON_TOPICS###-->
 <!--###CONTENT###-->
+<!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###-->
 <!-- ###TEMPLATE_SERMON_SINGLE1### end --> 
 
 
@@ -268,36 +268,31 @@ RESOURCE_LINK - link to a resource's single view
 <em>This is an example template for styling a list of resources.</em>
 <br />
 
-<!-- ###TEMPLATE_SINGLE1### begin --> 
+<!-- ###TEMPLATE_SPEAKER_SINGLE1### begin --> 
 	<div class='tx-wecsermons-singleView'>
 	<!-- ###CONTENT### begin -->
-			<div style='border-bottom: 1px dotted black; margin-bottom: 12px;' class='###ALTERNATING_CLASS###'>
-				<!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###-->
-				###SERMON_OCCURANCE_DATE###
-				###SERMON_DESCRIPTION###
-				###SERMON_SCRIPTURE###
-				###SERMON_RESOURCES###
-				###SERMON_GRAPHIC###
-				<br/><br/>				
-				<!--###SERMON_SPEAKERS###-->
 						###SPEAKER_PHOTO###
 						###SPEAKER_EMAIL###
-						<div class="tx-wecsermons-speakers-caption">
-						<!--###SPEAKER_LINK###-->###SPEAKER_LASTNAME###, ###SPEAKER_FIRSTNAME### <!--###SPEAKER_LINK###-->
-						</div>
-				<!--###SERMON_SPEAKERS###-->
-				<!--###SERMON_TOPICS###-->
-						###TOPIC_TITLE###
-						###TOPIC_DESCRIPTION###
-				<!--###SERMON_TOPICS###-->
-				<!--###SERMON_SERIES###-->
-						<!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###-->
-						###SERIES_STARTDATE###
-						###SERIES_ENDDATE###
-				<!--###SERMON_SERIES###-->
-
-			</div>
+						###SPEAKER_LASTNAME### ###SPEAKER_FIRSTNAME###
+						###SPEAKER_URL###
 	<!-- ###CONTENT### end -->
 	</div>
 	<div><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></div>
-<!-- ###TEMPLATE_SINGLE1### end --> 
+<!-- ###TEMPLATE_SPEAKER_SINGLE1### end --> 
+
+<br />
+<h3>TEMPLATE_SEARCHFORM</h3>
+<em>This is the template used to create the search box.</em>
+<br />
+
+<!--###TEMPLATE_SEARCHBOX1### begin-->
+<div class="tx-wecsermons-pi1-searchbox">
+  <form action="###FORM_ACTION###" method="post">
+	 ###SEARCHBOX_OPTIONS###
+    <input type="text" name="tx_wecsermons_pi1[sword]" value="" class="tx-wecsermons-pi1-searchbox-sword" />
+    <input type="submit" value="###SEARCH_BUTTON_NAME###" class="tx-wecsermons-pi1-searchbox-button" />
+    <input type="hidden" name="no_cache" value="1" />
+    <input type="hidden" name="tx_wecsermons_pi1[pointer]" value="" />
+  </form>
+</div>
+<!--###TEMPLATE_SEARCHBOX1### end--> 

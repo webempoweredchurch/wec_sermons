@@ -117,7 +117,7 @@ $TCA["tx_wecsermons_topics"] = Array (
 		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_wecsermons_topics.gif",
 	),
 	"feInterface" => Array (
-		"fe_admin_fieldList" => "hidden, description, name",
+		"fe_admin_fieldList" => "hidden, description, title",
 	)
 );
 

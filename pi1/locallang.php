@@ -26,6 +26,7 @@ $LOCAL_LANG = Array (
 		'pi_list_browseresults_next' => 'Next >',	
 		'pi_list_browseresults_displays' => 'Displaying results ###SPAN_BEGIN###%s to %s</span> out of ###SPAN_BEGIN###%s</span>',	
 		'pi_list_searchBox_search' => 'Search',	
+
 	),
 	'dk' => Array (
 		'list_mode_1' => 'Visning 1',	

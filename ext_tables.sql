@@ -140,7 +140,7 @@ CREATE TABLE tx_wecsermons_topics (
 	cruser_id int(11) DEFAULT '0' NOT NULL,
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
-	description tinytext NOT NULL,
+	description text NOT NULL,
 	name tinytext NOT NULL,
 	
 	PRIMARY KEY (uid),
