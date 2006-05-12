@@ -1487,6 +1487,21 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 	}
 	
+	/**
+	 *	This function is the interface for the SMS aggregating resources into a single view.
+	 *
+	 *
+	 *
+	 *
+	 */
+	function getResourceContent() {
+		//	TODO: Set up an interface for resources to register with, rendering each resource.
+	}
+	
+	function registerResource() {
+		//	TODO: Resource entity registers itself with the SMS, displays on the record type of a resource (like tt_news 'blog')
+	}	
+	
 }	// End class tx_wecsermons_pi1
 
 /**

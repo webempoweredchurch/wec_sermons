@@ -2,6 +2,11 @@
 ***  DESCRIPTIONS
 **********************************
 
+Review of DAM
+
+* FileList is replaced. New location is Media>File>List module. Provides access to the file system while supporting the DAM functionality. This is a full replacement for the original file module.
+* Running on 3.8.x is not recommended.
+* Media files can be attributed with meta information. Such information can describe the content (description, keywords, location), provide technical data (image size) or copyright information for example.
 
 *********************************
 ** FUTURE RELEASES
@@ -19,7 +24,13 @@ Sermon - | Study Guides | Audio | Video | Sermon Notes | Prayer Guide | Small Gr
 * May 01, 2006 - Review how the comment plugin line 670, ve_guestbook, references tt_news articles and filters it's output based on what news article is on the page. We need this in order to tie our other extensions together at the TypoScript Level.
 
 * May 02, 2006 - 2 major challenges. First figure out to how to allow a 'type' field on a resource that changes the visible fields. - Jeff researching as well. 
+
 Second, find a way to allow resources to be their own plugins which draw thier own content, and have a way to aggregate the content into one 'view'
+
+* May 11, 2006 - Search for populating a TCA upon rendering the backend records. We have the issue of modifying TCA on the fly and making those changes show up on the backend upon rendering
+
+
+Resources
 
 API
 ---
