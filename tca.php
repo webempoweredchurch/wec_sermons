@@ -109,34 +109,14 @@ $TCA["tx_wecsermons_resources"] = Array (
 			"exclude" => 1,		
 			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resources.type",		
 			"config" => Array (
-				"type" => "select",	
-				"foreign_table" => "tx_wecsermons_resource_type",	
-				"foreign_table_where" => "AND tx_wecsermons_resource_type.pid=###STORAGE_PID### ORDER BY tx_wecsermons_resource_type.uid",	
-				"size" => 4,	
-				"minitems" => 0,
-				"maxitems" => 10,
-				'wizards' => Array(
-					'_VALIGN' => 'top',
-					'add' => Array(
-						'type' => 'script',
-						'title' => 'LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.add',
-						'icon' => 'add.gif',
-						'params' => Array(
-							'table'=>'tx_wecsermons_resource_type',
-							'pid' => '###STORAGE_PID###',
-							'setValue' => 'set'
-						),
-						'script' => 'wizard_add.php',
-					),
-					'edit' => Array(
-						'type' => 'popup',
-						'title' => 'LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.edit',
-						'script' => 'wizard_edit.php',
-						'popup_onlyOpenIfSelected' => 1,
-						'icon' => 'edit2.gif',
-						'JSopenParams' => 'height=450,width=580,status=0,menubar=0,scrollbars=1',
-					)
-				),			
+				"type" => "select",
+				"items" => Array (
+					Array("LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resources.type.I.0", "0", t3lib_extMgm::extRelPath("wec_sermons")."selicon_tx_wecsermons_sermons_record_type_0.gif"),
+					Array("LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resources.type.I.1", "1", t3lib_extMgm::extRelPath("wec_sermons")."selicon_tx_wecsermons_sermons_record_type_1.gif"),
+					Array("LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resources.type.I.2", "2", t3lib_extMgm::extRelPath("wec_sermons")."selicon_tx_wecsermons_sermons_record_type_2.gif"),
+				),
+				"size" => 1,	
+				"maxitems" => 1,
 			)
 		),
 		'file' => Array (
@@ -177,7 +157,8 @@ $TCA["tx_wecsermons_resources"] = Array (
 		),
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n _diffsource, hidden;;1, title;;;;2-2-2, type, description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts],  graphic;;;;3-3-3, file;;;;4-4-4,url")
+		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n _diffsource, hidden;;1, title;;;;2-2-2, type, description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts],  graphic;;;;3-3-3, file;;;;4-4-4,url"),
+		"2" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n _diffsource, hidden;;1, title;;;;2-2-2, type, url"),
 	),
 	"palettes" => Array (
 		"1" => Array("showitem" => "fe_group")
@@ -270,7 +251,7 @@ $TCA["tx_wecsermons_resource_type"] = Array (
 			"exclude" => 1,		
 			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resource_type.name",		
 			"config" => Array (
-				"type" => "input",	
+				"type" => "input",
 				"size" => "30",	
 				"eval" => "required",
 			)

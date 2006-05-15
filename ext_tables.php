@@ -6,6 +6,7 @@ $TCA["tx_wecsermons_resources"] = Array (
 		"label" => "title",	
 		"tstamp" => "tstamp",
 		"crdate" => "crdate",
+		"type" => "type",
 		"cruser_id" => "cruser_id",
 		"languageField" => "sys_language_uid",	
 		"transOrigPointerField" => "l18n_parent",	
