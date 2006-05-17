@@ -43,7 +43,8 @@ CREATE TABLE tx_wecsermons_resource_type (
 	fe_group int(11) DEFAULT '0' NOT NULL,
 	description text NOT NULL,
 	name tinytext NOT NULL,
-	graphic blob NOT NULL,
+	icon blob NOT NULL,
+	avail_fields blob NOT NULL,
 	
 	PRIMARY KEY (uid),
 	KEY parent (pid)
