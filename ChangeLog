@@ -1,4 +1,7 @@
-(add new changes on top of this file)
+
+2006-05-18 - Brian Slezak <bslezak@webempoweredchurch.org>
+
+	* Added the ability for tx_wecsermons_resource_type records to become record types for tx_wecsermons_resources records
 
 06-03-06 Web Empowered Church Team, Foundation For Evangelism  <wec_sermons@webempoweredchurch.org>
 

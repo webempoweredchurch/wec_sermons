@@ -26,7 +26,42 @@
  *
  * @author	Web Empowered Church Team, Foundation For Evangelism <wec_sermons@webempoweredchurch.org>
  */
-
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   69: class tx_wecsermons_pi1 extends tslib_pibase
+ *   83:     function init($conf)
+ *   99:     function main($content,$conf)
+ *  251:     function singleView($content,$lConf)
+ *  351:     function searchView($content,$lConf)
+ *  364:     function pi_list_searchbox($lConf)
+ *  415:     function listView($content,$lConf)
+ *  502:     function pi_list_makelist($lConf, $template)
+ *  659:     function pi_list_row($lConf, $markerArray = array(), $rowTemplate, $row ='', $c = 2)
+ * 1228:     function pi_list_header()
+ * 1243:     function getMarkerArray( $tableName = '' )
+ * 1342:     function getFieldHeader($fN)
+ * 1359:     function getFieldHeader_sortLink($fN)
+ * 1369:     function formatStr($str)
+ * 1383:     function getTemplateKey($tableName)
+ * 1424:     function getFeAdminList( $tableName = '' )
+ * 1443:     function getNamedTemplateContent($keyName = 'sermon', $view = 'single')
+ * 1496:     function getNamedSubpart( $subpartName, $content )
+ * 1509:     function loadTemplate()
+ * 1535:     function getTemplateFile()
+ * 1555:     function getResourceContent()
+ * 1564:     function registerResource()
+ * 1575:     function uniqueCsv()
+ * 1590:     function unique_array()
+ * 1608:     function get_foreign_column( $currentTable, $relatedTable )
+ * 1634:     function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default = '' )
+ *
+ * TOTAL FUNCTIONS: 25
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
 
 require_once(PATH_tslib.'class.tslib_pibase.php');
 #require_once(PATH_typo3conf . 'ext/wec_api/class.wec_xml.php' );
@@ -177,7 +212,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				case 'search':
 					$content .= $this->searchView( $content, $this->conf['searchView.'] );
 					break;
- 
+
 				default:
 					$content .= '<h1>Please configure \'what to display\' in plugin or typoscript</h1><br/>';
 					break;
@@ -205,9 +240,9 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	}
 
 	/**
-	 * Generates the SINGLE view of a SMS record. 
+	 * Generates the SINGLE view of a SMS record.
 	 *
-	 *	Assumes that $this->internal['currentTable'] and $this->internal['currentRow'] are already populated
+	 * 	Assumes that $this->internal['currentTable'] and $this->internal['currentRow'] are already populated
 	 *
 	 * @param	[type]		$content: ...
 	 * @param	[type]		Local typoscript configuration array
@@ -220,21 +255,21 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 		if ($this->internal['currentRow']['title'])	$GLOBALS['TSFE']->indexedDocTitle=$this->internal['currentRow']['title'];
 
 			//	If currentRow not already loaded by listView
-		if( ! $this->internal['currentRow'] ) {	
-			
+		if( ! $this->internal['currentRow'] ) {
+
 				//	Recursive setting from plugin overrides typoscript
 			$this->conf['recursive'] = getConfigVal( $this, 'recursive', 'sDEF', 'recursive', $lConf, 0 );
-	
+
 				//	Find the starting point in the page tree to search for the record
 			$startingPoint =$this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'startingpoint', 'sDEF');
-	
+
 				//	If configured to use the General Storage Folder of the site, include that in the list of pids
 			if( $this->conf['useStoragePid'] ) {
-	
+
 				//	Retrieve the general storage pid for this site
 				$rootPids = $GLOBALS['TSFE']->getStorageSiterootPids();
 				$storagePid = (string) $rootPids['_STORAGE_PID'];
-	
+
 					//	Merge all lists from typoscript, storagePid, and startingpoint specified at plugin and assign to pidList
 				$this->conf['pidList'] .= ','. $storagePid . ','. $startingPoint;
 			}
@@ -248,32 +283,32 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				$error['type'] = htmlspecialchars( 'WEC Sermons Error!' );
 				$error['message'] = htmlspecialchars( ' Row from requested table was not listed in the "allowedTables" typoscript configuration.' );
 				$error['detail'] = htmlspecialchars( 'Requested Table: ' . $this->piVars['recordType'] . '. allowedTables: ' . $this->conf['allowedTables'] );
-				
+
 				return sprintf( '<p>%s<br/> %s</p>
 				<p>%s</p>
 				', $error['type'], $error['message'], $error['detail'] );
-				
+
 			}
 			else {
 				$this->internal['currentTable'] = $this->piVars['recordType'];
 				$this->internal['currentRow'] = $this->pi_getRecord($this->piVars['recordType'],$this->piVars['showUid']);
-				
+
 			}
 
 		}
 
 			//	Retrieve the template key, which is the translation between the real table name and the template naming.
 		$templateKey = $this->getTemplateKey( $this->internal['currentTable'] );
-	
+
 		$this->template['single'] = $this->getNamedTemplateContent( $templateKey, 'single' );
 
 			//	Report an error if we couldn't pull up the template.
 		if(! $this->template['single'] ) {
-			
+
 				$error = array();
 				$error['type'] = htmlspecialchars( 'WEC Sermons Error!' );
 				$error['message'] = htmlspecialchars( 'Unable to retrieve content for specified template.' );
-				$error['detail'] = htmlspecialchars( 
+				$error['detail'] = htmlspecialchars(
 					sprintf (
 						'Requested Template: ###TEMPLATE_%s_%s%s###',
 						strtoupper( $templateKey ),
@@ -281,23 +316,23 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 						$this->internal['layoutCode']
 					)
 				 );
-				
-				return sprintf( 
-					'<p>%s<br/> %s</p>	<p>%s</p>', 
-					$error['type'], 
-					$error['message'], 
-					$error['detail'] 
+
+				return sprintf(
+					'<p>%s<br/> %s</p>	<p>%s</p>',
+					$error['type'],
+					$error['message'],
+					$error['detail']
 				);
 		}
-		
+
 		$this->template['content'] = $this->cObj->getSubpart( $this->template['single'], '###CONTENT###' );
-	
+
 			//	Retrieve the markerArray for the right table
 		$markerArray = $this->getMarkerArray( $this->internal['currentTable'] );
 
 			//	Process row
 		$content .= $this->cObj->substituteSubpart( $this->template['single'], '###CONTENT###', $this->pi_list_row($lConf, $markerArray, $this->template['content'], $this->internal['currentRow'] ) );
-		
+
 			//	Parse for additional markers. Browse results, etc.
 		$markerArray = $this->getMarkerArray();
 
@@ -314,56 +349,62 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	 * @return	[type]		...
 	 */
 	function searchView($content,$lConf)	{
-		
+
 		return "\n\n".$this->pi_list_searchbox($lConf);
-		
-		
+
+
 	}
-	
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$lConf: ...
+	 * @return	[type]		...
+	 */
 	function pi_list_searchbox($lConf) {
-		
+
 			//	Retrieve searchbox from template
 		$searchBoxTemplate = $this->getNamedTemplateContent( 'searchbox', '' );
-	
+
 		$markerArray = array();
-		
+
 		$markerArray['###SEARCHBOX_OPTIONS###'] = '';
 		$markerArray['###FORM_ACTION###'] = '';
 		$markerArray['###SEARCH_BUTTON_NAME###'] = '';
-		
-		
+
+
 		$markerArray['###SEARCH_BUTTON_NAME###'] = $this->pi_getLL('pi_list_searchBox_search');
-		
+
 			//	Find the PID that we should post form data to
 		$pid = getConfigVal( $this, '', '', 'pidSearchView', $this->conf, $GLOBALS['TSFE']->id );
-		
+
 		$markerArray['###FORM_ACTION###'] = $this->cObj->typolink_URL( array( 'parameter' => $pid ) );
-		
+
 			//	TODO: Find a way to iterate for every search-able table and create an option for each.
-			
+
 		$tables = t3lib_div::trimExplode( ',', $lConf['searchTables'], 1 );
 
 		$selectContent ='<option value=""></option>\n';
 		foreach( $tables as $tableName ) {
 
-			//	Grab the tablename from locallang_db			
+			//	Grab the tablename from locallang_db
 			$llName = $GLOBALS['TSFE']->sL('LLL:EXT:wec_sermons/locallang_db.php:'.$tableName);
 			$option = '<option value="' . $tableName . '">'. $llName. "</option>\n";
 			$selectContent .= $option;
 		}
-		
-		$markerArray['###SEARCHBOX_OPTIONS###'] = $this->cObj->stdWrap( 
-			$selectContent, 
-			array( 
-				'wrap' => '<select class="'.$this->pi_getClassName('searchbox-select').'" name="tx_wecsermons_pi1[sword_table]">|</select>' 
-			) 
+
+		$markerArray['###SEARCHBOX_OPTIONS###'] = $this->cObj->stdWrap(
+			$selectContent,
+			array(
+				'wrap' => '<select class="'.$this->pi_getClassName('searchbox-select').'" name="tx_wecsermons_pi1[sword_table]">|</select>'
+			)
 		);
-		
+
 		return $this->cObj->substituteMarkerArrayCached( $searchBoxTemplate, $markerArray );
 
 	}
-	
-	
+
+
 	/**
 	 * [Put your description here]
 	 *
@@ -393,8 +434,8 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			$this->conf['pidList'] .= ','. $startingPoint;
 
 			// If a single element should be displayed, jump to single view
-		if ($this->piVars['showUid'])	{	
-	
+		if ($this->piVars['showUid'])	{
+
 			//	Check if table is in allowedTables
 			if( ! t3lib_div::inList( $this->conf['allowedTables'], $this->piVars['recordType'] ) ) {
 
@@ -402,18 +443,18 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				$error['type'] = htmlspecialchars( 'WEC Sermons Error!' );
 				$error['message'] = htmlspecialchars( ' Row from requested table was not listed in the "allowedTables" typoscript configuration.' );
 				$error['detail'] = htmlspecialchars( 'Requested Table: ' . $this->piVars['recordType'] . '. allowedTables: ' . $this->conf['allowedTables'] );
-				
+
 				return sprintf( '<p>%s<br/> %s</p>
 				<p>%s</p>
 				', $error['type'], $error['message'], $error['detail'] );
-				
+
 			}
-			
+
 			$this->internal['currentTable'] = $this->piVars['recordType'];
 			$this->internal['currentRow'] = $this->pi_getRecord($this->piVars['recordType'],$this->piVars['showUid']);
 
 			return $this->singleView($content,$this->conf['singleView.']);
-			
+
 		} else {	//	Otherwise continue with list view
 
 				//	List View Modes
@@ -422,23 +463,23 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				'2'=> $this->pi_getLL('list_mode_2','Mode 2'),
 				'3'=> $this->pi_getLL('list_mode_3','Mode 3'),
 			);
-			
+
 				//	Intialize query params if not set
 			if (!isset($this->piVars['pointer']))	$this->piVars['pointer']=0;
-			if( ! isset( $this->piVars['recordType'] ) ) $this->piVars['recordType'] = getConfigVal( $this, 'detail_table', 'sDEF', 'detail_table', $lConf, 'tx_wecsermons_sermons' );			
+			if( ! isset( $this->piVars['recordType'] ) ) $this->piVars['recordType'] = getConfigVal( $this, 'detail_table', 'sDEF', 'detail_table', $lConf, 'tx_wecsermons_sermons' );
 
 				// Initializing the query parameters:
 			list($this->internal['orderBy'],$this->internal['descFlag']) = explode(':',$this->piVars['sort']);
 			$this->internal['results_at_a_time']=t3lib_div::intInRange($lConf['results_at_a_time'],0,1000,20);		// Number of results to show in a listing.
 			$this->internal['maxPages']=t3lib_div::intInRange($lConf['maxPages'],0,1000,5);;		// The maximum number of "pages" in the browse-box: "Page 1", "Page 2", etc.
-			$this->internal['searchFieldList']=$lConf[$this->piVars['recordType'].'.']['searchFieldList'];		
+			$this->internal['searchFieldList']=$lConf[$this->piVars['recordType'].'.']['searchFieldList'];
 			$this->internal['orderByList']=$lConf['orderByList'];
 
 				//	Load the template file. By default, this populates the $this->template array with the list template from ###TEMPLATE_LIST{layoutCode}###
 			$this->loadTemplate();
 
 			$content = $this->cObj->substituteSubpart( $this->template['list'], '###CONTENT###', $this->pi_list_makelist($lConf, $this->template['content'] ) );
-		
+
 				//	Parse for additional markers. Browse results, etc.
 			$markerArray = $this->getMarkerArray();
 
@@ -473,47 +514,47 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 				//Run a series of checks before branching to grouping logic, return error if necessary
 			if( $groupTable == '' || ! $this->template['group'] ) {
-				
+
 				$error = array();
 				$error['type'] = htmlspecialchars( 'WEC Sermons Error!' );
 				$error['message'] = htmlspecialchars( ' "group_table" option was specified, but no ###GROUP### tag was found in the template.' );
 				$error['detail'] = htmlspecialchars( 'Template file: ' . $this->internal['templateFile'] );
-				
+
 				$format =  sprintf( '<p>%s<br/> %s</p>
 				<p>%s</p>
 				', $error['type'], $error['message'], $error['detail'] );
-				
+
 				return $format;
 			}
 				//	Check if group_table is in list of allowed tables
 			if( ! t3lib_div::inList( $this->conf['allowedTables'], $groupTable ) ) {
-	
+
 				$error = array();
 				$error['type'] = htmlspecialchars( 'WEC Sermons Error!' );
 				$error['message'] = htmlspecialchars( 'Table specified in "group_table" option is not in the list of allowed tables option, ".allowedTables"' );
 				$error['detail'] = '';
-				
+
 				$format =  sprintf( '<p>%s<br/> %s</p>
 				<p>%s</p>
 				', $error['type'], $error['message'], $error['detail'] );
-				
+
 				return $format;
-	
+
 			}
-			
+
 			if( ! t3lib_div::inList( $this->conf['allowedTables'], $detailTable ) ) {
-				
+
 				$error = array();
 				$error['type'] = htmlspecialchars( 'WEC Sermons Error!' );
 				$error['message'] = htmlspecialchars( 'Table specified in "detail_table" option is not in the list of allowed tables option, ".allowedTables"' );
 				$error['detail'] = '';
-				
+
 				$format =  sprintf( '<p>%s<br/> %s</p>
 				<p>%s</p>
 				', $error['type'], $error['message'], $error['detail'] );
-				
+
 				return $format;
-	
+
 			}
 
 			$markerArray = $this->getMarkerArray( $groupTable );
@@ -522,7 +563,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 			$this->internal['currentTable'] = $this->internal['groupTable'] = $groupTable;
 			$res = $this->pi_exec_query($groupTable);
-				
+
 				//	Search TCA for relation to previous table where columns.[colName].config.foreign_table = $this->internal['groupTable']
 			$foreign_column = get_foreign_column( $detailTable, $this->internal['groupTable'] );
 			if( ! $foreign_column ) {
@@ -530,13 +571,13 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				$error['type'] = htmlspecialchars( 'WEC Sermons Error!' );
 				$error['message'] = htmlspecialchars( 'Grouping tag, "###GROUP###" was found in template, but was not related to "' . $groupTable . '"' );
 				$error['detail'] = '';
-				
-				$format =  sprintf( '<p>%s<br/> %s</p><p>%s</p>', 
-					$error['type'], 
-					$error['message'], 
-					$error['detail'] 
+
+				$format =  sprintf( '<p>%s<br/> %s</p><p>%s</p>',
+					$error['type'],
+					$error['message'],
+					$error['detail']
 				);
-				
+
 				return $format;
 				return '<p>WEC Sermons Error!<br/> Grouping tag, &quot;###GROUP###&quot; was found in template, but was not related to &quot;table_to_list&quot;</p>';
 			}
@@ -546,14 +587,14 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 				//	Iterate every record in groupTable
 			while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) ) {
-				
+
 					//	Process the current row
 				$groupContent .= $this->pi_list_row( $lConf, $markerArray, $groupTemplate, $this->internal['currentRow'] );
-			
-					//	Store previous row and table as we switch to retreiving detail		
+
+					//	Store previous row and table as we switch to retreiving detail
 				$this->internal['previousRow'] = $this->internal['currentRow'];
 				$this->internal['previousTable'] = $this->internal['currentTable'];
-				
+
 				$this->internal['currentTable'] = $detailTable;
 
 					//	Exec query on detail table, for every record related to our group record
@@ -564,25 +605,25 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 					$groupContent .= $this->pi_list_row( $lConf, $detailMarkArray, $detailTemplate, $this->internal['currentRow'] );
 					$detailCount++;
 				}
-				
+
 				//	Restore row and table to internal storage
 				$this->internal['currentRow'] = $this->internal['previousRow'];
 				$this->internal['currentTable'] = $this->internal['previousTable'];
-				
+
 					//	Aggregate groupContent into content if detail records exist.
 				if( $detailCount > 0 )
 					$content .= $groupContent;
-				
+
 				$groupContent = '';
 			}
 
 		}	//	End if group
 		else {	//	No group found, just provide a straight list
-			
+
 				//	Get the related table entries to the group, using 'tx_wecsermons_sermons' if none specified
 			$tableToList = getConfigVal( $this, 'table_to_list', 'sDEF', 'table_to_list', $lConf, 'tx_wecsermons_sermons' );
 			$markerArray = $this->getMarkerArray( $tableToList );
-		
+
 			$itemTemplate = $this->cObj->getSubpart( $template, '###ITEM###' );
 			$this->internal['currentTable'] = $this->internal['groupTable'] = 'tx_wecsermons_series';
 
@@ -599,7 +640,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				$content .= $this->pi_list_row( $lConf, $markerArray, $itemTemplate, $this->internal['currentRow'], $count );
 				$count++;
 			}
-			
+
 		}
 
 		return $content;
@@ -612,97 +653,98 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	 * @param	string		$markerArray: Array of typo3 tag markers as keys
 	 * @param	string		$rowTemplate: A marker based template, needing to be processed
 	 * @param	integer		$c: Number of current row, to determine even / odd rows
+	 * @param	[type]		$c: ...
 	 * @return	string		A populated template, filled with data from the row
 	 */
 	function pi_list_row($lConf, $markerArray = array(), $rowTemplate, $row ='', $c = 2)	{
 		$wrappedSubpartArray = array();
 		$subpartArray = array();
-			
+
 			//	Using passed markerArray, process each key and insert field content
 			//	The reason we are have this looping structure is for future off-loading of this logic
 		foreach( $markerArray as $key => $value ) {
 
 				$fieldName = $value;
 				$markerArray[$key] = '';
-	
+
 				switch( $key ) {
-					
+
 				case '###SERMON_TITLE###':
-					if( $row[$fieldName] ) {				
+					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_sermons' );
 						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_sermons.']['title'], $lConf['tx_wecsermons_sermons.']['title.'] );
 
 
 					}
 				break;
-					
+
 				case '###SERMON_OCCURANCE_DATE###':
-					if( $row[$fieldName] )				
+					if( $row[$fieldName] )
 					{
 							//	Wrap the date, choosing from one of three settings in typoscript
 						$dateWrap = $lConf['tx_wecsermons_sermons.']['occurance.'] ? $lConf['tx_wecsermons_sermons.']['occurance.'] : $lConf['general_dateWrap.'];
 						if( ! $dateWrap ) $dateWrap = $this->conf['general_dateWrap.'];
-		
+
 						$this->local_cObj->start( $row, 'tx_wecsermons_sermons' );
 						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_sermons.']['occurance'], $dateWrap);
 					}
 				break;
-	
+
 				case '###SERMON_DESCRIPTION###':
-					if( $row[$fieldName] ) {	
+					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_sermons' );
 						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_sermons.']['description'], $lConf['tx_wecsermons_sermons.']['description.'] );
 					}
 				break;
-					
+
 				case '###SERMON_SCRIPTURE###':
-					if( $row[$fieldName] ) {	
+					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_sermons' );
 						$markerArray[$key] =  $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_sermons.']['scripture'], $lConf['tx_wecsermons_sermons.']['scripture.'] );
 					}
-				break;  
-				
+				break;
+
 				case '###SERMON_GRAPHIC###':
 					if( $row[$fieldName] ) {
-						
+
 						$this->local_cObj->start( $row, 'tx_wecsermons_sermons' );
-						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_sermons.']['graphic'], $lConf['tx_wecsermons_sermons.']['graphic.']);			
+						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_sermons.']['graphic'], $lConf['tx_wecsermons_sermons.']['graphic.']);
 					}
 					break;
-		
-	
+
+
 				case '###SERMON_LINK###':
-					$wrappedSubpartArray[$key] = explode( 
+					$wrappedSubpartArray[$key] = explode(
 						'|',
 						$this->pi_list_linkSingle(
-							'|', 
-							$row['uid'], 
+							'|',
+							$row['uid'],
 							$this->conf['allowCaching'],
 							array(
 								'recordType' => 'tx_wecsermons_sermons',
-							), 
-							FALSE, 
-							$this->conf['pidSingleView'] ? $this->conf['pidSingleView']:0 
+							),
+							FALSE,
+							$this->conf['pidSingleView'] ? $this->conf['pidSingleView']:0
 							)
 					);
 				break;
-				
+
 				case '###SERMON_SERIES###':
 
 					$subpartArray[$key] = '';
-					if( $row[$fieldName] ) {						
-						
+					if( $row[$fieldName] ) {
+
 						$seriesTemplate = $this->cObj->getSubpart( $rowTemplate, $key );
 						$seriesMarkerArray = $this->getMarkerArray('tx_wecsermons_series');
 						$seriesContent = '';
-						
+
 							//	Store the current table and row while we switch to another table for a moment
 						$this->internal['previousTable'] = $this->internal['currentTable'];
 						$this->internal['currentTable'] = 'tx_wecsermons_series';
 						$this->internal['previousRow'] = $this->internal['currentRow'];
 
-						$seriesRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery( 
-							'tx_wecsermons_series.*', 
+						$seriesRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+							'tx_wecsermons_series.*',
 							'tx_wecsermons_series',
 							' uid in (' . $row[$fieldName] . ')' . $this->cObj->enableFields( 'tx_wecsermons_series' )
 						);
@@ -714,7 +756,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 							$seriesContent .= $this->pi_list_row( $lConf, $seriesMarkerArray, $seriesTemplate, $this->internal['currentRow'] );
 							$count++;
 						}
-			
+
 						//	Restore the preview table and row
 					$this->internal['currentTable'] = $this->internal['previousTable'];
 					$this->internal['currentRow'] = $this->internal['previousRow'];
@@ -722,13 +764,13 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 					//	Replace marker content with subpart, wrapping stdWrap
 						if( $count > 0 )
 							$subpartArray[$key] = $this->cObj->stdWrap( $seriesContent, $lConf['tx_wecsermons_sermons.']['series.'] );
-							
+
 					}
-				
+
 				break;
-				
+
 				case '###SERMON_SPEAKERS###':
-		
+
 					$subpartArray[$key] = '';
 					if( $row[$fieldName] ) {
 
@@ -741,35 +783,35 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 						$this->internal['previousTable'] = $this->internal['currentTable'];
 						$this->internal['currentTable'] = 'tx_wecsermons_speakers';
 						$this->internal['previousRow'] = $this->internal['currentRow'];
-						
+
 							//	Retrieve all speaker records that are related to this sermon
-						$speakerRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery( 
-							'tx_wecsermons_speakers.*', 
+						$speakerRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+							'tx_wecsermons_speakers.*',
 							'tx_wecsermons_speakers',
 							' uid in (' . $row[$fieldName] . ')' . $this->cObj->enableFields( 'tx_wecsermons_speakers' )
 						);
 
 						$count = 0;
 						while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $speakerRes ) ) {
-		
+
 								//	Recursive call to $this->pi_list_row() to populate each speaker marker
 							$speakerContent .= $this->pi_list_row( $lConf, $speakerMarkerArray, $speakerTemplate, $this->internal['currentRow'] );
 							$count++;
 						}
-						
+
 							//	Restore the preview table and row
 						$this->internal['currentTable'] = $this->internal['previousTable'];
 						$this->internal['currentRow'] = $this->internal['previousRow'];
-			
+
 							//	Replace marker content with subpart, wrapping stdWrap
 						if( $count > 0 )
 							$subpartArray[$key] = $this->cObj->stdWrap( $speakerContent, $lConf['tx_wecsermons_sermons.']['speakers.'] );
 
 					}
 				break;
-								
+
 				case '###SERMON_TOPICS###':
-				
+
 					$subpartArray[$key] = '';
 
 					if( $row[$fieldName] ) {
@@ -778,14 +820,14 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 						$topicTemplate = $this->cObj->getSubpart( $rowTemplate, $key );
 						$topicMarkerArray = $this->getMarkerArray('tx_wecsermons_topics');
 						$topicContent = '';
-						
+
 							//	Store the current table and row while we switch to another table for a moment
 						$this->internal['previousTable'] = $this->internal['currentTable'];
 						$this->internal['currentTable'] = 'tx_wecsermons_topics';
 						$this->internal['previousRow'] = $this->internal['currentRow'];
-						
-						$topicRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery( 
-							'tx_wecsermons_topics.*', 
+
+						$topicRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+							'tx_wecsermons_topics.*',
 							'tx_wecsermons_topics',
 							' uid in (' . $row[$fieldName] . ')' . $this->cObj->enableFields( 'tx_wecsermons_topics' )
 						);
@@ -797,11 +839,11 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 							$topicContent .= $this->pi_list_row( $lConf, $topicMarkerArray, $topicTemplate, $this->internal['currentRow'] );
 							$count++;
 						}
-			
+
 							//	Restore the preview table and row
 						$this->internal['currentTable'] = $this->internal['previousTable'];
 						$this->internal['currentRow'] = $this->internal['previousRow'];
-			
+
 							//	Replace marker content with subpart
 						if( $count > 0 )
 							$subpartArray[$key] = $this->cObj->stdWrap( $topicContent, $lConf['tx_wecsermons_sermons.']['topics.'] );
@@ -813,9 +855,9 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				case '###SERMON_RESOURCES###':
 					$subpartArray[$key] = '';
 
-				
+
 				break;
-						//	Select the related resources and the resource type			
+						//	Select the related resources and the resource type
 					$res = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query(
 						'tx_wecsermons_resources.*',
 						'tx_wecsermons_sermons',
@@ -826,16 +868,16 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 					$count = 0;
 					while( $resource = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res ) ) {
-						
+
 						//	TODO: For any resource type, define a particular rendering method
-						
+
 						if( ! $resource['file'] && $resource['url'] )	{	//	No file attached and URL location given
-							
+
 							// TODO: simply wrap the url in an anchor tag
 						}
 					}
 				break;
-				
+
 				case '###RESOURCE_TITLE###':
 					if( $row[$fieldName] )
 						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_resources.']['title.'] );
@@ -845,25 +887,25 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 					if( $row[$fieldName] )
 						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_resources.']['description.'] );
 				break;
-				
+
 				case '###RESOURCE_GRAPHIC###':
 					if( $row[$fieldName] ) {
 						// Use IMAGE object to draw. Implement so we can allow configuration though typoscript
 						$image = t3lib_div::makeInstance('tslib_cObj');
-				
+
 							//	TODO: Use the path from TCA, $TCA['tx_wecsermons_sermons']['columns']['graphic']['config']['uploadfolder']
 						$imageConf = array(
 							'file' => 'uploads/tx_wecsermons/' . $row[$fieldName],
 						);
-						
+
 							//	Merge our local config with typoscript config, typoscript overriding
 						$imageConf = t3lib_div::array_merge( $imageConf, $lConf['tx_wecsermons_resources.']['graphic.'] );
-					
+
 							//	Render the image object
-						$markerArray[$key] = $image->IMAGE( $imageConf );			
+						$markerArray[$key] = $image->IMAGE( $imageConf );
 					}
 				break;
-				
+
 				case '###RESOURCE_CONTENT###':
 						//	Branch if file exists, otherwise look for a url alternate location
 					if( $row['file'] ) {
@@ -873,58 +915,58 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 						//	TODO: Link to the resource
 					}
 				break;
-					
+
 				case '###SERIES_TITLE###':
 					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_series' );
 						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_series.']['title'], $lConf['tx_wecsermons_series.']['title.'] );
-					}					
+					}
 				break;
-					
+
 				case '###SERIES_DESCRIPTION###':
 					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_series' );
 						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_series.']['description'], $lConf['tx_wecsermons_series.']['description.'] );
 					}
 				break;
-					
+
 				case '###SERIES_GRAPHIC###':
 					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_series' );
-						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_series.']['graphic'], $lConf['tx_wecsermons_series.']['graphic.']);			
+						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_series.']['graphic'], $lConf['tx_wecsermons_series.']['graphic.']);
 					}
 				break;
-				
+
 				case '###SERIES_SCRIPTURE###':
 					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_series' );
 						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_series.']['scripture'], $lConf['tx_wecsermons_series.']['scripture.'] );
 					}
 				break;
-					
+
 				case '###SERIES_STARTDATE###':
 					if( $row[$fieldName] ) {
 							//	Wrap the date, choosing from one of three settings in typoscript
 						$dateWrap = $lConf['tx_wecsermons_series.']['startdate.'] ? $lConf['tx_wecsermons_series.']['startdate.'] : $lConf['general_dateWrap.'];
 						if( ! $dateWrap ) $dateWrap = $this->conf['general_dateWrap.'];
-		
+
 						$this->local_cObj->start( $row, 'tx_wecsermons_series' );
 						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_series.']['startdate'], $dateWrap );
 					}
 				break;
-					
+
 				case '###SERIES_ENDDATE###':
 					if( $row[$fieldName] ) {
 
 							//	Wrap the date, choosing from one of three settings in typoscript
 						$dateWrap = $lConf['tx_wecsermons_series.']['enddate.'] ? $lConf['tx_wecsermons_series.']['enddate.'] : $lConf['general_dateWrap.'];
 						if( ! $dateWrap ) $dateWrap = $this->conf['general_dateWrap.'];
-		
+
 						$this->local_cObj->start( $row, 'tx_wecsermons_series' );
 						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_series.']['enddate'], $dateWrap );
 					}
 				break;
-				
+
 				case '###SERIES_SEASON###':
 
 						//	Check for related season and insert season subpart
@@ -936,14 +978,14 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 						$seasonTemplate = $this->cObj->getSubpart( $rowTemplate, $key );
 						$seasonMarkerArray = $this->getMarkerArray('tx_wecsermons_liturgical_seasons');
 						$seasonContent = '';
-						
+
 							//	Store the current table and row while we switch to another table for a moment
 						$this->internal['previousTable'] = $this->internal['currentTable'];
 						$this->internal['currentTable'] = 'tx_wecsermons_liturgical_season';
 						$this->internal['previousRow'] = $this->internal['currentRow'];
 
-						$seasonRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery( 
-							'tx_wecsermons_liturgical_season.*', 
+						$seasonRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+							'tx_wecsermons_liturgical_season.*',
 							'tx_wecsermons_liturgical_season',
 							' uid in (' . $row[$fieldName] . ')' . $this->cObj->enableFields( 'tx_wecsermons_liturgical_season' )
 						);
@@ -955,22 +997,22 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 							$seasonContent .= $this->pi_list_row( $lConf, $seasonMarkerArray, $seasonTemplate, $this->internal['currentRow'] );
 							$count++;
 						}
-			
+
 							//	Restore the preview table and row
 						$this->internal['currentTable'] = $this->internal['previousTable'];
 						$this->internal['currentRow'] = $this->internal['previousRow'];
-		
+
 							//	Replace marker content with subpart
 						if( $count > 0 )
 							$subpartArray[$key] = $this->cObj->stdWrap( $seasonContent, $lConf['tx_wecsermons_series.']['season.'] );
 
 					}
 
-					
+
 				break;
-					
+
 				case '###SERIES_TOPICS###':
-				
+
 					$subpartArray[$key] = '';
 
 						// Check for related topics and insert topic subpart
@@ -980,14 +1022,14 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 						$topicTemplate = $this->cObj->getSubpart( $rowTemplate, $key );
 						$topicMarkerArray = $this->getMarkerArray('tx_wecsermons_topics');
 						$topicContent = '';
-						
+
 							//	Store the current table and row while we switch to another table for a moment
 						$this->internal['previousTable'] = $this->internal['currentTable'];
 						$this->internal['currentTable'] = 'tx_wecsermons_topics';
 						$this->internal['previousRow'] = $this->internal['currentRow'];
 
-						$topicRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery( 
-							'tx_wecsermons_topics.*', 
+						$topicRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+							'tx_wecsermons_topics.*',
 							'tx_wecsermons_topics',
 							' uid in (' . $row[$fieldName] . ')' . $this->cObj->enableFields( 'tx_wecsermons_topics' )
 						);
@@ -998,78 +1040,78 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 							$topicContent .= $this->pi_list_row( $lConf, $topicMarkerArray, $topicTemplate, $this->internal['currentRow'] );
 							$count++;
 						}
-			
+
 							//	Restore the preview table and row
 						$this->internal['currentTable'] = $this->internal['previousTable'];
 						$this->internal['currentRow'] = $this->internal['previousRow'];
-		
+
 							//	Replace marker content with subpart
 						if( $count > 0 )
 							$subpartArray[$key] = $this->cObj->stdWrap( $topicContent, $lConf['tx_wecsermons_series.']['topics.'] );
 
 					}
-					
+
 				break;
-				
+
 				case '###SERIES_LINK###':
 
-					$wrappedSubpartArray[$key] = explode( 
+					$wrappedSubpartArray[$key] = explode(
 						'|',
 						$this->pi_list_linkSingle(
-							'|', 
-							$row['uid'], 
+							'|',
+							$row['uid'],
 							$this->conf['allowCaching'],
 							array(
 								'recordType' => 'tx_wecsermons_series',
-							), 
-							FALSE, 
-							$this->conf['pidSingleView'] ? $this->conf['pidSingleView']:0 
+							),
+							FALSE,
+							$this->conf['pidSingleView'] ? $this->conf['pidSingleView']:0
 							)
 					);
-				
+
 				break;
-					
+
 				case '###TOPIC_TITLE###':
 					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_topics' );
 						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_topics.']['title'], $lConf['tx_wecsermons_topics.']['title.'] );
 					}
-					
+
 				break;
-					
+
 				case '###TOPIC_DESCRIPTION###':
 					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_topics' );
 						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_topics.']['description'], $lConf['tx_wecsermons_topics.']['description.'] );
 					}
-					
+
 				break;
-					
+
 				case '###SEASON_TITLE###':
 					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_liturgical_season' );
 						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_liturgical_season.']['title'], $lConf['tx_wecsermons_liturgical_season.']['title.'] );
 
 					}
-					
+
 				break;
-					
+
 				case '###SPEAKER_FIRSTNAME###':
 					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_speakers' );
 						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_speakers.']['firstname'], $lConf['tx_wecsermons_speakers.']['firstname.'] );
 					}
-					
+
 				break;
-					
+
 				case '###SPEAKER_LASTNAME###':
 					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_speakers' );
 						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_speakers.']['lastname'], $lConf['tx_wecsermons_speakers.']['lastname.'] );
 					}
-					
+
 				break;
-					
+
 				case '###SPEAKER_URL###':
 					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_speakers' );
@@ -1077,9 +1119,9 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 					}
 
 				break;
-					
+
 				case '###SPEAKER_EMAIL###':
-						
+
 						//	Create link, making sure it is spam protected
 					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_speakers' );
@@ -1087,7 +1129,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 					}
 				break;
-					
+
 				case '###SPEAKER_PHOTO###':
 					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_speakers' );
@@ -1097,30 +1139,30 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				break;
 
 				case '###SPEAKER_LINK###':
-									
+
 					$this->local_cObj->start( $row, 'tx_wecsermons_speakers' );
 
 						//	If linkToUrl is set, generate a link to the url specified in the 'url' field of their record
 					if( $lConf['tx_wecsermons_speakers.']['linkToUrl'] ) {
-							
+
 							//	Use the typolink properties specified for the url field
 						$typoLink = $lConf['tx_wecsermons_speakers.']['url.']['typolink.'];
-						
+
 						$wrappedSubpartArray[$key] = $this->local_cObj->typolinkWrap( $typoLink );
 					}
 					else
 						// Generate a link to the Speaker Single view
-					$wrappedSubpartArray[$key] = explode( 
+					$wrappedSubpartArray[$key] = explode(
 						'|',
 						$this->pi_list_linkSingle(
-							'|', 
-							$row['uid'], 
+							'|',
+							$row['uid'],
 							$this->conf['allowCaching'],
 							array(
 								'recordType' => 'tx_wecsermons_speakers',
-							), 
-							FALSE, 
-							$this->conf['pidSingleView'] ? $this->conf['pidSingleView']:0 
+							),
+							FALSE,
+							$this->conf['pidSingleView'] ? $this->conf['pidSingleView']:0
 							)
 					);
 
@@ -1129,37 +1171,37 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				case '###ALTERNATING_CLASS###':
 					$markerArray['###ALTERNATING_CLASS###'] = $c % 2 ? $this->pi_getClassName( $lConf['alternatingClass'] )  : '';
 				break;
-				
+
 				case '###BROWSE_LINKS###':
 					$markerArray['###BROWSE_LINKS###'] = $this->pi_list_browseresults();
 				break;
-				
+
 				case '###BACK_LINK###':
 
-						//	If recordType is not set, retreive value or set it to sermons table. This is in case of hard linking to the single view instead of linking through the list view.					
+						//	If recordType is not set, retreive value or set it to sermons table. This is in case of hard linking to the single view instead of linking through the list view.
 					if( ! isset( $this->piVars['recordType'] ) ) $this->piVars['recordType'] = getConfigVal( $this, 'detail_table', 'sDEF', 'detail_table', $lConf, 'tx_wecsermons_sermons' );
 
-					$wrappedSubpartArray[$key] = explode( 
+					$wrappedSubpartArray[$key] = explode(
 						'|',
 						$this->pi_linkTP(
-							'|', 
+							'|',
 							array(),
 							$this->conf['allowCaching'],
-							$this->conf['pidListView'] 
+							$this->conf['pidListView']
 						)
 					);
 				break;
-				
+
 				case '###BACK_TO_LIST###':
-				
+
 					$markerArray[$key] =  $this->cObj->stdWrap( $this->pi_getLL('back','Back'), $lConf['back.'] );
-			
+
 				break;
-				
+
 				}	// End Switch
-				
+
 				//	TODO: Add a hook here for processing extra markers
-				
+
 		}	// End Foreach
 
 
@@ -1170,7 +1212,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 				//	Get editIcon using $this->internal['currentRow'] and $this->internal['currentTable']
 			$lContent = $this->pi_getEditIcon( $lContent, $this->getFeAdminList() );
-			
+
 				//	Get Editpanel using $this->internal['currentRow'] and $this->internal['currentTable']
 			$lContent .= $this->pi_getEditPanel();
 
@@ -1193,15 +1235,15 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 
 	/**
-	 *	Returns the markerArray for a specific table
+	 * Returns the markerArray for a specific table
 	 *
-	 *	@param	string	Table name to retrieve markers for
-	 *	@return	array	Array filled with markers as keys, with empty values
+	 * @param	string		Table name to retrieve markers for
+	 * @return	array		Array filled with markers as keys, with empty values
 	 */
 	 function getMarkerArray( $tableName = '' ) {
-	 	
+
 	 		$markerArray = array();
-	 		
+
 	 	switch ( $tableName ) {
 	 		case 'tx_wecsermons_sermons':
 	 			$markerArray = array (
@@ -1218,7 +1260,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 					'###ALTERNATING_CLASS###' => '',
 	 			);
 	 		break;
-	 		
+
 	 		case 'tx_wecsermons_series':
 	 			$markerArray = array (
 					'###SERIES_TITLE###' => 'title',
@@ -1231,10 +1273,10 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 					'###SERIES_GRAPHIC###' => 'graphic',
 					'###SERIES_LINK###' => '',
 					'###ALTERNATING_CLASS###' => '',
-					
-				);	 		
+
+				);
 	 		break;
-	 		
+
 	 		case 'tx_wecsermons_topics':
 	 			$markerArray = array (
 					'###TOPIC_TITLE###' => 'name',
@@ -1242,7 +1284,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 					'###ALTERNATING_CLASS###' => '',
 				);
 	 		break;
-	 		
+
 	 		case 'tx_wecsermons_speakers':
 	 			$markerArray = array (
 					'###SPEAKER_FIRSTNAME###' => 'firstname',
@@ -1264,21 +1306,21 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 					'###ALTERNATING_CLASS###' => '',
 				);
 	 		break;
-	 		
+
 	 		case 'tx_wecsermons_liturgical_seasons':
 	 			$markerArray = array (
 					'###SEASON_TITLE###' => 'season_name',
 					'###ALTERNATING_CLASS###' => '',
 				);
 	 		break;
-	 		
+
 	 		case 'searchbox':
 	 			$markerArray = array(
 	 				'###FORM_ACTION###' => '',
 	 				'###SEARCHBOX_OPTIONS###' => '',
 	 			);
 	 		break;
-	 		
+
 	 		default:
 	 			$markerArray = array (
 	 				'###BROWSE_LINKS###' => '',
@@ -1286,9 +1328,9 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	 				'###BACK_LINK###' => '',
 	 			);
 	 		break;
-	 		
-	 	}	
-	 	
+
+	 	}
+
 	 	return $markerArray;
 	}
 	/**
@@ -1326,91 +1368,92 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	 */
 	function formatStr($str) {
 
-		if ( is_array( $this->conf['general_stdWrap.'] ) ) 
+		if ( is_array( $this->conf['general_stdWrap.'] ) )
 			return $this->local_cObj->stdWrap($str, $this->conf['general_stdWrap.']);
 		else
 			return $str;
 	}
-		
+
 	/**
-	 *		Retrieves the content for a named template. Used to pull a template subpart from a template file
+	 * Retrieves the content for a named template. Used to pull a template subpart from a template file
 	 *
 	 * @param	string		$tableName. This is the tablename to retrieve the keyname for.
+	 * @return	[type]		...
 	 */
 	function getTemplateKey($tableName) {
-		
+
 		switch( $tableName ) {
 			case 'tx_wecsermons_sermons':
 				$key = 'Sermon';
 			break;
-			
+
 			case 'tx_wecsermons_resources':
 				$key = 'Resource';
 			break;
-			
+
 			case 'tx_wecsermons_topics':
-				$key = 'Topic';		
+				$key = 'Topic';
 			break;
-			
+
 			case 'tx_wecsermons_liturgical_season':
 				$key = 'Season';
 			break;
-	
+
 			case 'tx_wecsermons_series':
 				$key = 'Series';
 			break;
-	
+
 			case 'tx_wecsermons_speakers':
 				$key = 'Speaker';
 			break;
-			
+
 			}
-			
+
 			//	TODO: Add hook for custom tables
-			
+
 			return $key;
 
 	}
 
 	/**
-	 *		Retrieves the 'fe_admin_fieldList' for a given data table, used for generating the fe editIcon.
+	 * Retrieves the 'fe_admin_fieldList' for a given data table, used for generating the fe editIcon.
 	 *
-	 *		@param string		$tableName.	The name of the table to retrieve the field list for.
-	 *		@return string		Returns a CSV string of fieldnames used in the editIcon fieldlist
+	 * @param	string		$tableName.	The name of the table to retrieve the field list for.
+	 * @return	string		Returns a CSV string of fieldnames used in the editIcon fieldlist
 	 */
 	function getFeAdminList( $tableName = '' ) {
 
 		if( ! $tableName ) $tableName = $this->internal['currentTable'];
 
 			//	Load up the tca for given table
-		$GLOBALS['TSFE']->includeTCA($TCAloaded = 1);		
+		$GLOBALS['TSFE']->includeTCA($TCAloaded = 1);
 		t3lib_div::loadTCA( $tableName );
 
 		return $GLOBALS['TCA'][$tableName]['feInterface']['fe_admin_fieldList'];
 
 	}
-	
+
 	/**
-	 *		Retrieves the content for a named template. Used to pull a template subpart from a template file
+	 * Retrieves the content for a named template. Used to pull a template subpart from a template file
 	 *
-	 * 	@param	string		$key. This is the keyname of the type of template to retrieve such as SERMON, SERIES, TOPIC, etc.
-	 * 	@param	string		$view. This is the name of the view to retrieve, SINGLE, LIST, etc.
-	 * 	@return	string		Returns the content of a specfic marker-based template
+	 * @param	string		$key. This is the keyname of the type of template to retrieve such as SERMON, SERIES, TOPIC, etc.
+	 * @param	string		$view. This is the name of the view to retrieve, SINGLE, LIST, etc.
+	 * @return	string		Returns the content of a specfic marker-based template
 	 */
 	function getNamedTemplateContent($keyName = 'sermon', $view = 'single') {
 
-			// Make sure template is loaded into instance of our class 
+			// Make sure template is loaded into instance of our class
 		$this->loadTemplate();
 
 		$keyName = strtoupper( $keyName );
 		$view = strtoupper( $view );
 
 		switch( $view ) {
-			
+
 			case 'LIST':
-				$templateContent = $this->cObj->getSubpart( 
-					$this->template['total'], 
-					sprintf( '###TEMPLATE_%s%s###', 
+				$templateContent = $this->cObj->getSubpart(
+					$this->template['total'],
+					sprintf( '###TEMPLATE_%s%s###',
 						$view,
 						$this->internal['layoutCode']
 					)
@@ -1418,39 +1461,51 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			break;
 
 			case '':
-				$templateContent = $this->cObj->getSubpart( 
-					$this->template['total'], 
-					sprintf( '###TEMPLATE_%s%s###', 
+				$templateContent = $this->cObj->getSubpart(
+					$this->template['total'],
+					sprintf( '###TEMPLATE_%s%s###',
 						$keyName,
 						$this->internal['layoutCode']
 					)
 				);
-	
+
 			break;
-			
+
 			default:
-			$templateContent = $this->cObj->getSubpart( 
-				$this->template['total'], 
-				sprintf( '###TEMPLATE_%s_%s%s###', 
+			$templateContent = $this->cObj->getSubpart(
+				$this->template['total'],
+				sprintf( '###TEMPLATE_%s_%s%s###',
 					$keyName,
 					$view,
 					$this->internal['layoutCode']
 				)
 			);
-			
+
 		}
 
 		return $templateContent;
 	}
-	
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$$subpartName: ...
+	 * @param	[type]		$content: ...
+	 * @return	[type]		...
+	 */
 	function getNamedSubpart( $subpartName, $content ) {
-		
-			// Make sure template is loaded into instance of our class 
+
+			// Make sure template is loaded into instance of our class
 		$this->loadTemplate();
-		
+
 		return $this->cObj->getSubpart( $content, '###'.strtoupper( $subpartName ).'###' );
 	}
-	
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @return	[type]		...
+	 */
 	function loadTemplate() {
 
 		if( ! $this->template ) {
@@ -1461,7 +1516,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				'item' => '',
 				'content' => ''
 			);
-			
+
 				//	Get the file location and name of our template file
 			$templateFile = $this->getTemplateFile();
 			$this->template['total'] = $this->cObj->fileResource( $this->internal['templateFile'] );
@@ -1471,7 +1526,12 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 		}
 	}
-	
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @return	[type]		...
+	 */
 	function getTemplateFile() {
 
 			//	Load the HTML template from either plugin or typoscript configuration, plugin overrides
@@ -1479,29 +1539,32 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 			//	TODO: Double check this works with a template file stored in a BE template record.
 		$templateFile = $templateFile ? 'uploads/tx_wecsermons/'.$templateFile : $this->conf['templateFile'];
-				
+
 			//	Store the name of the template file, for retrieval later
 		$this->internal['templateFile'] = $templateFile;
-		
+
 		return $templateFile;
 
 	}
-	
+
 	/**
-	 *	This function is the interface for the SMS aggregating resources into a single view.
+	 * This function is the interface for the SMS aggregating resources into a single view.
 	 *
-	 *
-	 *
-	 *
+	 * @return	[type]		...
 	 */
 	function getResourceContent() {
 		//	TODO: Set up an interface for resources to register with, rendering each resource.
 	}
-	
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @return	[type]		...
+	 */
 	function registerResource() {
 		//	TODO: Resource entity registers itself with the SMS, displays on the record type of a resource (like tt_news 'blog')
-	}	
-	
+	}
+
 }	// End class tx_wecsermons_pi1
 
 /**
@@ -1538,43 +1601,42 @@ function unique_array() {
 /**
  * [Describe function...]
  *
- * @param	string	Table name to search through
- * @param	string	Related table to search for
- * @return	string	The column name that relates currentTable to relatedTable. Returns null if no relation is found.
+ * @param	string		Table name to search through
+ * @param	string		Related table to search for
+ * @return	string		The column name that relates currentTable to relatedTable. Returns null if no relation is found.
  */
 function get_foreign_column( $currentTable, $relatedTable ) {
-	
+
 		//	Load up the tca for given table
-	$GLOBALS['TSFE']->includeTCA($TCAloaded = 1);		
+	$GLOBALS['TSFE']->includeTCA($TCAloaded = 1);
 	t3lib_div::loadTCA( $currentTable );
-	
+
 	foreach( $GLOBALS['TCA'][$currentTable]['columns'] as $columnName => $value ) {
 			if( $value['config']['foreign_table'] == $relatedTable )
 				return $columnName;
 	}
-	
+
 	return '';
 
 }
 
 /**
- *		Return the value from either plugin flexform, typoscript, or default value, in that order
+ * Return the value from either plugin flexform, typoscript, or default value, in that order
  *
- *		@param	object	Parent object passes itself
- *		@param	string	Field name of the flexform value
- *		@param	string	Sheet name where flexform value is located
- *		@param	string	Field name of typoscript value
- *		@param	array	TypoScript configuration array from local scope
- *		@param	mixed	Default if no other values are assigned from TypoScript or Plugin Flexform
- *
- *		@return	mixed	Value found in any config, or default
+ * @param	object		Parent object passes itself
+ * @param	string		Field name of the flexform value
+ * @param	string		Sheet name where flexform value is located
+ * @param	string		Field name of typoscript value
+ * @param	array		TypoScript configuration array from local scope
+ * @param	mixed		Default if no other values are assigned from TypoScript or Plugin Flexform
+ * @return	mixed		Value found in any config, or default
  */
 function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default = '' ) {
-		
+
 		//	Retrieve values stored in flexform and typoscript
 	$ffValue = $Obj->pi_getFFvalue($Obj->cObj->data['pi_flexform'], $ffField, $ffSheet);
 	$tsValue = $lConf[$TSfieldname];
-	
+
 		//	Use flexform value if present, otherwise typoscript value
 	$retVal = $ffValue ? $ffValue : $tsValue;
 
