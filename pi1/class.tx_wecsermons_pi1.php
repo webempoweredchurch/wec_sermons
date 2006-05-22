@@ -189,6 +189,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			$this->conf['code'] :
 			$this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'display','sDEF');
 
+
 		$codes = $this->internal['codes'] = t3lib_div::trimExplode(',',$display,0);
 
 		foreach( $codes as $code ) {
