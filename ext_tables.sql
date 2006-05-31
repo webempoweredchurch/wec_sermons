@@ -19,6 +19,10 @@ CREATE TABLE tx_wecsermons_resources (
 	type blob NOT NULL,
 	file blob NOT NULL,
 	url tinytext NOT NULL,
+	querystring_param blob NOT NULL,
+	rendered_record blob NOT NULL,
+	marker_name tinytext NOT NULL,
+	template_name tinytext NOT NULL,
 	
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -44,6 +48,8 @@ CREATE TABLE tx_wecsermons_resource_type (
 	description text NOT NULL,
 	name tinytext NOT NULL,
 	icon blob NOT NULL,
+	marker_name tinytext NOT NULL,
+	template_name tinytext NOT NULL,
 	avail_fields blob NOT NULL,
 	
 	PRIMARY KEY (uid),

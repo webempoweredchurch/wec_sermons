@@ -86,7 +86,8 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 		$this->pi_setPiVarDefaults(); // Set default piVars from TS
 		$this->pi_loadLL();		// Loading the LOCAL_LANG values
 			//	TODO: Determine if we need a layout code logic block or not
-		$this->internal['layoutCode'] = getConfigVal( $this, 'layoutCode', 'sDEF', 'layoutCode', $lConf, 1 );	//	Set layoutCode into internal storage
+		$this->internal['layoutCode'] = getConfigVal( $this, 'layout', 'sDEF', 'layoutCode', $lConf, 1 );	//	Set layoutCode into internal storage
+//debug( $this->internal['layoutCode'] );
 	}
 
 	/**
@@ -479,6 +480,27 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				//	Load the template file. By default, this populates the $this->template array with the list template from ###TEMPLATE_LIST{layoutCode}###
 			$this->loadTemplate();
 
+				//	Report an error if we couldn't pull up the template.
+			if(! $this->template['list'] ) {
+	
+					$error = array();
+					$error['type'] = htmlspecialchars( 'WEC Sermons Error!' );
+					$error['message'] = htmlspecialchars( 'Unable to retrieve content for specified template.' );
+					$error['detail'] = htmlspecialchars(
+						sprintf (
+							'Requested Template: ###TEMPLATE_LIST%s###',
+							$this->internal['layoutCode']
+						)
+					 );
+	
+					return sprintf(
+						'<p>%s<br/> %s</p>	<p>%s</p>',
+						$error['type'],
+						$error['message'],
+						$error['detail']
+					);
+			}
+	
 			$content = $this->cObj->substituteSubpart( $this->template['list'], '###CONTENT###', $this->pi_list_makelist($lConf, $this->template['content'] ) );
 
 				//	Parse for additional markers. Browse results, etc.
@@ -753,7 +775,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 						$count = 0;
 						while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $seriesRes ) ) {
-								//	Recursive call to $this->pi_list_row() to populate each speaker marker
+								//	Recursive call to $this->pi_list_row() to populate each series marker
 							$seriesContent .= $this->pi_list_row( $lConf, $seriesMarkerArray, $seriesTemplate, $this->internal['currentRow'] );
 							$count++;
 						}
@@ -836,7 +858,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 						$count = 0;
 						while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $topicRes ) ) {
 
-								//	Recursive call to $this->pi_list_row() to populate each speaker marker
+								//	Recursive call to $this->pi_list_row() to populate each topic marker
 							$topicContent .= $this->pi_list_row( $lConf, $topicMarkerArray, $topicTemplate, $this->internal['currentRow'] );
 							$count++;
 						}
@@ -854,34 +876,78 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				break;
 
 				case '###SERMON_RESOURCES###':
-					$subpartArray[$key] = '';
+				
+					$markerArray[$key] = '';
 
+					if( $row[$fieldName] ) {
+						
+			 			$wrap = array (
+			 				'wrap' => '###|###'
+			 			);
+	
+							//	Store the current table and row while we switch to another table for a moment
+						$this->internal['previousTable'] = $this->internal['currentTable'];
+						$this->internal['currentTable'] = 'tx_wecsermons_resources';
+						$this->internal['previousRow'] = $this->internal['currentRow'];
 
-				break;
-						//	Select the related resources and the resource type
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query(
-						'tx_wecsermons_resources.*',
-						'tx_wecsermons_sermons',
-						'tx_wecsermons_sermons_resources_uid_mm',
-						'tx_wecsermons_resources',
-						' AND tx_wecsermons_sermons_resources_uid_mm.uid_local in (' . $row['uid'] . ')'
-					);
+						$resources = $this->getRelatedResources( $row['uid'] );
+						foreach( $resources as $resource ) {
+							
+							$this->internal['currentRow'] = $resource;
+							$this->local_cObj->start( $this->internal['currentRow'] );
+							
+							//	Determine if  resource type is 'plugin'
+							if( $this->internal['currentRow']['type']  == 'plugin') {
+	
 
-					$count = 0;
-					while( $resource = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res ) ) {
+									//	Overwrite the resource type field with the resource title. This allows us to pass through to the CASE object which will use the 'title' to determine the custom rendering for this specific resource.
+								$this->internal['currentRow']['type'] = $this->internal['currentRow']['title'];
+	
+									//	if plugin, insert querystring_param into GPvars
+									
+									//	Parse the table_uid string from record into the value for the querystring_param
+								list(,$queryStringVal) = array_values( splitTableAndUID($this->internal['currentRow']['rendered_record'] ) );
+								
+									//	Break apart our querystring_param from the form of 'plugin[param]'
+								$queryString = split( "\[|\]", $this->internal['currentRow']['querystring_param'] );
+								
+									//	Push the custom string onto the querystring.
+								t3lib_div::_GETset( t3lib_div::array_merge( $_GET, array( $queryString[0] => array( $queryString[1] => $queryStringVal) ) ) );
+	
 
-						//	TODO: For any resource type, define a particular rendering method
+								$resourceTemplate = $this->cObj->getSubpart( $this->template['total'], $this->internal['currentRow']['resource_template_name'] );
+								$resourceMarkerArray = $this->getMarkerArray('tx_wecsermons_resources');
 
-						if( ! $resource['file'] && $resource['url'] )	{	//	No file attached and URL location given
+									//	replace marker with content from the plugin
+								$offset = $this->internal['currentRow']['resource_marker_name'];
+								$markerArray[$this->internal['currentRow']['resource_marker_name']] = $this->pi_list_row( $lConf, $resourceMarkerArray, $resourceTemplate, $this->internal['currentRow'] );
 
-							// TODO: simply wrap the url in an anchor tag
-						}
+				
+							}
+							else {
+	
+									//	replace generated content with marker
+								$resourceTemplate = $this->cObj->getSubpart( $this->template['total'], $this->internal['currentRow']['resource_type_template_name'] );
+								$resourceMarkerArray = $this->getMarkerArray('tx_wecsermons_resources');
+
+									//	replace marker with content from the plugin
+								$offset = $this->internal['currentRow']['resource_marker_name'];
+								$markerArray[$this->internal['currentRow']['resource_type_marker_name']] = $this->pi_list_row( $lConf, $resourceMarkerArray, $resourceTemplate, $this->internal['currentRow'] );
+							}
+						}	
+						
+							//	Restore the preview table and row
+						$this->internal['currentTable'] = $this->internal['previousTable'];
+						$this->internal['currentRow'] = $this->internal['previousRow'];
+						
 					}
 				break;
 
 				case '###RESOURCE_TITLE###':
-					if( $row[$fieldName] )
-						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_resources.']['title.'] );
+					if( $row[$fieldName] ) {
+						$this->local_cObj->start( $row, 'tx_wecsermons_series' );
+						$markerArray[$key] = $this->local_cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_resources.']['title.'] );
+					}
 				break;
 
 				case '###RESOURCE_DESCRIPTION###':
@@ -890,33 +956,32 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				break;
 
 				case '###RESOURCE_GRAPHIC###':
-					if( $row[$fieldName] ) {
-						// Use IMAGE object to draw. Implement so we can allow configuration though typoscript
-						$image = t3lib_div::makeInstance('tslib_cObj');
-
-							//	TODO: Use the path from TCA, $TCA['tx_wecsermons_sermons']['columns']['graphic']['config']['uploadfolder']
-						$imageConf = array(
-							'file' => 'uploads/tx_wecsermons/' . $row[$fieldName],
-						);
-
-							//	Merge our local config with typoscript config, typoscript overriding
-						$imageConf = t3lib_div::array_merge( $imageConf, $lConf['tx_wecsermons_resources.']['graphic.'] );
-
-							//	Render the image object
-						$markerArray[$key] = $image->IMAGE( $imageConf );
-					}
+					if( $row[$fieldName] )
+						$markerArray[$key] = $this->cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_resources.']['graphic.'] );
 				break;
 
 				case '###RESOURCE_CONTENT###':
-						//	Branch if file exists, otherwise look for a url alternate location
-					if( $row['file'] ) {
-						//	TODO: Generate view to file, depending on file type and other criteria
-					}
-					else if( $row['url'] ) {
-						//	TODO: Link to the resource
-					}
+								$markerArray[$key] = $this->local_cObj->cObjGetSingle( $this->conf['resource_types'], $this->conf['resource_types.'] );
 				break;
+				
+				case '###RESOURCE_LINK###':
 
+					$wrappedSubpartArray[$key] = explode(
+						'|',
+						$this->pi_list_linkSingle(
+							'|',
+							$row['uid'],
+							$this->conf['allowCaching'],
+							array(
+								'recordType' => 'tx_wecsermons_resource',
+							),
+							FALSE,
+							$this->conf['pidSingleView'] ? $this->conf['pidSingleView']:0
+							)
+					);
+				
+				break;
+				
 				case '###SERIES_TITLE###':
 					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_series' );
@@ -1205,7 +1270,6 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 		}	// End Foreach
 
-
 		$lContent = $this->cObj->substituteMarkerArrayCached($rowTemplate, $markerArray, $subpartArray, $wrappedSubpartArray );
 
 			//	Only add edit UI if there is a row of data we're processing
@@ -1254,12 +1318,43 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	 				'###SERMON_SCRIPTURE###' => 'related_scripture',
 	 				'###SERMON_TOPICS###' => 'topic_uid',
 	 				'###SERMON_SERIES###' => 'series_uid',
-	 				'###SERMON_RESOURCES###' => 'resources_uid',
 	 				'###SERMON_SPEAKERS###' => 'speakers_uid',
 					'###SERMON_GRAPHIC###' => 'graphic',
 					'###SERMON_LINK###' => '',
 					'###ALTERNATING_CLASS###' => '',
+	 				'###SERMON_RESOURCES###' => 'resources_uid',		//	Only included to kick off the processing of resources. Resource markers are defined in the resource_type records or resource record if of type 'plugin'
 	 			);
+
+/*	 			
+	 			$wrap = array (
+	 				'wrap' => '###|###'
+	 			);
+	 				//	TODO: Search for additional marker types that could be present for a sermon resource, include those in the array
+	 			$query = "
+					select distinct marker_name
+					from tx_wecsermons_resources
+					where marker_name != '' " . $this->cObj->enableFields('tx_wecsermons_resources');
+					
+				$res = $GLOBALS['TYPO3_DB']->sql_query( $query );
+				while( $record = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) ) {
+				
+					$offset =  $this->cObj->stdWrap( $record['marker_name'], $wrap );
+					$markerArray[$offset] = '';
+				}
+				
+				
+	 			$query = "
+					select distinct marker_name
+					from tx_wecsermons_resource_type
+					where marker_name != '' " . $this->cObj->enableFields('tx_wecsermons_resource_type');
+					
+				$res = $GLOBALS['TYPO3_DB']->sql_query( $query );
+				while( $record = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) ) {
+				
+					$offset =  $this->cObj->stdWrap( $record['marker_name'], $wrap );
+					$markerArray[$offset] = '';
+				}
+*/
 	 		break;
 
 	 		case 'tx_wecsermons_series':
@@ -1305,6 +1400,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 					'###RESOURCE_GRAPHIC###' => 'graphic',
 					'###RESOURCE_CONTENT###' => '',
 					'###ALTERNATING_CLASS###' => '',
+					'###RESOURCE_LINK###' => '',
 				);
 	 		break;
 
@@ -1548,22 +1644,42 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 	}
 
-	/**
-	 * This function is the interface for the SMS aggregating resources into a single view.
-	 *
-	 * @return	[type]		...
-	 */
-	function getResourceContent() {
-		//	TODO: Set up an interface for resources to register with, rendering each resource.
-	}
+	function getRelatedResources( $uid ) {
+	
+		if( ! $this->internal['resources'] ) {
+				//	Build query to select resource attributes along with resource type name
+			$query = 'select
+			tx_wecsermons_resources.uid,
+			tx_wecsermons_resources.type,
+			tx_wecsermons_resources.title,
+			tx_wecsermons_resources.description,
+			tx_wecsermons_resources.graphic,
+			tx_wecsermons_resources.file,
+			tx_wecsermons_resources.url,
+			tx_wecsermons_resources.querystring_param,
+			tx_wecsermons_resources.rendered_record,
+			tx_wecsermons_resources.marker_name resource_marker_name,
+			tx_wecsermons_resources.template_name resource_template_name,
+			tx_wecsermons_resource_type.name,
+			tx_wecsermons_resource_type.description,
+			tx_wecsermons_resource_type.icon,
+			tx_wecsermons_resource_type.marker_name resource_type_marker_name	,
+			tx_wecsermons_resource_type.template_name resource_type_template_name
+			from tx_wecsermons_resources
+					join tx_wecsermons_sermons_resources_uid_mm on tx_wecsermons_resources.uid=tx_wecsermons_sermons_resources_uid_mm.uid_foreign
+			join tx_wecsermons_sermons on tx_wecsermons_sermons.uid=tx_wecsermons_sermons_resources_uid_mm.uid_local
+			left join tx_wecsermons_resource_type on tx_wecsermons_resources.type=tx_wecsermons_resource_type.uid
+		 			where tx_wecsermons_sermons.uid = ' . $uid . ' ' . $this->cObj->enableFields('tx_wecsermons_resources');
+			
+			$res = $GLOBALS['TYPO3_DB']->sql_query( $query );				
+		
+				//	For each related resource, determine the type and render it
+			while( $record = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) )
+				$this->internal['resources'][] = $record;
+		}
 
-	/**
-	 * [Describe function...]
-	 *
-	 * @return	[type]		...
-	 */
-	function registerResource() {
-		//	TODO: Resource entity registers itself with the SMS, displays on the record type of a resource (like tt_news 'blog')
+		return $this->internal['resources'];
+		
 	}
 
 }	// End class tx_wecsermons_pi1
@@ -1645,6 +1761,14 @@ function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default
 	return $retVal ? $retVal : $default;
 }
 
+function splitTableAndUID($record) {  
+	$break = strrpos($record, "_");  
+	$uid = substr($record, $break+1);
+	$table = substr($record, 0, $break);  
+	 
+
+	return array("table" => $table, "uid" => $uid); 
+}
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_sermons/pi1/class.tx_wecsermons_pi1.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_sermons/pi1/class.tx_wecsermons_pi1.php']);
 }

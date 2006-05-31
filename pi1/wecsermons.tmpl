@@ -29,12 +29,13 @@ SERMON_OCCURANCE_DATE - Date the sermon was presented on
 SERMON_DESCRIPTION - Description, or HTML detail of a sermon
 SERMON_SCRIPTURE - Scriptures that the sermon refers to
 SERMON_GRAPHIC - A graphic shown with the sermon
-
+SERMON_RESOURCES - Not used in template. Only a placeholder in PHP so resources are processed. See Resource, and Resource Type records for appropriate markers.
 --RESOURCES
 RESOURCE_TITLE	-	Title of resource
 RESOURCE_DESCRIPTION	-	Full resource description
 RESOURCE_GRAPHIC	-	Graphic of resource
 RESOURCE_CONTENT	-	The resource itself
+ 
 
 --SERIES
 SERIES_TITLE - Title of sermon series
@@ -70,7 +71,6 @@ BACK_TO_LIST - Text to return to list-view from single-view template
 <em>Subparts:</em>
 CONTENT - <strong>**REQUIRED**</strong> This is a container that houses the primary content of a template.
 ITEM - <strong>**REQUIRED**</strong> The repeating content area representing one record within a list.
-SERMON_RESOURCES - Listing of resources related to a particular sermon
 SERMON_SPEAKERS - Listing of speakers related to a sermon
 SERMON_TOPICS - General topics that the sermon is associated with. Aka, category
 SERMON_SERIES - The sermon series a sermon is related to
@@ -83,6 +83,50 @@ SERMON_LINK - link to a sermon's single view
 RESOURCE_LINK - link to a resource's single view
 BACK_LINK	- link back to the list view
 </pre>
+
+
+<br />
+<h3>TEMPLATE_LIST1</h3>
+<em>This is an example template for styling a list of resources.</em>
+<br />
+
+<!-- ###TEMPLATE_LIST1### begin --> 
+	<!-- ###CONTENT### begin -->
+	begin
+		<!-- ###ITEM### begin -->
+
+			<div style='border-bottom: 1px dotted black;' class='###ALTERNATING_CLASS###'>
+				<!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###-->
+				###SERMON_OCCURANCE_DATE###
+				###SERMON_DESCRIPTION###
+				###SERMON_SCRIPTURE###
+				###SERMON_GRAPHIC###		
+				<!--###SERMON_SPEAKERS###-->
+						###SPEAKER_PHOTO###
+						<div class="tx-wecsermons-speakers-caption">
+						<!--###SPEAKER_LINK###-->###SPEAKER_LASTNAME###, ###SPEAKER_FIRSTNAME### <!--###SPEAKER_LINK###-->
+						</div>
+				<!--###SERMON_SPEAKERS###-->
+
+
+				<!--###SERMON_TOPICS###-->
+						###TOPIC_TITLE###
+						###TOPIC_DESCRIPTION###
+				<!--###SERMON_TOPICS###-->
+
+				<!--###SERMON_SERIES###-->
+						<!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###-->
+						###SERIES_STARTDATE###
+						###SERIES_ENDDATE###
+						<!--###SERIES_SEASON###-->###SEASON_TITLE###<!--###SERIES_SEASON###-->
+				<!--###SERMON_SERIES###-->
+
+			</div>
+		<!-- ###ITEM### end -->
+		end
+	<!-- ###CONTENT### end -->
+			###BROWSE_LINKS###
+<!-- ###TEMPLATE_LIST1### end --> 
 
 
 <br /><br /><br /><br /><hr />
@@ -132,12 +176,11 @@ BACK_LINK	- link back to the list view
 </TABLE>
 <!-- ###TEMPLATE_LIST2### end -->
 
-<br />
 <h3>TEMPLATE_LIST3</h3>
 <em>This is an example template for styling a list of resources.</em>
 <br />
 
-<!-- ###TEMPLATE_LIST1### begin --> 
+<!-- ###TEMPLATE_LIST3### begin --> 
 	<!-- ###CONTENT### begin -->
 	begin
 		<!-- ###ITEM### begin -->
@@ -154,10 +197,6 @@ BACK_LINK	- link back to the list view
 						<!--###SPEAKER_LINK###-->###SPEAKER_LASTNAME###, ###SPEAKER_FIRSTNAME### <!--###SPEAKER_LINK###-->
 						</div>
 				<!--###SERMON_SPEAKERS###-->
-
-				<!--###SERMON_RESOURCES###-->
-
-				<!--###SERMON_RESOURCES###-->
 
 
 				<!--###SERMON_TOPICS###-->
@@ -177,7 +216,7 @@ BACK_LINK	- link back to the list view
 		end
 	<!-- ###CONTENT### end -->
 			###BROWSE_LINKS###
-<!-- ###TEMPLATE_LIST1### end --> 
+<!-- ###TEMPLATE_LIST3### end --> 
 
 <br />
 <h3>TEMPLATE_SERIES_SINGLE1</h3>
@@ -230,9 +269,46 @@ BACK_LINK	- link back to the list view
 <!--###SERMON_TOPICS###-->
 Sermon Topic: ###TOPIC_TITLE###
 <!--###SERMON_TOPICS###-->
+
+###SERMON_RESOURCES###
+
 <!--###CONTENT###-->
 <!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###-->
 <!-- ###TEMPLATE_SERMON_SINGLE1### end --> 
+
+<br />
+<h3>TEMPLATE_SERMON_SINGLE3</h3>
+<em>Template for single view of a sermon.</em>
+<br />
+
+
+<!-- ###TEMPLATE_SERMON_SINGLE3### begin -->
+<!--###CONTENT###--> 
+###SERMON_TITLE###
+###SERMON_OCCURANCE_DATE###
+###SERMON_DESCRIPTION###
+###SERMON_SCRIPTURE###
+###SERMON_GRAPHIC###
+
+<!--###SERMON_SERIES###-->
+<!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###-->
+<!--###SERMON_SERIES###-->
+
+<!--###SERMON_SPEAKERS###-->
+###SPEAKER_LASTNAME### ###SPEAKER_FIRSTNAME###<br/>
+<!--###SERMON_SPEAKERS###-->
+
+###PDF_RESOURCES###
+
+<!--###SERMON_TOPICS###-->
+Sermon Topic: ###TOPIC_TITLE###
+<!--###SERMON_TOPICS###-->
+
+###NEWS_RESOURCES###
+
+<!--###CONTENT###-->
+<!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###-->
+<!-- ###TEMPLATE_SERMON_SINGLE3### end --> 
 
 
 <br />
@@ -296,3 +372,35 @@ Sermon Topic: ###TOPIC_TITLE###
   </form>
 </div>
 <!--###TEMPLATE_SEARCHBOX1### end--> 
+
+
+<br />
+<h3>TEMPLATE_RESOURCE_NEWS</h3>
+<em>This is an example template for styling a News resource item.</em>
+<br />
+
+<!-- ###TEMPLATE_RESOURCE_NEWS### begin -->
+<div id="news_plugin">
+	###RESOURCE_TITLE###
+	###RESOURCE_CONTENT###
+</div>
+<!-- ###TEMPLATE_RESOURCE_NEWS### end -->
+
+<br />
+<h3>TEMPLATE_RESOURCE_PDF</h3>
+<em>This is an example template for styling a PDF resource item.</em>
+<br />
+<!-- ###TEMPLATE_RESOURCE_PDF### end -->
+<table>
+	<tbody>
+		<tr>
+			<td>
+				<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
+			</td>
+			<td>
+				###RESOURCE_CONTENT###
+			</td>
+		</tr>
+	</tbody>
+</table>
+<!-- ###TEMPLATE_RESOURCE_PDF### end -->

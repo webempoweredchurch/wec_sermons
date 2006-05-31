@@ -1,11 +1,79 @@
 
 # Include our fe plugin class
-includeLibs.ts_news = EXT:wec_sermons/pi1/class.tx_wecsermons_pi1.php
+includeLibs.tx_wecsermons= EXT:wec_sermons/pi1/class.tx_wecsermons_pi1.php
 
 plugin.tx_wecsermons_pi1 = USER
 plugin.tx_wecsermons_pi1 {
 
 	userFunc = tx_wecsermons_pi1->main
+	
+	# CASE for rendering custom resource types
+	
+	resource_types = CASE
+	resource_types {
+	
+			# Use the field 'type', except in case of type = 'plugin' where we use the name of the resource itself.
+		key.field = type
+	
+			#	This is the 'default' resource type. Should be customized to your needs.
+		0 = COA
+		0 {
+			10 = TEXT
+			10.field = title
+			10.wrap = <tr><td>|</td>
+			
+			20 = TEXT
+			20.field = file
+			20.wrap = <td>|</td></tr>
+			20.typolink = 1
+			20.typolink {
+				parameter.insertData = 1
+				parameter.data = uploads/tx_wecsermons/{field:file}
+			}
+			
+			wrap = <table>|</table>
+		}
+		
+		2 = COA
+		2 {
+			10 = TEXT
+			10.field = name
+			10.wrap = <tr><td>|</td>
+			
+			20 = TEXT
+			20.field = file
+			20.wrap = <td>|</td></tr>
+			20.typolink = 1
+			20.typolink {
+				parameter = uploads/tx_wecsermons/{field:file}
+				parameter.insertData = 1
+			}
+			
+			wrap = <table>|</table>
+		}		
+		
+		Discussion < plugin.tx_wecdiscussion_pi1
+
+		
+		News < plugin.tt_news
+		News {
+			code >
+			code = SINGLE
+			
+		}
+		
+		
+		jpg = COA
+		jpg {
+			10 = IMAGE
+			10.import = uploads/tx_wecsermons/
+			10.import.field = graphic
+
+			20 = TEXT
+			20.field = title
+		}
+
+	}
 	
 	useStoragePid	 = {$plugin.tx_wecsermons_pi1.useStoragePid}
 	pidSingleView = {$plugin.tx_wecsermons_pi1.pidSingleView}

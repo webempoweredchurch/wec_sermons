@@ -102,13 +102,18 @@ class tx_resourceTypeTca {
 			$params['items'][] = array(
 				$resourceType['name'],
 				$resourceType['uid'],
-				'../../' . $GLOBALS['TCA']['tx_wecsermons_resource_type']['columns']['icon']['config']['uploadfolder'] . '/' . $resourceType['icon']
+				$resourceType['icon'] ? '../../' . $GLOBALS['TCA']['tx_wecsermons_resource_type']['columns']['icon']['config']['uploadfolder'] . '/' . $resourceType['icon'] : ''
 			);
 
 		}
+//debug( $params );
 
 	}
 
+}
+
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_sermons/class.tx_resourceTypeTca.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_sermons/class.tx_resourceTypeTca.php']);
 }
 
 ?>
