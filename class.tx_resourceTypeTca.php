@@ -75,7 +75,7 @@ class tx_resourceTypeTca {
 	}
 
 	/**
-	 * A itemsProcFunc implementation used from tx_wecsermons_resources
+	 * A TCA[config][itemsProcFunc] implementation used from tx_wecsermons_resources
 	 *
 	 * @param	array		&$params: Reference to the 'config' array from our TCA column
 	 * @param	array		&$pObj:	The backreference to the parent object calling this function

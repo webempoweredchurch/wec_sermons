@@ -191,6 +191,11 @@ BACK_LINK	- link back to the list view
 				###SERMON_DESCRIPTION###
 				###SERMON_SCRIPTURE###
 				###SERMON_GRAPHIC###		
+				
+				<!--###PDF_RESOURCES###-->
+				###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->###RESOURCE_FILE###<!--###RESOURCE_LINK###-->
+				<!--###PDF_RESOURCES###-->
+								
 				<!--###SERMON_SPEAKERS###-->
 						###SPEAKER_PHOTO###
 						<div class="tx-wecsermons-speakers-caption">
@@ -298,7 +303,11 @@ Sermon Topic: ###TOPIC_TITLE###
 ###SPEAKER_LASTNAME### ###SPEAKER_FIRSTNAME###<br/>
 <!--###SERMON_SPEAKERS###-->
 
-###PDF_RESOURCES###
+<!--###PDF_RESOURCES###-->
+###RESOURCE_TITLE###
+###RESOURCE_FILE###
+###RESOURCE_URL###
+<!--###PDF_RESOURCES###-->
 
 <!--###SERMON_TOPICS###-->
 Sermon Topic: ###TOPIC_TITLE###
@@ -390,17 +399,20 @@ Sermon Topic: ###TOPIC_TITLE###
 <h3>TEMPLATE_RESOURCE_PDF</h3>
 <em>This is an example template for styling a PDF resource item.</em>
 <br />
-<!-- ###TEMPLATE_RESOURCE_PDF### end -->
+
+<!--###TEMPLATE_RESOURCE_PDF### begin-->
 <table>
 	<tbody>
 		<tr>
+			<!--###CONTENT###-->
 			<td>
 				<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
 			</td>
 			<td>
 				###RESOURCE_CONTENT###
 			</td>
+			<!--###CONTENT###-->
 		</tr>
 	</tbody>
 </table>
-<!-- ###TEMPLATE_RESOURCE_PDF### end -->
+<!--###TEMPLATE_RESOURCE_PDF### end-->

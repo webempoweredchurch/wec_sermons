@@ -6,13 +6,37 @@ plugin.tx_wecsermons_pi1 = USER
 plugin.tx_wecsermons_pi1 {
 
 	userFunc = tx_wecsermons_pi1->main
+
+	useStoragePid	 = {$plugin.tx_wecsermons_pi1.useStoragePid}
+	pidSingleView = {$plugin.tx_wecsermons_pi1.pidSingleView}
+	pidListView = {$plugin.tx_wecsermons_pi1.pidListView}
+	pidSearchView = {$plugin.tx_wecsermons_pi1.pidSearchView}
 	
-	# CASE for rendering custom resource types
+	# Whether the extension caches content or not
+	allowCaching = {$plugin.tx_wecsermons_pi1.allowCaching}
+
+	# Rendering of text items. re-use the RTE parseFunc configuration for normal content
+	general_stdWrap {
+		parseFunc < tt_content.text.20.parseFunc
+	}
 	
+	# General wrap for dates in the wec_sermons extension
+	general_dateWrap {
+		strftime = %A,  %b. %d %Y
+	}
+	
+		#	Marker based template file, which defines each view
+	templateFile = {$plugin.tx_wecsermons_pi1.file.templateFile}
+
+		# List of tables that a view can be generated from
+	allowedTables = tx_wecsermons_sermons,tx_wecsermons_series,tx_wecsermons_resources,tx_wecsermons_topics,tx_wecsermons_liturgical_season,tx_wecsermons_speakers,tx_wecsermons_resources
+	
+		# CASE for rendering custom resource types
+		#	Resource types are identified by thier UID, or primary key, except in case of type = 'plugin' where we use the name of the resource itself.
 	resource_types = CASE
 	resource_types {
 	
-			# Use the field 'type', except in case of type = 'plugin' where we use the name of the resource itself.
+			# Use the field 'type' on a tx_wecsermons_resources record
 		key.field = type
 	
 			#	This is the 'default' resource type. Should be customized to your needs.
@@ -30,24 +54,13 @@ plugin.tx_wecsermons_pi1 {
 				parameter.insertData = 1
 				parameter.data = uploads/tx_wecsermons/{field:file}
 			}
-			
+						
 			wrap = <table>|</table>
 		}
 		
+			# Type PDF
 		2 = COA
 		2 {
-			10 = TEXT
-			10.field = name
-			10.wrap = <tr><td>|</td>
-			
-			20 = TEXT
-			20.field = file
-			20.wrap = <td>|</td></tr>
-			20.typolink = 1
-			20.typolink {
-				parameter = uploads/tx_wecsermons/{field:file}
-				parameter.insertData = 1
-			}
 			
 			wrap = <table>|</table>
 		}		
@@ -73,33 +86,7 @@ plugin.tx_wecsermons_pi1 {
 			20.field = title
 		}
 
-	}
-	
-	useStoragePid	 = {$plugin.tx_wecsermons_pi1.useStoragePid}
-	pidSingleView = {$plugin.tx_wecsermons_pi1.pidSingleView}
-	pidListView = {$plugin.tx_wecsermons_pi1.pidListView}
-	pidSearchView = {$plugin.tx_wecsermons_pi1.pidSearchView}
-	
-	# Whether the extension caches content or not
-	allowCaching = {$plugin.tx_wecsermons_pi1.allowCaching}
-
-	# Rendering of text items. re-use the RTE parseFunc configuration for normal content
-	general_stdWrap {
-		parseFunc < tt_content.text.20.parseFunc
-	}
-	
-	# General wrap for dates in the wec_sermons extension
-	general_dateWrap {
-		strftime = %A,  %b. %d %Y
-	}
-	
-		#	Marker based template file, which defines each view
-	templateFile = {$plugin.tx_wecsermons_pi1.file.templateFile}
-
-		# List of tables that a view can be generated from
-	allowedTables = tx_wecsermons_sermons,tx_wecsermons_series,tx_wecsermons_resources,tx_wecsermons_topics,tx_wecsermons_liturgical_season,tx_wecsermons_speakers
-	
-		
+	}		
 
 	#	Single view configuration
 	singleView {
@@ -185,6 +172,29 @@ plugin.tx_wecsermons_pi1 {
 		
 		tx_wecsermons_resources {
 		
+			#	Type tells the plugin how to render the ###RESOURCE_LINK### tag for a resource. 
+			# If typolink = 0, then links to the single view of a resource.
+			resource_types {
+				
+				#	Default resource type. **MUST** be configured by administrator
+				0 {
+					typolink = 0
+				
+				}
+				
+				# Type PDF
+				2 {
+					typolink = 1
+					typolink {
+						parameter = uploads/tx_wecsermons/{field:file}
+						parameter.insertData = 1
+						extTarget = _blank
+					}
+				}
+				
+				
+			}
+
 			title = TEXT
 			title {
 				wrap = |<br/>
@@ -193,8 +203,16 @@ plugin.tx_wecsermons_pi1 {
 			graphic = IMAGE
 			graphic {
 				file {
+					import = uploads/tx_wecsermons/
+					import.field = graphic
 					width = 32m
 					height = 32m
+				}
+				imageLinkWrap = 1
+				imageLinkWrap {
+					enable = 1
+					JSwindow = 1
+					JSwindow.expand = 20,20
 				}
 
 			}
@@ -203,6 +221,26 @@ plugin.tx_wecsermons_pi1 {
 			description {
 				crop = 75|...
 				parseFunc < tt_content.text.20.parseFunc
+			}
+			
+			url = TEXT
+			url {
+				typolink {
+					parameter.field = url
+				}
+			
+				wrap = |<br/>
+			}
+			
+			file = TEXT
+			file {
+				typolink {
+					parameter = uploads/tx_wecsermons/{field:file}
+					parameter.insertData = 1
+				}
+				
+				wrap = |<br/>
+					
 			}
 	
 		}
@@ -273,9 +311,14 @@ plugin.tx_wecsermons_pi1 {
 		
 		tx_wecsermons_speakers {
 				
-				# Specifies whether we use the url field of a speaker when generating ###speaker_link### wrappedSubart		
-			linktoUrl = 
-			
+				# If typolink is set, then we use this configuration to generate the link for the ###SPEAKER_LINK### TYPO tag.
+				# If typolink = 0, then we generate a link to the speaker's single view
+			typolink = 1
+			typolink {
+				parameter.field = url
+				extTarget = _blank
+			}
+
 			photo = IMAGE
 			photo {
 			wrap = |<br/>
@@ -459,6 +502,25 @@ plugin.tx_wecsermons_pi1 {
 		
 		tx_wecsermons_resources {
 		
+		
+			#	Type tells the plugin how to render the ###RESOURCE_LINK### tag for a resource. 
+			# If typolink = 0, then links to the single view of a resource.
+			resource_types {
+				
+				#	Default resource type. **MUST** be configured by administrator
+				0 {
+					typolink = 0
+				
+				}
+				
+				# Type PDF
+				2 {
+					typolink = 0
+				}
+				
+				
+			}
+
 				# Allowed data columns to search in
 			searchFieldList = title,description,related_scripture,keywords
 			
@@ -478,6 +540,18 @@ plugin.tx_wecsermons_pi1 {
 				parseFunc < tt_content.text.20.parseFunc
 			}
 	
+		
+			url = TEXT
+			url {
+				typolink {
+					parameter.field = url
+				}
+			
+			}
+			
+			file = TEXT
+			file.field = file
+			
 		}
 		
 		tx_wecsermons_series {
@@ -551,6 +625,14 @@ plugin.tx_wecsermons_pi1 {
 		
 		tx_wecsermons_speakers {
 		
+				# If typolink is set, then we use this configuration to generate the link for the ###SPEAKER_LINK### TYPO tag.
+				# If typolink = 0, then we generate a link to the speaker's single view
+			typolink = 0
+			typolink {
+				parameter.field = url
+				extTarget = _blank
+			}
+		
 				# Allowed data columns to search in
 			searchFieldList = title,description,related_scripture,keywords		
 
@@ -585,7 +667,6 @@ plugin.tx_wecsermons_pi1 {
 
 			url = TEXT
 			url {
-				typolink = 1
 				typolink.parameter.field = url	
 				wrap = |<br/>
 				value = |
