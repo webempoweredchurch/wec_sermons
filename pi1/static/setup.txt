@@ -1,20 +1,817 @@
 
+# Include our fe plugin class
+includeLibs.tx_wecsermons= EXT:wec_sermons/pi1/class.tx_wecsermons_pi1.php
+
+plugin.tx_wecsermons_pi1 = USER
 plugin.tx_wecsermons_pi1 {
+
+	userFunc = tx_wecsermons_pi1->main
+
 	CMD = singleView
 	pidList =
 	recursive =
+
+	useStoragePid  = {$plugin.tx_wecsermons_pi1.useStoragePid}
+	pidSingleView = {$plugin.tx_wecsermons_pi1.pidSingleView}
+	pidListView = {$plugin.tx_wecsermons_pi1.pidListView}
+	pidSearchView = {$plugin.tx_wecsermons_pi1.pidSearchView}
+
+	# Whether the extension caches content or not
+	allowCaching = {$plugin.tx_wecsermons_pi1.allowCaching}
+
+	# Rendering of text items. re-use the RTE parseFunc configuration for normal content
+	general_stdWrap {
+		parseFunc < tt_content.text.20.parseFunc
+	}
+
+	# General wrap for dates in the wec_sermons extension
+	general_dateWrap {
+		strftime = %A,  %b. %d %Y
+	}
+
+		# Marker based template file, which defines each view
+	templateFile = {$plugin.tx_wecsermons_pi1.file.templateFile}
+
+		# List of tables that any view can be generated from
+	allowedTables = tx_wecsermons_sermons,tx_wecsermons_series,tx_wecsermons_resources,tx_wecsermons_topics,tx_wecsermons_liturgical_season,tx_wecsermons_speakers,tx_wecsermons_resources
+
+		# CASE for rendering ###RESOURCE_CONTENT###
+		# Resource types are identified by thier UID, or primary key, except in case of type = 'plugin' where we use the name of the resource itself.
+	resource_types = CASE
+	resource_types {
+
+			# Use the field 'type' on a tx_wecsermons_resources record
+		key.field = type
+
+			# This is the 'default' resource type. Should be customized to your needs.
+		0 = COA
+		0 {
+			10 = TEXT
+			10.field = title
+			10.wrap = <tr><td>|</td>
+
+			20 = TEXT
+			20.field = file
+			20.wrap = <td>|</td></tr>
+			20.typolink = 1
+			20.typolink {
+				parameter.insertData = 1
+				parameter.data = uploads/tx_wecsermons/{field:file}
+			}
+
+			wrap = <table>|</table>
+		}
+
+			# Type PDF
+		2 = COA
+		2 {
+			10 = TEXT
+			10.field = name
+			10.wrap = <tr><td>|</td>
+
+			20 = TEXT
+			20.field = file
+			20.wrap = <td>|</td></tr>
+			20.typolink = 1
+			20.typolink {
+				parameter = uploads/tx_wecsermons/{field:file}
+				parameter.insertData = 1
+			}
+
+			wrap = <table>|</table>
+		}
+
+		Discussion < plugin.tx_wecdiscussion_pi1
+
+
+		News < plugin.tt_news
+		News {
+			code >
+			code = SINGLE
+
+		}
+
+
+		jpg = COA
+		jpg {
+			10 = IMAGE
+			10.import = uploads/tx_wecsermons/
+			10.import.field = graphic
+
+			20 = TEXT
+			20.field = title
+		}
+
+	}
+
+	# Single view configuration
+	singleView {
+
+		back = TEXT
+		back {
+			parseFunc < tt_content.text.20.parseFunc
+		}
+
+		layoutCode =
+
+		tx_wecsermons_sermons {
+
+				# Wrap for the title column
+			title = TEXT
+			title {
+				wrap = |
+				parseFunc < tt_content.text.20.parseFunc
+				field = title
+			}
+
+				# Specific date wrap for the occurance_date column in tx_wecsermons_sermons table
+			occurance = TEXT
+			occurance {
+				strftime = %A,  %b. %d %Y
+				wrap = |<br/>
+			}
+
+			description = TEXT
+			description {
+				parseFunc < tt_content.text.20.parseFunc
+				field = description
+			}
+
+			scripture = TEXT
+			scripture {
+				wrap = |<br/>
+				field = related_scripture
+			}
+
+			graphic = IMAGE
+			graphic {
+			wrap = |<br/>
+				file {
+					import = uploads/tx_wecsermons/
+					import.field = graphic
+					width = 128m
+					height = 128m
+				}
+				imageLinkWrap = 1
+				imageLinkWrap {
+					enable = 1
+					JSwindow = 1
+					JSwindow.expand = 20,20
+				}
+			}
+
+			topics = TEXT
+			topics {
+				wrap = <div class="tx-wecsermons-sermon-topics">|</div>
+			}
+
+			resources = TEXT
+			resources {
+				wrap = <div class="tx-wecsermons-sermon-resources">|</div>
+			}
+
+			speakers = TEXT
+			speakers {
+				wrap = <div class="tx-wecsermons-sermon-speakers">|</div>
+
+			}
+
+			series = TEXT
+			series {
+				wrap = <div class="tx-wecsermons-sermon-series">|</div>
+			}
+
+		}
+
+		tx_wecsermons_resources {
+
+			# Type tells the plugin how to render the ###RESOURCE_LINK### tag for a resource.
+			# If typolink = 0, then links to the single view of a resource.
+			resource_types {
+
+				# Default resource type. **MUST** be configured by administrator
+				0 {
+					typolink = 0
+
+				}
+
+				# Type PDF
+				2 {
+					typolink = 1
+					typolink {
+						parameter = uploads/tx_wecsermons/{field:file}
+						parameter.insertData = 1
+						extTarget = _blank
+					}
+				}
+
+
+			}
+
+			title = TEXT
+			title {
+				wrap = |<br/>
+			}
+
+			graphic = IMAGE
+			graphic {
+				file {
+					import = uploads/tx_wecsermons/
+					import.field = graphic
+					width = 32m
+					height = 32m
+				}
+				imageLinkWrap = 1
+				imageLinkWrap {
+					enable = 1
+					JSwindow = 1
+					JSwindow.expand = 20,20
+				}
+
+			}
+
+			description = TEXT
+			description {
+				crop = 75|...
+				parseFunc < tt_content.text.20.parseFunc
+			}
+
+			url = TEXT
+			url {
+				typolink {
+					parameter.field = url
+				}
+
+				wrap = |<br/>
+			}
+
+			file = TEXT
+			file {
+				typolink {
+					parameter = uploads/tx_wecsermons/{field:file}
+					parameter.insertData = 1
+				}
+
+				wrap = |<br/>
+
+			}
+
+		}
+
+		tx_wecsermons_series {
+
+			title = TEXT
+			title {
+				wrap = |<br/>
+				field = title
+			}
+
+			graphic = IMAGE
+			graphic {
+			wrap = |<br/>
+				file {
+					import = uploads/tx_wecsermons/
+					import.field = graphic
+					width = 128m
+					height = 128m
+				}
+				imageLinkWrap = 1
+				imageLinkWrap {
+					enable = 1
+					JSwindow = 1
+					JSwindow.expand = 20,20
+				}
+			}
+
+			description = TEXT
+			description {
+				crop = 75|...
+				parseFunc < tt_content.text.20.parseFunc
+				field = description
+			}
+
+			scripture = TEXT
+			scripture {
+				wrap = |<br/>
+				field = scripture
+			}
+
+			topics = TEXT
+			topics {
+				wrap = |<br/>
+			}
+
+			startdate = TEXT
+			startdate {
+				strftime = %A,  %b. %d %Y
+				wrap = |<br/>
+				field = startdate
+			}
+
+			enddate = TEXT
+			enddate {
+				strftime = %A,  %b. %d %Y
+				wrap = |<br/>
+				field = enddate
+			}
+
+			season = TEXT
+			season {
+				wrap = |<br/>
+			}
+
+		}
+
+		tx_wecsermons_speakers {
+
+				# If typolink is set, then we use this configuration to generate the link for the ###SPEAKER_LINK### TYPO tag.
+				# If typolink = 0, then we generate a link to the speaker's single view
+			typolink = 1
+			typolink {
+				parameter.field = url
+				extTarget = _blank
+			}
+
+			photo = IMAGE
+			photo {
+			wrap = |<br/>
+				file {
+					import = uploads/tx_wecsermons/
+					import.field = photo
+					width = 128m
+					height = 128m
+				}
+				imageLinkWrap = 1
+				imageLinkWrap {
+					enable = 1
+					JSwindow = 1
+					JSwindow.expand = 20,20
+				}
+			}
+
+			firstname = TEXT
+			firstname {
+				wrap = |<br/>
+				field = firstname
+			}
+
+			lastname = TEXT
+			lastname {
+				wrap = |
+				field = lastname
+			}
+
+			url = TEXT
+			url {
+				wrap = |<br/>
+				typolink = 1
+				typolink {
+					parameter.field = url
+					extTarget = _blank
+				}
+				field = url
+			}
+
+			email = TEXT
+			email {
+				typolink = 1
+				typolink.parameter.field = email
+				wrap = |<br/>
+				parseFunc < tt_content.text.20.parseFunc
+				field = email
+
+			}
+
+		}
+
+		tx_wecsermons_topics {
+
+			title = TEXT
+			title {
+				wrap = |
+				field = name
+			}
+
+			description = TEXT
+			description {
+				crop = 75|...
+				parseFunc < tt_content.text.20.parseFunc
+				field = description
+			}
+		}
+
+		tx_wecsermons_liturgical_season {
+
+			title = TEXT
+			title {
+				wrap = |
+				field = season_name
+			}
+		}
+
+	}
+
+	# *****************
+	# List View
+	# *****************
+	listView {
+
+		# list of column names added to the order by SQL clause
+		orderByList = startdate
+
+		# *****************
+		# Browse Box Settings
+		#
+		# See http://typo3.org/fileadmin/typo3api-4.0.0/df/d32/classtslib__pibase.html#ba8eebaed52748cdf9acb31562295378
+		# *****************
+
+		# How many results to show on each page
+		results_at_a_time = {$plugin.tx_wecsermons_pi1.listView.results_at_a_time}
+
+		# Maximum number of pages that are shown in the page browser
+		maxPages = {$plugin.tx_wecsermons_pi1.listView.maxPages}
+
+		# Whether the active page is a clickable link or text only
+		dontLinkActivePage =
+
+		# A boolean switch if the two links named "<< First" and "LAST >>" will be shown and point to the first or last page.
+		showFirstLast =
+
+		# Defines where the current page is shown in the list of pages in the Pagebrowser. If this var is an integer it will be interpreted as position in the list of pages. If its value is the keyword "center" the current page will be shown in the middle of the pagelist.
+		pagefloat =
+
+		# A boolean swith that displays the pagelinks in ranges f.e.: 1-5 6-10 11-15... instead of 1 2 3...
+		showRange =
+
+	 	# An integer switch that determines how the results browser will be rendered
+		#
+		# 1: (default) the text "Displaying results..." and the result-browser will be rendered.
+		# 2: only the text "Displaying results..." will be shown
+		showResultCount = 1
+
+		# *******************
+		# Browse Box Link Wraps
+		# *******************
+		browseBox_linkWraps {
+
+			disabledLinkWrap = <td nowrap="nowrap"><p>|</p></td>
+			inactiveLinkWrap = <td nowrap="nowrap"><p>|</p></td>
+			activeLinkWrap = <td class="tx-wecsermons-pi1-browsebox-SCell" nowrap="nowrap"><p>|</p></td>
+			browseLinksWrap = <table><tr>|</tr></table>
+			showResultsWrap = <p>|</p>
+			browseBoxWrap (
+				<!--
+				List browsing box:
+				-->
+				<div class="tx-wecsermons-pi1-browsebox">|</div>
+			)
+		}
+
+			# A string value appended to the CSS class name of odd rows of a list, [tx-wecsermons-pi1-{alternatingClass}]
+		alternatingClass = {$plugin.tx_wecsermons_pi1.listView.alternatingClass}
+
+			# General formatting of a date in list view
+		general_dateWrap {
+			strftime = %A,  %b. %d %Y
+		}
+
+			# Table that records will be shown from
+		detail_table = tx_wecsermons_sermons
+
+			# Table that records in detail will be grouped by
+		group_table =
+
+		tx_wecsermons_sermons {
+
+				# Allowed data columns to search in
+			searchFieldList = title,description,related_scripture,keywords
+
+			orderByList = occurance_date,title
+			orderBy = occurance_date
+			descFlag = 1
+
+				# Wrap for the title column
+			title = TEXT
+			title {
+				wrap = |<br/>
+				parseFunc < tt_content.text.20.parseFunc
+				field = title
+			}
+
+				# Specific date wrap for the occurance_date column in tx_wecsermons_sermons table
+			occurance_date = TEXT
+			occurance_date {
+				strftime = %A,  %b. %d %Y
+				wrap = |<br/>
+				field = occurance_date
+			}
+
+			description = TEXT
+			description {
+				crop = 75|...
+				stripHtml = 1
+				wrap = <p class='bodytext'>|<p>
+				field = description
+			}
+
+			scripture = TEXT
+			scripture {
+				wrap = |<br/>
+				field = related_scripture
+			}
+
+			topics = TEXT
+			topics {
+				wrap = <div class="tx-wecsermons-topics">|</div>
+			}
+
+			series = TEXT
+			series {
+				wrap = <div class="tx-wecsermons-series">|</div>
+			}
+
+			resources = TEXT
+			resources {
+				wrap = <div class="tx-wecsermons-resources">|</div>
+			}
+
+
+			graphic = IMAGE
+			graphic {
+			wrap = |<br/>
+				file {
+					import = uploads/tx_wecsermons/
+					import.field = graphic
+					width = 128m
+					height = 128m
+				}
+				imageLinkWrap = 1
+				imageLinkWrap {
+					enable = 1
+					JSwindow = 1
+					JSwindow.expand = 20,20
+				}
+			}
+
+			speakers = TEXT
+			speakers {
+				wrap = <div class="tx-wecsermons-speakers">|</div>
+
+			}
+
+		}
+
+		tx_wecsermons_resources {
+
+
+			# Type tells the plugin how to render the ###RESOURCE_LINK### tag for a resource.
+			# If typolink = 0, then links to the single view of a resource.
+			resource_types {
+
+				# Default resource type. **MUST** be configured by administrator
+				0 {
+					typolink = 0
+
+				}
+
+				# Type PDF
+				2 {
+					typolink = 0
+				}
+
+
+			}
+
+				# Allowed data columns to search in
+			searchFieldList = title,description,related_scripture,keywords
+
+			title = TEXT
+			title {
+				wrap = |<br/>
+			}
+
+			graphic = IMAGE
+			graphic {
+				wrap = |<br/>
+			}
+
+			description = TEXT
+			description {
+				crop = 150|...
+				parseFunc < tt_content.text.20.parseFunc
+			}
+
+
+			url = TEXT
+			url {
+				typolink {
+					parameter.field = url
+				}
+
+			}
+
+			file = TEXT
+			file.field = file
+
+		}
+
+		tx_wecsermons_series {
+
+				# Allowed data columns to search in
+			searchFieldList = title,description,related_scripture,keywords
+
+			title = TEXT
+			title {
+				wrap = |<br/>
+				field = title
+			}
+
+			graphic = IMAGE
+			graphic {
+			wrap = |<br/>
+				file {
+					import = uploads/tx_wecsermons/
+					import.field = graphic
+					width = 64m
+					height = 64m
+				}
+				imageLinkWrap = 1
+				imageLinkWrap {
+					enable = 1
+					JSwindow = 1
+					JSwindow.expand = 20,20
+				}
+			}
+
+
+			description = TEXT
+			description {
+				crop = 150|...
+				parseFunc < tt_content.text.20.parseFunc
+				field = description
+			}
+
+			scripture = TEXT
+			scripture {
+				wrap = |<br/>
+				field = scripture
+			}
+
+			topics = TEXT
+			topics {
+				wrap = |<br/>
+			}
+
+			startdate = TEXT
+			startdate {
+				strftime = %A,  %b. %d %Y
+				wrap = |<br/>
+				field = startdate
+			}
+
+			enddate = TEXT
+			enddate {
+				strftime = %A,  %b. %d %Y
+				wrap = |<br/>
+				field = enddate
+			}
+
+			season = TEXT
+			season {
+				wrap = |<br/>
+
+			}
+
+		}
+
+		tx_wecsermons_speakers {
+
+				# If typolink is set, then we use this configuration to generate the link for the ###SPEAKER_LINK### TYPO tag.
+				# If typolink = 0, then we generate a link to the speaker's single view
+			typolink = 0
+			typolink {
+				parameter.field = url
+				extTarget = _blank
+			}
+
+				# Allowed data columns to search in
+			searchFieldList = title,description,related_scripture,keywords
+
+			photo = IMAGE
+			photo {
+			wrap = |<br/>
+				file {
+					import = uploads/tx_wecsermons/
+					import.field = photo
+					width = 64m
+					height = 64m
+				}
+				imageLinkWrap = 1
+				imageLinkWrap {
+					enable = 1
+					JSwindow = 1
+					JSwindow.expand = 20,20
+				}
+			}
+
+			firstname = TEXT
+			firstname {
+				wrap = |
+				field = firstname
+			}
+
+			lastname = TEXT
+			lastname {
+				wrap = |
+				field = lastname
+			}
+
+			url = TEXT
+			url {
+				typolink.parameter.field = url
+				wrap = |<br/>
+				value = |
+				field = url
+			}
+
+			email = TEXT
+			email {
+				typolink = 1
+				typolink.parameter.field = email
+				wrap = |<br/>
+				field = email
+			}
+
+		}
+		
+		tx_wecsermons_topics {
+			
+			title = TEXT
+			title {
+				wrap = |<br/>
+				field = name
+			}
+			
+			description = TEXT
+			description {
+				crop = 75|...
+				parseFunc < tt_content.text.20.parseFunc
+				field = description
+			}
+
+		}
+
+		tx_wecsermons_liturgical_season {
+
+			title = TEXT
+			title {
+				wrap = |
+				field = season_name
+			}
+		}
+
+	}
+
+	searchView {
+
+		# Allowed data columns to search in
+		searchFieldList = title,description,related_scripture,keywords
+
+		orderByList = occurance_date,title
+		orderBy = occurance_date,title
+		descFlag = 0
+
+		#	List of table names we can search into from the search box (Future use)
+		#searchTables = tx_wecsermons_sermons,tx_wecsermons_series,tx_wecsermons_speakers,tx_wecsermons_liturgical_season,tx_wecsermons_resources,tx_wecsermons_topics
+
+		searchFieldArray {
+
+			tx_wecsermons_sermons.searchFieldList = title,description,related_scripture,keywords
+
+		}
+
+		# Error generated if piVars['sword'] is not set
+		searchError = searchView() was called, but no sword value was found!
+		searchError.wrap = <h1>|</h1>
+
+		searchBoxOptions  = TEXT
+		searchBoxOptions {
+				wrap =
+		}
+
+		searchButtonName = TEXT
+		searchButtonName {
+			typolink
+		}
+	}
 }
-plugin.tx_wecsermons_pi1.listView {
-	results_at_a_time = 
-	maxPages =
-}
-  # Example of default set CSS styles (these go into the document header):
-plugin.tx_wecsermons_pi1._CSS_DEFAULT_STYLE (
-  .tx-wecsermons-pi1 H2 { margin-top: 0px; margin-bottom: 0px; }
-)
-  # Example of how to overrule LOCAL_LANG values for the plugin:
+
+	# Empty default set CSS styles (these go into the document header):
+plugin.tx_wecsermons_pi1._CSS_DEFAULT_STYLE >
+
+	# Example of how to overrule LOCAL_LANG values for the plugin:
 plugin.tx_wecsermons_pi1._LOCAL_LANG.default {
-  pi_list_searchBox_search = Search!
+	pi_list_searchBox_search = Search!
 }
-  # Example of how to set default values from TS in the incoming array, $this->piVars of the plugin:
+	# Example of how to set default values from TS in the incoming array, $this->piVars of the plugin:
 #plugin.tx_wecsermons_pi1._DEFAULT_PI_VARS.test = test
