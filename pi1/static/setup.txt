@@ -418,6 +418,12 @@ plugin.tx_wecsermons_pi1 {
 
 		# list of column names added to the order by SQL clause
 		orderByList = startdate
+		
+		# Start date filter, which is applied to the list omiting all dates previous to the date set
+		startDate = 
+		
+		# End date filter, applied to the list omiting all dates later than the date set
+		endDate = 
 
 		# *****************
 		# Browse Box Settings
@@ -801,7 +807,7 @@ plugin.tx_wecsermons_pi1 {
 
 		searchButtonName = TEXT
 		searchButtonName {
-			typolink
+			typolink =
 		}
 	}
 }

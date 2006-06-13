@@ -94,6 +94,8 @@ $LOCAL_LANG = Array (
 		'tx_wecsermons.pi_flexform.detail_table.I.2' => 'Topics',
 		'tx_wecsermons.pi_flexform.detail_table.I.3' => 'Resources',
 		'tx_wecsermons.pi_flexform.detail_table.I.4' => 'Seasons',
+		'tx_wecsermons.pi_flexform.startDate' => 'Start Date Filter (All dates before this date are omited)',
+		'tx_wecsermons.pi_flexform.endDate' => 'End Date Filter (All dates after this date are omited)',
 	),
 );
 ?>

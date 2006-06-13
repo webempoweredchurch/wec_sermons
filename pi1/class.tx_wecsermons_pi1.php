@@ -105,7 +105,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			//	Check if typoscript config 'tutorial' is an integer, otherwise set to 0
 		if( t3lib_div::testInt( $this->conf['tutorial'] ) == false ) $this->conf['tutorial'] = 0;
 
-		$tutorial = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'tutorial','sDEF');
+		$tutorial = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'tutorial','sMisc');
 
 			//	If tutorial enabled, walk through tutorial
 		if( $tutorial > 0 || $this->conf['tutorial'] > 0 ) {
@@ -485,7 +485,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 				//	Intialize query params if not set
 			if (!isset($this->piVars['pointer']))	$this->piVars['pointer']=0;
-			if( !isset( $this->piVars['recordType'] ) ) $this->piVars['recordType'] = getConfigVal( $this, 'detail_table', 'sDEF', 'detail_table', $lConf, 'tx_wecsermons_sermons' );
+			if( !isset( $this->piVars['recordType'] ) ) $this->piVars['recordType'] = getConfigVal( $this, 'detail_table', 'slistView', 'detail_table', $lConf, 'tx_wecsermons_sermons' );
 
 				// Initialize some query parameters, and internal variables
 			list($this->internal['orderBy'],$this->internal['descFlag']) = explode(':',$this->piVars['sort']);
@@ -566,12 +566,12 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			//	 Gather all our output into $content
 		$content = '';
 		$subpartArray = array();
-		$groupTable = getConfigVal( $this, 'group_table', 'sDEF', 'group_table', $lConf );
+		$groupTable = getConfigVal( $this, 'group_table', 'slistView', 'group_table', $lConf );
 
 			//	If grouping was specified, branch to process group list
 		if( $groupTable ) {
 
-			$detailTable = getConfigVal( $this, 'detail_table', 'sDEF', 'detail_table', $lConf );
+			$detailTable = getConfigVal( $this, 'detail_table', 'slistView', 'detail_table', $lConf );
 			$this->template['group'] = $this->cObj->getSubpart( $template, '###GROUP###' );
 
 				//Run a series of checks before branching to grouping logic, return error if necessary
@@ -641,7 +641,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				);
 
 				return $format;
-				return '<p>WEC Sermons Error!<br/> Grouping tag, &quot;###GROUP###&quot; was found in template, but was not related to &quot;table_to_list&quot;</p>';
+				return '<p>WEC Sermons Error!<br/> Grouping tag, &quot;###GROUP###&quot; was found in template, but was not related to &quot;detail_table&quot;</p>';
 			}
 				//	Retreive marker array and template for the detail table
 			$detailMarkArray = $this->getMarkerArray( $detailTable );
@@ -683,19 +683,28 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 		else {	//	No group found, just provide a straight list
 
 				//	Get the related table entries to the group, using 'tx_wecsermons_sermons' if none specified
-			$tableToList = getConfigVal( $this, 'table_to_list', 'sDEF', 'table_to_list', $lConf, 'tx_wecsermons_sermons' );
-			$markerArray = $this->getMarkerArray( $tableToList );
+			$tableToList = getConfigVal( $this, 'detail_table', 'slistView', 'detail_table', $lConf, 'tx_wecsermons_sermons' );
 
+				//	Load the correct marker array and load the item template
+			$markerArray = $this->getMarkerArray( $tableToList );
 			$itemTemplate = $this->cObj->getSubpart( $template, '###ITEM###' );
 			$this->internal['currentTable'] = $this->internal['groupTable'] = 'tx_wecsermons_series';
 
+				//	TODO: Modify the date selection to include other tables and date fields
+
+				//	If start or end date was set, then add this to the query WHERE clause.
+			$startDate = getConfigVal( $this, 'startDate', 'slistView', 'startDate', $lConf );
+			$endDate = getConfigVal( $this, 'endDate', 'slistView', 'endDate', $lConf );
+			$where = '';
+			$where .= $startDate ? ' AND occurance_date >= ' . $startDate : '';	//	$GLOBALS['TYPO3_DB']->fullQuoteStr( strftime( '%m-%d-%y', $startDate ), $tableToList ) : '';
+			$where .= $endDate ? ' AND occurance_date <= ' .  $endDate  : '';
+
 				// Get number of records:
-			$res = $this->pi_exec_query($tableToList,1);
+			$res = $this->pi_exec_query($tableToList,1, $where);
 			list($this->internal['res_count']) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 
 				// Make listing query, pass query to SQL database:
-			$res = $this->pi_exec_query($tableToList);
-			$this->internal['currentTable'] = $tableToList;
+			$res = $this->pi_exec_query($tableToList,0,$where);
 
 			$count = 1;
 			while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) ) {
@@ -1300,7 +1309,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				case '###BACK_LINK###':
 
 						//	If recordType is not set, retreive value or set it to sermons table. This is in case of hard linking to the single view instead of linking through the list view.
-					if( ! isset( $this->piVars['recordType'] ) ) $this->piVars['recordType'] = getConfigVal( $this, 'detail_table', 'sDEF', 'detail_table', $lConf, 'tx_wecsermons_sermons' );
+					if( ! isset( $this->piVars['recordType'] ) ) $this->piVars['recordType'] = getConfigVal( $this, 'detail_table', 'slistView', 'detail_table', $lConf, 'tx_wecsermons_sermons' );
 
 					$wrappedSubpartArray[$key] = explode(
 						'|',
