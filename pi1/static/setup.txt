@@ -810,6 +810,13 @@ plugin.tx_wecsermons_pi1 {
 			typolink =
 		}
 	}
+	
+	xmlView {
+		
+		results_at_a_time = 5
+		desc_flag = 1
+		
+	}
 }
 
 	# Empty default set CSS styles (these go into the document header):

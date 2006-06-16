@@ -64,7 +64,7 @@
  */
 
 require_once(PATH_tslib.'class.tslib_pibase.php');
-#require_once(PATH_typo3conf . 'ext/wec_api/class.wec_xml.php' );
+require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_xml.php' );
 
 class tx_wecsermons_pi1 extends tslib_pibase {
 	var $prefixId = 'tx_wecsermons_pi1';		// Same as class name
@@ -187,9 +187,9 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			//	Get the 'what to display' value from plugin or typoscript, plugin overriding
 		$display = getConfigVal( $this, 'display', 'sDEF', 'code', $this->conf );
 
-			//	Check codes for 'rss', and if found then we only display the RSS and nothing else.
-			//	The XML output of the RSS view can not be output along with any other view.
-		$display = strpos( $display, 'rss' ) ? 'rss' : $display;
+			//	Check codes for 'xml', and if found then we only display the RSS and nothing else.
+			//	The XML output can not be displayed along with any other view.
+		$display = strpos( $display, 'xml' ) ? 'xml' : $display;
 
 			//	Check codes for 'list', and if showing only a single record, set codes to a single 'list' code only.
 		$display = strpos( $display,'list') && $this->piVars['showUid'] ? 'list' : $display;
@@ -208,9 +208,9 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 					$content .= $this->listView($content, $this->conf['listView.']);
 					break;
 
-				case 'rss':
-					$this->internal['currentCode'] = 'rss';
-					$content .= '<h1>rss case reached</h1><br/>';
+				case 'xml':
+					$this->internal['currentCode'] = 'xml';
+					$content .= $this->xmlView($content, $this->conf['xmlView']);
 					break;
 
 				case 'archive':
@@ -247,6 +247,57 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				return $this->pi_wrapInBaseClass($this->listView($content,$conf));
 			break;
 		}
+	}
+	
+	function xmlView ($content, $lConf) {
+		
+			//	Recursive setting from plugin overrides typoscript
+		$this->conf['recursive'] = getConfigVal( $this, 'recursive', 'sDEF', 'recursive', $lConf, 0 );
+
+			//	Find the starting point in the page tree to search for the record
+		$startingPoint =$this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'startingpoint', 'sDEF');
+
+			//	If configured to use the General Storage Folder of the site, include that in the list of pids
+		if( $this->conf['useStoragePid'] ) {
+
+			//	Retrieve the general storage pid for this site
+			$rootPids = $GLOBALS['TSFE']->getStorageSiterootPids();
+			$storagePid = (string) $rootPids['_STORAGE_PID'];
+
+				//	Merge all lists from typoscript, storagePid, and startingpoint specified at plugin and assign to pidList
+			$this->conf['pidList'] .= ','. $storagePid . ','. $startingPoint;
+		}
+		else 	//	Merge lists from typoscript and startingpoint specified at plugin into pidList
+			$this->conf['pidList'] .= ','. $startingPoint;
+
+				//	Retrieve the number we want to limit our items to
+			$this->piVars['pointer']=0
+			$this->internal['results_at_a_time'] = $lConf['results_at_a_time'];
+			$this->internal['descFlag'] = $lConf['descFlag'];
+			
+				//	Get the related table entries to the group, using 'tx_wecsermons_sermons' if none specified
+			$tableToList = getConfigVal( $this, 'detail_table', 'slistView', 'detail_table', $lConf, 'tx_wecsermons_sermons' );
+
+				//	Load the correct marker array and load the item template
+			$markerArray = $this->getMarkerArray( $tableToList );
+
+				//	TODO: Modify the date selection to include other tables and date fields
+
+				//	If start or end date was set, then add this to the query WHERE clause.
+			$startDate = getConfigVal( $this, 'startDate', 'slistView', 'startDate', $lConf );
+			$endDate = getConfigVal( $this, 'endDate', 'slistView', 'endDate', $lConf );
+			$where = '';
+			$where .= $startDate ? ' AND occurance_date >= ' . $startDate : '';	//	$GLOBALS['TYPO3_DB']->fullQuoteStr( strftime( '%m-%d-%y', $startDate ), $tableToList ) : '';
+			$where .= $endDate ? ' AND occurance_date <= ' .  $endDate  : '';
+			$where .= ' AND
+
+				// Make listing query, pass query to SQL database:
+			$res = $this->pi_exec_query($tableToList,0,$where);
+
+			//	Grab the list array we are turning into an rss feed
+		
+			//	Return the XML content of our data array
+		return tx_wecapi_xml::getXMLContent( $res );
 	}
 
 	/**
@@ -475,13 +526,6 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			return $this->singleView($content,$this->conf['singleView.']);
 
 		} else {	//	Otherwise continue with list view
-
-				//	List View Modes
-			$items=array(
-				'1'=> $this->pi_getLL('list_mode_1','Mode 1'),
-				'2'=> $this->pi_getLL('list_mode_2','Mode 2'),
-				'3'=> $this->pi_getLL('list_mode_3','Mode 3'),
-			);
 
 				//	Intialize query params if not set
 			if (!isset($this->piVars['pointer']))	$this->piVars['pointer']=0;

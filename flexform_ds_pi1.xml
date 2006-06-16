@@ -48,7 +48,7 @@
 	                    </numIndex>
 	                     <numIndex index="3" type="array">
 	                            <numIndex index="0">LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.display.I.2</numIndex>
-	                            <numIndex index="1">rss</numIndex>
+	                            <numIndex index="1">xml</numIndex>
 	                    </numIndex>
 	                     <numIndex index="4" type="array">
 	                            <numIndex index="0">LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.display.I.3</numIndex>
