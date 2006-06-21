@@ -8,6 +8,9 @@ plugin.tx_wecsermons_pi1 {
 	userFunc = tx_wecsermons_pi1->main
 
 	CMD = singleView
+	groupTable = 
+	detailTable = 
+	
 	pidList =
 	recursive =
 
@@ -18,7 +21,7 @@ plugin.tx_wecsermons_pi1 {
 
 	# Whether the extension caches content or not
 	allowCaching = {$plugin.tx_wecsermons_pi1.allowCaching}
-
+	
 	# Rendering of text items. re-use the RTE parseFunc configuration for normal content
 	general_stdWrap {
 		parseFunc < tt_content.text.20.parseFunc
@@ -65,6 +68,11 @@ plugin.tx_wecsermons_pi1 {
 			# Type PDF
 		2 = COA
 		2 {
+			typolink {
+				parameter = uploads/tx_wecsermons/{field:file}
+				parameter.insertData = 1
+	
+			}
 			10 = TEXT
 			10.field = name
 			10.wrap = <tr><td>|</td>
@@ -73,10 +81,7 @@ plugin.tx_wecsermons_pi1 {
 			20.field = file
 			20.wrap = <td>|</td></tr>
 			20.typolink = 1
-			20.typolink {
-				parameter = uploads/tx_wecsermons/{field:file}
-				parameter.insertData = 1
-			}
+			20.typolink < .typoLink
 
 			wrap = <table>|</table>
 		}
@@ -813,9 +818,11 @@ plugin.tx_wecsermons_pi1 {
 	
 	xmlView {
 		
-		results_at_a_time = 5
+		results_at_a_time = 1
 		desc_flag = 1
 		
+		#	EnclosureType specifies which custom resource type will be included as an <enclosure/> for podcasting.
+		enclosureType = 2
 	}
 }
 

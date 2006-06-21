@@ -64,7 +64,7 @@
  */
 
 require_once(PATH_tslib.'class.tslib_pibase.php');
-require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_xml.php' );
+require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 class tx_wecsermons_pi1 extends tslib_pibase {
 	var $prefixId = 'tx_wecsermons_pi1';		// Same as class name
@@ -184,8 +184,9 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 				return $content;
 		}	// End tutorial block
+		
 			//	Get the 'what to display' value from plugin or typoscript, plugin overriding
-		$display = getConfigVal( $this, 'display', 'sDEF', 'code', $this->conf );
+		$display = getConfigVal( $this, 'display', 'sDEF', 'CMD', $this->conf );
 
 			//	Check codes for 'xml', and if found then we only display the RSS and nothing else.
 			//	The XML output can not be displayed along with any other view.
@@ -210,7 +211,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 				case 'xml':
 					$this->internal['currentCode'] = 'xml';
-					$content .= $this->xmlView($content, $this->conf['xmlView']);
+					$content .= $this->xmlView($content, $this->conf['xmlView.']);
 					break;
 
 				case 'archive':
@@ -250,7 +251,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	}
 	
 	function xmlView ($content, $lConf) {
-		
+	
 			//	Recursive setting from plugin overrides typoscript
 		$this->conf['recursive'] = getConfigVal( $this, 'recursive', 'sDEF', 'recursive', $lConf, 0 );
 
@@ -270,34 +271,116 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 		else 	//	Merge lists from typoscript and startingpoint specified at plugin into pidList
 			$this->conf['pidList'] .= ','. $startingPoint;
 
-				//	Retrieve the number we want to limit our items to
-			$this->piVars['pointer']=0
-			$this->internal['results_at_a_time'] = $lConf['results_at_a_time'];
-			$this->internal['descFlag'] = $lConf['descFlag'];
-			
-				//	Get the related table entries to the group, using 'tx_wecsermons_sermons' if none specified
-			$tableToList = getConfigVal( $this, 'detail_table', 'slistView', 'detail_table', $lConf, 'tx_wecsermons_sermons' );
-
-				//	Load the correct marker array and load the item template
-			$markerArray = $this->getMarkerArray( $tableToList );
-
-				//	TODO: Modify the date selection to include other tables and date fields
-
-				//	If start or end date was set, then add this to the query WHERE clause.
-			$startDate = getConfigVal( $this, 'startDate', 'slistView', 'startDate', $lConf );
-			$endDate = getConfigVal( $this, 'endDate', 'slistView', 'endDate', $lConf );
-			$where = '';
-			$where .= $startDate ? ' AND occurance_date >= ' . $startDate : '';	//	$GLOBALS['TYPO3_DB']->fullQuoteStr( strftime( '%m-%d-%y', $startDate ), $tableToList ) : '';
-			$where .= $endDate ? ' AND occurance_date <= ' .  $endDate  : '';
-			$where .= ' AND
-
-				// Make listing query, pass query to SQL database:
-			$res = $this->pi_exec_query($tableToList,0,$where);
-
-			//	Grab the list array we are turning into an rss feed
+			//	Retrieve the number we want to limit our items to
+		$this->piVars['pointer']=0;
+		$this->internal['results_at_a_time'] = $lConf['results_at_a_time'];
+		$this->internal['descFlag'] = $lConf['descFlag'];
 		
+			//	TODO: Modify code to allow other records to be shown. Right now we're assuming sermons only.
+		
+			//	Get the related table entries to the group, using 'tx_wecsermons_sermons' if none specified
+		$tableToList = getConfigVal( $this, 'detail_table', 'slistView', 'detail_table', $lConf, 'tx_wecsermons_sermons' );
+
+			//	Load the correct marker array and load the item template
+		$markerArray = $this->getMarkerArray( $tableToList );
+
+			//	TODO: Modify the date selection to include other tables and date fields
+
+			//	If start or end date was set, then add this to the query WHERE clause.
+		$startDate = getConfigVal( $this, 'startDate', 'slistView', 'startDate', $lConf );
+		$endDate = getConfigVal( $this, 'endDate', 'slistView', 'endDate', $lConf );
+		$where = '';
+		$where .= $startDate ? ' AND occurance_date >= ' . $startDate : '';	
+		$where .= $endDate ? ' AND occurance_date <= ' .  $endDate  : '';
+		
+			// Make listing query, pass query to SQL database:
+		$res = $this->pi_exec_query($tableToList,0,$where);
+		
+		$sermons = array();
+		$content = '';
+
+		
+			//	Iterate over the sermons and retrieve related resource information.
+		while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) ) {
+			
+				//	Retreive the array of related resources to this sermon record 
+			$resources = $this->getResources( $current['uid'] );	
+			
+			foreach( $resources as $resource ) {
+			
+					//	If the resource is the type allowed as an enclosure in this view, then calculate the url and size.
+				if( $resource['type'] == $lConf['enclosureType'] ) {
+	
+						//	Retrieve a typolink conf that tells us how to render the link to the resource. Must be provided by admin!
+					$this->local_cObj->start($resource);
+					$typolinkConf = $this->conf['resource_types.'][$resource['type'].'.']['typolink.'];
+					
+						//	Render the relative and absolute paths to the file
+					$relPath =  $this->local_cObj->typolink_URL( $typolinkConf );
+					$absPath = PATH_site . $relPath;
+	
+						//	Retrieve file info for the file.		
+					$fileInfo = t3lib_basicFileFunctions::getTotalFileInfo( $absPath );
+					
+					$row['size'] = $fileInfo['size'];
+					$row['enclosure_url'] =  t3lib_div::getIndpEnv('TYPO3_SITE_URL'). $relPath;	
+					$row['mime_type'] = $resource['mime_type'];
+					break;
+			
+				}
+				
+			}
+			
+			$sermons[] = $row;
+		}
+			
+			
+
+		
+			//	Iterate over every sermon and every sermon resource
+		for( $offset = 0; $offset < count( $sermons ) ; $offset++ ) {
+			
+			$sermon = &$sermons[$offset];
+			
+			for( $resOffset = 0; $resOffset < count( $sermons[$offset]['resources'] ) ; $resOffset++ ) {
+
+				$resource = &$sermon['resources'][$resOffset];
+	
+
+					//	If the resource is the type allowed as an enclosure in this view, then calculate the url and size.
+				if( $resource['type'] == $lConf['enclosureType'] ) {
+	
+						//	Retrieve a typolink conf that tells us how to render the link to the resource. Must be provided by admin!
+					$this->local_cObj->start($resource);
+					$typolinkConf = $this->conf['resource_types.'][$resource['type'].'.']['typolink.'];
+					
+						//	Render the relative and absolute paths to the file
+					$relPath =  $this->local_cObj->typolink_URL( $typolinkConf );
+					$absPath = PATH_site . $relPath;
+	
+						//	Retrieve file info for the file.		
+					$fileInfo = t3lib_basicFileFunctions::getTotalFileInfo( $absPath );
+					
+					$sermon['size'] = $fileInfo['size'];
+					$sermon['enclosure_url'] =  t3lib_div::getIndpEnv('TYPO3_SITE_URL'). $relPath;	
+					$sermon['mime_type'] = $resource['mime_type'];
+					break;
+			
+				}
+			}
+	
+			 $content .= tx_wecapi_list::getContent( $this, array( 0 => $sermon ), $tableToList );
+return $content;
+exit;
+			
+		}
+
+			//	Register the URL to this page
+		$GLOBALS['TSFE']->register['link'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL'). $this->pi_linkTP_keepPIvars_url( array(), 1 );
+
 			//	Return the XML content of our data array
-		return tx_wecapi_xml::getXMLContent( $res );
+		return tx_wecapi_list::getContent( $this, $sermons, $tableToList );
+		
 	}
 
 	/**
@@ -1626,6 +1709,28 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 	}
 
+	function getUrlToList ( $absolute,  $tableName) {
+
+		return $absolute ? t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 
+		$this->pi_linkTP_keepPIvars_url( array(), $this->conf['allowCaching'], 0 ) :
+		$this->pi_linkTP_keepPIvars_url( array(), $this->conf['allowCaching'], 0 );
+		
+	}
+
+	
+	function getUrlToSingle ( $absolute, $tableName, $uid ) {
+
+		$piVar = array (
+			'recordType' => $tableName,
+			'showUid' => $uid,
+		);
+		
+		return $absolute ? t3lib_div::getIndpEnv('TYPO3_SITE_URL') .
+		$this->pi_linkTP_keepPIvars_url( $piVar, $this->conf['allowCaching'], 0, $this->conf['pidSingleView'] ) :
+		$this->pi_linkTP_keepPIvars_url( $piVar, $this->conf['allowCaching'], 0, $this->conf['pidSingleView'] );
+		
+	}
+
 	/**
 	 * Retrieves the 'fe_admin_fieldList' for a given data table, used for generating the fe editIcon.
 	 *
@@ -1775,6 +1880,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			tx_wecsermons_resources.description,
 			tx_wecsermons_resources.graphic,
 			tx_wecsermons_resources.file,
+			tx_wecsermons_resources.mime_type,
 			tx_wecsermons_resources.url,
 			tx_wecsermons_resources.querystring_param,
 			tx_wecsermons_resources.rendered_record,

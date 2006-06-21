@@ -23,6 +23,7 @@ CREATE TABLE tx_wecsermons_resources (
 	rendered_record blob NOT NULL,
 	marker_name tinytext NOT NULL,
 	template_name tinytext NOT NULL,
+	mime_type tinytext NOT NULL,
 	
 	PRIMARY KEY (uid),
 	KEY parent (pid)
