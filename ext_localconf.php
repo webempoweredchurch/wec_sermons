@@ -19,9 +19,12 @@ t3lib_extMgm::addTypoScript($_EXTKEY,'editorcfg','
 t3lib_extMgm::addPItoST43($_EXTKEY,'pi1/class.tx_wecsermons_pi1.php','_pi1','list_type',1);
 
 	//	Load necessary classes and register respective hooks
-require_once( t3lib_extMgm::extPath($_EXTKEY) . '/class.tx_resourceTypeTca.php' );
-//$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = 'tx_resourceTypeTca';
-$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getMainFieldsClass'][] = 'tx_resourceTypeTca';
+require_once( t3lib_extMgm::extPath($_EXTKEY) . '/class.tx_wecsermons_resourceTypeTca.php' );
+require_once( t3lib_extMgm::extPath($_EXTKEY) . '/class.tx_wecsermons_xmlView.php' );	
+
+$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getMainFieldsClass'][] = 'tx_wecsermons_resourceTypeTca';
+$TYPO3_CONF_VARS['EXTCONF']['tx_wecapi_list']['preProcessContentRow'][] = 'tx_wecsermons_xmlView';
+$TYPO3_CONF_VARS['EXTCONF']['tx_wecapi_list']['preProcessPageArray'][] = 'tx_wecsermons_xmlView';
 
 t3lib_extMgm::addTypoScript($_EXTKEY,'setup','
 	tt_content.shortcut.20.0.conf.tx_wecsermons_sermons = < plugin.'.t3lib_extMgm::getCN($_EXTKEY).'_pi1

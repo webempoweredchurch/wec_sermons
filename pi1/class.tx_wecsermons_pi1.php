@@ -292,7 +292,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 		$where = '';
 		$where .= $startDate ? ' AND occurance_date >= ' . $startDate : '';	
 		$where .= $endDate ? ' AND occurance_date <= ' .  $endDate  : '';
-		
+
 			// Make listing query, pass query to SQL database:
 		$res = $this->pi_exec_query($tableToList,0,$where);
 		
@@ -302,9 +302,8 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 		
 			//	Iterate over the sermons and retrieve related resource information.
 		while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) ) {
-			
-				//	Retreive the array of related resources to this sermon record 
-			$resources = $this->getResources( $current['uid'] );	
+			//	Retreive the array of related resources to this sermon record 
+			$resources = $this->getResources( $row['uid'] );	
 			
 			foreach( $resources as $resource ) {
 			
@@ -325,63 +324,23 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 					$row['size'] = $fileInfo['size'];
 					$row['enclosure_url'] =  t3lib_div::getIndpEnv('TYPO3_SITE_URL'). $relPath;	
 					$row['mime_type'] = $resource['mime_type'];
-					break;
-			
 				}
 				
 			}
-			
+			$row['item_link'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL'). $this->pi_linkTP_keepPIvars_url( array( 'showUid' => $row['uid'], 'recordType' => $tableToList), 1 );
 			$sermons[] = $row;
-		}
-			
-			
-
-		
-			//	Iterate over every sermon and every sermon resource
-		for( $offset = 0; $offset < count( $sermons ) ; $offset++ ) {
-			
-			$sermon = &$sermons[$offset];
-			
-			for( $resOffset = 0; $resOffset < count( $sermons[$offset]['resources'] ) ; $resOffset++ ) {
-
-				$resource = &$sermon['resources'][$resOffset];
-	
-
-					//	If the resource is the type allowed as an enclosure in this view, then calculate the url and size.
-				if( $resource['type'] == $lConf['enclosureType'] ) {
-	
-						//	Retrieve a typolink conf that tells us how to render the link to the resource. Must be provided by admin!
-					$this->local_cObj->start($resource);
-					$typolinkConf = $this->conf['resource_types.'][$resource['type'].'.']['typolink.'];
-					
-						//	Render the relative and absolute paths to the file
-					$relPath =  $this->local_cObj->typolink_URL( $typolinkConf );
-					$absPath = PATH_site . $relPath;
-	
-						//	Retrieve file info for the file.		
-					$fileInfo = t3lib_basicFileFunctions::getTotalFileInfo( $absPath );
-					
-					$sermon['size'] = $fileInfo['size'];
-					$sermon['enclosure_url'] =  t3lib_div::getIndpEnv('TYPO3_SITE_URL'). $relPath;	
-					$sermon['mime_type'] = $resource['mime_type'];
-					break;
-			
-				}
-			}
-	
-			 $content .= tx_wecapi_list::getContent( $this, array( 0 => $sermon ), $tableToList );
-return $content;
-exit;
-			
 		}
 
 			//	Register the URL to this page
-		$GLOBALS['TSFE']->register['link'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL'). $this->pi_linkTP_keepPIvars_url( array(), 1 );
+//unneeded?		$GLOBALS['TSFE']->register['channel_link'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL'). $this->pi_linkTP_keepPIvars_url( '', 1 );
 
+		 return tx_wecapi_list::getContent( $this, $sermons, $tableToList, conf[configOfWorkerClass] );
+			
+	}
+/*
 			//	Return the XML content of our data array
 		return tx_wecapi_list::getContent( $this, $sermons, $tableToList );
-		
-	}
+*/
 
 	/**
 	 * Generates the SINGLE view of a SMS record.

@@ -39,7 +39,7 @@
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
-class tx_resourceTypeTca {
+class tx_wecsermons_resourceTypeTca {
 
 	/**
 	 * Hook implementation that modifies the TCA on the fly, converting backend records tx_wecsermons_resources_type into a 'types' arrays that change our backend forms
@@ -112,8 +112,8 @@ class tx_resourceTypeTca {
 
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_sermons/class.tx_resourceTypeTca.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_sermons/class.tx_resourceTypeTca.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_sermons/class.tx_wecsermons_resourceTypeTca.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_sermons/class.tx_wecsermons_resourceTypeTca.php']);
 }
 
 ?>

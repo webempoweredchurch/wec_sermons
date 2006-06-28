@@ -818,7 +818,7 @@ plugin.tx_wecsermons_pi1 {
 	
 	xmlView {
 		
-		results_at_a_time = 1
+		results_at_a_time = 5
 		desc_flag = 1
 		
 		#	EnclosureType specifies which custom resource type will be included as an <enclosure/> for podcasting.
