@@ -32,9 +32,9 @@ CREATE TABLE tx_wecsermons_resources (
 
 
 #
-# Table structure for table 'tx_wecsermons_resource_type'
+# Table structure for table 'tx_wecsermons_resource_types'
 #
-CREATE TABLE tx_wecsermons_resource_type (
+CREATE TABLE tx_wecsermons_resource_types (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
 	tstamp int(11) DEFAULT '0' NOT NULL,
@@ -119,6 +119,7 @@ CREATE TABLE tx_wecsermons_series (
 	tstamp int(11) DEFAULT '0' NOT NULL,
 	crdate int(11) DEFAULT '0' NOT NULL,
 	cruser_id int(11) DEFAULT '0' NOT NULL,
+	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
 	title tinytext NOT NULL,
@@ -127,7 +128,7 @@ CREATE TABLE tx_wecsermons_series (
 	startdate int(11) DEFAULT '0' NOT NULL,
 	enddate int(11) DEFAULT '0' NOT NULL,
 	graphic blob NOT NULL,
-	liturgical_season_uid blob NOT NULL,
+	seasons_uid blob NOT NULL,
 	topics_uid blob NOT NULL,
 	keywords tinytext NOT NULL,
 	
@@ -146,6 +147,7 @@ CREATE TABLE tx_wecsermons_topics (
 	tstamp int(11) DEFAULT '0' NOT NULL,
 	crdate int(11) DEFAULT '0' NOT NULL,
 	cruser_id int(11) DEFAULT '0' NOT NULL,
+	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
 	description text NOT NULL,
@@ -158,14 +160,15 @@ CREATE TABLE tx_wecsermons_topics (
 
 
 #
-# Table structure for table 'tx_wecsermons_liturgical_season'
+# Table structure for table 'tx_wecsermons_seasons'
 #
-CREATE TABLE tx_wecsermons_liturgical_season (
+CREATE TABLE tx_wecsermons_seasons (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
 	tstamp int(11) DEFAULT '0' NOT NULL,
 	crdate int(11) DEFAULT '0' NOT NULL,
 	cruser_id int(11) DEFAULT '0' NOT NULL,
+	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
 	season_name tinytext NOT NULL,
@@ -183,6 +186,7 @@ CREATE TABLE tx_wecsermons_speakers (
 	tstamp int(11) DEFAULT '0' NOT NULL,
 	crdate int(11) DEFAULT '0' NOT NULL,
 	cruser_id int(11) DEFAULT '0' NOT NULL,
+	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
 	firstname tinytext NOT NULL,

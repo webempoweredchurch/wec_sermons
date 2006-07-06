@@ -36,7 +36,7 @@ plugin.tx_wecsermons_pi1 {
 	templateFile = {$plugin.tx_wecsermons_pi1.file.templateFile}
 
 		# List of tables that any view can be generated from
-	allowedTables = tx_wecsermons_sermons,tx_wecsermons_series,tx_wecsermons_resources,tx_wecsermons_topics,tx_wecsermons_liturgical_season,tx_wecsermons_speakers,tx_wecsermons_resources
+	allowedTables = tx_wecsermons_sermons,tx_wecsermons_series,tx_wecsermons_resources,tx_wecsermons_topics,tx_wecsermons_seasons,tx_wecsermons_speakers,tx_wecsermons_resources
 
 		# CASE for rendering ###RESOURCE_CONTENT###
 		# Resource types are identified by thier UID, or primary key, except in case of type = 'plugin' where we use the name of the resource itself.
@@ -405,7 +405,7 @@ plugin.tx_wecsermons_pi1 {
 			}
 		}
 
-		tx_wecsermons_liturgical_season {
+		tx_wecsermons_seasons {
 
 			title = TEXT
 			title {
@@ -772,7 +772,7 @@ plugin.tx_wecsermons_pi1 {
 
 		}
 
-		tx_wecsermons_liturgical_season {
+		tx_wecsermons_seasons {
 
 			title = TEXT
 			title {
@@ -793,7 +793,7 @@ plugin.tx_wecsermons_pi1 {
 		descFlag = 0
 
 		#	List of table names we can search into from the search box (Future use)
-		#searchTables = tx_wecsermons_sermons,tx_wecsermons_series,tx_wecsermons_speakers,tx_wecsermons_liturgical_season,tx_wecsermons_resources,tx_wecsermons_topics
+		#searchTables = tx_wecsermons_sermons,tx_wecsermons_series,tx_wecsermons_speakers,tx_wecsermons_seasons,tx_wecsermons_resources,tx_wecsermons_topics
 
 		searchFieldArray {
 

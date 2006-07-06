@@ -4,7 +4,7 @@ t3lib_extMgm::addUserTSConfig('
 	options.saveDocNew.tx_wecsermons_resources=1
 ');
 t3lib_extMgm::addUserTSConfig('
-	options.saveDocNew.tx_wecsermons_resource_type=1
+	options.saveDocNew.tx_wecsermons_resource_types=1
 ');
 t3lib_extMgm::addUserTSConfig('
 	options.saveDocNew.tx_wecsermons_sermons=1

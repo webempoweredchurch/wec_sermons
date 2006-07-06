@@ -22,7 +22,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * Class/Functions used to modify TCA on the fly. Functions are called by hooks or userFunc declarations. This allows us to change the TCA based on the existence of tx_wecsermons_resource_type backend records. These records become record types for tx_wecsermons_resources, changing how resources are edited in the backend.
+ * Class/Functions used to modify TCA on the fly. Functions are called by hooks or userFunc declarations. This allows us to change the TCA based on the existence of tx_wecsermons_resource_types backend records. These records become record types for tx_wecsermons_resources, changing how resources are edited in the backend.
  *
  * @author	Web Empowered Church Team, Foundation For Evangelism <wec_sermons@webempoweredchurch.org>
  */
@@ -31,7 +31,7 @@
  *
  *
  *
- *   42: class tx_resourceTypeTca
+ *   42: class tx_wecsermons_resourceTypeTca
  *   52:     function getMainFields_preProcess($table,$row,&$pObj)
  *   84:     function resourceType_items( &$params, &$pObj )
  *
@@ -56,14 +56,14 @@ class tx_wecsermons_resourceTypeTca {
 				//	Make sure TCA is loaded for our table
 			t3lib_div::loadTCA( 'tx_wecsermons_resources' );
 
-				//	Retreive all tx_wecsermons_resource_type records
+				//	Retreive all tx_wecsermons_resource_types records
 			$resource = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'*',
-				'tx_wecsermons_resource_type',
+				'tx_wecsermons_resource_types',
 				''
 			);
 
-				//	Convert each tx_wecsermons_resource_type record into a 'types' TCA array
+				//	Convert each tx_wecsermons_resource_types record into a 'types' TCA array
 			while( $resourceType = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $resource )  ) {
 
 				$GLOBALS['TCA']['tx_wecsermons_resources']['types'][$resourceType['uid']] = array( 'showitem' => "sys_language_uid;;;;1-1-1, l18n_parent, l18n _diffsource, hidden;;1, title;;;;2-2-2, type, " . $resourceType['avail_fields'] );
@@ -85,24 +85,24 @@ class tx_wecsermons_resourceTypeTca {
 
 				//	Make sure TCA is loaded for our table
 			t3lib_div::loadTCA( 'tx_wecsermons_resources' );
-			t3lib_div::loadTCA( 'tx_wecsermons_resource_type' );
+			t3lib_div::loadTCA( 'tx_wecsermons_resource_types' );
 
 
-			//	Retreive all tx_wecsermons_resource_type records
+			//	Retreive all tx_wecsermons_resource_types records
 		$resource = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'*',
-			'tx_wecsermons_resource_type',
+			'tx_wecsermons_resource_types',
 			''
 		);
 
-			//	Convert each tx_wecsermons_resource_type record into a selectable 'record type' for tx_wecsermons_resource records
+			//	Convert each tx_wecsermons_resource_types record into a selectable 'record type' for tx_wecsermons_resource records
 		while( $resourceType = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $resource )  ) {
 
 				//	TODO: Resize the given image file to 18x16 via ImageMagick
 			$params['items'][] = array(
 				$resourceType['name'],
 				$resourceType['uid'],
-				$resourceType['icon'] ? '../../' . $GLOBALS['TCA']['tx_wecsermons_resource_type']['columns']['icon']['config']['uploadfolder'] . '/' . $resourceType['icon'] : ''
+				$resourceType['icon'] ? '../../' . $GLOBALS['TCA']['tx_wecsermons_resource_types']['columns']['icon']['config']['uploadfolder'] . '/' . $resourceType['icon'] : ''
 			);
 
 		}

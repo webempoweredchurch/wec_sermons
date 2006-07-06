@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <meta type="array">
+        <description>CSH for table tx_wecsermons_</description>
+        <type>CSH</type>
+        <csh_table>tx_wecsermons_</csh_table>
+        <fileId>EXT:wec_sermons/locallang_csh_.xml</fileId>
+        <labelContext type="array">
+            <label index=".description"></label>
+            <label index=".details"></label>
+            <label index="_.seeAlso"></label>
+             <label index="title.description"></label>
+            <label index="title.details"></label>
+       </labelContext>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index=".description"></label>
+            <label index=".details"></label>
+             <label index="title.description"></label>
+            <label index="title.details"></label>
+        </languageKey>
+    </data>
+</T3locallang>

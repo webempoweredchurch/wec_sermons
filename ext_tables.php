@@ -25,9 +25,9 @@ $TCA["tx_wecsermons_resources"] = Array (
 	)
 );
 
-$TCA["tx_wecsermons_resource_type"] = Array (
+$TCA["tx_wecsermons_resource_types"] = Array (
 	"ctrl" => Array (
-		"title" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resource_type",		
+		"title" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resource_types",		
 		"label" => "name",	
 		"tstamp" => "tstamp",
 		"crdate" => "crdate",
@@ -42,7 +42,7 @@ $TCA["tx_wecsermons_resource_type"] = Array (
 			"fe_group" => "fe_group",
 		),
 		"dynamicConfigFile" => t3lib_extMgm::extPath($_EXTKEY)."tca.php",
-		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_wecsermons_resource_type.gif",
+		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_wecsermons_resource_types.gif",
 	),
 	"feInterface" => Array (
 		"fe_admin_fieldList" => "sys_language_uid, l18n_parent, l18n_diffsource, hidden, fe_group, description, name, graphic",
@@ -98,7 +98,7 @@ $TCA["tx_wecsermons_series"] = Array (
 		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_wecsermons_series.gif",
 	),
 	"feInterface" => Array (
-		"fe_admin_fieldList" => "hidden, title, description, scripture, startdate, enddate, liturgical_season_uid, topics_uid, graphic",
+		"fe_admin_fieldList" => "hidden, title, description, scripture, startdate, enddate, seasons_uid, topics_uid, graphic",
 	)
 );
 
@@ -122,9 +122,9 @@ $TCA["tx_wecsermons_topics"] = Array (
 	)
 );
 
-$TCA["tx_wecsermons_liturgical_season"] = Array (
+$TCA["tx_wecsermons_seasons"] = Array (
 	"ctrl" => Array (
-		"title" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_liturgical_season",		
+		"title" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_seasons",		
 		"label" => "season_name",	
 		"tstamp" => "tstamp",
 		"crdate" => "crdate",
@@ -135,7 +135,7 @@ $TCA["tx_wecsermons_liturgical_season"] = Array (
 			"disabled" => "hidden",
 		),
 		"dynamicConfigFile" => t3lib_extMgm::extPath($_EXTKEY)."tca.php",
-		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_wecsermons_liturgical_season.gif",
+		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_wecsermons_seasons.gif",
 	),
 	"feInterface" => Array (
 		"fe_admin_fieldList" => "hidden, season_name",
@@ -173,8 +173,16 @@ $TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY.'_pi1']='pi_fle
 t3lib_extMgm::addPlugin(Array('LLL:EXT:wec_sermons/locallang_db.php:tt_content.list_type_pi1', $_EXTKEY.'_pi1'),'list_type');
 
 
-t3lib_extMgm::addStaticFile($_EXTKEY,'pi1/static/','Sermon Repository');
+t3lib_extMgm::addStaticFile($_EXTKEY,'static/','Sermon Repository');
 t3lib_extMgm::addPiFlexFormValue($_EXTKEY .'_pi1', 'FILE:EXT:wec_sermons/flexform_ds_pi1.xml');
+
+t3lib_extMgm::addLLrefForTCAdescr('tx_wecsermons_sermons','EXT:wec_sermons/locallang_csh_sermons.xml');
+t3lib_extMgm::addLLrefForTCAdescr('tx_wecsermons_series','EXT:wec_sermons/locallang_csh_series.xml');
+t3lib_extMgm::addLLrefForTCAdescr('tx_wecsermons_seasons','EXT:wec_sermons/locallang_csh_seasons.xml');
+t3lib_extMgm::addLLrefForTCAdescr('tx_wecsermons_resources','EXT:wec_sermons/locallang_csh_resources.xml');
+t3lib_extMgm::addLLrefForTCAdescr('tx_wecsermons_resource_types','EXT:wec_sermons/locallang_csh_resource_types.xml');
+t3lib_extMgm::addLLrefForTCAdescr('tx_wecsermons_topics','EXT:wec_sermons/locallang_csh_topics.xml');
+t3lib_extMgm::addLLrefForTCAdescr('tx_wecsermons_speakers','EXT:wec_sermons/locallang_csh_speakers.xml');
 
 if (TYPO3_MODE=="BE")	$TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]["tx_wecsermons_pi1_wizicon"] = t3lib_extMgm::extPath($_EXTKEY).'pi1/class.tx_wecsermons_pi1_wizicon.php';
 ?>

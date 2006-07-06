@@ -300,8 +300,11 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 		$content = '';
 
 		
-			//	Iterate over the sermons and retrieve related resource information.
+			//	Iterate over the matching sermons.
+			//	Retrieve related resource information and update the data row
+			//	Retrieve the first speaker and update data row
 		while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) ) {
+			
 			//	Retreive the array of related resources to this sermon record 
 			$resources = $this->getResources( $row['uid'] );	
 			
@@ -328,13 +331,22 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				
 			}
 			$row['item_link'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL'). $this->pi_linkTP_keepPIvars_url( array( 'showUid' => $row['uid'], 'recordType' => $tableToList), 1 );
+			
+			if( $row['speakers_uid'] ) {
+
+				//	Query for related speakers
+				$speakerRes = $this->pi_exec_query('tx_wecsermons_speakers', 0, ' AND uid in (' . $row['speakers_uid'] . ')' );
+				
+				//	Retreive only the first speaker
+				$speaker = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $speakerRes );
+				$row['author'] = $speaker ? $speaker['firstname'] . ' ' . $speaker['lastname'] : '';
+				
+			}
 			$sermons[] = $row;
 		}
 
-			//	Register the URL to this page
-//unneeded?		$GLOBALS['TSFE']->register['channel_link'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL'). $this->pi_linkTP_keepPIvars_url( '', 1 );
 
-		 return tx_wecapi_list::getContent( $this, $sermons, $tableToList, conf[configOfWorkerClass] );
+		 return tx_wecapi_list::getContent( $this, $sermons, $tableToList );
 			
 	}
 /*
@@ -1193,18 +1205,18 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 							//	Load the season subpart
 						$seasonTemplate = $this->cObj->getSubpart( $rowTemplate, $key );
-						$seasonMarkerArray = $this->getMarkerArray('tx_wecsermons_liturgical_seasons');
+						$seasonMarkerArray = $this->getMarkerArray('tx_wecsermons_seasons');
 						$seasonContent = '';
 
 							//	Store the current table and row while we switch to another table for a moment
 						$this->internal['previousTable'] = $this->internal['currentTable'];
-						$this->internal['currentTable'] = 'tx_wecsermons_liturgical_season';
+						$this->internal['currentTable'] = 'tx_wecsermons_seasons';
 						$this->internal['previousRow'] = $this->internal['currentRow'];
 
 						$seasonRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-							'tx_wecsermons_liturgical_season.*',
-							'tx_wecsermons_liturgical_season',
-							' uid in (' . $row[$fieldName] . ')' . $this->cObj->enableFields( 'tx_wecsermons_liturgical_season' )
+							'tx_wecsermons_seasons.*',
+							'tx_wecsermons_seasons',
+							' uid in (' . $row[$fieldName] . ')' . $this->cObj->enableFields( 'tx_wecsermons_seasons' )
 						);
 
 						$count = 0;
@@ -1306,8 +1318,8 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 				case '###SEASON_TITLE###':
 					if( $row[$fieldName] ) {
-						$this->local_cObj->start( $row, 'tx_wecsermons_liturgical_season' );
-						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_liturgical_season.']['title'], $lConf['tx_wecsermons_liturgical_season.']['title.'] );
+						$this->local_cObj->start( $row, 'tx_wecsermons_seasons' );
+						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_seasons.']['title'], $lConf['tx_wecsermons_seasons.']['title.'] );
 
 					}
 
@@ -1496,8 +1508,8 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 	 			$query = "
 					select distinct marker_name
-					from tx_wecsermons_resource_type
-					where marker_name != '' " . $this->cObj->enableFields('tx_wecsermons_resource_type');
+					from tx_wecsermons_resource_types
+					where marker_name != '' " . $this->cObj->enableFields('tx_wecsermons_resource_types');
 
 				$res = $GLOBALS['TYPO3_DB']->sql_query( $query );
 				while( $record = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) ) {
@@ -1516,7 +1528,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 					'###SERIES_DESCRIPTION###' => 'description',
 					'###SERIES_SCRIPTURE###' => 'scripture',
 					'###SERIES_GRAPHIC###' => 'graphic',
-					'###SERIES_SEASON###' => 'liturgical_season_uid',
+					'###SERIES_SEASON###' => 'seasons_uid',
 					'###SERIES_TOPICS###' => 'topics_uid',
 					'###SERIES_LINK###' => '',
 					'###ALTERNATING_CLASS###' => '',
@@ -1557,7 +1569,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				);
 	 		break;
 
-	 		case 'tx_wecsermons_liturgical_seasons':
+	 		case 'tx_wecsermons_seasons':
 	 			$markerArray = array (
 					'###SEASON_TITLE###' => 'season_name',
 					'###ALTERNATING_CLASS###' => '',
@@ -1648,7 +1660,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				$key = 'Topic';
 			break;
 
-			case 'tx_wecsermons_liturgical_season':
+			case 'tx_wecsermons_seasons':
 				$key = 'Season';
 			break;
 
@@ -1845,15 +1857,15 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			tx_wecsermons_resources.rendered_record,
 			tx_wecsermons_resources.marker_name resource_marker_name,
 			tx_wecsermons_resources.template_name resource_template_name,
-			tx_wecsermons_resource_type.name,
-			tx_wecsermons_resource_type.description,
-			tx_wecsermons_resource_type.icon,
-			tx_wecsermons_resource_type.marker_name resource_type_marker_name	,
-			tx_wecsermons_resource_type.template_name resource_type_template_name
+			tx_wecsermons_resource_types.name,
+			tx_wecsermons_resource_types.description,
+			tx_wecsermons_resource_types.icon,
+			tx_wecsermons_resource_types.marker_name resource_type_marker_name	,
+			tx_wecsermons_resource_types.template_name resource_type_template_name
 			from tx_wecsermons_resources
 					join tx_wecsermons_sermons_resources_uid_mm on tx_wecsermons_resources.uid=tx_wecsermons_sermons_resources_uid_mm.uid_foreign
 			join tx_wecsermons_sermons on tx_wecsermons_sermons.uid=tx_wecsermons_sermons_resources_uid_mm.uid_local
-			left join tx_wecsermons_resource_type on tx_wecsermons_resources.type=tx_wecsermons_resource_type.uid
+			left join tx_wecsermons_resource_types on tx_wecsermons_resources.type=tx_wecsermons_resource_types.uid
 		 			where 1=1 ' . $WHERE;
 
 			$res = $GLOBALS['TYPO3_DB']->sql_query( $query );
@@ -1884,8 +1896,8 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'distinct marker_name',
-			'tx_wecsermons_resource_type',
-			  'marker_name != \'\' '.$this->cObj->enableFields( 'tx_wecsermons_resource_type' )
+			'tx_wecsermons_resource_types',
+			  'marker_name != \'\' '.$this->cObj->enableFields( 'tx_wecsermons_resource_types' )
 		);
 
 		while( $marker = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) )

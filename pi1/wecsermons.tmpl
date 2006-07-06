@@ -35,7 +35,7 @@ RESOURCE_TITLE	-	Title of resource
 RESOURCE_DESCRIPTION	-	Full resource description
 RESOURCE_GRAPHIC	-	Graphic of resource
 RESOURCE_CONTENT	-	The resource itself
- 
+
 
 --SERIES
 SERIES_TITLE - Title of sermon series
@@ -90,7 +90,7 @@ BACK_LINK	- link back to the list view
 <em>This is an example template for styling a list of resources.</em>
 <br />
 
-<!-- ###TEMPLATE_LIST1### begin --> 
+<!-- ###TEMPLATE_LIST1### begin -->
 	<!-- ###CONTENT### begin -->
 	begin
 		<!-- ###ITEM### begin -->
@@ -100,7 +100,7 @@ BACK_LINK	- link back to the list view
 				###SERMON_OCCURANCE_DATE###
 				###SERMON_DESCRIPTION###
 				###SERMON_SCRIPTURE###
-				###SERMON_GRAPHIC###		
+				###SERMON_GRAPHIC###
 				<!--###SERMON_SPEAKERS###-->
 						###SPEAKER_PHOTO###
 						<div class="tx-wecsermons-speakers-caption">
@@ -126,7 +126,7 @@ BACK_LINK	- link back to the list view
 		end
 	<!-- ###CONTENT### end -->
 			###BROWSE_LINKS###
-<!-- ###TEMPLATE_LIST1### end --> 
+<!-- ###TEMPLATE_LIST1### end -->
 
 
 <br /><br /><br /><br /><hr />
@@ -138,14 +138,14 @@ BACK_LINK	- link back to the list view
 <br />
 <br />
 
-<!-- ###TEMPLATE_LIST2### begin 
+<!-- ###TEMPLATE_LIST2### begin
 	This template is in progress, developing a abstracted grouping mechanism for related records, simliar to a Crystal Reports 'group'
 -->
 
 <TABLE id="wecsermons-pi1-table-data">
   <TBODY>
     <!-- ###CONTENT### begin
-    	This begins the main content wrapper 
+    	This begins the main content wrapper
     -->
     <!-- ###GROUP###  begin -->
     <TR vAlign='top'>
@@ -154,7 +154,7 @@ BACK_LINK	- link back to the list view
         <!-- ###SERIES_LINK### --></TH>
     </TR>
     <!-- ###GROUP### end -->
-    
+
     <!-- ###DETAIL### begin
   		This begins the template for record detail
   	-->
@@ -180,9 +180,8 @@ BACK_LINK	- link back to the list view
 <em>This is an example template for styling a list of resources.</em>
 <br />
 
-<!-- ###TEMPLATE_LIST3### begin --> 
+<!-- ###TEMPLATE_LIST3### begin -->
 	<!-- ###CONTENT### begin -->
-	begin
 		<!-- ###ITEM### begin -->
 
 			<div style='border-bottom: 1px dotted black;' class='###ALTERNATING_CLASS###'>
@@ -190,12 +189,12 @@ BACK_LINK	- link back to the list view
 				###SERMON_OCCURANCE_DATE###
 				###SERMON_DESCRIPTION###
 				###SERMON_SCRIPTURE###
-				###SERMON_GRAPHIC###		
-				
+				###SERMON_GRAPHIC###
+
 				<!--###PDF_RESOURCES###-->
 				###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->###RESOURCE_FILE###<!--###RESOURCE_LINK###-->
 				<!--###PDF_RESOURCES###-->
-								
+
 				<!--###SERMON_SPEAKERS###-->
 						###SPEAKER_PHOTO###
 						<div class="tx-wecsermons-speakers-caption">
@@ -218,10 +217,35 @@ BACK_LINK	- link back to the list view
 
 			</div>
 		<!-- ###ITEM### end -->
-		end
 	<!-- ###CONTENT### end -->
 			###BROWSE_LINKS###
-<!-- ###TEMPLATE_LIST3### end --> 
+<!-- ###TEMPLATE_LIST3### end -->
+
+<br />
+<h3>TEMPLATE_SERIES_SINGLE3</h3>
+<em>Template for single view of a sermon.</em>
+<br />
+
+<!-- ###TEMPLATE_SERIES_SINGLE3### begin -->
+	<!--###CONTENT###-->
+		###SERIES_TITLE###
+		###SERIES_DESCRIPTION###
+		###SERIES_SCRIPTURE###
+		###SERIES_STARTDATE###
+		###SERIES_ENDDATE###
+		###SERIES_GRAPHIC###
+		
+		<!--###SERIES_SEASON###-->
+		###SEASON_TITLE###
+		<!--###SERIES_SEASON###-->
+		
+		<!--###SERIES_TOPICS###-->
+		###TOPIC_TITLE###
+		###TOPIC_DESCRIPTION###
+		<!--###SERIES_TOPICS###-->
+	
+	<!--###CONTENT###-->
+<!-- ###TEMPLATE_SERIES_SINGLE3### end -->
 
 <br />
 <h3>TEMPLATE_SERIES_SINGLE1</h3>
@@ -230,7 +254,7 @@ BACK_LINK	- link back to the list view
 
 
 <!-- ###TEMPLATE_SERIES_SINGLE1### begin -->
-<!--###CONTENT###--> 
+<!--###CONTENT###-->
 ###SERIES_TITLE###
 ###SERIES_DESCRIPTION###
 ###SERIES_SCRIPTURE###
@@ -246,7 +270,7 @@ BACK_LINK	- link back to the list view
 ###TOPIC_TITLE###
 <!--###SERIES_TOPICS###-->
 
-<!--###CONTENT###--> 
+<!--###CONTENT###-->
 <!-- ###TEMPLATE_SERIES_SINGLE1### end -->
 
 <br />
@@ -256,7 +280,7 @@ BACK_LINK	- link back to the list view
 
 
 <!-- ###TEMPLATE_SERMON_SINGLE1### begin -->
-<!--###CONTENT###--> 
+<!--###CONTENT###-->
 ###SERMON_TITLE###
 ###SERMON_OCCURANCE_DATE###
 ###SERMON_DESCRIPTION###
@@ -279,7 +303,7 @@ Sermon Topic: ###TOPIC_TITLE###
 
 <!--###CONTENT###-->
 <!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###-->
-<!-- ###TEMPLATE_SERMON_SINGLE1### end --> 
+<!-- ###TEMPLATE_SERMON_SINGLE1### end -->
 
 <br />
 <h3>TEMPLATE_SERMON_SINGLE3</h3>
@@ -288,7 +312,7 @@ Sermon Topic: ###TOPIC_TITLE###
 
 
 <!-- ###TEMPLATE_SERMON_SINGLE3### begin -->
-<!--###CONTENT###--> 
+<!--###CONTENT###-->
 ###SERMON_TITLE###
 ###SERMON_OCCURANCE_DATE###
 ###SERMON_DESCRIPTION###
@@ -317,19 +341,19 @@ Sermon Topic: ###TOPIC_TITLE###
 
 <!--###CONTENT###-->
 <!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###-->
-<!-- ###TEMPLATE_SERMON_SINGLE3### end --> 
+<!-- ###TEMPLATE_SERMON_SINGLE3### end -->
 
 
 <br />
 <h3>TEMPLATE_RESOURCE_LIST</h3>
 <em>This is an example template for styling a list of resources.</em>
 <br />
-<!-- ###TEMPLATE_RESOURCE_LIST### begin --> 
+<!-- ###TEMPLATE_RESOURCE_LIST### begin -->
 <DIV class="wecsermons-pi1-resource-list">
 	<DIV id="wecsermons-pi1-resources-title" class="resource-detail"><!-- ###RESOURCE_LINK### --> ###RESOURCE_TITLE###<!-- ###RESOURCE_LINK### --></DIV>
 	<DIV id="wecsermons-pi1-resources-description" class="resource-detail">###RESOURCE_DESCRIPTION_TRUNC###</DIV>
 </DIV>
-<!-- ###TEMPLATE_RESOURCE_LIST### end --> 
+<!-- ###TEMPLATE_RESOURCE_LIST### end -->
 
 <br />
 <h3>TEMPLATE_RESOURCE_SINGLE</h3>
@@ -353,7 +377,7 @@ Sermon Topic: ###TOPIC_TITLE###
 <em>This is an example template for styling a list of resources.</em>
 <br />
 
-<!-- ###TEMPLATE_SPEAKER_SINGLE1### begin --> 
+<!-- ###TEMPLATE_SPEAKER_SINGLE1### begin -->
 	<div class='tx-wecsermons-singleView'>
 	<!-- ###CONTENT### begin -->
 						###SPEAKER_PHOTO###
@@ -363,7 +387,7 @@ Sermon Topic: ###TOPIC_TITLE###
 	<!-- ###CONTENT### end -->
 	</div>
 	<div><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></div>
-<!-- ###TEMPLATE_SPEAKER_SINGLE1### end --> 
+<!-- ###TEMPLATE_SPEAKER_SINGLE1### end -->
 
 <!--###TEMPLATE_SEARCHBOX3### begin-->
 <div class="tx-wecsermons-pi1-searchbox">
@@ -375,7 +399,7 @@ Sermon Topic: ###TOPIC_TITLE###
     <input type="hidden" name="tx_wecsermons_pi1[pointer]" value="" />
   </form>
 </div>
-<!--###TEMPLATE_SEARCHBOX3### end--> 
+<!--###TEMPLATE_SEARCHBOX3### end-->
 
 
 <br />
