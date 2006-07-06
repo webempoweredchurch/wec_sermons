@@ -176,13 +176,13 @@ t3lib_extMgm::addPlugin(Array('LLL:EXT:wec_sermons/locallang_db.php:tt_content.l
 t3lib_extMgm::addStaticFile($_EXTKEY,'static/','Sermon Repository');
 t3lib_extMgm::addPiFlexFormValue($_EXTKEY .'_pi1', 'FILE:EXT:wec_sermons/flexform_ds_pi1.xml');
 
-t3lib_extMgm::addLLrefForTCAdescr('tx_wecsermons_sermons','EXT:wec_sermons/locallang_csh_sermons.xml');
-t3lib_extMgm::addLLrefForTCAdescr('tx_wecsermons_series','EXT:wec_sermons/locallang_csh_series.xml');
-t3lib_extMgm::addLLrefForTCAdescr('tx_wecsermons_seasons','EXT:wec_sermons/locallang_csh_seasons.xml');
-t3lib_extMgm::addLLrefForTCAdescr('tx_wecsermons_resources','EXT:wec_sermons/locallang_csh_resources.xml');
-t3lib_extMgm::addLLrefForTCAdescr('tx_wecsermons_resource_types','EXT:wec_sermons/locallang_csh_resource_types.xml');
-t3lib_extMgm::addLLrefForTCAdescr('tx_wecsermons_topics','EXT:wec_sermons/locallang_csh_topics.xml');
-t3lib_extMgm::addLLrefForTCAdescr('tx_wecsermons_speakers','EXT:wec_sermons/locallang_csh_speakers.xml');
+t3lib_extMgm::addLLrefForTCAdescr('tx_wecsermons_sermons','EXT:wec_sermons/csh/locallang_csh_sermons.xml');
+t3lib_extMgm::addLLrefForTCAdescr('tx_wecsermons_series','EXT:wec_sermons/csh/locallang_csh_series.xml');
+t3lib_extMgm::addLLrefForTCAdescr('tx_wecsermons_seasons','EXT:wec_sermons/csh/locallang_csh_seasons.xml');
+t3lib_extMgm::addLLrefForTCAdescr('tx_wecsermons_resources','EXT:wec_sermons/csh/locallang_csh_resources.xml');
+t3lib_extMgm::addLLrefForTCAdescr('tx_wecsermons_resource_types','EXT:wec_sermons/csh/locallang_csh_resource_types.xml');
+t3lib_extMgm::addLLrefForTCAdescr('tx_wecsermons_topics','EXT:wec_sermons/csh/locallang_csh_topics.xml');
+t3lib_extMgm::addLLrefForTCAdescr('tx_wecsermons_speakers','EXT:wec_sermons/csh/locallang_csh_speakers.xml');
 
 if (TYPO3_MODE=="BE")	$TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]["tx_wecsermons_pi1_wizicon"] = t3lib_extMgm::extPath($_EXTKEY).'pi1/class.tx_wecsermons_pi1_wizicon.php';
 ?>
