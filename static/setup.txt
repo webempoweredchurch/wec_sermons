@@ -145,7 +145,7 @@ plugin.tx_wecsermons_pi1 {
 			scripture = TEXT
 			scripture {
 				wrap = |<br/>
-				field = related_scripture
+				field = scripture
 			}
 
 			graphic = IMAGE
@@ -495,7 +495,7 @@ plugin.tx_wecsermons_pi1 {
 		tx_wecsermons_sermons {
 
 				# Allowed data columns to search in
-			searchFieldList = title,description,related_scripture,keywords
+			searchFieldList = title,description,scripture,keywords
 
 			orderByList = occurance_date,title
 			orderBy = occurance_date
@@ -528,7 +528,7 @@ plugin.tx_wecsermons_pi1 {
 			scripture = TEXT
 			scripture {
 				wrap = |<br/>
-				field = related_scripture
+				field = scripture
 			}
 
 			topics = TEXT
@@ -594,7 +594,7 @@ plugin.tx_wecsermons_pi1 {
 			}
 
 				# Allowed data columns to search in
-			searchFieldList = title,description,related_scripture,keywords
+			searchFieldList = title,description,scripture,keywords
 
 			title = TEXT
 			title {
@@ -629,7 +629,7 @@ plugin.tx_wecsermons_pi1 {
 		tx_wecsermons_series {
 
 				# Allowed data columns to search in
-			searchFieldList = title,description,related_scripture,keywords
+			searchFieldList = title,description,scripture,keywords
 
 			title = TEXT
 			title {
@@ -706,7 +706,7 @@ plugin.tx_wecsermons_pi1 {
 			}
 
 				# Allowed data columns to search in
-			searchFieldList = title,description,related_scripture,keywords
+			searchFieldList = title,description,scripture,keywords
 
 			photo = IMAGE
 			photo {
@@ -786,7 +786,7 @@ plugin.tx_wecsermons_pi1 {
 	searchView {
 
 		# Allowed data columns to search in
-		searchFieldList = title,description,related_scripture,keywords
+		searchFieldList = title,description,scripture,keywords
 
 		orderByList = occurance_date,title
 		orderBy = occurance_date,title
@@ -797,7 +797,7 @@ plugin.tx_wecsermons_pi1 {
 
 		searchFieldArray {
 
-			tx_wecsermons_sermons.searchFieldList = title,description,related_scripture,keywords
+			tx_wecsermons_sermons.searchFieldList = title,description,scripture,keywords
 
 		}
 

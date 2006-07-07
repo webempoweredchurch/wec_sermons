@@ -95,7 +95,7 @@ CREATE TABLE tx_wecsermons_sermons (
 	title tinytext NOT NULL,
 	occurance_date int(11) DEFAULT '0' NOT NULL,
 	description text NOT NULL,
-	related_scripture tinytext NOT NULL,
+	scripture tinytext NOT NULL,
 	keywords tinytext NOT NULL,
 	graphic blob NOT NULL,
 	series_uid blob NOT NULL,

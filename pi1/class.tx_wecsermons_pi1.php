@@ -1478,7 +1478,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	 				'###SERMON_TITLE###' => 'title',
 	 				'###SERMON_OCCURANCE_DATE###' => 'occurance_date',
 	 				'###SERMON_DESCRIPTION###' => 'description',
-	 				'###SERMON_SCRIPTURE###' => 'related_scripture',
+	 				'###SERMON_SCRIPTURE###' => 'scripture',
 	 				'###SERMON_TOPICS###' => 'topics_uid',
 	 				'###SERMON_SERIES###' => 'series_uid',
 	 				'###SERMON_SPEAKERS###' => 'speakers_uid',

@@ -11,15 +11,18 @@
         <languageKey index="default" type="array">
             <label index=".description">Sermons are the primary records the SMS will manage.</label>
             <label index=".details">Sermon records represent sermon in the SMS. They should be your starting point to creating on-line sermon information</label>
+            <label index="sys_language_uid.description">The language of this sermon.</label>
+            <label index="sys_language_uid.details">This should be the default language unless this sermon represents a translation of another language.</label>
+            <label index="_sys_language_uid.seeAlso">tt_content:sys_language_uid,pages:sys_language_uid,pages_language_overlay:sys_language_uid</label>
             <label index="title.description">The title of the sermon.</label>
             <label index="title.details">The sermon title will typically be the title of the sermon performed on your day of worship.</label>
             <label index="occurance_date.description">The date this sermon was presented.</label>
             <label index="occurance_date.details">Occurrence Date is date when this sermon was presented, or the materials associated with it were made available.</label>
             <label index="description.description">The general description given for this sermon.</label>
             <label index="description.details">The description can be used to briefly describe the sermon in detail, or to provide sermon notes or study guides. This is a flexible field that can be used however you imagine.</label>
-            <label index="related_scripture.description">Scripture referenced in this sermon.</label>
-            <label index="related_scripture.details">Include here, any scripture you wish to associate with this sermon. These will be included when performing a search. Separate scriptures by a comma, ','.</label>
-            <label index="related_scripture.syntax">John 3:14,Num 21:9</label>
+            <label index="scripture.description">Scripture referenced in this sermon.</label>
+            <label index="scripture.details">Include here, any scripture you wish to associate with this sermon. These will be included when performing a search. Separate scriptures by a comma, ','.</label>
+            <label index="scripture.syntax">John 3:14,Num 21:9</label>
             <label index="series_uid.description">The sermon series this sermon is associated with.</label>
             <label index="series_uid.details">Choose which series this particular sermon was presented in.</label>
             <label index="_series_uid.seeAlso">tx_wecsermons_series</label>
