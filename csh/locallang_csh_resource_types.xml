@@ -11,9 +11,21 @@
         <languageKey index="default" type="array">
             <label index=".description">Types that are made available in resource records.</label>
             <label index=".details">The Resource Type record is made available for selection in the Resource record. The Resource Type title will be listed in the drop-down selection box of a Resource record, and the Visible Resource Fields affect what properties of a Resource are shown.</label>
-             <label index="title.description">Uniquely identifies this Resource Type</label>
+            <label index="sys_language_uid.description">The language of this resource type.</label>
+            <label index="sys_language_uid.details">This should be the default language unless this resource type represents a translation of another language.</label>
+            <label index="title.description">Uniquely identifies this Resource Type</label>
             <label index="title.details">The Title field will be shown in the drop-down list of a Resource record.</label>
             <label index="_title.seeAlso">tx_wecsermons_resources:type</label>
+            <label index="marker_name.description">The subpart marker defined in the template file.</label>
+            <label index="marker_name.details">Marker name is the TYPO3 tag that is used for the subpart in a template file. The subpart describes how resources of this type are rendered. See the documentation of this extension for details.</label>
+            <label index="template_name.description">The subpart marker defined in the template file, that explains how resources of this type are rendered, displayed, in single view.</label>
+            <label index="template_name.details">Template name defines the template subpart that will render resources of this type in single view. Single view is defined by the plugin, and renders a single record. Resource single views have their own template, which is defined by this field. See the documentation of this extension for details.</label>
+			<label index="description.description">The general description given for this resource type.</label>
+			<label index="description.details">The description can be used to briefly describe the resource type.</label>
+			<label index="icon.description"></label>
+			<label index="icon.details"></label>
+			<label index="avail_fields.description"></label>
+			<label index="avail_fields.details"></label>
         </languageKey>
     </data>
 </T3locallang>
