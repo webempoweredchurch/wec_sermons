@@ -421,13 +421,13 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 			//	Retrieve the template key, which is the translation between the real table name and the template naming.
 			//	Branch between resource templates and other templates
-			//	TODO: What about if record is resource - we have two differnent types, plugin and other.
 		if( $this->internal['currentTable'] == 'tx_wecsermons_resources' ) {
 
 				//	TODO: allow specification of what record to draw from TypoScript
 			$resource = $this->getResources( '' , $this->piVars['showUid'] ) ;
 			$this->internal['currentRow'] = $resource[0];
 
+			//	If resource is of type 'plugin', we load the template from the resource record, otherwise load the template from the resource_type record.
 			$templateName = $this->internal['currentRow']['type'] == 'plugin' ?
 				$this->internal['currentRow']['resource_template_name']
 				: $this->internal['currentRow']['resource_type_template_name'];
@@ -1025,7 +1025,8 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 					$marker = '';
 					$markerArray[$key] = '';
-						//	TODO: Find all the possible markers and set to empty string.
+					
+						//	Find all the possible markers and set to empty string.
 					$this->emptyResourceSubparts( $subpartArray );
 
 					if( $row[$fieldName] ) {
@@ -1067,7 +1068,6 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 									//	Use the marker name from the resource record
 								$marker = $this->internal['currentRow']['resource_marker_name'];
-
 
 							}
 							else 	//	Resource type is other than 'plugin' so we use the marker name from the resource_type record
@@ -1479,7 +1479,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	 				'###SERMON_OCCURANCE_DATE###' => 'occurance_date',
 	 				'###SERMON_DESCRIPTION###' => 'description',
 	 				'###SERMON_SCRIPTURE###' => 'related_scripture',
-	 				'###SERMON_TOPICS###' => 'topic_uid',
+	 				'###SERMON_TOPICS###' => 'topics_uid',
 	 				'###SERMON_SERIES###' => 'series_uid',
 	 				'###SERMON_SPEAKERS###' => 'speakers_uid',
 					'###SERMON_GRAPHIC###' => 'graphic',

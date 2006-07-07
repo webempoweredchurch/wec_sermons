@@ -99,7 +99,7 @@ CREATE TABLE tx_wecsermons_sermons (
 	keywords tinytext NOT NULL,
 	graphic blob NOT NULL,
 	series_uid blob NOT NULL,
-	topic_uid blob NOT NULL,
+	topics_uid blob NOT NULL,
 	record_type int(11) DEFAULT '0' NOT NULL,
 	resources_uid int(11) DEFAULT '0' NOT NULL,
 	speakers_uid blob NOT NULL,

@@ -5,37 +5,37 @@
         <type>CSH</type>
         <csh_table>tx_wecsermons_sermons</csh_table>
         <fileId>EXT:wec_sermons/csh/locallang_csh_sermons.xml</fileId>
-        <labelContext type="array">
-            <label index=".description"></label>
-            <label index=".details"></label>
-            <label index="_.seeAlso"></label>
-            <label index="title.description"></label>
-            <label index="title.details"></label>
-            <label index="occurance_date.description"></label>
-            <label index="occurance_date.details"></label>
-            <label index="description.description"></label>
-            <label index="description.details"></label>
-            <label index="related_scripture.description"></label>
-            <label index="related_scripture.details"></label>
-            <label index="series_uid.description"></label>
-            <label index="series_uid.details"></label>
-       </labelContext>
+        <labelContext type="array"/>
     </meta>
     <data type="array">
         <languageKey index="default" type="array">
             <label index=".description">Sermons are the primary records the SMS will manage.</label>
-            <label index=".details">Sermon records represent sermon in the SMS. They should be your starting point to creating online sermon information</label>
+            <label index=".details">Sermon records represent sermon in the SMS. They should be your starting point to creating on-line sermon information</label>
             <label index="title.description">The title of the sermon.</label>
             <label index="title.details">The sermon title will typically be the title of the sermon performed on your day of worship.</label>
             <label index="occurance_date.description">The date this sermon was presented.</label>
-            <label index="occurance_date.details">Occurance Date is date when this sermon was presented, or the materials associated with it were made available.</label>
+            <label index="occurance_date.details">Occurrence Date is date when this sermon was presented, or the materials associated with it were made available.</label>
             <label index="description.description">The general description given for this sermon.</label>
             <label index="description.details">The description can be used to briefly describe the sermon in detail, or to provide sermon notes or study guides. This is a flexible field that can be used however you imagine.</label>
             <label index="related_scripture.description">Scripture referenced in this sermon.</label>
             <label index="related_scripture.details">Include here, any scripture you wish to associate with this sermon. These will be included when performing a search. Separate scriptures by a comma, ','.</label>
             <label index="related_scripture.syntax">John 3:14,Num 21:9</label>
             <label index="series_uid.description">The sermon series this sermon is associated with.</label>
-            <label index="series_uid.details"></label>
+            <label index="series_uid.details">Choose which series this particular sermon was presented in.</label>
+            <label index="_series_uid.seeAlso">tx_wecsermons_series</label>
+            <label index="topics_uid.description">A topic this sermon is associated with</label>
+            <label index="topics_uid.details">Choose a topic this sermon is associated with, if applicable. This will be used to search for sermons associated with a particular topic.</label>
+            <label index="_topics_uid.seeAlso">tx_wecsermons_topics</label>
+            <label index="resources_uid.description">Resources represent digital assets you wish to attach to a sermon and make them available to users of the website.</label>
+            <label index="resources_uid.details">Resources are flexible records that can store many types of digital assets. Many are provided out of the box, but site administrators can configure these through Resource Type records, TypoScript, and marker based templates.</label>
+            <label index="_resources_uid.seeAlso">tx_wecsermons_resources,tx_wecsermons_resource_types</label>
+            <label index="speakers_uid.description">Speakers are those individuals who presented the sermon, or materials.</label>
+            <label index="speakers_uid.details">Choose which speakers were associated with this sermon. More than one speaker can be specified.</label>
+            <label index="_speakers_uid.seeAlso">tx_wecsermons_speakers</label>
+            <label index="graphic.description">A digitial image associated with a sermon</label>
+            <label index="graphic.details">A graphic can represent an image or idea that this sermon is related to.</label>
+            <label index="keywords.description">Any keywords associated with a sermon that you may wish to include.</label>
+            <label index="keywords.details">Keywords are typically words that you wish to associate with a sermon, and will be included when searching for sermon records. These may be words that were not included in the description of the sermon, but are directly relevant, or used by people when searching.</label>
         </languageKey>
     </data>
 </T3locallang>
