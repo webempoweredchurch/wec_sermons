@@ -24,9 +24,17 @@
             <label index="_enddate.seeAlso">tx_wecsermons_series:startdate</label>
             <label index="description.description">The general description of the series.</label>
             <label index="description.details">The description can be used to give a brief summary of the series, and can be displayed on the series single view page.</label>
-            <label index="scripture.description">Scripture referenced in this sermon.</label>
-            <label index="scripture.details">Include here, any scripture you wish to associate with this sermon. These will be included when performing a search. Separate scriptures by a comma, ','.</label>
+            <label index="scripture.description">Scripture referenced in this series.</label>
+            <label index="scripture.details">Include here, any scripture you wish to associate with a series itself. Separate scriptures by a comma, ','.</label>
             <label index="scripture.syntax">John 3:14,Num 21:9</label>
+            <label index="keywords.description">Any keywords associated with a series that you may wish to include.</label>
+            <label index="keywords.details">Keywords are typically words that you wish to associate with a series. These may be words that were not included in the description of the series, but are directly relevant.</label>
+            <label index="seasons_uid.description">Season this series occured in.</label>
+            <label index="seasons_uid.details">A season is flexible, and can be implemented as needed. It is used to categorize or group sermon series. You may use this to represent liturgical seasons.</label>
+            <label index="topics_uid.description">A topic this series is associated with.</label>
+            <label index="topics_uid.details">A topic can be used to make a particular subject stand out within a series, and relate a series to multiple topics.</label>
+            <label index="graphic.description">A digitial image associated with a series</label>
+            <label index="graphic.details">A graphic can represent an image or idea that this series is related to.</label>
         </languageKey>
     </data>
 </T3locallang>
