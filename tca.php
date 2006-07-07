@@ -218,7 +218,7 @@ $TCA["tx_wecsermons_resources"] = Array (
 $TCA["tx_wecsermons_resource_types"] = Array (
 	"ctrl" => $TCA["tx_wecsermons_resource_types"]["ctrl"],
 	"interface" => Array (
-		"showRecordFieldList" => "sys_language_uid,l18n_parent,l18n_diffsource,hidden,fe_group,description,name,graphic"
+		"showRecordFieldList" => "sys_language_uid,l18n_parent,l18n_diffsource,hidden,fe_group,description,title,graphic"
 	),
 	"feInterface" => $TCA["tx_wecsermons_resource_types"]["feInterface"],
 	"columns" => Array (
@@ -295,9 +295,9 @@ $TCA["tx_wecsermons_resource_types"] = Array (
 				),
 			)
 		),
-		"name" => Array (		
+		"title" => Array (		
 			"exclude" => 1,		
-			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resource_types.name",		
+			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resource_types.title",		
 			"config" => Array (
 				"type" => "input",
 				"size" => "30",	
@@ -357,7 +357,7 @@ $TCA["tx_wecsermons_resource_types"] = Array (
 		),
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;1, name;;;;2-2-2, marker_name, template_name, description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts];3-3-3, icon, avail_fields")
+		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;1, title;;;;2-2-2, marker_name, template_name, description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts];3-3-3, icon, avail_fields")
 	),
 	"palettes" => Array (
 		"1" => Array("showitem" => "fe_group")

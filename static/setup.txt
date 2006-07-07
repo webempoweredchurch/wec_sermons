@@ -74,7 +74,7 @@ plugin.tx_wecsermons_pi1 {
 	
 			}
 			10 = TEXT
-			10.field = name
+			10.field = title
 			10.wrap = <tr><td>|</td>
 
 			20 = TEXT

@@ -28,7 +28,7 @@ $TCA["tx_wecsermons_resources"] = Array (
 $TCA["tx_wecsermons_resource_types"] = Array (
 	"ctrl" => Array (
 		"title" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resource_types",		
-		"label" => "name",	
+		"label" => "title",	
 		"tstamp" => "tstamp",
 		"crdate" => "crdate",
 		"cruser_id" => "cruser_id",
@@ -45,7 +45,7 @@ $TCA["tx_wecsermons_resource_types"] = Array (
 		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_wecsermons_resource_types.gif",
 	),
 	"feInterface" => Array (
-		"fe_admin_fieldList" => "sys_language_uid, l18n_parent, l18n_diffsource, hidden, fe_group, description, name, graphic",
+		"fe_admin_fieldList" => "sys_language_uid, l18n_parent, l18n_diffsource, hidden, fe_group, description, title, graphic",
 	)
 );
 

@@ -1,24 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
     <meta type="array">
-        <description>CSH for table tx_wecsermons_</description>
+        <description>CSH for table tx_wecsermons_resource_types</description>
         <type>CSH</type>
-        <csh_table>tx_wecsermons_</csh_table>
-        <fileId>EXT:wec_sermons/csh/locallang_csh_.xml</fileId>
-        <labelContext type="array">
-            <label index=".description"></label>
-            <label index=".details"></label>
-            <label index="_.seeAlso"></label>
-             <label index="title.description"></label>
-            <label index="title.details"></label>
-       </labelContext>
+        <csh_table>tx_wecsermons_resource_types</csh_table>
+        <fileId>EXT:wec_sermons/csh/locallang_csh_resource_types.xml</fileId>
+        <labelContext type="array" />
     </meta>
     <data type="array">
         <languageKey index="default" type="array">
-            <label index=".description"></label>
-            <label index=".details"></label>
-             <label index="title.description"></label>
-            <label index="title.details"></label>
+            <label index=".description">Types that are made available in resource records.</label>
+            <label index=".details">The Resource Type record is made available for selection in the Resource record. The Resource Type title will be listed in the drop-down selection box of a Resource record, and the Visible Resource Fields affect what properties of a Resource are shown.</label>
+             <label index="title.description">Uniquely identifies this Resource Type</label>
+            <label index="title.details">The Title field will be shown in the drop-down list of a Resource record.</label>
+            <label index="_title.seeAlso">tx_wecsermons_resources:type</label>
         </languageKey>
     </data>
 </T3locallang>

@@ -1857,7 +1857,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			tx_wecsermons_resources.rendered_record,
 			tx_wecsermons_resources.marker_name resource_marker_name,
 			tx_wecsermons_resources.template_name resource_template_name,
-			tx_wecsermons_resource_types.name,
+			tx_wecsermons_resource_types.title,
 			tx_wecsermons_resource_types.description,
 			tx_wecsermons_resource_types.icon,
 			tx_wecsermons_resource_types.marker_name resource_type_marker_name	,

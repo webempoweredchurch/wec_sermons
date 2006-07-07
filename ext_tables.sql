@@ -47,7 +47,7 @@ CREATE TABLE tx_wecsermons_resource_types (
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
 	fe_group int(11) DEFAULT '0' NOT NULL,
 	description text NOT NULL,
-	name tinytext NOT NULL,
+	title tinytext NOT NULL,
 	icon blob NOT NULL,
 	marker_name tinytext NOT NULL,
 	template_name tinytext NOT NULL,
