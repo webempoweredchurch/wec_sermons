@@ -151,7 +151,7 @@ CREATE TABLE tx_wecsermons_topics (
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
 	description text NOT NULL,
-	name tinytext NOT NULL,
+	title tinytext NOT NULL,
 	
 	PRIMARY KEY (uid),
 	KEY parent (pid)

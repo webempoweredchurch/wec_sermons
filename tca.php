@@ -884,7 +884,7 @@ $TCA["tx_wecsermons_series"] = Array (
 $TCA["tx_wecsermons_topics"] = Array (
 	"ctrl" => $TCA["tx_wecsermons_topics"]["ctrl"],
 	"interface" => Array (
-		"showRecordFieldList" => "hidden,description,name"
+		"showRecordFieldList" => "hidden,description,title"
 	),
 	"feInterface" => $TCA["tx_wecsermons_topics"]["feInterface"],
 	"columns" => Array (
@@ -929,9 +929,9 @@ $TCA["tx_wecsermons_topics"] = Array (
 				),
 			)
 		),
-		"name" => Array (		
+		"title" => Array (		
 			"exclude" => 1,		
-			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_topics.name",		
+			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_topics.title",		
 			"config" => Array (
 				"type" => "input",	
 				"size" => "30",	
@@ -940,7 +940,7 @@ $TCA["tx_wecsermons_topics"] = Array (
 		),
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1,hidden;;1;;1-1-1, name;;;;2-2-2, description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts]")
+		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1,hidden;;1;;1-1-1, title;;;;2-2-2, description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts]")
 	),
 	"palettes" => Array (
 		"1" => Array("showitem" => "")

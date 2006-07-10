@@ -394,7 +394,7 @@ plugin.tx_wecsermons_pi1 {
 			title = TEXT
 			title {
 				wrap = |
-				field = name
+				field = title
 			}
 
 			description = TEXT
@@ -760,7 +760,7 @@ plugin.tx_wecsermons_pi1 {
 			title = TEXT
 			title {
 				wrap = |<br/>
-				field = name
+				field = title
 			}
 			
 			description = TEXT

@@ -1303,7 +1303,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				case '###TOPIC_TITLE###':
 					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_topics' );
-						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_topics.']['title'], $lConf['tx_wecsermons_topics.']['title.'] );
+						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_topics.']['title'], $lConf['tx_wecsermons_topics.']['title.'] );				
 					}
 
 				break;
@@ -1538,7 +1538,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 	 		case 'tx_wecsermons_topics':
 	 			$markerArray = array (
-					'###TOPIC_TITLE###' => 'name',
+					'###TOPIC_TITLE###' => 'title',
 					'###TOPIC_DESCRIPTION###' => 'description',
 					'###ALTERNATING_CLASS###' => '',
 				);
