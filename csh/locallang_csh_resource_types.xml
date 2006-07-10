@@ -22,10 +22,10 @@
             <label index="template_name.details">Template name defines the template subpart that will render resources of this type in single view. Single view is defined by the plugin, and renders a single record. Resource single views have their own template, which is defined by this field. See the documentation of this extension for details.</label>
 			<label index="description.description">The general description given for this resource type.</label>
 			<label index="description.details">The description can be used to briefly describe the resource type.</label>
-			<label index="icon.description"></label>
-			<label index="icon.details"></label>
-			<label index="avail_fields.description"></label>
-			<label index="avail_fields.details"></label>
+			<label index="icon.description">An icon that represents this resource type.</label>
+			<label index="icon.details">The icon is a small image representing the type. </label>
+			<label index="avail_fields.description">Fields of a resource you would like to make available.</label>
+			<label index="avail_fields.details">Visible Resource fields are those fields you wish resources of this type to possess. The available fields are url, file, mime type, and description. When creating a resource of this type, fields you select here will be available.</label>
         </languageKey>
     </data>
 </T3locallang>
