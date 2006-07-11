@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005 Web Empowered Church Team, Foundation For Evangelism (wec_sermons@webempoweredchurch.org)
+*  (c) 2006 Web Empowered Church Team, Foundation For Evangelism (wec_sermons@webempoweredchurch.org)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -53,17 +53,17 @@ class tx_wecsermons_resourceTypeTca {
 
 		if( $table == 'tx_wecsermons_resources' ) {
 
-				//	Make sure TCA is loaded for our table
+			//	Make sure TCA is loaded for our table
 			t3lib_div::loadTCA( 'tx_wecsermons_resources' );
 
-				//	Retreive all tx_wecsermons_resource_types records
+			//	Retreive all tx_wecsermons_resource_types records
 			$resource = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'*',
 				'tx_wecsermons_resource_types',
 				''
 			);
 
-				//	Convert each tx_wecsermons_resource_types record into a 'types' TCA array
+			//	Convert each tx_wecsermons_resource_types record into a 'types' TCA array
 			while( $resourceType = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $resource )  ) {
 
 				$GLOBALS['TCA']['tx_wecsermons_resources']['types'][$resourceType['uid']] = array( 'showitem' => "sys_language_uid;;;;1-1-1, l18n_parent, l18n _diffsource, hidden;;1, title;;;;2-2-2, type, " . $resourceType['avail_fields'] );
@@ -83,22 +83,22 @@ class tx_wecsermons_resourceTypeTca {
 	 */
 	function resourceType_items( &$params, &$pObj ) {
 
-				//	Make sure TCA is loaded for our table
+			//	Make sure TCA is loaded for our table
 			t3lib_div::loadTCA( 'tx_wecsermons_resources' );
 			t3lib_div::loadTCA( 'tx_wecsermons_resource_types' );
 
 
-			//	Retreive all tx_wecsermons_resource_types records
+		//	Retreive all tx_wecsermons_resource_types records
 		$resource = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'*',
 			'tx_wecsermons_resource_types',
 			''
 		);
 
-			//	Convert each tx_wecsermons_resource_types record into a selectable 'record type' for tx_wecsermons_resource records
+		//	Convert each tx_wecsermons_resource_types record into a selectable 'record type' for tx_wecsermons_resource records
 		while( $resourceType = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $resource )  ) {
 
-				//	TODO: Resize the given image file to 18x16 via ImageMagick
+			//	TODO: Resize the given image file to 18x16 via ImageMagick
 			$params['items'][] = array(
 				$resourceType['title'],
 				$resourceType['uid'],

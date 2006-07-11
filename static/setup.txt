@@ -505,7 +505,7 @@ plugin.tx_wecsermons_pi1 {
 			title = TEXT
 			title {
 				wrap = |<br/>
-				parseFunc < tt_content.text.20.parseFunc
+#				parseFunc < tt_content.text.20.parseFunc
 				field = title
 			}
 
@@ -521,7 +521,7 @@ plugin.tx_wecsermons_pi1 {
 			description {
 				crop = 75|...
 				stripHtml = 1
-				wrap = <p class='bodytext'>|<p>
+				wrap = <p class='bodytext'>|</p>
 				field = description
 			}
 
