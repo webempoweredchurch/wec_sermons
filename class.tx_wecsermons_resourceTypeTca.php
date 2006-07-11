@@ -100,7 +100,7 @@ class tx_wecsermons_resourceTypeTca {
 
 				//	TODO: Resize the given image file to 18x16 via ImageMagick
 			$params['items'][] = array(
-				$resourceType['name'],
+				$resourceType['title'],
 				$resourceType['uid'],
 				$resourceType['icon'] ? '../../' . $GLOBALS['TCA']['tx_wecsermons_resource_types']['columns']['icon']['config']['uploadfolder'] . '/' . $resourceType['icon'] : ''
 			);
