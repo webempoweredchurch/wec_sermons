@@ -558,9 +558,9 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			//	Recursive setting from plugin overrides typoscript
 		$this->conf['recursive'] = getConfigVal( $this, 'recursive', 'sDEF', 'recursive', $lConf, 0 );
 
-			//	Find the starting point in the page tree to search for the record
-		$startingPoint =$this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'startingpoint', 'sDEF');
-
+			//	Find the starting point in the page tree to search for the record, use current page as default
+		$startingPoint = getConfigVal($this, 'startingpoint', 'sDEF', 'startingpoint', $lConf, $GLOBALS['TSFE']->id );
+		
 			//	If configured to use the General Storage Folder of the site, include that in the list of pids
 		if( $this->conf['useStoragePid'] ) {
 
@@ -570,6 +570,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 				//	Merge all lists from typoscript, storagePid, and startingpoint specified at plugin and assign to pidList
 			$this->conf['pidList'] .= ','. $storagePid . ','. $startingPoint;
+
 		}
 		else 	//	Merge lists from typoscript and startingpoint specified at plugin into pidList
 			$this->conf['pidList'] .= ','. $startingPoint;
