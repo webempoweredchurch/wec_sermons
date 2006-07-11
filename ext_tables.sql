@@ -171,7 +171,7 @@ CREATE TABLE tx_wecsermons_seasons (
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
-	season_name tinytext NOT NULL,
+	title tinytext NOT NULL,
 	
 	PRIMARY KEY (uid),
 	KEY parent (pid)

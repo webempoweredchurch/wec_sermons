@@ -952,7 +952,7 @@ $TCA["tx_wecsermons_topics"] = Array (
 $TCA["tx_wecsermons_seasons"] = Array (
 	"ctrl" => $TCA["tx_wecsermons_seasons"]["ctrl"],
 	"interface" => Array (
-		"showRecordFieldList" => "hidden,season_name"
+		"showRecordFieldList" => "hidden,title"
 	),
 	"feInterface" => $TCA["tx_wecsermons_seasons"]["feInterface"],
 	"columns" => Array (
@@ -977,9 +977,9 @@ $TCA["tx_wecsermons_seasons"] = Array (
 				"default" => "0"
 			)
 		),
-		"season_name" => Array (		
+		"title" => Array (		
 			"exclude" => 1,		
-			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_seasons.season_name",		
+			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_seasons.title",		
 			"config" => Array (
 				"type" => "input",	
 				"size" => "30",	
@@ -988,7 +988,7 @@ $TCA["tx_wecsermons_seasons"] = Array (
 		),
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1,hidden;;1, season_name;;;;2-2-2")
+		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1,hidden;;1, title;;;;2-2-2")
 	),
 	"palettes" => Array (
 		"1" => Array("showitem" => "")
@@ -998,7 +998,7 @@ $TCA["tx_wecsermons_seasons"] = Array (
 $TCA["tx_wecsermons_speakers"] = Array (
 	"ctrl" => $TCA["tx_wecsermons_speakers"]["ctrl"],
 	"interface" => Array (
-		"showRecordFieldList" => "hidden,season_name"
+		"showRecordFieldList" => "hidden,title"
 	),
 	"feInterface" => $TCA["tx_wecsermons_speakers"]["feInterface"],
 	"columns" => Array (

@@ -10,7 +10,7 @@
     <data type="array">
         <languageKey index="default" type="array">
             <label index=".description">Sermons are the primary records the SMS will manage.</label>
-            <label index=".details">Sermon records represent sermon in the SMS. They should be your starting point to creating on-line sermon information</label>
+            <label index=".details">Sermon records represent sermons in the SMS. They should be your starting point to creating on-line sermon information</label>
             <label index="sys_language_uid.description">The language of this sermon.</label>
             <label index="sys_language_uid.details">This should be the default language unless this sermon represents a translation of another language.</label>
             <label index="_sys_language_uid.seeAlso">tt_content:sys_language_uid,pages:sys_language_uid,pages_language_overlay:sys_language_uid</label>

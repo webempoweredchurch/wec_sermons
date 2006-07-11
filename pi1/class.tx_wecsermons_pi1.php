@@ -1571,7 +1571,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 	 		case 'tx_wecsermons_seasons':
 	 			$markerArray = array (
-					'###SEASON_TITLE###' => 'season_name',
+					'###SEASON_TITLE###' => 'title',
 					'###ALTERNATING_CLASS###' => '',
 				);
 	 		break;

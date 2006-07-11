@@ -125,7 +125,7 @@ $TCA["tx_wecsermons_topics"] = Array (
 $TCA["tx_wecsermons_seasons"] = Array (
 	"ctrl" => Array (
 		"title" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_seasons",		
-		"label" => "season_name",	
+		"label" => "title",	
 		"tstamp" => "tstamp",
 		"crdate" => "crdate",
 		"cruser_id" => "cruser_id",
@@ -138,7 +138,7 @@ $TCA["tx_wecsermons_seasons"] = Array (
 		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_wecsermons_seasons.gif",
 	),
 	"feInterface" => Array (
-		"fe_admin_fieldList" => "hidden, season_name",
+		"fe_admin_fieldList" => "hidden, title",
 	)
 );
 
