@@ -799,7 +799,7 @@ $TCA["tx_wecsermons_series"] = Array (
 			"config" => Array (
 				"type" => "select",	
 				"foreign_table" => "tx_wecsermons_seasons",	
-				"foreign_table_where" => "AND tx_wecsermons_seasons.pid=###STORAGE_PID### ORDER BY tx_wecsermons_seasons.uid",	
+				"foreign_table_where" => "AND (tx_wecsermons_seasons.pid=###STORAGE_PID### OR tx_wecsermons_seasons.pid=###CURRENT_PID###) ORDER BY tx_wecsermons_seasons.uid",	
 				"size" => 4,	
 				"minitems" => 0,
 				"maxitems" => 10,
