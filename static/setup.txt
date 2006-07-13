@@ -170,11 +170,6 @@ plugin.tx_wecsermons_pi1 {
 				wrap = <div class="tx-wecsermons-sermon-topics">|</div>
 			}
 
-			resources = TEXT
-			resources {
-				wrap = <div class="tx-wecsermons-sermon-resources">|</div>
-			}
-
 			speakers = TEXT
 			speakers {
 				wrap = <div class="tx-wecsermons-sermon-speakers">|</div>
@@ -533,19 +528,13 @@ plugin.tx_wecsermons_pi1 {
 
 			topics = TEXT
 			topics {
-				wrap = <div class="tx-wecsermons-sermon-topics">|</div>
+				wrap = <div class="tx-wecsermons-topics">|</div>
 			}
 
 			series = TEXT
 			series {
-				wrap = <div class="tx-wecsermons-sermon-series">|</div>
+				wrap = <div class="tx-wecsermons-series">|</div>
 			}
-
-			resources = TEXT
-			resources {
-				wrap = <div class="tx-wecsermons-sermon-resources">|</div>
-			}
-
 
 			graphic = IMAGE
 			graphic {
@@ -566,7 +555,7 @@ plugin.tx_wecsermons_pi1 {
 
 			speakers = TEXT
 			speakers {
-				wrap = <div class="tx-wecsermons-sermon-speakers">|</div>
+				wrap = <div class="tx-wecsermons-speakers">|</div>
 
 			}
 
