@@ -1070,7 +1070,11 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 									//	Use the marker name from the resource record
 								$marker = $this->internal['currentRow']['resource_marker_name'];
 
+							} 
+							else if( $this->internal['currentRow']['type'] == 0 ) {
+								$marker = '###DEFAULT_RESOURCES###';								
 							}
+						
 							else 	//	Resource type is other than 'plugin' so we use the marker name from the resource_type record
 								$marker = $this->internal['currentRow']['resource_type_marker_name'];
 
