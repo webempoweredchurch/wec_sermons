@@ -130,8 +130,8 @@ plugin.tx_wecsermons_pi1 {
 			}
 
 				# Specific date wrap for the occurance_date column in tx_wecsermons_sermons table
-			occurance = TEXT
-			occurance {
+			occurance_date = TEXT
+			occurance_date {
 				strftime = %A,  %b. %d %Y
 				wrap = |<br/>
 			}

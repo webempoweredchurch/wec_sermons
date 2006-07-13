@@ -852,11 +852,11 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 					if( $row[$fieldName] )
 					{
 							//	Wrap the date, choosing from one of three settings in typoscript
-						$dateWrap = $lConf['tx_wecsermons_sermons.']['occurance.'] ? $lConf['tx_wecsermons_sermons.']['occurance.'] : $lConf['general_dateWrap.'];
+						$dateWrap = $lConf['tx_wecsermons_sermons.']['occurance_date.'] ? $lConf['tx_wecsermons_sermons.']['occurance_date.'] : $lConf['general_dateWrap.'];
 						if( ! $dateWrap ) $dateWrap = $this->conf['general_dateWrap.'];
 
 						$this->local_cObj->start( $row, 'tx_wecsermons_sermons' );
-						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_sermons.']['occurance'], $dateWrap);
+						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_sermons.']['occurance_date'], $dateWrap);
 					}
 				break;
 
