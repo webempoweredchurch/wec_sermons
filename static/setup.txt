@@ -533,17 +533,17 @@ plugin.tx_wecsermons_pi1 {
 
 			topics = TEXT
 			topics {
-				wrap = <div class="tx-wecsermons-topics">|</div>
+				wrap = <div class="tx-wecsermons-sermon-topics">|</div>
 			}
 
 			series = TEXT
 			series {
-				wrap = <div class="tx-wecsermons-series">|</div>
+				wrap = <div class="tx-wecsermons-sermon-series">|</div>
 			}
 
 			resources = TEXT
 			resources {
-				wrap = <div class="tx-wecsermons-resources">|</div>
+				wrap = <div class="tx-wecsermons-sermon-resources">|</div>
 			}
 
 
@@ -566,7 +566,7 @@ plugin.tx_wecsermons_pi1 {
 
 			speakers = TEXT
 			speakers {
-				wrap = <div class="tx-wecsermons-speakers">|</div>
+				wrap = <div class="tx-wecsermons-sermon-speakers">|</div>
 
 			}
 
