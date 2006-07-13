@@ -123,7 +123,7 @@ CREATE TABLE tx_wecsermons_series (
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
 	title tinytext NOT NULL,
-	description tinytext NOT NULL,
+	description text NOT NULL,
 	scripture tinytext NOT NULL,
 	startdate int(11) DEFAULT '0' NOT NULL,
 	enddate int(11) DEFAULT '0' NOT NULL,
