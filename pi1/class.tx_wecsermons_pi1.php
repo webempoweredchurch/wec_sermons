@@ -80,7 +80,6 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	 * init performs some initialization of our class
 	 *
 	 * @param	array		$conf: Configuration array from TypoScript
-	 * @return	void		
 	 */
 	function init($conf)	{
 		$this->conf=$conf;		// Setting the TypoScript passed to this function in $this->conf
@@ -566,13 +565,10 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	/**
 	 * Returns the list of items based on the input SQL result pointer
 	 * For each result row the internal var, $this->internal['currentRow'], is set with the row returned.
-	 * $this->pi_list_header() makes the header row for the list
-	 * $this->pi_list_row() is used for rendering each row
 	 *
 	 * @param	pointer		Result pointer to a SQL result which can be traversed.
 	 * @param	string		Marker based template, which will be processed and returned with populated data using $this->substituteMarkerArrayCached  ()
 	 * @return	string		Output HTML, wrapped in <div>-tags with a class attribute
-	 * @see pi_list_row(), pi_list_header()
 	 */
 	function pi_list_makelist($lConf, $template)	 {
 
@@ -738,7 +734,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	 *
 	 * @param	array		$lConf: Locally scoped TypoScript configuration
 	 * @param	array		$markerArray: Array of typo3 tag markers as keys, and matching fieldnames as values. I.E. array( '###SERMON_TITLE###' => 'title', ... )
-	 * @param	string		$rowTemplate: A marker based template, needing to be processed
+	 * @param	string		$rowTemplate: A marker based template that defines the layout of our data on the front end
 	 * @param	array		$row: An associative array representing a row of data, with fieldnames as array keys and field values as array values. I.E. array( 'title' => 'Jesus Who Performs Miracles', ... )
 	 * @param	integer		$c: Number of current row, to determine even / odd rows
 	 * @return	string		A completed template subpart, populated with data from the row
@@ -1519,12 +1515,12 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	}
 
 	/**
-	 * Format string with general_stdWrap from configuration
+	 * formatStr: Format string with general_stdWrap from configuration
 	 *
-	 * @param	string		$string to wrap
+	 * @param	string		$str: String to wrap
 	 * @return	string		wrapped string
 	 */
-	function formatStr($str) {
+	function formatStr( $str ) {
 
 		if ( is_array( $this->conf['general_stdWrap.'] ) )
 			return $this->local_cObj->stdWrap($str, $this->conf['general_stdWrap.']);
@@ -1533,10 +1529,10 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	}
 
 	/**
-	 * Retrieves the content for a named template. Used to pull a template subpart from a template file
+	 * getTemplateKey: Retrieves the content for a named template. Used to pull a template subpart from a template file
 	 *
-	 * @param	string		$tableName. This is the tablename to retrieve the keyname for.
-	 * @return	string		A string value that is the template keyname for an SMS table name.
+	 * @param	string		$tableName: This is the table name to retrieve the template key name for.
+	 * @return	string		A string value that is the template key name for an SMS table name.
 	 */
 	function getTemplateKey($tableName) {
 
@@ -1614,9 +1610,9 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	}
 
 	/**
-	 * Retrieves the 'fe_admin_fieldList' for a given data table, used for generating the fe editIcon. If no table name is given, then the table name stored in $this->internal['currentTable'] is used.
+	 * getFeAdminList: Retrieves the 'fe_admin_fieldList' for a given data table, used for generating the fe editIcon. If no table name is given, then the table name stored in $this->internal['currentTable'] is used.
 	 *
-	 * @param	string		$tableName.	The name of the table to retrieve the field list for.
+	 * @param	string		$tableName: The name of the table to retrieve the field list for.
 	 * @return	string		Return value is a CSV string of fieldnames used in the editIcon fieldlist
 	 */
 	function getFeAdminList( $tableName = '' ) {
@@ -1632,9 +1628,9 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	}
 
 	/**
-	 * Retrieves the content for a named template. Used to load a template subpart from a template file. A member variable is used to store the template content, $this->template.
+	 * getNamedTemplateContent: Retrieves the content for a named template. Used to load a template subpart from a template file. A member variable is used to store the template content, $this->template.
 	 *
-	 * @param	string		$key: This is the keyname of the type of template to retrieve such as SERMON, SERIES, TOPIC, etc.
+	 * @param	string		$keyName: This is the keyname of the type of template to retrieve such as SERMON, SERIES, TOPIC, etc.
 	 * @param	string		$view: This is the name of the view to retrieve, SINGLE, LIST, etc.
 	 * @return	string		Return value is the content of a specfic marker-based template
 	 *	@see loadTemplate()
@@ -1686,11 +1682,11 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	}
 
 	/**
-	 * Returns the 
+	 * getNamedSubpart: Retrieves a template subpart given the subparts name, and the content stream to read it from.
 	 *
-	 * @param	string		$subpartName: ...
-	 * @param	string		$content: ...
-	 * @return	string		...
+	 * @param	string		$subpartName: The name of the subpart
+	 * @param	string		$content: The content stream where the subpart is stored
+	 * @return	string		Returns a string value containing on the subpart requested.
 	 */
 	function getNamedSubpart( $subpartName, $content ) {
 		// Make sure template is loaded into instance of our class
@@ -1704,9 +1700,9 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	}
 
 	/**
-	 * [Describe function...]
+	 * loadTemplate: Reads in a template file and populates the $template array member variable with the total content, and various other subparts:
+	 *	list, content, item
 	 *
-	 * @return	[type]		...
 	 */
 	function loadTemplate() {
 
@@ -1730,14 +1726,14 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	}
 
 	/**
-	 * [Describe function...]
+	 * getTemplateFile: Loads and returns the content of the template file specified in configuration.
 	 *
-	 * @return	[type]		...
+	 * @return	string		Content of the template file specified in configuration
 	 */
 	function getTemplateFile() {
 
-		//	Load the HTML template from either plugin or typoscript configuration, plugin overrides
-		$templateFile = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'templateFile', 'sDEF');
+		//	Load the HTML template
+		$templateFile = getConfigVal( $this, 'templateFile', 'sDEF', 'templateFile', $this->conf, 0 );
 
 		//	TODO: Double check this works with a template file stored in a BE template record.
 		$templateFile = $templateFile ? 'uploads/tx_wecsermons/'.$templateFile : $this->conf['templateFile'];
@@ -1749,6 +1745,14 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 	}
 
+	/**
+	 *	getResources: Returns all the resources associated with a particular sermon uid, or a specific resource uid. 
+	 * The function runs a SQL query to find all related resources for a particular sermon record, joining together multiple tables. The array returned is populated with fields from multiple tables.
+	 *
+	 *	@param	string	$sermonUid		
+	 * @param	string	$resourceUid:	The UID of a resource. If specified, only this one resource 
+	 * @return	array	An array of associative arrays. Each associative array represents all properties of one resource, and all properties of its type.
+	 */
 	function getResources( $sermonUid = '', $resourceUid = '') {
 
 		if( ! $this->internal['resources'] ) {
@@ -1788,12 +1792,26 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			//	For each related resource, determine the type and render it
 			while( $record = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) )
 				$resources[] = $record;
+
+			//	Store the resources array so we don't have to hit the database again if we need to access this function.
+			$this->internal['resources'] = $resources;
+
 		}
+		else
+			$resources = $this->internal['resources'];
+		
 
 		return $resources;
 
 	}
 
+	/**
+	 * emptyResourceSubparts: This function is used to determin all the possible subpart marker names based on custom resource types, and set the marker array value to an empty string. 
+	 * This initializes the marker array with empty strings before use.
+	 *
+	 *	@param	array	$subpartArray:	 The subpartArray to be initalized
+	 *
+	 */
 	function emptyResourceSubparts( &$subpartArray ) {
 
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -1819,11 +1837,11 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	}
 
 	/**
-	 *	throwError	Function that returns an HTML formatted error message for display on the front-end. ** MUST be user friendly!! **
+	 *	throwError	A helper function that returns an HTML formatted error message for display on the front-end. ** MUST be user friendly!! **
 	 *
-	 *	@param	string	$type	A given type or category of the error message we are displaying
-	 *	@param	string	$message	The message of the error
-	 *	@param	string	$detail	Any detail we'd like to include, such as the variable name that caused the error and it's value at the time.
+	 *	@param	string	$type: A given type or category of error message we are displaying
+	 *	@param	string	$message: The error message to be displayed
+	 *	@param	string	$detail: Any detail we'd like to include, such as the variable name that caused the error and it's value at the time.
 	 *
 	 *	@return	string	An HTML formatted error message
 	 */
@@ -1832,8 +1850,12 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 		//	TODO: Possibly add logic to fire an e-mail off with detail, or log the error.
 		
 		$format =  sprintf(
-		'<p>%s<br/> %s</p>
-		<p>%s</p>
+		'
+			<div style="border: 1px solid black; max-width:400px; background-color: #DDDD66; float: center;">
+				<h1>%s</h1>
+				<p>%s</p>
+				<p>$s</p>
+			</div>
 		',
 		htmlspecialchars( $type ), htmlspecialchars( $message ), htmlspecialchars( $detail ) );
 
@@ -1841,6 +1863,12 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 	}
 	
+	/**
+	 *	getTutorial:	Retrieves tutorial content, depending on the tutorial selected in the plugin configuration.
+	 *
+	 * @param	int	$tutorial: An integer value determining which tutorial we wish to render.
+	 * @return	string	Content of the tutorial
+	 */
 	function getTutorial ( $tutorial ) {
 		
 		$content = '';
@@ -1915,9 +1943,9 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 }	// End class tx_wecsermons_pi1
 
 /**
- * [Describe function...]
+ * uniqueCsv:	Given any number of CSV strings, this function combines the strings, returning a CSV string without duplicate values.
  *
- * @return	[type]		...
+ * @return	string		A CSV string, with unique values.
  */
 function uniqueCsv()	{
 	$max = func_num_args();
@@ -1930,9 +1958,9 @@ function uniqueCsv()	{
 }
 
 /**
- * [Describe function...]
+ * unique_array: Given any number of single dimensional arrays, this function combines the arrays, returning an array without duplicate values.
  *
- * @return	[type]		...
+ * @return	string		An array, without duplicate values.
  */
 function unique_array() {
 	$max = func_num_args();
@@ -1946,10 +1974,10 @@ function unique_array() {
 }
 
 /**
- * [Describe function...]
+ * get_foreign_column: Searches through the TCA array of the current table name for a related table, returning the column name used to create the relation.
  *
- * @param	string		Table name to search through
- * @param	string		Related table to search for
+ * @param	string		$currentTable: Table name to search through
+ * @param	string		$relatedTable: Related table to search for
  * @return	string		The column name that relates currentTable to relatedTable. Returns null if no relation is found.
  */
 function get_foreign_column( $currentTable, $relatedTable ) {
@@ -1970,13 +1998,14 @@ function get_foreign_column( $currentTable, $relatedTable ) {
 /**
  * Return the value from either plugin flexform, typoscript, or default value, in that order
  *
- * @param	object		Parent object passes itself
- * @param	string		Field name of the flexform value
- * @param	string		Sheet name where flexform value is located
- * @param	string		Field name of typoscript value
- * @param	array		TypoScript configuration array from local scope
- * @param	mixed		Default if no other values are assigned from TypoScript or Plugin Flexform
- * @return	mixed		Value found in any config, or default
+ * @param	object		$Obj: Parent object calling this function
+ * @param	string		$ffField: Field name of the flexform value
+ * @param	string		$ffSheet: Sheet name where flexform value is located
+ * @param	string		$TSfieldname: Property name of typoscript value
+ * @param	array		$lConf: TypoScript configuration array from local scope
+ * @param	mixed		$default: The default value to assign if no other values are assigned from TypoScript or Plugin Flexform
+ *
+ * @return	mixed		Configuration value found in any config, or default
  */
 function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default = '' ) {
 
@@ -1991,11 +2020,17 @@ function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default
 	return $retVal ? $retVal : $default;
 }
 
+/**
+ *	splitTableAndUID: Helper function that splits a table name and uid from the format stored by the TYPO3 backend, returning the values in an array. Format: 'tablename_uid'
+ *
+ *	@param	string		$record: The string value of tablename and uid in the form 'table_uid'
+ *
+ * @return	array	Array in the form array( 'table' => tablename, 'uid' => uid )
+ */
 function splitTableAndUID($record) {
 	$break = strrpos($record, "_");
 	$uid = substr($record, $break+1);
 	$table = substr($record, 0, $break);
-
 
 	return array("table" => $table, "uid" => $uid);
 }
