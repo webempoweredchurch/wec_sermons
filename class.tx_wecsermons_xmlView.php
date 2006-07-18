@@ -21,27 +21,45 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/**
- * class 'XML View' for the 'WEC Sermons' library
- *
- * @author	Web Empowered Church Team, Foundation For Evangelism <wec_sermons@webempoweredchurch.org>
- */
 
 require_once(PATH_t3lib.'class.t3lib_div.php');
 
+/**
+ * class 'XML View' for the 'WEC Sermons' library. This class is used in implementing hooks to wecapi_list. This allows us to extend the row and page array to include a link to sermon records, and the LIST view respectively.
+ *
+ * @author	Web Empowered Church Team, Foundation For Evangelism <wec_sermons@webempoweredchurch.org>
+ * @package TYPO3
+ * @subpackage tx_wecsermons
+*/
 class tx_wecsermons_xmlView {
 	
-	function preProcessContentRow( $pObj, $row ) {
-		
+	/**
+	 *	preProcessContentRow extends the $row array, inserting a link to the current SMS record. Implementation for hook ['tx_wecapi_list']['preProcessPageArray']
+	 *
+	 *	@param	object	$pObj: The parent object that calls this function through a hook.
+	 *	@param	array	$row:	The data row containing an SMS record, which we'll use to generate the link to.
+	 *	@see	tx_wecapi_list::getListContent()
+	 *
+	 */
+	function preProcessContentRow( $pObj, $row, $tableName ) {
+	
 			//	Make a callback to get the URL to this record. Parent object of tx_wecapi_list must support getUrlToSingle function call!
 		$row['item_link'] = $pObj->cObj->getUrlToSingle( true, $tableName, $row['uid'] );
 
 	}
 	
+	/**
+	 *	preProcessContentRow extends the $row array, inserting a link to the current SMS record.
+	 *
+	 *	@param	object	$pObj: The parent object that calls this function through a hook.
+	 *	@param	array	$dataArray:	The data row containing an SMS record, which we'll use to generate the link to
+	 *	@see	tx_wecapi_list::getListContent()
+	 *
+	 */
 	function preProcessPageArray( $pObj, $dataArray, $pageArray ) {
 
 			//	Make a callback to get the URL to the list view. Parent object of tx_wecapi_list must support getUrlToList function call!
-		$pageArray['channel_link'] = $pObj->cObj->getUrlToList( true, $tableName );
+		$pageArray['channel_link'] = $pObj->cObj->getUrlToList( true );
 	
 	}
 	
