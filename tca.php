@@ -131,9 +131,9 @@ $TCA["tx_wecsermons_resources"] = Array (
 				'max_size' => 10000,
 				'uploadfolder' => 'uploads/tx_wecsermons',
 				'show_thumbs' => '1',
-				'size' => 1,
-				'autoSizeMax' => 1,
-				'maxitems' => 1,
+				'size' => 4,
+				'autoSizeMax' => 4,
+				'maxitems' => 10,
 				'minitems' => 0,
 			)
 		),

@@ -105,86 +105,12 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 		//	Check if typoscript config 'tutorial' is an integer, otherwise set to 0
 		if( t3lib_div::testInt( $this->conf['tutorial'] ) == false ) $this->conf['tutorial'] = 0;
 
-		$tutorial = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'tutorial','sMisc');
-
-		//	If tutorial enabled, walk through tutorial
-		if( $tutorial > 0 || $this->conf['tutorial'] > 0 ) {
-
-			//	If tutorial specified through fe plugin, this overrides setting of typoscript.
-			$tutorial  = ($tutorial > 0) ?
-				$tutorial
-				: $this->conf['tutorial'];
-
-
-			$content = '';
-
-			//	Check which tutorial was chosen, and pull in the content from the apporpriate static HTML file
-			switch( $tutorial )
-			{
-				case '1':	//	Ginghamsburg tutorial
-
-					switch($this->piVars['page']) {
-						case '2' :
-							$content .="<H1>Example page of a view on study material</H1>";
-							$content .= t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons').'tut/ging/study_view.htm');
-						break;
-
-						case '3':
-							$content .="<H1>Example page of another view on study material</H1>";
-							$content .= t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons') .'tut/ging/study_exp.htm');
-						break;
-
-						default:
-							$content .="<H1>Example page of a view on a sermon listing</H1>";
-							$content .= t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons') .'tut/ging/list_view.htm');
-
-					}
-
-				//	Replace existing relative paths to files
-				$content = str_replace( 'images/', t3lib_extMgm::siteRelPath('wec_sermons').'tut/ging/images/', $content );
-
-				break;
-
-				case '2':	//	Living Water tutorial
-
-					switch($this->piVars['page']) {
-						case '2' :
-							$content .="<H1>Example page of a view on sermon series</H1>";
-							$content .= t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons').'tut/living_water/series_view.htm');
-						break;
-
-						case '3':
-							$content .="<H1>Example page of a view on sermons archive</H1>";
-							$content .= t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons').'tut/living_water/archive_view.htm');
-						break;
-
-						default:
-							$content .="<H1>Example page of a view on a single sermon</H1>";
-							$content .= t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons').'tut/living_water/single_view.htm');
-
-					}
-
-
-					//	Replace existing relative paths
-					$content = str_replace( 'images/', t3lib_extMgm::siteRelPath('wec_sermons').'tut/living_water/images/', $content );
-				break;
-				default:
-
-			}
-
-			//	set piVar['page'] = 1, or increment to next page
-			is_null( $this->piVars['page'] ) ? $this->piVars['page'] = 2 : $this->piVars['page']++;
-
-			//	reset counter to 1 when > 3
-			if( $this->piVars['page'] > 3 ) $this->piVars['page'] = 1;
-
-			//	Modify all links in the static HTML file, linking to the next screen
-			$content = preg_replace('/href="#"/',  'href="'.$this->pi_linkTP_keepPIvars_url(array() , 1 ).'"', $content);
-
-
-				return $content;
-		}	// End tutorial block
+		$tutorial = getConfigVal( $this, 'tutorial', 'sMisc', 'tutorial', $this->conf, 0 );
 		
+		//	If tutorial enabled, walk through tutorial
+		if( $tutorial ) 
+			return $this->getTutorial( $tutorial );
+			
 		//	Get the 'what to display' value from plugin or typoscript, plugin overriding
 		$display = getConfigVal( $this, 'display', 'sDEF', 'CMD', $this->conf );
 
@@ -228,26 +154,11 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 					$content .= '<h1>Please configure \'what to display\' in plugin or typoscript</h1><br/>';
 					break;
 			}	//	End Primary switch
+
 		}	//	End Primary foreach loop
 
 		return $content;
 
-
-		switch((string)$conf['CMD'])	{
-			case 'singleView':
-				list($t) = explode(':',$this->cObj->currentRecord);
-				$this->internal['currentTable']=$t;
-				$this->internal['currentRow']=$this->cObj->data;
-				return $this->pi_wrapInBaseClass($this->singleView($content,$conf));
-			break;
-			default:
-				if (strstr($this->cObj->currentRecord,'tt_content'))	{
-					$conf['pidList'] = $this->cObj->data['pages'];
-					$conf['recursive'] = $this->cObj->data['recursive'];
-				}
-				return $this->pi_wrapInBaseClass($this->listView($content,$conf));
-			break;
-		}
 	}
 	
 	function xmlView ($content, $lConf) {
@@ -1933,6 +1844,77 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 		return $format;
 
 	}
+	
+	function getTutorial ( $tutorial ) {
+		
+		$content = '';
+
+		//	Check which tutorial was chosen, and pull in the content from the apporpriate static HTML file
+		switch( $tutorial )
+		{
+			case '1':	//	Ginghamsburg tutorial
+
+				switch($this->piVars['page']) {
+					case '2' :
+						$content .="<H1>Example page of a view on study material</H1>";
+						$content .= t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons').'tut/ging/study_view.htm');
+					break;
+
+					case '3':
+						$content .="<H1>Example page of another view on study material</H1>";
+						$content .= t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons') .'tut/ging/study_exp.htm');
+					break;
+
+					default:
+						$content .="<H1>Example page of a view on a sermon listing</H1>";
+						$content .= t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons') .'tut/ging/list_view.htm');
+
+				}
+
+			//	Replace existing relative paths to files
+			$content = str_replace( 'images/', t3lib_extMgm::siteRelPath('wec_sermons').'tut/ging/images/', $content );
+
+			break;
+
+			case '2':	//	Living Water tutorial
+
+				switch($this->piVars['page']) {
+					case '2' :
+						$content .="<H1>Example page of a view on sermon series</H1>";
+						$content .= t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons').'tut/living_water/series_view.htm');
+					break;
+
+					case '3':
+						$content .="<H1>Example page of a view on sermons archive</H1>";
+						$content .= t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons').'tut/living_water/archive_view.htm');
+					break;
+
+					default:
+						$content .="<H1>Example page of a view on a single sermon</H1>";
+						$content .= t3lib_div::getURL(t3lib_extMgm::extPath('wec_sermons').'tut/living_water/single_view.htm');
+
+				}
+
+
+				//	Replace existing relative paths
+				$content = str_replace( 'images/', t3lib_extMgm::siteRelPath('wec_sermons').'tut/living_water/images/', $content );
+			break;
+			default:
+
+		}
+
+		//	set piVar['page'] = 1, or increment to next page
+		is_null( $this->piVars['page'] ) ? $this->piVars['page'] = 2 : $this->piVars['page']++;
+
+		//	reset counter to 1 when > 3
+		if( $this->piVars['page'] > 3 ) $this->piVars['page'] = 1;
+
+		//	Modify all links in the static HTML file, linking to the next screen
+		$content = preg_replace('/href="#"/',  'href="'.$this->pi_linkTP_keepPIvars_url(array() , 1 ).'"', $content);
+
+
+			return $content;
+	}	// End getTutorial 
 
 }	// End class tx_wecsermons_pi1
 
