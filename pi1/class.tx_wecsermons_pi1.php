@@ -132,33 +132,39 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 		foreach( $codes as $code ) {
 			switch( $code ) {	//	Primary switch for this plugin
-				case 'single':
-					$this->internal['currentCode'] = 'single';
+				case 'SINGLE':
+					$this->internal['currentCode'] = 'SINGLE';
 					$content .= $this->singleView( $content, $this->conf['singleView.'] );
 					break;
 
-				case 'list':
-					$this->internal['currentCode'] = 'list';
+				case 'LIST':
+					$this->internal['currentCode'] = 'LIST';
 					$content .= $this->listView($content, $this->conf['listView.']);
 					break;
 
-				case 'xml':
-					$this->internal['currentCode'] = 'xml';
+				case 'XML':
+					$this->internal['currentCode'] = 'XML';
 					$content .= $this->xmlView($content, $this->conf['xmlView.']);
 					break;
 
-				case 'archive':
-					$this->internal['currentCode'] = 'archive';
+/*	Currently unused feature, kept for future use
+
+				case 'ARCHIVE':
+					$this->internal['currentCode'] = 'ARCHIVE';
 					$content .= '<h1>archive case reached</h1><br/>';
 					break;
-
-				case 'search':
-					$this->internal['currentCode'] = 'search';
+*/
+				case 'SEARCH':
+					$this->internal['currentCode'] = 'SEARCH';
 					$content .= $this->searchView( $content, $this->conf['searchView.'] );
 					break;
 
 				default:
-					$content .= '<h1>Please configure \'what to display\' in plugin or typoscript</h1><br/>';
+					$content .= $this->throwError( 
+						'Configuration Error', 
+						'Plugin setting "What to Display" was not specified, or TypoScript Setup property "CMD" was incorrect or not found.', 
+						'What to Display:' . $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'display', 'sDEF')
+					);
 					break;
 			}	//	End Primary switch
 
@@ -1860,7 +1866,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			<div style="border: 1px solid black; max-width:400px; background-color: #DDDD66; float: center;">
 				<h1>%s</h1>
 				<p>%s</p>
-				<p>$s</p>
+				<p>%s</p>
 			</div>
 		',
 		htmlspecialchars( $type ), htmlspecialchars( $message ), htmlspecialchars( $detail ) );

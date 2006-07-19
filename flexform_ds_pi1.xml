@@ -40,23 +40,19 @@
 					<items type="array">
 	                     <numIndex index="1" type="array">
 	                            <numIndex index="0">LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.display.I.0</numIndex>
-	                            <numIndex index="1">single</numIndex>
+	                            <numIndex index="1">SINGLE</numIndex>
 	                    </numIndex>
 	                     <numIndex index="2" type="array">
 	                            <numIndex index="0">LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.display.I.1</numIndex>
-	                            <numIndex index="1">list</numIndex>
+	                            <numIndex index="1">LIST</numIndex>
 	                    </numIndex>
 	                     <numIndex index="3" type="array">
 	                            <numIndex index="0">LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.display.I.2</numIndex>
-	                            <numIndex index="1">xml</numIndex>
-	                    </numIndex>
-	                     <numIndex index="4" type="array">
-	                            <numIndex index="0">LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.display.I.3</numIndex>
-	                            <numIndex index="1">archive</numIndex>
+	                            <numIndex index="1">XML</numIndex>
 	                    </numIndex>
 	                     <numIndex index="5" type="array">
 	                            <numIndex index="0">LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.display.I.4</numIndex>
-	                            <numIndex index="1">search</numIndex>
+	                            <numIndex index="1">SEARCH</numIndex>
 	                    </numIndex>
 					</items>
 					<maxitems>100</maxitems>
