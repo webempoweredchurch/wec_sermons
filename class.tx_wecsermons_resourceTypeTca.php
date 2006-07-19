@@ -25,15 +25,18 @@
  * Class/Functions used to modify TCA on the fly. Functions are called by hooks or userFunc declarations. This allows us to change the TCA based on the existence of tx_wecsermons_resource_types backend records. These records become record types for tx_wecsermons_resources, changing how resources are edited in the backend.
  *
  * @author	Web Empowered Church Team, Foundation For Evangelism <wec_sermons@webempoweredchurch.org>
+ * @package TYPO3
+ * @subpackage tx_wecsermons
  */
+
  /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   42: class tx_wecsermons_resourceTypeTca
- *   52:     function getMainFields_preProcess($table,$row,&$pObj)
- *   84:     function resourceType_items( &$params, &$pObj )
+ *   45: class tx_wecsermons_resourceTypeTca
+ *   55:     function getMainFields_preProcess($table,$row,&$pObj)
+ *   87:     function resourceType_items( &$params, &$pObj )
  *
  * TOTAL FUNCTIONS: 2
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -42,7 +45,7 @@
 class tx_wecsermons_resourceTypeTca {
 
 	/**
-	 * Hook implementation that modifies the TCA on the fly, converting backend records tx_wecsermons_resources_type into a 'types' arrays that change our backend forms
+	 * getMainFields_preProcess: Hook implementation that modifies the TCA on the fly, converting backend records tx_wecsermons_resources_type into a 'types' arrays that change our backend forms
 	 *
 	 * @param	string		$table: The name of the table where the current record is stored
 	 * @param	array		$row:	An associative array of the current record
@@ -75,7 +78,7 @@ class tx_wecsermons_resourceTypeTca {
 	}
 
 	/**
-	 * A TCA[config][itemsProcFunc] implementation used from tx_wecsermons_resources
+	 * resourceType_items: A TCA[config][itemsProcFunc] implementation used from tx_wecsermons_resources
 	 *
 	 * @param	array		&$params: Reference to the 'config' array from our TCA column
 	 * @param	array		&$pObj:	The backreference to the parent object calling this function

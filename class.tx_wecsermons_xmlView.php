@@ -24,45 +24,61 @@
 
 require_once(PATH_t3lib.'class.t3lib_div.php');
 
+ /**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   48: class tx_wecsermons_xmlView
+ *   59:     function preProcessContentRow( $pObj, $row, $tableName )
+ *   75:     function preProcessPageArray( $pObj, $dataArray, $pageArray )
+ *
+ * TOTAL FUNCTIONS: 2
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
+
 /**
  * class 'XML View' for the 'WEC Sermons' library. This class is used in implementing hooks to wecapi_list. This allows us to extend the row and page array to include a link to sermon records, and the LIST view respectively.
  *
  * @author	Web Empowered Church Team, Foundation For Evangelism <wec_sermons@webempoweredchurch.org>
  * @package TYPO3
  * @subpackage tx_wecsermons
-*/
-class tx_wecsermons_xmlView {
-	
+ */
+ class tx_wecsermons_xmlView {
+
 	/**
-	 *	preProcessContentRow extends the $row array, inserting a link to the current SMS record. Implementation for hook ['tx_wecapi_list']['preProcessPageArray']
+	 * preProcessContentRow: Extends the $row array, inserting a link to the current SMS record. Implementation for hook ['tx_wecapi_list']['preProcessPageArray']
 	 *
-	 *	@param	object	$pObj: The parent object that calls this function through a hook.
-	 *	@param	array	$row:	The data row containing an SMS record, which we'll use to generate the link to.
-	 *	@see	tx_wecapi_list::getListContent()
-	 *
+	 * @param	object		$pObj: The parent object that calls this function through a hook.
+	 * @param	array		$row:	The data row containing an SMS record, which we'll use to generate the link to.
+	 * @param	[type]		$tableName: The name of the table
+	 * @return	[type]		void
+	 * @see	tx_wecapi_list::getListContent()
 	 */
 	function preProcessContentRow( $pObj, $row, $tableName ) {
-	
+
 			//	Make a callback to get the URL to this record. Parent object of tx_wecapi_list must support getUrlToSingle function call!
 		$row['item_link'] = $pObj->cObj->getUrlToSingle( true, $tableName, $row['uid'] );
 
 	}
-	
+
 	/**
-	 *	preProcessContentRow extends the $row array, inserting a link to the current SMS record.
+	 * preProcessPageArray:  Extends the page marker array, inserting a link to the current page.
 	 *
-	 *	@param	object	$pObj: The parent object that calls this function through a hook.
-	 *	@param	array	$dataArray:	The data row containing an SMS record, which we'll use to generate the link to
-	 *	@see	tx_wecapi_list::getListContent()
-	 *
+	 * @param	object		$pObj: The parent object that calls this function through a hook.
+	 * @param	array		$dataArray:	The data row containing a data record. Not used in this implementation
+	 * @param	[type]		$pageArray: The array of marker names we will process for this page.
+	 * @return	[type]		void
+	 * @see	tx_wecapi_list::getListContent()
 	 */
 	function preProcessPageArray( $pObj, $dataArray, $pageArray ) {
 
 			//	Make a callback to get the URL to the list view. Parent object of tx_wecapi_list must support getUrlToList function call!
 		$pageArray['channel_link'] = $pObj->cObj->getUrlToList( true );
-	
+
 	}
-	
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_sermons/class.tx_wecsermons_xmlView.php'])	{

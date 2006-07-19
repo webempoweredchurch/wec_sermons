@@ -21,6 +21,50 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
+require_once(PATH_tslib.'class.tslib_pibase.php');
+require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
+
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   75: class tx_wecsermons_pi1 extends tslib_pibase
+ *   89:     function init($conf)
+ *  107:     function main($content,$conf)
+ *  178:     function xmlView ($content, $lConf)
+ *  286:     function singleView($content,$lConf)
+ *  413:     function searchView($content,$lConf)
+ *  428:     function pi_list_searchbox($lConf)
+ *  477:     function listView($content,$lConf)
+ *  581:     function pi_list_makelist($lConf, $template)
+ *  750:     function pi_list_row($lConf, $markerArray = array(), $rowTemplate, $row ='', $c = 2)
+ * 1396:     function getMarkerArray( $tableName = '' )
+ * 1531:     function formatStr( $str )
+ * 1545:     function getTemplateKey($tableName)
+ * 1588:     function getUrlToList ( $absolute )
+ * 1605:     function getUrlToSingle ( $absolute, $tableName, $uid )
+ * 1624:     function getFeAdminList( $tableName = '' )
+ * 1644:     function getNamedTemplateContent($keyName = 'sermon', $view = 'single')
+ * 1697:     function getNamedSubpart( $subpartName, $content )
+ * 1714:     function loadTemplate()
+ * 1740:     function getTemplateFile()
+ * 1763:     function getResources( $sermonUid = '', $resourceUid = '')
+ * 1822:     function emptyResourceSubparts( &$subpartArray )
+ * 1854:     function throwError( $type, $message, $detail = '' )
+ * 1878:     function getTutorial ( $tutorial )
+ * 1956:     function uniqueCsv()
+ * 1971:     function unique_array()
+ * 1989:     function get_foreign_column( $currentTable, $relatedTable )
+ * 2015:     function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default = '' )
+ * 2034:     function splitTableAndUID($record)
+ *
+ * TOTAL FUNCTIONS: 28
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
+
 /**
  * Plugin 'Sermon Repository' for the 'wec_sermons' extension.
  *
@@ -28,47 +72,7 @@
  * @package TYPO3
  * @subpackage tx_wecsermons
  */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   69: class tx_wecsermons_pi1 extends tslib_pibase
- *   83:     function init($conf)
- *   99:     function main($content,$conf)
- *  251:     function singleView($content,$lConf)
- *  351:     function searchView($content,$lConf)
- *  364:     function pi_list_searchbox($lConf)
- *  415:     function listView($content,$lConf)
- *  502:     function pi_list_makelist($lConf, $template)
- *  659:     function pi_list_row($lConf, $markerArray = array(), $rowTemplate, $row ='', $c = 2)
- * 1228:     function pi_list_header()
- * 1243:     function getMarkerArray( $tableName = '' )
- * 1342:     function getFieldHeader($fN)
- * 1359:     function getFieldHeader_sortLink($fN)
- * 1369:     function formatStr($str)
- * 1383:     function getTemplateKey($tableName)
- * 1424:     function getFeAdminList( $tableName = '' )
- * 1443:     function getNamedTemplateContent($keyName = 'sermon', $view = 'single')
- * 1496:     function getNamedSubpart( $subpartName, $content )
- * 1509:     function loadTemplate()
- * 1535:     function getTemplateFile()
- * 1555:     function getResourceContent()
- * 1564:     function registerResource()
- * 1575:     function uniqueCsv()
- * 1590:     function unique_array()
- * 1608:     function get_foreign_column( $currentTable, $relatedTable )
- * 1634:     function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default = '' )
- *
- * TOTAL FUNCTIONS: 25
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
-
-require_once(PATH_tslib.'class.tslib_pibase.php');
-require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
-
-class tx_wecsermons_pi1 extends tslib_pibase {
+ class tx_wecsermons_pi1 extends tslib_pibase {
 	var $prefixId = 'tx_wecsermons_pi1';		// Same as class name
 	var $scriptRelPath = 'pi1/class.tx_wecsermons_pi1.php';	// Path to this script relative to the extension dir.
 	var $extKey = 'wec_sermons';	// The extension key.
@@ -77,9 +81,10 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 
 	/**
-	 * init performs some initialization of our class
+	 * init: performs some initialization of our class
 	 *
 	 * @param	array		$conf: Configuration array from TypoScript
+	 * @return	void
 	 */
 	function init($conf)	{
 		$this->conf=$conf;		// Setting the TypoScript passed to this function in $this->conf
@@ -92,7 +97,8 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	}
 
 	/**
-	 * Main sermons function. This function determines which view to display, branching to retreive content for each view.
+	 * Main: Primary sermons function.
+	 * This function determines which view to display, branching to retreive content for each view.
 	 *
 	 * @param	string		$content: Any previous content that this class will append itself to.
 	 * @param	array		$conf: Configuration array from TypoScript
@@ -107,11 +113,11 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 		if( t3lib_div::testInt( $this->conf['tutorial'] ) == false ) $this->conf['tutorial'] = 0;
 
 		$tutorial = getConfigVal( $this, 'tutorial', 'sMisc', 'tutorial', $this->conf, 0 );
-		
+
 		//	If tutorial enabled, walk through tutorial
-		if( $tutorial ) 
+		if( $tutorial )
 			return $this->getTutorial( $tutorial );
-			
+
 		//	Get the 'what to display' value from plugin or typoscript, plugin overriding
 		$display = getConfigVal( $this, 'display', 'sDEF', 'CMD', $this->conf );
 
@@ -161,7 +167,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 		return $content;
 
 	}
-	
+
 	/**
 	 * xmlView: This function will output a list view of sermons in XML format.
 	 *
@@ -170,7 +176,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	 * @return	string		Complete XML content
 	 */
 	function xmlView ($content, $lConf) {
-	
+
 		//	Recursive setting from plugin overrides typoscript
 		$this->conf['recursive'] = getConfigVal( $this, 'recursive', 'sDEF', 'recursive', $this->conf, 0 );
 
@@ -194,9 +200,9 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 		$this->piVars['pointer']=0;
 		$this->internal['results_at_a_time'] = $lConf['results_at_a_time'];
 		$this->internal['descFlag'] = $lConf['descFlag'];
-		
+
 			//	TODO: Modify code to allow other records to be shown. Right now we're assuming sermons only.
-		
+
 			//	Get the related table entries to the group, using 'tx_wecsermons_sermons' if none specified
 		$tableToList = getConfigVal( $this, 'detail_table', 'slistView', 'detail_table', $lConf, 'tx_wecsermons_sermons' );
 
@@ -209,63 +215,63 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 		$startDate = getConfigVal( $this, 'startDate', 'slistView', 'startDate', $lConf );
 		$endDate = getConfigVal( $this, 'endDate', 'slistView', 'endDate', $lConf );
 		$where = '';
-		$where .= $startDate ? ' AND occurance_date >= ' . $startDate : '';	
+		$where .= $startDate ? ' AND occurance_date >= ' . $startDate : '';
 		$where .= $endDate ? ' AND occurance_date <= ' .  $endDate  : '';
 
 			// Make listing query, pass query to SQL database:
 		$res = $this->pi_exec_query($tableToList,0,$where);
-			
+
 		$sermons = array();
 		$content = '';
-	
+
 			//	Iterate over the matching sermons.
 			//	Retrieve related resource information and update the data row
 			//	Retrieve the first speaker and update data row
 		while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) ) {
 
-			//	Retreive the array of related resources to this sermon record 
-			$resources = $this->getResources( $row['uid'] );	
-			
+			//	Retreive the array of related resources to this sermon record
+			$resources = $this->getResources( $row['uid'] );
+
 			foreach( $resources as $resource ) {
-			
+
 					//	If the resource is the type allowed as an enclosure in this view, then calculate the url and size.
 				if( $resource['type'] == $lConf['enclosureType'] ) {
-	
+
 						//	Retrieve a typolink conf that tells us how to render the link to the resource. Must be provided by admin!
 					$this->local_cObj->start($resource);
 					$typolinkConf = $this->conf['resource_types.'][$resource['type'].'.']['typolink.'];
-					
+
 						//	Render the relative and absolute paths to the file
 					$relPath =  $this->local_cObj->typolink_URL( $typolinkConf );
 					$absPath = PATH_site . $relPath;
-	
-						//	Retrieve file info for the file.		
+
+						//	Retrieve file info for the file.
 					$fileInfo = t3lib_basicFileFunctions::getTotalFileInfo( $absPath );
-					
+
 					$row['size'] = $fileInfo['size'];
-					$row['enclosure_url'] =  t3lib_div::getIndpEnv('TYPO3_SITE_URL'). $relPath;	
+					$row['enclosure_url'] =  t3lib_div::getIndpEnv('TYPO3_SITE_URL'). $relPath;
 					$row['mime_type'] = $resource['mime_type'];
 				}
-				
+
 			}
 			$row['item_link'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL'). $this->pi_linkTP_keepPIvars_url( array( 'showUid' => $row['uid'], 'recordType' => $tableToList), 1 );
-			
+
 			if( $row['speakers_uid'] ) {
 
 				//	Query for related speakers
 				$speakerRes = $this->pi_exec_query('tx_wecsermons_speakers', 0, ' AND uid in (' . $row['speakers_uid'] . ')' );
-				
+
 				//	Retreive only the first speaker
 				$speaker = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $speakerRes );
 				$row['author'] = $speaker ? $speaker['firstname'] . ' ' . $speaker['lastname'] : '';
-				
+
 			}
 			$sermons[] = $row;
 		}
 
 
 		 return tx_wecapi_list::getContent( $this, $sermons, $tableToList );
-			
+
 	}
 
 	/**
@@ -412,7 +418,9 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	}
 
 	/**
-	 * pi_list_searchbox: Generates a searchbox using a marker based template. Template subpart should be named ###SEARCHBOX<integer>###, where the integer is the 'Layout' option chosen from the fe plugin.
+	 * pi_list_searchbox: Generates a searchbox using a marker based template.
+	 *
+	 * 		Template subpart should be named ###SEARCHBOX<integer>###, where the integer is the 'Layout' option chosen from the fe plugin.
 	 *
 	 * @param	array		$lConf: Locally scoped configuration array from TypoScript for search view
 	 * @return	string		Complete search view content
@@ -434,7 +442,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 
 /*	This commented section will enable us to perform deeper searches in the future by searching through multiple tables.
-	
+
 		$tables = t3lib_div::trimExplode( ',', $lConf['searchTables'], 1 );
 
 		$selectContent ='';
@@ -473,7 +481,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 			//	Find the starting point in the page tree to search for the record, use current page as default
 		$startingPoint = getConfigVal($this, 'startingpoint', 'sDEF', 'startingpoint', $lConf, $GLOBALS['TSFE']->id );
-		
+
 			//	If configured to use the General Storage Folder of the site, include that in the list of pids
 		if( $this->conf['useStoragePid'] ) {
 
@@ -563,7 +571,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	}
 
 	/**
-	 * Returns the list of items based on the input SQL result pointer
+	 * pi_list_makelist: Returns the list of items based on the input SQL result pointer
 	 * For each result row the internal var, $this->internal['currentRow'], is set with the row returned.
 	 *
 	 * @param	pointer		Result pointer to a SQL result which can be traversed.
@@ -728,9 +736,9 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 	/**
 	 * pi_list_row: This function passes one row of data through a marker based template, making the appropriate substitutions, and returns the finished content.
-	 *	This function is the crux of the plugin. Using an array of markers, it performs all the appropriate substitutions, matching up data fields to markers.
+	 * 	This function is the crux of the plugin. Using an array of markers, it performs all the appropriate substitutions, matching up data fields to markers.
 	 *
-	 *	Implements a hook for processing additional markers. tx_wecsermons_pi1->processMarker
+	 * 	Implements a hook for processing additional markers. tx_wecsermons_pi1->processMarker
 	 *
 	 * @param	array		$lConf: Locally scoped TypoScript configuration
 	 * @param	array		$markerArray: Array of typo3 tag markers as keys, and matching fieldnames as values. I.E. array( '###SERMON_TITLE###' => 'title', ... )
@@ -939,7 +947,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 					$marker = '';
 					$markerArray[$key] = '';
-					
+
 						//	Find all the possible markers and set to empty string.
 					$this->emptyResourceSubparts( $subpartArray );
 
@@ -983,11 +991,11 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 									//	Use the marker name from the resource record
 								$marker = $this->internal['currentRow']['resource_marker_name'];
 
-							} 
-							else if( $this->internal['currentRow']['type'] == 0 ) {
-								$marker = '###DEFAULT_RESOURCES###';								
 							}
-						
+							else if( $this->internal['currentRow']['type'] == 0 ) {
+								$marker = '###DEFAULT_RESOURCES###';
+							}
+
 							else 	//	Resource type is other than 'plugin' so we use the marker name from the resource_type record
 								$marker = $this->internal['currentRow']['resource_type_marker_name'];
 
@@ -1221,7 +1229,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				case '###TOPIC_TITLE###':
 					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_topics' );
-						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_topics.']['title'], $lConf['tx_wecsermons_topics.']['title.'] );				
+						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_topics.']['title'], $lConf['tx_wecsermons_topics.']['title.'] );
 					}
 
 				break;
@@ -1348,14 +1356,14 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 			//	Hook  for processing extra markers
 			if( is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_wecsermons_pi1']['processMarker'] ) ) {
-				
+
 				foreach( $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_wecsermons_pi1']['processMarker'] as $classRef ) {
-					
+
 					$processObject = &t3lib_div::getUserObj( $classRef, 'tx_' );
-					
+
 					$processObject->processMarker( &$this, $lConf, &$markerArray, &$row, $c, $key );
 				}
-				
+
 			}
 
 
@@ -1378,9 +1386,9 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	}
 
 	/**
-	 * Returns the markerArray for a specific table
+	 * getMarkerArray: Returns the markerArray for a specific table
 	 *
-	 *	Default return array is for general page markers. Browse_links, back_link, etc.
+	 * 	Default returned array is for general page markers. Browse_links, back_link, etc.
 	 *
 	 * @param	string		Table name to retrieve markers for
 	 * @return	array		Array filled with markers as keys, with empty values
@@ -1572,29 +1580,27 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	}
 
 	/**
-	 *	getUrlToList:	Returns the path to the current page with SMS querystring values intact. Will return absolute path if $absolute is true.
+	 * getUrlToList:	Returns the path to the current page with SMS querystring values intact. Will return absolute path if $absolute is true.
 	 *
-	 *	@param	boolean	$absolute:	Boolean value indicating whether to return an absolute path.
-	 *	@return	string		The absolute or relative path to the current page.	
-	 *
+	 * @param	boolean		$absolute:	Boolean value indicating whether to return an absolute path.
+	 * @return	string		The absolute or relative path to the current page.
 	 */
 	function getUrlToList ( $absolute ) {
 
-		return $absolute ? t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 
+		return $absolute ? t3lib_div::getIndpEnv('TYPO3_SITE_URL') .
 		$this->pi_linkTP_keepPIvars_url( array(), $this->conf['allowCaching'], 0 ) :
 		$this->pi_linkTP_keepPIvars_url( array(), $this->conf['allowCaching'], 0 );
-		
+
 	}
 
-	
+
 	/**
-	 *	getUrlToSingle:	Returns the path to the single view of a particular SMS record with SMS querystring values intact. Will return absolute path if $absolute is true.
+	 * getUrlToSingle:	Returns the path to the single view of a particular SMS record with SMS querystring values intact. Will return absolute path if $absolute is true.
 	 *
-	 *	@param	boolean	$absolute:	Boolean value indicating whether to return an absolute path.
-	 *	@param	string		$tableName: The table name to retrieve the record from. Should be the full table name, prepended with 'tx_wecsermons_'
-	 *	@param	int			$uid: An integer value that is the UID of the record we wish to get the URL for.
-	 *	@return	string		Return value is the absolute or relative path to the requested SMS record.	
-	 *
+	 * @param	boolean		$absolute:	Boolean value indicating whether to return an absolute path.
+	 * @param	string		$tableName: The table name to retrieve the record from. Should be the full table name, prepended with 'tx_wecsermons_'
+	 * @param	int		$uid: An integer value that is the UID of the record we wish to get the URL for.
+	 * @return	string		Return value is the absolute or relative path to the requested SMS record.
 	 */
 	function getUrlToSingle ( $absolute, $tableName, $uid ) {
 
@@ -1602,11 +1608,11 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			'recordType' => $tableName,
 			'showUid' => $uid,
 		);
-		
+
 		return $absolute ? t3lib_div::getIndpEnv('TYPO3_SITE_URL') .
 		$this->pi_linkTP_keepPIvars_url( $piVar, $this->conf['allowCaching'], 0, $this->conf['pidSingleView'] ) :
 		$this->pi_linkTP_keepPIvars_url( $piVar, $this->conf['allowCaching'], 0, $this->conf['pidSingleView'] );
-		
+
 	}
 
 	/**
@@ -1633,7 +1639,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	 * @param	string		$keyName: This is the keyname of the type of template to retrieve such as SERMON, SERIES, TOPIC, etc.
 	 * @param	string		$view: This is the name of the view to retrieve, SINGLE, LIST, etc.
 	 * @return	string		Return value is the content of a specfic marker-based template
-	 *	@see loadTemplate()
+	 * @see loadTemplate()
 	 */
 	function getNamedTemplateContent($keyName = 'sermon', $view = 'single') {
 
@@ -1701,8 +1707,9 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 	/**
 	 * loadTemplate: Reads in a template file and populates the $template array member variable with the total content, and various other subparts:
-	 *	list, content, item
+	 * 	list, content, item
 	 *
+	 * @return	void
 	 */
 	function loadTemplate() {
 
@@ -1746,12 +1753,12 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	}
 
 	/**
-	 *	getResources: Returns all the resources associated with a particular sermon uid, or a specific resource uid. 
+	 * getResources: Returns all the resources associated with a particular sermon uid, or a specific resource uid.
 	 * The function runs a SQL query to find all related resources for a particular sermon record, joining together multiple tables. The array returned is populated with fields from multiple tables.
 	 *
-	 *	@param	string	$sermonUid		
-	 * @param	string	$resourceUid:	The UID of a resource. If specified, only this one resource 
-	 * @return	array	An array of associative arrays. Each associative array represents all properties of one resource, and all properties of its type.
+	 * @param	string		$sermonUid
+	 * @param	string		$resourceUid:	The UID of a resource. If specified, only this one resource
+	 * @return	array		An array of associative arrays. Each associative array represents all properties of one resource, and all properties of its type.
 	 */
 	function getResources( $sermonUid = '', $resourceUid = '') {
 
@@ -1799,18 +1806,18 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 		}
 		else
 			$resources = $this->internal['resources'];
-		
+
 
 		return $resources;
 
 	}
 
 	/**
-	 * emptyResourceSubparts: This function is used to determin all the possible subpart marker names based on custom resource types, and set the marker array value to an empty string. 
+	 * emptyResourceSubparts: This function is used to determin all the possible subpart marker names based on custom resource types, and set the marker array value to an empty string.
 	 * This initializes the marker array with empty strings before use.
 	 *
-	 *	@param	array	$subpartArray:	 The subpartArray to be initalized
-	 *
+	 * @param	array		$subpartArray:	 The subpartArray to be initalized
+	 * @return	void
 	 */
 	function emptyResourceSubparts( &$subpartArray ) {
 
@@ -1837,18 +1844,17 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	}
 
 	/**
-	 *	throwError	A helper function that returns an HTML formatted error message for display on the front-end. ** MUST be user friendly!! **
+	 * throwError: A helper function that returns an HTML formatted error message for display on the front-end. ** MUST be user friendly!! **
 	 *
-	 *	@param	string	$type: A given type or category of error message we are displaying
-	 *	@param	string	$message: The error message to be displayed
-	 *	@param	string	$detail: Any detail we'd like to include, such as the variable name that caused the error and it's value at the time.
-	 *
-	 *	@return	string	An HTML formatted error message
+	 * @param	string		$type: A given type or category of error message we are displaying
+	 * @param	string		$message: The error message to be displayed
+	 * @param	string		$detail: Any detail we'd like to include, such as the variable name that caused the error and it's value at the time.
+	 * @return	string		An HTML formatted error message
 	 */
 	function throwError( $type, $message, $detail = '' ) {
 
 		//	TODO: Possibly add logic to fire an e-mail off with detail, or log the error.
-		
+
 		$format =  sprintf(
 		'
 			<div style="border: 1px solid black; max-width:400px; background-color: #DDDD66; float: center;">
@@ -1862,15 +1868,15 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 		return $format;
 
 	}
-	
+
 	/**
-	 *	getTutorial:	Retrieves tutorial content, depending on the tutorial selected in the plugin configuration.
+	 * getTutorial:	Retrieves tutorial content, depending on the tutorial selected in the plugin configuration.
 	 *
-	 * @param	int	$tutorial: An integer value determining which tutorial we wish to render.
-	 * @return	string	Content of the tutorial
+	 * @param	int		$tutorial: An integer value determining which tutorial we wish to render.
+	 * @return	string		Content of the tutorial
 	 */
 	function getTutorial ( $tutorial ) {
-		
+
 		$content = '';
 
 		//	Check which tutorial was chosen, and pull in the content from the apporpriate static HTML file
@@ -1938,7 +1944,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 
 			return $content;
-	}	// End getTutorial 
+	}	// End getTutorial
 
 }	// End class tx_wecsermons_pi1
 
@@ -1996,7 +2002,7 @@ function get_foreign_column( $currentTable, $relatedTable ) {
 }
 
 /**
- * Return the value from either plugin flexform, typoscript, or default value, in that order
+ * getConfigVal: Return the value from either plugin flexform, typoscript, or default value, in that order
  *
  * @param	object		$Obj: Parent object calling this function
  * @param	string		$ffField: Field name of the flexform value
@@ -2004,7 +2010,6 @@ function get_foreign_column( $currentTable, $relatedTable ) {
  * @param	string		$TSfieldname: Property name of typoscript value
  * @param	array		$lConf: TypoScript configuration array from local scope
  * @param	mixed		$default: The default value to assign if no other values are assigned from TypoScript or Plugin Flexform
- *
  * @return	mixed		Configuration value found in any config, or default
  */
 function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default = '' ) {
@@ -2021,11 +2026,10 @@ function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default
 }
 
 /**
- *	splitTableAndUID: Helper function that splits a table name and uid from the format stored by the TYPO3 backend, returning the values in an array. Format: 'tablename_uid'
+ * splitTableAndUID: Helper function that splits a table name and uid from the format stored by the TYPO3 backend, returning the values in an array. Format: 'tablename_uid'
  *
- *	@param	string		$record: The string value of tablename and uid in the form 'table_uid'
- *
- * @return	array	Array in the form array( 'table' => tablename, 'uid' => uid )
+ * @param	string		$record: The string value of tablename and uid in the form 'table_uid'
+ * @return	array		Array in the form array( 'table' => tablename, 'uid' => uid )
  */
 function splitTableAndUID($record) {
 	$break = strrpos($record, "_");
