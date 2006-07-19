@@ -373,10 +373,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			//	Report an error if we couldn't pull up the template.
 		if(! $this->template['single'] ) {
 
-				$error = array();
-				$error['type'] = htmlspecialchars( 'WEC Sermons Error!' );
-				$error['message'] = htmlspecialchars( 'Unable to retrieve content for specified template.' );
-				$error['detail'] = htmlspecialchars(
+				return $this->throwError( 
+					'WEC Sermons Error!',
+					'Unable to retrieve content for specified template.',
 					sprintf (
 						'Requested Template: ###TEMPLATE_%s_%s%s###',
 						strtoupper( $templateKey ),
@@ -548,22 +547,19 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				//	Report an error if we couldn't pull up the template.
 			if(! $this->template['list'] ) {
 
-					$error = array();
-					$error['type'] = htmlspecialchars( 'WEC Sermons Error!' );
-					$error['message'] = htmlspecialchars( 'Unable to retrieve content for specified template.' );
-					$error['detail'] = htmlspecialchars(
-						sprintf (
-							'Requested Template: ###TEMPLATE_LIST%s###',
-							$this->internal['layoutCode']
+				return $this->throwError( 
+					'WEC Sermons Error!',
+					'Unable to retrieve content for specified template.',
+					sprintf (
+							'Requested Template: ###TEMPLATE_LIST%s###
+							
+							Template File: %s
+							',
+							$this->internal['layoutCode'],
+							$this->conf['templateFile']
 						)
 					 );
 
-					return sprintf(
-						'<p>%s<br/> %s</p>	<p>%s</p>',
-						$error['type'],
-						$error['message'],
-						$error['detail']
-					);
 			}
 
 			$content = $this->cObj->substituteSubpart( $this->template['list'], '###CONTENT###', $this->pi_list_makelist($lConf, $this->template['content'] ) );
@@ -1730,7 +1726,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 			//	Get the file location and name of our template file
 			$templateFile = $this->getTemplateFile();
-			$this->template['total'] = $this->cObj->fileResource( $this->internal['templateFile'] );
+			$this->template['total'] = $this->cObj->fileResource( $this->internal['templateFile'] );  
 			$this->template['list'] =  $this->getNamedTemplateContent('', 'list');
 			$this->template['content'] = $this->getNamedSubpart('CONTENT', $this->template['list'] );
 			$this->template['item'] = $this->getNamedSubpart('ITEM', $this->template['content'] );
@@ -1746,9 +1742,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	function getTemplateFile() {
 
 		//	Load the HTML template
-		$templateFile = getConfigVal( $this, 'templateFile', 'sDEF', 'templateFile', $this->conf, 0 );
+		$templateFile = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'templateFile', 'sDEF');
 
-		//	TODO: Double check this works with a template file stored in a BE template record.
+		//	If template loaded from plugin, prepend upload path, otherwise use templateFile from TypoScript configuration
 		$templateFile = $templateFile ? 'uploads/tx_wecsermons/'.$templateFile : $this->conf['templateFile'];
 
 		//	Store the name of the template file, for retrieval later
@@ -1869,7 +1865,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				<p>%s</p>
 			</div>
 		',
-		htmlspecialchars( $type ), htmlspecialchars( $message ), htmlspecialchars( $detail ) );
+		htmlspecialchars( $type ), htmlspecialchars( $message ), nl2br( htmlentities( $detail ) ) );
 
 		return $format;
 
