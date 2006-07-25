@@ -16,7 +16,7 @@ plugin.tx_wecsermons_pi1 {
 	file.templateFile = EXT:wec_sermons/pi1/wecsermons.tmpl
 	
 	# cat=plugin.tx_wecsermons_pi1/typo/2; type=text; label= List View - Alternating class: string appended to the end of the alternating class, appearing as tx-wecsermons-pi1-{string}
-	listView.alternatingClass = list-odd	
+	listView.alternatingClass = tx-wecsermons-pi1-list-odd
 	
 	# cat=plugin.tx_wecsermons_pi1/links/1; type=int+; label= Single View - Single PID: The UID of the page where the Single View is displayed
 	pidSingleView = 

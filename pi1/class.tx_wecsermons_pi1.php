@@ -486,7 +486,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 			//	Find the starting point in the page tree to search for the record, use current page as default
 		$startingPoint = getConfigVal($this, 'startingpoint', 'sDEF', 'startingpoint', $lConf, $GLOBALS['TSFE']->id );
-
+debug( $startingPoint );
 			//	If configured to use the General Storage Folder of the site, include that in the list of pids
 		if( $this->conf['useStoragePid'] ) {
 
@@ -1324,7 +1324,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				break;
 
 				case '###ALTERNATING_CLASS###':
-					$markerArray['###ALTERNATING_CLASS###'] = $c % 2 ? $this->pi_getClassName( $lConf['alternatingClass'] )  : '';
+					$markerArray['###ALTERNATING_CLASS###'] = $c % 2 ? $this->pi_getClassName( 'list' ) . ' ' . $lConf['alternatingClass'] : $this->pi_getClassName('list');
 				break;
 
 				case '###BROWSE_LINKS###':
