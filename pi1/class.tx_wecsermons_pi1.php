@@ -161,7 +161,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 				case 'LIST':
 					$this->internal['currentCode'] = 'LIST';
-					$content .= $this->listView($content, $this->conf['listView.']);
+					$content = $this->piVars['showUid'] ? $this->listView( $content, $this->conf['listView.'] ) : $content . $this->listView( $content, $this->conf['listView.'] );
 					break;
 
 				case 'XML':
@@ -468,7 +468,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			// If a single element should be displayed, jump to single view
 		if ($this->piVars['showUid'])	{
 
-			return $this->singleView($content,$this->conf['singleView.']);
+			return $this->singleView('',$this->conf['singleView.']);
 
 		} else {	//	Otherwise continue with list view
 
