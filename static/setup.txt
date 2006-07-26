@@ -8,8 +8,8 @@ plugin.tx_wecsermons_pi1 {
 	userFunc = tx_wecsermons_pi1->main
 
 	CMD = 
-	groupTable = 
 	detailTable = 
+	groupTable = 
 	
 	pidList =
 	recursive =

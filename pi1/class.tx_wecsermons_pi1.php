@@ -128,6 +128,28 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		//	Check codes for 'list', and if showing only a single record, set codes to a single 'list' code only.
 		$display = strpos( $display,'list') && $this->piVars['showUid'] ? 'list' : $display;
 
+		//	Clean whitespaces from the allowedTables config value
+		$this->conf['allowedTables'] = str_replace( ' ', '', $this->conf['allowedTables'] );
+
+		//	Recursive setting from plugin overrides typoscript
+		$this->conf['recursive'] = getConfigVal( $this, 'recursive', 'sDEF', 'recursive', $this->conf, 0 );
+
+		//	Find the starting point in the page tree to search for the record, use current page as default
+		$startingPoint = getConfigVal($this, 'startingpoint', 'sDEF', 'startingpoint', $lConf, $GLOBALS['TSFE']->id );
+
+		//	If configured to use the General Storage Folder of the site, include that in the list of pids
+		if( $this->conf['useStoragePid'] ) {
+
+			//	Retrieve the general storage pid for this site
+			$rootPids = $GLOBALS['TSFE']->getStorageSiterootPids();
+			$storagePid = (string) $rootPids['_STORAGE_PID'];
+
+			//	Merge all lists from typoscript, storagePid, and startingpoint specified at plugin and assign to pidList
+			$this->conf['pidList'] .= ','. $storagePid . ','. $startingPoint;
+		}
+		else 	//	Merge lists from typoscript and startingpoint specified at plugin into pidList
+			$this->conf['pidList'] .= ','. $startingPoint;
+
 		$codes = $this->internal['codes'] = t3lib_div::trimExplode(',',$display,0);
 
 		foreach( $codes as $code ) {
@@ -182,25 +204,6 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 * @return	string		Complete XML content
 	 */
 	function xmlView ($content, $lConf) {
-
-		//	Recursive setting from plugin overrides typoscript
-		$this->conf['recursive'] = getConfigVal( $this, 'recursive', 'sDEF', 'recursive', $this->conf, 0 );
-
-			//	Find the starting point in the page tree to search for the record, use current page as default
-		$startingPoint = getConfigVal($this, 'startingpoint', 'sDEF', 'startingpoint', $lConf, $GLOBALS['TSFE']->id );
-
-		//	If configured to use the General Storage Folder of the site, include that in the list of pids
-		if( $this->conf['useStoragePid'] ) {
-
-			//	Retrieve the general storage pid for this site
-			$rootPids = $GLOBALS['TSFE']->getStorageSiterootPids();
-			$storagePid = (string) $rootPids['_STORAGE_PID'];
-
-				//	Merge all lists from typoscript, storagePid, and startingpoint specified at plugin and assign to pidList
-			$this->conf['pidList'] .= ','. $storagePid . ','. $startingPoint;
-		}
-		else 	//	Merge lists from typoscript and startingpoint specified at plugin into pidList
-			$this->conf['pidList'] .= ','. $startingPoint;
 
 			//	Retrieve the number we want to limit our items to
 		$this->piVars['pointer']=0;
@@ -292,29 +295,10 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	function singleView($content,$lConf)	{
 		$this->pi_loadLL();
 
-			// This sets the title of the page for use in indexed search results:
+		// This sets the title of the page for use in indexed search results:
 		if ($this->internal['currentRow']['title'])	$GLOBALS['TSFE']->indexedDocTitle=$this->internal['currentRow']['title'];
 
-
-			//	Recursive setting from plugin overrides typoscript
-		$this->conf['recursive'] = getConfigVal( $this, 'recursive', 'sDEF', 'recursive', $lConf, 0 );
-
-			//	Find the starting point in the page tree to search for the record, use current page as default
-		$startingPoint = getConfigVal($this, 'startingpoint', 'sDEF', 'startingpoint', $lConf, $GLOBALS['TSFE']->id );
-
-			//	If configured to use the General Storage Folder of the site, include that in the list of pids
-		if( $this->conf['useStoragePid'] ) {
-
-			//	Retrieve the general storage pid for this site
-			$rootPids = $GLOBALS['TSFE']->getStorageSiterootPids();
-			$storagePid = (string) $rootPids['_STORAGE_PID'];
-
-				//	Merge all lists from typoscript, storagePid, and startingpoint specified at plugin and assign to pidList
-			$this->conf['pidList'] .= ','. $storagePid . ','. $startingPoint;
-		}
-		else 	//	Merge lists from typoscript and startingpoint specified at plugin into pidList
-			$this->conf['pidList'] .= ','. $startingPoint;
-
+		//	Set the current table internal variable from recordType querystring value
 		$this->internal['currentTable'] = $this->piVars['recordType'];
 
 		//	Check if table is in allowedTables
@@ -481,26 +465,6 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 */
 	function listView($content,$lConf)	{
 
-			//	Recursive setting from plugin overrides typoscript
-		$this->conf['recursive'] = getConfigVal( $this, 'recursive', 'sDEF', 'recursive', $lConf, 0 );
-
-			//	Find the starting point in the page tree to search for the record, use current page as default
-		$startingPoint = getConfigVal($this, 'startingpoint', 'sDEF', 'startingpoint', $lConf, $GLOBALS['TSFE']->id );
-debug( $startingPoint );
-			//	If configured to use the General Storage Folder of the site, include that in the list of pids
-		if( $this->conf['useStoragePid'] ) {
-
-			//	Retrieve the general storage pid for this site
-			$rootPids = $GLOBALS['TSFE']->getStorageSiterootPids();
-			$storagePid = (string) $rootPids['_STORAGE_PID'];
-
-				//	Merge all lists from typoscript, storagePid, and startingpoint specified at plugin and assign to pidList
-			$this->conf['pidList'] .= ','. $storagePid . ','. $startingPoint;
-
-		}
-		else 	//	Merge lists from typoscript and startingpoint specified at plugin into pidList
-			$this->conf['pidList'] .= ','. $startingPoint;
-
 			// If a single element should be displayed, jump to single view
 		if ($this->piVars['showUid'])	{
 
@@ -582,12 +546,12 @@ debug( $startingPoint );
 	 */
 	function pi_list_makelist($lConf, $template)	 {
 
-			//	 Gather all our output into $content
+		//	 Gather all our output into $content
 		$content = '';
 		$subpartArray = array();
 		$groupTable = getConfigVal( $this, 'group_table', 'slistView', 'group_table', $lConf );
 
-			//	If grouping was specified, branch to process group list
+		//	If grouping was specified, branch to process group list
 		if( $groupTable ) {
 
 			$detailTable = getConfigVal( $this, 'detail_table', 'slistView', 'detail_table', $lConf );
@@ -607,6 +571,8 @@ debug( $startingPoint );
 
 				return $format;
 			}
+
+
 				//	Check if group_table is in list of allowed tables
 			if( ! t3lib_div::inList( $this->conf['allowedTables'], $groupTable ) ) {
 
