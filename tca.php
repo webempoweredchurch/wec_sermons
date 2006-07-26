@@ -111,7 +111,7 @@ $TCA["tx_wecsermons_resources"] = Array (
 			"config" => Array (
 				"type" => "select",
 				"items" => Array (
-					Array('LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resources.type.I.0',0),
+					Array('LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resources.type.I.0','default'),
 					Array('LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resources.type.I.1','plugin'),
 				),
 				"size" => 1,	
@@ -205,7 +205,7 @@ $TCA["tx_wecsermons_resources"] = Array (
 		),
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n _diffsource, hidden;;1, title;;;;2-2-2, type, description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts],  graphic;;;;3-3-3, file;;;;4-4-4,url"),
+		"default" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n _diffsource, hidden;;1, title;;;;2-2-2, type, description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts],  graphic;;;;3-3-3, file;;;;4-4-4,url"),
 		"plugin" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n _diffsource, hidden;;1, title;;;;2-2-2, type, querystring_param, rendered_record, marker_name, template_name"),
 	),
 	"palettes" => Array (
@@ -301,7 +301,7 @@ $TCA["tx_wecsermons_resource_types"] = Array (
 			"config" => Array (
 				"type" => "input",
 				"size" => "30",	
-				"eval" => "required",
+				"eval" => "required,upper,nospace",
 			)
 		),
 		"icon" => Array (		

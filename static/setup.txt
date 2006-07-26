@@ -32,21 +32,21 @@ plugin.tx_wecsermons_pi1 {
 		strftime = %A,  %b. %d %Y
 	}
 
-		# Marker based template file, which defines each view
+	# Marker based template file, which defines each view
 	templateFile = {$plugin.tx_wecsermons_pi1.file.templateFile}
 
-		# List of tables that any view can be generated from
+	# List of tables that any view can be generated from
 	allowedTables = tx_wecsermons_sermons,tx_wecsermons_series,tx_wecsermons_resources,tx_wecsermons_topics,tx_wecsermons_seasons,tx_wecsermons_speakers,tx_wecsermons_resources
 
-		# CASE for rendering ###RESOURCE_CONTENT###
-		# Resource types are identified by thier UID, or primary key, except in case of type = 'plugin' where we use the name of the resource itself.
+	# CASE for rendering ###RESOURCE_CONTENT###
+	# Resource types are identified by thier UID, or primary key, except in case of type = 'plugin' where we use the name of the resource itself.
 	resource_types = CASE
 	resource_types {
 
-			# Use the field 'type' on a tx_wecsermons_resources record
+		# Use the field 'type' on a tx_wecsermons_resources record
 		key.field = type
 
-			# This is the 'default' resource type. Should be customized to your needs.
+		# This is the 'Default' resource type. Should be customized to your needs.
 		0 = COA
 		0 {
 			10 = TEXT
@@ -64,10 +64,23 @@ plugin.tx_wecsermons_pi1 {
 
 			wrap = <table>|</table>
 		}
+		
+		# Type MP3
+		MP3 = COA
+		MP3 {
+			10 = TEXT
+			10.field = title
+			10.wrap = MP3: |
+			10.typolink = 1
+			10.typolink {
+				parameter = uploads/tx_wecsermons/{field:file}
+				parameter.insertData = 1
+			}
+		}
 
-			# Type PDF
-		2 = COA
-		2 {
+		# Type PDF
+		PDF = COA
+		PDF {
 			typolink {
 				parameter = uploads/tx_wecsermons/{field:file}
 				parameter.insertData = 1
@@ -97,8 +110,8 @@ plugin.tx_wecsermons_pi1 {
 		}
 
 
-		jpg = COA
-		jpg {
+		JPG = COA
+		JPG {
 			10 = IMAGE
 			10.import = uploads/tx_wecsermons/
 			10.import.field = graphic

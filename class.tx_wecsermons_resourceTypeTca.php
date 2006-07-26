@@ -72,7 +72,7 @@ class tx_wecsermons_resourceTypeTca {
 				$GLOBALS['TCA']['tx_wecsermons_resources']['types'][$resourceType['uid']] = array( 'showitem' => "sys_language_uid;;;;1-1-1, l18n_parent, l18n _diffsource, hidden;;1, title;;;;2-2-2, type, " . $resourceType['avail_fields'] );
 			}
 
-//debug( $GLOBALS['TCA']['tx_wecsermons_resources']['types'] );
+debug( $GLOBALS['TCA']['tx_wecsermons_resources']['types'] );
 		}
 
 	}
@@ -104,7 +104,7 @@ class tx_wecsermons_resourceTypeTca {
 			//	TODO: Resize the given image file to 18x16 via ImageMagick
 			$params['items'][] = array(
 				$resourceType['title'],
-				$resourceType['uid'],
+				$resourceType['title'],
 				$resourceType['icon'] ? '../../' . $GLOBALS['TCA']['tx_wecsermons_resource_types']['columns']['icon']['config']['uploadfolder'] . '/' . $resourceType['icon'] : ''
 			);
 

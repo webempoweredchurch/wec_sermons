@@ -960,14 +960,16 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 								$marker = $this->internal['currentRow']['resource_marker_name'];
 
 							}
-							else if( $this->internal['currentRow']['type'] == 0 ) {
+							else if( $this->internal['currentRow']['type'] == 'default' ) {
 								$marker = '###DEFAULT_RESOURCES###';
 							}
 
-							else 	//	Resource type is other than 'plugin' so we use the marker name from the resource_type record
+							else 	//	Resource type is other than 'plugin' or 'default' so we use the marker name from the resource_type record
 								$marker = $this->internal['currentRow']['resource_type_marker_name'];
 
+							//	Retrieve the template subpart used to render this resource
 							$resourceTemplate = $this->cObj->getSubpart( $rowTemplate, $marker );
+						
 							if( $resourceTemplate )
 								$subpartArray[$marker] = $this->pi_list_row( $lConf, $resourceMarkerArray, $resourceTemplate, $this->internal['currentRow'] );
 
@@ -1009,6 +1011,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				break;
 
 				case '###RESOURCE_CONTENT###':
+
 						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $this->conf['resource_types'], $this->conf['resource_types.'] );
 				break;
 
@@ -1751,12 +1754,12 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			tx_wecsermons_resource_types.title type_title,
 			tx_wecsermons_resource_types.description type_description,
 			tx_wecsermons_resource_types.icon,
-			tx_wecsermons_resource_types.marker_name resource_type_marker_name	,
+			tx_wecsermons_resource_types.marker_name resource_type_marker_name,
 			tx_wecsermons_resource_types.template_name resource_type_template_name
 			from tx_wecsermons_resources
 					join tx_wecsermons_sermons_resources_uid_mm on tx_wecsermons_resources.uid=tx_wecsermons_sermons_resources_uid_mm.uid_foreign
 			join tx_wecsermons_sermons on tx_wecsermons_sermons.uid=tx_wecsermons_sermons_resources_uid_mm.uid_local
-			left join tx_wecsermons_resource_types on tx_wecsermons_resources.type=tx_wecsermons_resource_types.uid
+			left join tx_wecsermons_resource_types on tx_wecsermons_resources.type=tx_wecsermons_resource_types.title
 		 			where 1=1 ' . $WHERE;
 
 			$res = $GLOBALS['TYPO3_DB']->sql_query( $query );
