@@ -93,7 +93,6 @@ plugin.tx_wecsermons_pi1 {
 			20 = TEXT
 			20.field = file
 			20.wrap = <td>|</td></tr>
-			20.typolink = 1
 			20.typolink < .typoLink
 
 			wrap = <table>|</table>
