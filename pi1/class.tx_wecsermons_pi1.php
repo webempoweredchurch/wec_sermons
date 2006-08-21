@@ -299,7 +299,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		if ($this->internal['currentRow']['title'])	$GLOBALS['TSFE']->indexedDocTitle=$this->internal['currentRow']['title'];
 
 		//	Set the current table internal variable from recordType querystring value
-		$this->internal['currentTable'] = $this->piVars['recordType'];
+		$this->internal['currentTable'] = htmlspecialchars( $this->piVars['recordType'] );
 
 		//	Check if table is in allowedTables
 		if( ! t3lib_div::inList( $this->conf['allowedTables'], $this->internal['currentTable']  ) ) {
