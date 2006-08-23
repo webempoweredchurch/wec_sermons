@@ -63,16 +63,15 @@ class tx_wecsermons_resourceTypeTca {
 			$resource = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'*',
 				'tx_wecsermons_resource_types',
-				''
+				' deleted = 0 AND hidden = 0 '
 			);
 
 			//	Convert each tx_wecsermons_resource_types record into a 'types' TCA array
 			while( $resourceType = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $resource )  ) {
 
-				$GLOBALS['TCA']['tx_wecsermons_resources']['types'][$resourceType['uid']] = array( 'showitem' => "sys_language_uid;;;;1-1-1, l18n_parent, l18n _diffsource, hidden;;1, title;;;;2-2-2, type, " . $resourceType['avail_fields'] );
+				$GLOBALS['TCA']['tx_wecsermons_resources']['types'][$resourceType['title']] = array( 'showitem' => "sys_language_uid;;;;1-1-1, l18n_parent, l18n _diffsource, hidden;;1, title;;;;2-2-2, type, " . $resourceType['avail_fields'] . ($resourceType['type'] == '1' ? 'rendered_record' : '')  );
 			}
 
-//debug( $GLOBALS['TCA']['tx_wecsermons_resources']['types'] );
 		}
 
 	}
@@ -95,7 +94,7 @@ class tx_wecsermons_resourceTypeTca {
 		$resource = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'*',
 			'tx_wecsermons_resource_types',
-			''
+				' deleted = 0 AND hidden = 0 '
 		);
 
 		//	Convert each tx_wecsermons_resource_types record into a selectable 'record type' for tx_wecsermons_resource records
