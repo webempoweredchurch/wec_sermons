@@ -962,13 +962,18 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 							$marker = $this->internal['currentRow']['marker_name'];
 
 							//	If this resource is the default resource type, we use the subpart marker name from typoscript config
-							if( $this->internal['currentRow']['type'] == 'default' ) {
+							if( $this->internal['currentRow']['type'] == '0' ) {
+								
 								$marker = $this->conf['default_marker'];
+								
+								//	Change the 'type' to 'default' to the typoscript setting is more user friendly.
+								$this->internal['currentRow']['type'] = 'default';
+								
 							}
 							
 							//	Retrieve the template subpart used to render this resource
 							$resourceTemplate = $this->cObj->getSubpart( $rowTemplate, $marker );
-						
+				
 							if( $resourceTemplate )
 								$subpartArray[$marker] = $this->pi_list_row( $lConf, $resourceMarkerArray, $resourceTemplate, $this->internal['currentRow'] );
 

@@ -39,7 +39,7 @@ plugin.tx_wecsermons_pi1 {
 	allowedTables = tx_wecsermons_sermons,tx_wecsermons_series,tx_wecsermons_resources,tx_wecsermons_topics,tx_wecsermons_seasons,tx_wecsermons_speakers,tx_wecsermons_resources
 
 	#	The subpart marker used to define resources of type 'default'
-	default_marker = ###DEFAULT_RESOURCE###
+	default_marker = ###DEFAULT_RESOURCES###
 	
 	# CASE for rendering ###RESOURCE_CONTENT###
 	# Resource types are identified by thier UID, or primary key, except in case of type = 'plugin' where we use the name of the resource itself.
@@ -50,8 +50,8 @@ plugin.tx_wecsermons_pi1 {
 		key.field = type
 
 		# This is the 'Default' resource type. Should be customized to your needs.
-		0 = COA
-		0 {
+		default = COA
+		default {
 			10 = TEXT
 			10.field = title
 			10.wrap = <tr><td>|</td>
