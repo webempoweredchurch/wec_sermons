@@ -38,6 +38,9 @@ plugin.tx_wecsermons_pi1 {
 	# List of tables that any view can be generated from
 	allowedTables = tx_wecsermons_sermons,tx_wecsermons_series,tx_wecsermons_resources,tx_wecsermons_topics,tx_wecsermons_seasons,tx_wecsermons_speakers,tx_wecsermons_resources
 
+	#	The subpart marker used to define resources of type 'default'
+	default_marker = ###DEFAULT_RESOURCE###
+	
 	# CASE for rendering ###RESOURCE_CONTENT###
 	# Resource types are identified by thier UID, or primary key, except in case of type = 'plugin' where we use the name of the resource itself.
 	resource_types = CASE
@@ -101,8 +104,8 @@ plugin.tx_wecsermons_pi1 {
 		Discussion < plugin.tx_wecdiscussion_pi1
 
 
-		News < plugin.tt_news
-		News {
+		news < plugin.tt_news
+		news {
 			code >
 			code = SINGLE
 

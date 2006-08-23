@@ -51,7 +51,9 @@ CREATE TABLE tx_wecsermons_resource_types (
 	icon blob NOT NULL,
 	marker_name tinytext NOT NULL,
 	template_name tinytext NOT NULL,
+	querystring_param blob NOT NULL,
 	avail_fields blob NOT NULL,
+	type tinyint(4) DEFAULT '0' NOT NULL,
 	
 	PRIMARY KEY (uid),
 	KEY parent (pid)

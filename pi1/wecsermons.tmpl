@@ -30,12 +30,12 @@ SERMON_DESCRIPTION - Description, or HTML detail of a sermon
 SERMON_SCRIPTURE - Scriptures that the sermon refers to
 SERMON_GRAPHIC - A graphic shown with the sermon
 SERMON_RESOURCES - Not used in template. Only a placeholder in PHP so resources are processed. See Resource, and Resource Type records for appropriate markers.
+
 --RESOURCES
 RESOURCE_TITLE	-	Title of resource
 RESOURCE_DESCRIPTION	-	Full resource description
 RESOURCE_GRAPHIC	-	Graphic of resource
 RESOURCE_CONTENT	-	The resource itself
-
 
 --SERIES
 SERIES_TITLE - Title of sermon series
@@ -76,6 +76,7 @@ SERMON_TOPICS - General topics that the sermon is associated with. Aka, category
 SERMON_SERIES - The sermon series a sermon is related to
 SERIES_SEASON - Season a series is related to
 SERIES_TOPICS - General topic that the series is associated with. Aka, category
+DEFAULT_RESOURCES -	The subpart name of the 'default' resource type
 
 <em>Wrapped Subparts:</em>
 SERMON_SERIES_LINK - link to sermon series' single view
@@ -92,7 +93,6 @@ BACK_LINK	- link back to the list view
 
 <!-- ###TEMPLATE_LIST1### begin -->
 	<!-- ###CONTENT### begin -->
-	begin
 		<!-- ###ITEM### begin -->
 
 			<div style='border-bottom: 1px dotted black;' class='###ALTERNATING_CLASS###'>
@@ -123,11 +123,86 @@ BACK_LINK	- link back to the list view
 
 			</div>
 		<!-- ###ITEM### end -->
-		end
 	<!-- ###CONTENT### end -->
 			###BROWSE_LINKS###
 <!-- ###TEMPLATE_LIST1### end -->
 
+
+<br />
+<h3>TEMPLATE_SERMON_SINGLE1</h3>
+<em>Template for single view of a sermon.</em>
+<br />
+
+
+<!-- ###TEMPLATE_SERMON_SINGLE1### begin -->
+<!--###CONTENT###-->
+###SERMON_TITLE###
+###SERMON_OCCURANCE_DATE###
+###SERMON_DESCRIPTION###
+###SERMON_SCRIPTURE###
+###SERMON_GRAPHIC###
+
+<!--###SERMON_SERIES###-->
+<!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###-->
+<!--###SERMON_SERIES###-->
+
+<!--###SERMON_SPEAKERS###-->
+###SPEAKER_LASTNAME### ###SPEAKER_FIRSTNAME###<br/>
+<!--###SERMON_SPEAKERS###-->
+
+<!--###SERMON_TOPICS###-->
+Sermon Topic: ###TOPIC_TITLE###
+<!--###SERMON_TOPICS###-->
+
+###SERMON_RESOURCES###
+
+<!--###CONTENT###-->
+<!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###-->
+<!-- ###TEMPLATE_SERMON_SINGLE1### end -->
+
+<br />
+<h3>TEMPLATE_SERIES_SINGLE1</h3>
+<em>Template for single view of a sermon.</em>
+<br />
+
+
+<!-- ###TEMPLATE_SERIES_SINGLE1### begin -->
+<!--###CONTENT###-->
+###SERIES_TITLE###
+###SERIES_DESCRIPTION###
+###SERIES_SCRIPTURE###
+###SERIES_STARTDATE###
+###SERIES_ENDDATE###
+###SERIES_GRAPHIC###
+
+<!--###SERIES_SEASON###-->
+###SEASON_TITLE###
+<!--###SERIES_SEASON###-->
+
+<!--###SERIES_TOPICS###-->
+###TOPIC_TITLE###
+<!--###SERIES_TOPICS###-->
+
+<!--###CONTENT###-->
+<!-- ###TEMPLATE_SERIES_SINGLE1### end -->
+
+
+<br />
+<h3>TEMPLATE_SPEAKER_SINGLE1</h3>
+<em>This is an example template for styling a single view of a speaker.</em>
+<br />
+
+<!-- ###TEMPLATE_SPEAKER_SINGLE1### begin -->
+	<div class='tx-wecsermons-singleView'>
+	<!-- ###CONTENT### begin -->
+						###SPEAKER_PHOTO###
+						###SPEAKER_EMAIL###
+						###SPEAKER_LASTNAME### ###SPEAKER_FIRSTNAME###
+						###SPEAKER_URL###
+	<!-- ###CONTENT### end -->
+	</div>
+	<div><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></div>
+<!-- ###TEMPLATE_SPEAKER_SINGLE1### end -->
 
 <br /><br /><br /><br /><hr />
 <br />
@@ -252,63 +327,6 @@ BACK_LINK	- link back to the list view
 <!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###-->
 <!-- ###TEMPLATE_SERIES_SINGLE3### end -->
 
-<br />
-<h3>TEMPLATE_SERIES_SINGLE1</h3>
-<em>Template for single view of a sermon.</em>
-<br />
-
-
-<!-- ###TEMPLATE_SERIES_SINGLE1### begin -->
-<!--###CONTENT###-->
-###SERIES_TITLE###
-###SERIES_DESCRIPTION###
-###SERIES_SCRIPTURE###
-###SERIES_STARTDATE###
-###SERIES_ENDDATE###
-###SERIES_GRAPHIC###
-
-<!--###SERIES_SEASON###-->
-###SEASON_TITLE###
-<!--###SERIES_SEASON###-->
-
-<!--###SERIES_TOPICS###-->
-###TOPIC_TITLE###
-<!--###SERIES_TOPICS###-->
-
-<!--###CONTENT###-->
-<!-- ###TEMPLATE_SERIES_SINGLE1### end -->
-
-<br />
-<h3>TEMPLATE_SERMON_SINGLE1</h3>
-<em>Template for single view of a sermon.</em>
-<br />
-
-
-<!-- ###TEMPLATE_SERMON_SINGLE1### begin -->
-<!--###CONTENT###-->
-###SERMON_TITLE###
-###SERMON_OCCURANCE_DATE###
-###SERMON_DESCRIPTION###
-###SERMON_SCRIPTURE###
-###SERMON_GRAPHIC###
-
-<!--###SERMON_SERIES###-->
-<!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###-->
-<!--###SERMON_SERIES###-->
-
-<!--###SERMON_SPEAKERS###-->
-###SPEAKER_LASTNAME### ###SPEAKER_FIRSTNAME###<br/>
-<!--###SERMON_SPEAKERS###-->
-
-<!--###SERMON_TOPICS###-->
-Sermon Topic: ###TOPIC_TITLE###
-<!--###SERMON_TOPICS###-->
-
-###SERMON_RESOURCES###
-
-<!--###CONTENT###-->
-<!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###-->
-<!-- ###TEMPLATE_SERMON_SINGLE1### end -->
 
 <br />
 <h3>TEMPLATE_SERMON_SINGLE3</h3>
@@ -382,22 +400,33 @@ Sermon Topic: ###TOPIC_TITLE###
 <!-- ###TEMPLATE_SPEAKERS_LIST### end -->
 <!-- ###TEMPLATE_SPEAKERS_LIST### end -->
 
-<br />
-<h3>TEMPLATE_SINGLE1</h3>
-<em>This is an example template for styling a list of resources.</em>
-<br />
+<!--###TEMPLATE_SEARCHBOX1### begin-->
+<div class="tx-wecsermons-pi1-searchbox">
+  <form action="###FORM_ACTION###" method="post">
+	 ###SEARCHBOX_OPTIONS###
+    <input type="text" name="tx_wecsermons_pi1[sword]" value="" class="tx-wecsermons-pi1-searchbox-sword" />
+    <input type="submit" value="###SEARCH_BUTTON_NAME###" class="tx-wecsermons-pi1-searchbox-button" />
+    <input type="hidden" name="no_cache" value="1" />
+    <input type="hidden" name="tx_wecsermons_pi1[pointer]" value="" />
+  </form>
+</div>
+<!--###TEMPLATE_SEARCHBOX1### end-->
 
-<!-- ###TEMPLATE_SPEAKER_SINGLE1### begin -->
-	<div class='tx-wecsermons-singleView'>
-	<!-- ###CONTENT### begin -->
-						###SPEAKER_PHOTO###
-						###SPEAKER_EMAIL###
-						###SPEAKER_LASTNAME### ###SPEAKER_FIRSTNAME###
-						###SPEAKER_URL###
-	<!-- ###CONTENT### end -->
-	</div>
-	<div><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></div>
-<!-- ###TEMPLATE_SPEAKER_SINGLE1### end -->
+
+
+<!--###TEMPLATE_SEARCHBOX2### begin-->
+<div class="tx-wecsermons-pi1-searchbox">
+  <form action="###FORM_ACTION###" method="post">
+	 ###SEARCHBOX_OPTIONS###
+    <input type="text" name="tx_wecsermons_pi1[sword]" value="" class="tx-wecsermons-pi1-searchbox-sword" />
+    <input type="submit" value="###SEARCH_BUTTON_NAME###" class="tx-wecsermons-pi1-searchbox-button" />
+    <input type="hidden" name="no_cache" value="1" />
+    <input type="hidden" name="tx_wecsermons_pi1[pointer]" value="" />
+  </form>
+</div>
+<!--###TEMPLATE_SEARCHBOX2### end-->
+
+
 
 <!--###TEMPLATE_SEARCHBOX3### begin-->
 <div class="tx-wecsermons-pi1-searchbox">
