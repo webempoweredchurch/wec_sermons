@@ -11,7 +11,7 @@
 ########################################################################
 
 $EM_CONF[$_EXTKEY] = array(
-	'title' => 'WEC Sermons Mangement',
+	'title' => 'WEC Sermon Mangement System',
 	'description' => 'Provides centralized management of online resources associated with a sermon',
 	'category' => 'plugin',
 	'author' => 'Web Empowered Church Team, Foundation For Evangelism',
