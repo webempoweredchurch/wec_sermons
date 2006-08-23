@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2006 Web Empowered Church Team, Foundation For Evangelism (wec_sermons@webempoweredchurch.org)
+*  (c) 2006 Web Empowered Church Team, Foundation For Evangelism (sermon@webempoweredchurch.org)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
