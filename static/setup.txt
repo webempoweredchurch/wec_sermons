@@ -101,7 +101,7 @@ plugin.tx_wecsermons_pi1 {
 			wrap = <table>|</table>
 		}
 
-		Discussion < plugin.tx_wecdiscussion_pi1
+		discussion < plugin.tx_wecdiscussion_pi1
 
 
 		news < plugin.tt_news

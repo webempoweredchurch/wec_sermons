@@ -19,11 +19,7 @@ CREATE TABLE tx_wecsermons_resources (
 	type blob NOT NULL,
 	file blob NOT NULL,
 	url tinytext NOT NULL,
-	querystring_param blob NOT NULL,
 	rendered_record blob NOT NULL,
-	marker_name tinytext NOT NULL,
-	template_name tinytext NOT NULL,
-	mime_type tinytext NOT NULL,
 	
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -46,14 +42,15 @@ CREATE TABLE tx_wecsermons_resource_types (
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
 	fe_group int(11) DEFAULT '0' NOT NULL,
+	type tinyint(4) DEFAULT '0' NOT NULL,
 	description text NOT NULL,
 	title tinytext NOT NULL,
 	icon blob NOT NULL,
 	marker_name tinytext NOT NULL,
 	template_name tinytext NOT NULL,
 	querystring_param blob NOT NULL,
+	mime_type tinytext NOT NULL,
 	avail_fields blob NOT NULL,
-	type tinyint(4) DEFAULT '0' NOT NULL,
 	
 	PRIMARY KEY (uid),
 	KEY parent (pid)

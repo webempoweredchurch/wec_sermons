@@ -1743,7 +1743,6 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		tx_wecsermons_resources.description,
 		tx_wecsermons_resources.graphic,
 		tx_wecsermons_resources.file,
-		tx_wecsermons_resources.mime_type,
 		tx_wecsermons_resources.url,
 		tx_wecsermons_resources.rendered_record,
 		tx_wecsermons_resource_types.type type_type,
@@ -1751,6 +1750,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		tx_wecsermons_resource_types.icon,
 		tx_wecsermons_resource_types.marker_name,
 		tx_wecsermons_resource_types.template_name,
+		tx_wecsermons_resource_types.mime_type,
 		tx_wecsermons_resource_types.querystring_param
 		from tx_wecsermons_resources
 				join tx_wecsermons_sermons_resources_uid_mm on tx_wecsermons_resources.uid=tx_wecsermons_sermons_resources_uid_mm.uid_foreign
