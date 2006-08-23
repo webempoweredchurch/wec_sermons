@@ -112,7 +112,6 @@ $TCA["tx_wecsermons_resources"] = Array (
 				"type" => "select",
 				"items" => Array (
 					Array('LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resources.type.I.0','0'),
-					Array('LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resources.type.I.1','plugin'),
 				),
 				"size" => 1,	
 				"maxitems" => 1,
