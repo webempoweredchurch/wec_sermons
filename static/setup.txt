@@ -109,7 +109,7 @@ plugin.tx_wecsermons_pi1 {
 			code >
 			code = SINGLE
 			substitutePagetitle = 0
-			templateFile = EXT:wec_sermons/res/news_template.tmpl
+			templateFile = EXT:wec_sermons/res/tt_news_v2_template.html
 		}
 
 
