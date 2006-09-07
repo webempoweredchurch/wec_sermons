@@ -29,6 +29,8 @@
  * @subpackage tx_wecsermons
  */
 
+require_once(PATH_typo3conf . 'ext/wec_sermons/pi1/class.tx_wecsermons_pi1.php' );
+
  /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
@@ -69,8 +71,10 @@ class tx_wecsermons_resourceTypeTca {
 			//	Convert each tx_wecsermons_resource_types record into a 'types' TCA array
 			while( $resourceType = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $resource )  ) {
 
-				$GLOBALS['TCA']['tx_wecsermons_resources']['types'][$resourceType['title']] = array( 'showitem' => "sys_language_uid;;;;1-1-1, l18n_parent, l18n _diffsource, hidden;;1, title;;;;2-2-2, type, " . $resourceType['avail_fields'] . ($resourceType['type'] == '1' ? 'rendered_record' : '')  );
+				$GLOBALS['TCA']['tx_wecsermons_resources']['types'][$resourceType['typoscript_object_name']] = array( 'showitem' => "sys_language_uid;;;;1-1-1, l18n_parent, l18n _diffsource, hidden;;1, title;;;;2-2-2, type, " . $this->processAvailableFields( $resourceType['avail_fields'] ) . ($resourceType['type'] == '1' ? ',rendered_record' : '')  );
 			}
+			
+//debug( $GLOBALS['TCA']['tx_wecsermons_resources']['types'] ,1);			
 
 		}
 
@@ -103,13 +107,44 @@ class tx_wecsermons_resourceTypeTca {
 			//	TODO: Resize the given image file to 18x16 via ImageMagick
 			$params['items'][] = array(
 				$resourceType['title'],
-				$resourceType['title'],
+				$resourceType['typoscript_object_name'],
 				$resourceType['icon'] ? '../../' . $GLOBALS['TCA']['tx_wecsermons_resource_types']['columns']['icon']['config']['uploadfolder'] . '/' . $resourceType['icon'] : ''
 			);
 
 		}
-//debug( $params );
 
+	}
+	
+	/**
+	 *
+	 *
+	 *
+	 *
+	 */
+	 function processAvailableFields( $availFields ) {
+	 
+	 	$processedFields = '';
+	 	$fieldArray = explode( ',' , $availFields );
+
+	 	foreach( $fieldArray as $field ) {
+	 		
+	 		switch( $field ) {
+	 			
+	 			case 'description':
+	 				$processedFields .= 'description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts];3-3-3';
+	 				break;
+	 			
+	 			default:
+	 				$processedFields .= $field;
+	 				break;
+	 			
+	 		}
+	 		
+	 		$processedFields .= ',';
+	 	}
+	
+	 	//	Return the processed fields csv string with right-most comma trimmed.
+	 	return rtrim( $processedFields, ',' );
 	}
 
 }

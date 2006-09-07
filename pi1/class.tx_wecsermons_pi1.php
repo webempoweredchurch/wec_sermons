@@ -108,6 +108,15 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 		$this->local_cObj = t3lib_div::makeInstance('tslib_cObj'); // Local cObj.
 		$this->init($conf);
+		
+		//	First check if extension template was loaded by checking existence of resource_types configuration array
+		if( ! is_array( $this->conf['resource_types.'] ) ) {
+			return $this->throwError( 
+				'WEC Sermons Error!', 
+				'The extension template for WEC SMS was not loaded!',
+				'Please edit your template record and add the "WEC SMS" template to the "Include static (from extension)" field.'
+			);			
+		}
 
 		//	Check if typoscript config 'tutorial' is an integer, otherwise set to 0
 		if( t3lib_div::testInt( $this->conf['tutorial'] ) == false ) $this->conf['tutorial'] = 0;
@@ -295,9 +304,6 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	function singleView($content,$lConf)	{
 		$this->pi_loadLL();
 
-		// This sets the title of the page for use in indexed search results:
-		if ($this->internal['currentRow']['title'])	$GLOBALS['TSFE']->indexedDocTitle=$this->internal['currentRow']['title'];
-
 		//	Set the current table internal variable from recordType querystring value
 		$this->internal['currentTable'] = htmlspecialchars( $this->piVars['recordType'] );
 
@@ -337,14 +343,20 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$resource = $this->getResources( '' , $this->piVars['showUid'] ) ;
 			$this->internal['currentRow'] = $resource[0];
 
-			//	If resource is of type 'plugin', we load the template from the resource record, otherwise load the template from the resource_type record.
-			$templateName = $this->internal['currentRow']['type'] == 'plugin' ?
-				$this->internal['currentRow']['resource_template_name']
-				: $this->internal['currentRow']['template_name'];
+			//	Retreive the template name from the resource
+			$templateName = $this->internal['currentRow']['template_name'];
 
 			$this->loadTemplate();
 			$this->template['single'] = $this->getNamedSubpart( $templateName, $this->template['total'] );
 
+			if(! $this->template['single'] ) {
+	
+					return $this->throwError( 
+						'WEC Sermons Error!',
+						'Unable to retrieve content for specified template.',
+						'Requested Template: ' . $templateName
+					 );
+			}
 		}
 		else {
 			$templateKey = $this->getTemplateKey( $this->internal['currentTable'] );
@@ -352,30 +364,30 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 				//	TODO: allow specification of what record to draw from TypoScript
 			$this->internal['currentRow'] = $this->pi_getRecord($this->piVars['recordType'],$this->piVars['showUid']);
+	
+				//	Report an error if we couldn't pull up the template.
+			if(! $this->template['single'] ) {
+	
+					return $this->throwError( 
+						'WEC Sermons Error!',
+						'Unable to retrieve content for specified template.',
+						sprintf (
+							'Requested Template: ###TEMPLATE_%s_%s%s###',
+							strtoupper( $templateKey ),
+							'SINGLE',
+							$this->internal['layoutCode']
+						)
+					 );
+			}
+
+		// This changes the title of the page to reflect the title of the record we're viewing, and sets the title of the page for use in indexed search results:
+		if ($this->internal['currentRow']['title'])  {
+			$GLOBALS['TSFE']->indexedDocTitle=$this->internal['currentRow']['title'];
+			$GLOBALS['TSFE']->page['title']=$this->internal['currentRow']['title'];
+		}
 		}
 
-			//	Report an error if we couldn't pull up the template.
-		if(! $this->template['single'] ) {
-
-				return $this->throwError( 
-					'WEC Sermons Error!',
-					'Unable to retrieve content for specified template.',
-					sprintf (
-						'Requested Template: ###TEMPLATE_%s_%s%s###',
-						strtoupper( $templateKey ),
-						'SINGLE',
-						$this->internal['layoutCode']
-					)
-				 );
-
-				return sprintf(
-					'<p>%s<br/> %s</p>	<p>%s</p>',
-					$error['type'],
-					$error['message'],
-					$error['detail']
-				);
-		}
-
+		
 		$this->template['content'] = $this->cObj->getSubpart( $this->template['single'], '###CONTENT###' );
 
 			//	Retrieve the markerArray for the right table
@@ -989,7 +1001,6 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 				case '###RESOURCE_TITLE###':
 					if( $row[$fieldName] ) {
-						$this->local_cObj->start( $row, 'tx_wecsermons_series' );
 						$markerArray[$key] = $this->local_cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_resources.']['title.'] );
 					}
 				break;
@@ -1017,11 +1028,12 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				case '###RESOURCE_CONTENT###':
 
 						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $this->conf['resource_types'], $this->conf['resource_types.'] );
+						
 				break;
 
 				case '###RESOURCE_LINK###':
 
-					//	If 'typolink' segment is defined for this type, render a link as defined by 'typolink', otherwise render a link to the resources' single view
+					//	If 'typolink' segment is defined, render a link as defined by 'typolink', otherwise render a link to the resources' single view
 					if( $lConf['tx_wecsermons_resources.']['resource_types.'][$row['type'].'.']['typolink'] ) {
 
 						$wrappedSubpartArray[$key] = $this->local_cObj->typolinkWrap( $lConf['tx_wecsermons_resources.']['resource_types.'][$row['type'].'.']['typolink.'] );
@@ -1756,11 +1768,13 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		tx_wecsermons_resource_types.marker_name,
 		tx_wecsermons_resource_types.template_name,
 		tx_wecsermons_resource_types.mime_type,
-		tx_wecsermons_resource_types.querystring_param
+		tx_wecsermons_resource_types.querystring_param,
+		tx_wecsermons_resource_types.typoscript_object_name
+		
 		from tx_wecsermons_resources
 				join tx_wecsermons_sermons_resources_uid_mm on tx_wecsermons_resources.uid=tx_wecsermons_sermons_resources_uid_mm.uid_foreign
 		join tx_wecsermons_sermons on tx_wecsermons_sermons.uid=tx_wecsermons_sermons_resources_uid_mm.uid_local
-		left join tx_wecsermons_resource_types on tx_wecsermons_resources.type=tx_wecsermons_resource_types.title
+		left join tx_wecsermons_resource_types on tx_wecsermons_resources.type=tx_wecsermons_resource_types.typoscript_object_name
 	 			where 1=1 ' . $WHERE;
 
 		$res = $GLOBALS['TYPO3_DB']->sql_query( $query );
@@ -1788,25 +1802,19 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 */
 	function emptyResourceSubparts( &$subpartArray ) {
 
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-			'distinct marker_name',
-			'tx_wecsermons_resources',
-			 'marker_name != \'\' '.$this->cObj->enableFields( 'tx_wecsermons_resources' )
-		);
-
-		while( $marker = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) ) {
-			$subpartArray[$marker['marker_name']] = '';
-		}
-
+		//	Find the marker names for every defined resource type
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'distinct marker_name',
 			'tx_wecsermons_resource_types',
 			  'marker_name != \'\' '.$this->cObj->enableFields( 'tx_wecsermons_resource_types' )
 		);
 
+		//	Iterate every marker, setting the associated subpart to an empty string
 		while( $marker = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) )
 			$subpartArray[$marker['marker_name']] = '';
 
+		//	Set the default resource type marker subpart to an empty string
+		$subpartArray[$this->conf['defaultMarker']] = '';
 
 	}
 
@@ -1824,7 +1832,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 		$format =  sprintf(
 		'
-			<div style="border: 1px solid black; max-width:400px; background-color: #DDDD66; float: center;">
+			<div style="border: 1px solid black; padding: 0 1em 0 1em; margin: 1em 0 1em 0; max-width:400px; background-color: #DDDD66; float: center;">
 				<h1>%s</h1>
 				<p>%s</p>
 				<p>%s</p>

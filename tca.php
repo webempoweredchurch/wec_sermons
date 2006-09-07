@@ -87,7 +87,6 @@ $TCA["tx_wecsermons_resources"] = Array (
 			"config" => Array (
 				"type" => "input",	
 				"size" => "30",	
-				"eval" => "required",
 			)
 		),
 		"graphic" => Array (		
@@ -175,24 +174,6 @@ $TCA["tx_wecsermons_resources"] = Array (
 				"maxitems" => 1,	
 			),
 		),	
-		"marker_name" => Array (		
-			"exclude" => 1,		
-			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resources.marker_name",		
-			"config" => Array (
-				"type" => "input",
-				"size" => "30",	
-				"eval" => "required,upper,nospace",
-			)
-		),
-		"template_name" => Array (		
-			"exclude" => 1,		
-			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resources.template_name",		
-			"config" => Array (
-				"type" => "input",
-				"size" => "30",	
-				"eval" => "required,upper,nospace",
-			)
-		),
 	),
 	"types" => Array (
 		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n _diffsource, hidden;;1, title;;;;2-2-2, type, description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts],  graphic;;;;3-3-3, file;;;;4-4-4,url"),
@@ -291,7 +272,7 @@ $TCA["tx_wecsermons_resource_types"] = Array (
 			"config" => Array (
 				"type" => "input",
 				"size" => "30",	
-				"eval" => "required,nospace",
+				"eval" => "required",
 			)
 		),
 		"icon" => Array (		
@@ -373,10 +354,19 @@ $TCA["tx_wecsermons_resource_types"] = Array (
 				"size" => "30",	
 			)
 		),
+		"typoscript_object_name" => Array (		
+			"exclude" => 1,		
+			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resource_types.typoscript_object_name",		
+			"config" => Array (
+				"type" => "input",	
+				"size" => "30",	
+				"eval" => "required,nospace",
+			)
+		),		
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;1, type, title;;;;2-2-2, marker_name, template_name, mime_type, description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts];3-3-3, icon, avail_fields"),
-		"1" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;1, type, title;;;;2-2-2, marker_name, template_name, querystring_param, description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts];3-3-3, icon, avail_fields")
+		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;1, type, title;;;;2-2-2, marker_name, template_name, mime_type, typoscript_object_name, description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts];3-3-3, icon, avail_fields"),
+		"1" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;1, type, title;;;;2-2-2, marker_name, template_name, querystring_param, typoscript_object_name, description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts];3-3-3, icon, avail_fields")
 	),
 	"palettes" => Array (
 		"1" => Array("showitem" => "fe_group")

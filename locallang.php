@@ -7,8 +7,8 @@
 
 $LOCAL_LANG = Array (
 	'default' => Array (
-		'pi1_title' => 'Sermon Repository',	
-		'pi1_plus_wiz_description' => 'A Sermon Repository manages the display of sermon data on a web page.',	
+		'pi1_title' => 'Sermon Management System',	
+		'pi1_plus_wiz_description' => 'The SMS plug-in manages the display of sermon data on a web page.',	
 	),
 	'dk' => Array (
 	),

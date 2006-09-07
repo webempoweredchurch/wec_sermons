@@ -42,12 +42,12 @@ plugin.tx_wecsermons_pi1 {
 	defaultMarker = ###DEFAULT_RESOURCES###
 	
 	# CASE for rendering ###RESOURCE_CONTENT###
-	# Resource types are identified by thier UID, or primary key, except in case of type = 'plugin' where we use the name of the resource itself.
+	# Resource types are identified by thier typoscript_object_name field.
 	resource_types = CASE
 	resource_types {
 
 		# Use the field 'type' on a tx_wecsermons_resources record
-		key.field = type
+		key.field = typoscript_object_name
 
 		# This is the 'Default' resource type. Should be customized to your needs.
 		default = COA
@@ -108,7 +108,8 @@ plugin.tx_wecsermons_pi1 {
 		news {
 			code >
 			code = SINGLE
-
+			substitutePagetitle = 0
+			templateFile = EXT:wec_sermons/res/news_template.tmpl
 		}
 
 
@@ -212,6 +213,15 @@ plugin.tx_wecsermons_pi1 {
 
 				# Type PDF
 				2 {
+					typolink = 1
+					typolink {
+						parameter = uploads/tx_wecsermons/{field:file}
+						parameter.insertData = 1
+						extTarget = _blank
+					}
+				}
+				
+				MP3 {
 					typolink = 1
 					typolink {
 						parameter = uploads/tx_wecsermons/{field:file}
@@ -591,6 +601,10 @@ plugin.tx_wecsermons_pi1 {
 
 				# Type PDF
 				2 {
+					typolink = 0
+				}
+				
+				MP3 {
 					typolink = 0
 				}
 
