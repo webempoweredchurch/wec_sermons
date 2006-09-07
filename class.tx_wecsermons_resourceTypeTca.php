@@ -29,8 +29,6 @@
  * @subpackage tx_wecsermons
  */
 
-require_once(PATH_typo3conf . 'ext/wec_sermons/pi1/class.tx_wecsermons_pi1.php' );
-
  /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
