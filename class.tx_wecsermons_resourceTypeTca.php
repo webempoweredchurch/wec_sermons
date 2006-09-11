@@ -34,11 +34,12 @@
  *
  *
  *
- *   45: class tx_wecsermons_resourceTypeTca
- *   55:     function getMainFields_preProcess($table,$row,&$pObj)
- *   87:     function resourceType_items( &$params, &$pObj )
+ *   46: class tx_wecsermons_resourceTypeTca
+ *   56:     function getMainFields_preProcess($table,$row,&$pObj)
+ *   89:     function resourceType_items( &$params, &$pObj )
+ *  121:     function processAvailableFields( $availFields )
  *
- * TOTAL FUNCTIONS: 2
+ * TOTAL FUNCTIONS: 3
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -71,8 +72,8 @@ class tx_wecsermons_resourceTypeTca {
 
 				$GLOBALS['TCA']['tx_wecsermons_resources']['types'][$resourceType['typoscript_object_name']] = array( 'showitem' => "sys_language_uid;;;;1-1-1, l18n_parent, l18n _diffsource, hidden;;1, title;;;;2-2-2, type, " . $this->processAvailableFields( $resourceType['avail_fields'] ) . ($resourceType['type'] == '1' ? ',rendered_record' : '')  );
 			}
-			
-//debug( $GLOBALS['TCA']['tx_wecsermons_resources']['types'] ,1);			
+
+//debug( $GLOBALS['TCA']['tx_wecsermons_resources']['types'] ,1);
 
 		}
 
@@ -112,35 +113,35 @@ class tx_wecsermons_resourceTypeTca {
 		}
 
 	}
-	
+
 	/**
+	 *	processAvailableFields	Function that performs pre-processing of the "types" portion of TCA, enabling RTE functionality and advanced backend form features.
 	 *
-	 *
-	 *
-	 *
+	 * @param	string		$$availFields: A csv string containing the possible available fields that can be displayed for a SMS resource
+	 * @return	[type]		Returns a processed csv string, ready to be appended to the "types" portion of TCA
 	 */
 	 function processAvailableFields( $availFields ) {
-	 
+
 	 	$processedFields = '';
 	 	$fieldArray = explode( ',' , $availFields );
 
 	 	foreach( $fieldArray as $field ) {
-	 		
+
 	 		switch( $field ) {
-	 			
+
 	 			case 'description':
 	 				$processedFields .= 'description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts];3-3-3';
 	 				break;
-	 			
+
 	 			default:
 	 				$processedFields .= $field;
 	 				break;
-	 			
+
 	 		}
-	 		
+
 	 		$processedFields .= ',';
 	 	}
-	
+
 	 	//	Return the processed fields csv string with right-most comma trimmed.
 	 	return rtrim( $processedFields, ',' );
 	}

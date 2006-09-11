@@ -82,6 +82,7 @@ DEFAULT_RESOURCES -	The subpart name of the 'default' resource type
 SERMON_SERIES_LINK - link to sermon series' single view
 SERMON_LINK - link to a sermon's single view
 RESOURCE_LINK - link to a resource's single view
+TOPIC_LINK - link to a topic's single view
 BACK_LINK	- link back to the list view
 </pre>
 
@@ -95,9 +96,9 @@ BACK_LINK	- link back to the list view
 	<!-- ###CONTENT### begin -->
 		<!-- ###ITEM### begin -->
 
-			<div style='border-bottom: 1px dotted black;' class='###ALTERNATING_CLASS###'>
+			<div style='border-bottom: 1px dotted black;' class='###ALTERNATING_CLASS###' id="tx-wecsermons-pi1-list1">
 				<!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###-->
-				###SERMON_OCCURANCE_DATE###
+				Presented On: ###SERMON_OCCURANCE_DATE###<br/>
 				###SERMON_DESCRIPTION###
 				###SERMON_SCRIPTURE###
 				###SERMON_GRAPHIC###
@@ -207,7 +208,7 @@ Sermon Topic: ###TOPIC_TITLE###
 <br /><br /><br /><br /><hr />
 <br />
 <h3>TEMPLATE_LIST2</h3>
-<em>This is an example template for styling a sermon listing, grouped by series.</em>
+<em>This is a template style for displaying a sermon listing, grouped by series.</em>
 <br />
 <br />
 <br />
@@ -217,7 +218,7 @@ Sermon Topic: ###TOPIC_TITLE###
 	This template is in progress, developing a abstracted grouping mechanism for related records, simliar to a Crystal Reports 'group'
 -->
 
-<TABLE id="wecsermons-pi1-table-data">
+<TABLE width="489" cellpadding="3" cellspacing="1" id="tx-wecsermons-pi1-list2">
   <TBODY>
     <!-- ###CONTENT### begin
     	This begins the main content wrapper
@@ -242,14 +243,80 @@ Sermon Topic: ###TOPIC_TITLE###
     </TR>
     <!-- ###DETAIL### end -->
     <!-- ###CONTENT### end -->
-    <TR>
-    	<TD colspan='2'>
-    		###BROWSE_LINKS###
-		</TD>
-	</TR>
-  </TBODY>
+   </TBODY>
 </TABLE>
 <!-- ###TEMPLATE_LIST2### end -->
+
+<h3>TEMPLATE_SERMON_SINGLE2</h3>
+<em>This is a template style for a sermon single view.</em>
+<br />
+
+<!-- ###TEMPLATE_SERMON_SINGLE2### begin -->
+	<!--###CONTENT###-->
+		<div class="tx-wecsermons-sermon">
+			<div class="tx-wecsermons-sermon-graphic" style="float: right; margin: 1em;">
+				###SERMON_GRAPHIC###
+			</div>
+			<p>###SERMON_TITLE###</p>
+			
+			<!--###SERMON_SPEAKERS###-->
+				<!--###SPEAKER_LINK###-->Pastor ###SPEAKER_FIRSTNAME### ###SPEAKER_LASTNAME###<!--###SPEAKER_LINK###--><br/>
+			<!--###SERMON_SPEAKERS###-->
+
+			###SERMON_OCCURANCE_DATE###<br/>
+
+			<!--###SERMON_TOPICS###-->
+				<div class="tx-wecsermons-sermons-topics"><!--###TOPIC_LINK###-->###TOPIC_TITLE###<!--###TOPIC_LINK###--></div>
+			<!--###SERMON_TOPICS###-->
+
+			<div class="tx-wecsermons-sermon-description">
+				###SERMON_DESCRIPTION###
+			</div>
+		</div>
+	<!--###CONTENT###-->
+	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
+<!-- ###TEMPLATE_SERMON_SINGLE2### end -->
+
+<h3>TEMPLATE_TOPIC_SINGLE2</h3>
+<em>This is a template style for a speaker single view.</em>
+<br />
+
+<!-- ###TEMPLATE_TOPIC_SINGLE2### end -->
+	<!--###CONTENT###-->
+		###TOPIC_TITLE###<br/>
+		###TOPIC_DESCRIPTION###
+	<!--###CONTENT###-->
+	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
+<!-- ###TEMPLATE_TOPIC_SINGLE2### end -->
+
+
+<h3>TEMPLATE_SPEAKER_SINGLE2</h3>
+<em>This is a template style for a speaker single view.</em>
+<br />
+
+<!-- ###TEMPLATE_SPEAKER_SINGLE2### begin -->
+	<!--###CONTENT###-->
+	<div class="tx-wecsermons-speaker-photo" style="float: left; margin: 0 1em;">###SPEAKER_PHOTO###</div>
+	###SPEAKER_FIRSTNAME### ###SPEAKER_LASTNAME###<br/>
+	###SPEAKER_EMAIL###
+	###SPEAKER_URL###<br/>
+	<!--###CONTENT###-->
+	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
+<!-- ###TEMPLATE_SPEAKER_SINGLE2### end -->
+
+<h3>TEMPLATE_SERIES_SINGLE2</h3>
+<em>This is a template style for a series single view.</em>
+<br />
+
+<!-- ###TEMPLATE_SERIES_SINGLE2### begin -->
+	<!--###CONTENT###-->
+		<div class="tx-wecsermons-series-title">###SERIES_TITLE###</div>
+		<div class="tx-wecsermons-series-date">###SERIES_STARTDATE### through ###SERIES_ENDDATE###</div>
+		<p style="text-align: center;" ###SERIES_GRAPHIC###</p>
+		<p>###SERIES_DESCRIPTION###</p>
+	<!--###CONTENT###-->
+	<!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###-->
+<!-- ###TEMPLATE_SERIES_SINGLE2### end -->
 
 <h3>TEMPLATE_LIST3</h3>
 <em>This is an example template for styling a list of resources.</em>

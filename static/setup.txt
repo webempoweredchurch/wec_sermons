@@ -130,7 +130,7 @@ plugin.tx_wecsermons_pi1 {
 
 		back = TEXT
 		back {
-			parseFunc < tt_content.text.20.parseFunc
+			parseFunc < plugin.tx_wecsermons_pi1.general_stdWrap
 		}
 
 		layoutCode =
@@ -141,20 +141,20 @@ plugin.tx_wecsermons_pi1 {
 			title = TEXT
 			title {
 				wrap = |
-				parseFunc < tt_content.text.20.parseFunc
+				parseFunc < plugin.tx_wecsermons_pi1.general_stdWrap
 				field = title
 			}
 
 				# Specific date wrap for the occurance_date column in tx_wecsermons_sermons table
 			occurance_date = TEXT
 			occurance_date {
-				strftime = %A,  %m. %d %Y
+				strftime = %B %d, %Y
 				wrap = |<br/>
 			}
 
 			description = TEXT
 			description {
-				parseFunc < tt_content.text.20.parseFunc
+				parseFunc < plugin.tx_wecsermons_pi1.general_stdWrap
 				field = description
 			}
 
@@ -310,7 +310,6 @@ plugin.tx_wecsermons_pi1 {
 
 			description = TEXT
 			description {
-				crop = 75|...
 				parseFunc < tt_content.text.20.parseFunc
 				field = description
 			}
@@ -329,7 +328,7 @@ plugin.tx_wecsermons_pi1 {
 			startdate = TEXT
 			startdate {
 				strftime = %A,  %b. %d %Y
-				wrap = |<br/>
+				wrap = |
 				field = startdate
 			}
 
@@ -351,7 +350,7 @@ plugin.tx_wecsermons_pi1 {
 
 				# If typolink is set, then we use this configuration to generate the link for the ###SPEAKER_LINK### TYPO tag.
 				# If typolink = 0, then we generate a link to the speaker's single view
-			typolink = 1
+			typolink = 0
 			typolink {
 				parameter.field = url
 				extTarget = _blank
@@ -376,7 +375,7 @@ plugin.tx_wecsermons_pi1 {
 
 			firstname = TEXT
 			firstname {
-				wrap = |<br/>
+				wrap = |
 				field = firstname
 			}
 
@@ -388,7 +387,7 @@ plugin.tx_wecsermons_pi1 {
 
 			url = TEXT
 			url {
-				wrap = |<br/>
+				wrap = |
 				typolink = 1
 				typolink {
 					parameter.field = url
@@ -401,7 +400,7 @@ plugin.tx_wecsermons_pi1 {
 			email {
 				typolink = 1
 				typolink.parameter.field = email
-				wrap = |<br/>
+				wrap = |
 				parseFunc < tt_content.text.20.parseFunc
 				field = email
 
@@ -419,7 +418,6 @@ plugin.tx_wecsermons_pi1 {
 
 			description = TEXT
 			description {
-				crop = 75|...
 				parseFunc < tt_content.text.20.parseFunc
 				field = description
 			}
@@ -846,9 +844,19 @@ plugin.tx_wecsermons_pi1 {
 
 	# Empty default set CSS styles (these go into the document header):
 plugin.tx_wecsermons_pi1._CSS_DEFAULT_STYLE >
+plugin.tx_wecsermons_pi1._CSS_DEFAULT_STYLE (
+/*------------------------------- WEC SMS -------------------------------------------*/
+
+div.tx-wecsermons-pi1-list1 { margin: 1em 0 1em; padding: 0 0 1em;} 
+#tx-wecsermons-pi1-list2 th { background-color: #779976; text-align: left;} 
+#tx-wecsermons-pi1-list2 a { color: #003399; }
+#tx-wecsermons-pi1-list2 td { background-color: #ACCCAB;} 
+div.tx-wecsermons-sermon-description { text-align: justify; } 
+)
 
 	# Example of how to overrule LOCAL_LANG values for the plugin:
-plugin.tx_wecsermons_pi1._LOCAL_LANG.default {
+plugin.tx_wecsermons_pi1._LOCAL_LANG.default  {
+
 	pi_list_searchBox_search = Search!
 }
 	# Example of how to set default values from TS in the incoming array, $this->piVars of the plugin:

@@ -33,32 +33,32 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
  *   75: class tx_wecsermons_pi1 extends tslib_pibase
  *   89:     function init($conf)
  *  107:     function main($content,$conf)
- *  178:     function xmlView ($content, $lConf)
- *  286:     function singleView($content,$lConf)
- *  413:     function searchView($content,$lConf)
- *  428:     function pi_list_searchbox($lConf)
- *  477:     function listView($content,$lConf)
- *  581:     function pi_list_makelist($lConf, $template)
- *  750:     function pi_list_row($lConf, $markerArray = array(), $rowTemplate, $row ='', $c = 2)
- * 1396:     function getMarkerArray( $tableName = '' )
- * 1531:     function formatStr( $str )
- * 1545:     function getTemplateKey($tableName)
- * 1588:     function getUrlToList ( $absolute )
- * 1605:     function getUrlToSingle ( $absolute, $tableName, $uid )
- * 1624:     function getFeAdminList( $tableName = '' )
- * 1644:     function getNamedTemplateContent($keyName = 'sermon', $view = 'single')
- * 1697:     function getNamedSubpart( $subpartName, $content )
- * 1714:     function loadTemplate()
- * 1740:     function getTemplateFile()
- * 1763:     function getResources( $sermonUid = '', $resourceUid = '')
- * 1822:     function emptyResourceSubparts( &$subpartArray )
- * 1854:     function throwError( $type, $message, $detail = '' )
- * 1878:     function getTutorial ( $tutorial )
- * 1956:     function uniqueCsv()
- * 1971:     function unique_array()
- * 1989:     function get_foreign_column( $currentTable, $relatedTable )
- * 2015:     function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default = '' )
- * 2034:     function splitTableAndUID($record)
+ *  215:     function xmlView ($content, $lConf)
+ *  304:     function singleView($content,$lConf)
+ *  414:     function searchView($content,$lConf)
+ *  429:     function pi_list_searchbox($lConf)
+ *  478:     function listView($content,$lConf)
+ *  559:     function pi_list_makelist($lConf, $template)
+ *  730:     function pi_list_row($lConf, $markerArray = array(), $rowTemplate, $row ='', $c = 2)
+ * 1383:     function getMarkerArray( $tableName = '' )
+ * 1518:     function formatStr( $str )
+ * 1532:     function getTemplateKey($tableName)
+ * 1575:     function getUrlToList ( $absolute )
+ * 1592:     function getUrlToSingle ( $absolute, $tableName, $uid )
+ * 1611:     function getFeAdminList( $tableName = '' )
+ * 1631:     function getNamedTemplateContent($keyName = 'sermon', $view = 'single')
+ * 1684:     function getNamedSubpart( $subpartName, $content )
+ * 1701:     function loadTemplate()
+ * 1727:     function getTemplateFile()
+ * 1750:     function getResources( $sermonUid = '', $resourceUid = '')
+ * 1803:     function emptyResourceSubparts( &$subpartArray )
+ * 1829:     function throwError( $type, $message, $detail = '' )
+ * 1853:     function getTutorial ( $tutorial )
+ * 1931:     function uniqueCsv()
+ * 1946:     function unique_array()
+ * 1964:     function get_foreign_column( $currentTable, $relatedTable )
+ * 1990:     function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default = '' )
+ * 2009:     function splitTableAndUID($record)
  *
  * TOTAL FUNCTIONS: 28
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -108,14 +108,14 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 		$this->local_cObj = t3lib_div::makeInstance('tslib_cObj'); // Local cObj.
 		$this->init($conf);
-		
+
 		//	First check if extension template was loaded by checking existence of resource_types configuration array
 		if( ! is_array( $this->conf['resource_types.'] ) ) {
-			return $this->throwError( 
-				'WEC Sermons Error!', 
+			return $this->throwError(
+				'WEC Sermons Error!',
 				'The extension template for WEC SMS was not loaded!',
 				'Please edit your template record and add the "WEC SMS" template to the "Include static (from extension)" field.'
-			);			
+			);
 		}
 
 		//	Check if typoscript config 'tutorial' is an integer, otherwise set to 0
@@ -191,9 +191,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					break;
 
 				default:
-					$content .= $this->throwError( 
-						'Configuration Error', 
-						'Plugin setting "What to Display" was not specified, or TypoScript Setup property "CMD" was incorrect or not found.', 
+					$content .= $this->throwError(
+						'Configuration Error',
+						'Plugin setting "What to Display" was not specified, or TypoScript Setup property "CMD" was incorrect or not found.',
 						'What to Display:' . $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'display', 'sDEF')
 					);
 					break;
@@ -350,8 +350,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$this->template['single'] = $this->getNamedSubpart( $templateName, $this->template['total'] );
 
 			if(! $this->template['single'] ) {
-	
-					return $this->throwError( 
+
+					return $this->throwError(
 						'WEC Sermons Error!',
 						'Unable to retrieve content for specified template.',
 						'Requested Template: ' . $templateName
@@ -364,11 +364,11 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 				//	TODO: allow specification of what record to draw from TypoScript
 			$this->internal['currentRow'] = $this->pi_getRecord($this->piVars['recordType'],$this->piVars['showUid']);
-	
+
 				//	Report an error if we couldn't pull up the template.
 			if(! $this->template['single'] ) {
-	
-					return $this->throwError( 
+
+					return $this->throwError(
 						'WEC Sermons Error!',
 						'Unable to retrieve content for specified template.',
 						sprintf (
@@ -387,7 +387,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		}
 		}
 
-		
+
 		$this->template['content'] = $this->cObj->getSubpart( $this->template['single'], '###CONTENT###' );
 
 			//	Retrieve the markerArray for the right table
@@ -523,12 +523,12 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				//	Report an error if we couldn't pull up the template.
 			if(! $this->template['list'] ) {
 
-				return $this->throwError( 
+				return $this->throwError(
 					'WEC Sermons Error!',
 					'Unable to retrieve content for specified template.',
 					sprintf (
 							'Requested Template: ###TEMPLATE_LIST%s###
-							
+
 							Template File: %s
 							',
 							$this->internal['layoutCode'],
@@ -568,6 +568,11 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 			$detailTable = getConfigVal( $this, 'detail_table', 'slistView', 'detail_table', $lConf );
 			$this->template['group'] = $this->cObj->getSubpart( $template, '###GROUP###' );
+			
+			//	Change the orderBy clause to match the group table
+			$this->internal['orderByList']=$lConf[$groupTable.'.']['orderByList'];
+			$this->internal['orderBy']=$lConf[$groupTable.'.']['orderBy'];
+			$this->internal['descFlag']=$lConf[$groupTable.'.']['descFlag'];
 
 				//Run a series of checks before branching to grouping logic, return error if necessary
 			if( $groupTable == '' || ! $this->template['group'] ) {
@@ -585,7 +590,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			}
 
 
-				//	Check if group_table is in list of allowed tables
+			//	Check if group_table is in list of allowed tables
 			if( ! t3lib_div::inList( $this->conf['allowedTables'], $groupTable ) ) {
 
 				$error = array();
@@ -600,7 +605,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				return $format;
 
 			}
-
+			//	Check if detail_table is in list of allowed tables	
 			if( ! t3lib_div::inList( $this->conf['allowedTables'], $detailTable ) ) {
 
 				$error = array();
@@ -621,10 +626,11 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$groupContent = '';
 
 			$this->internal['currentTable'] = $this->internal['groupTable'] = $groupTable;
-			$res = $this->pi_exec_query($groupTable);
 
+			$res = $this->pi_exec_query($groupTable);
 				//	Search TCA for relation to previous table where columns.[colName].config.foreign_table = $this->internal['groupTable']
 			$foreign_column = get_foreign_column( $detailTable, $this->internal['groupTable'] );
+
 			if( ! $foreign_column ) {
 				$error = array();
 				$error['type'] = htmlspecialchars( 'WEC Sermons Error!' );
@@ -650,12 +656,17 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					//	Process the current row
 				$groupContent .= $this->pi_list_row( $lConf, $markerArray, $groupTemplate, $this->internal['currentRow'] );
 
-					//	Store previous row and table as we switch to retreiving detail
+					//	Store previous row, table and order by as we switch to retreiving detail
 				$this->internal['previousRow'] = $this->internal['currentRow'];
 				$this->internal['previousTable'] = $this->internal['currentTable'];
-
 				$this->internal['currentTable'] = $detailTable;
-
+				$this->internal['previousOrderByList'] = $this->internal['orderByList'];
+				$this->internal['previousOrderBy'] = $this->internal['orderBy'];
+				$this->internal['previousdescFlag'] = $this->internal['descFlag'];
+				$this->internal['orderByList']=$lConf[$detailTable.'.']['orderByList'];
+				$this->internal['orderBy']=$lConf[$detailTable.'.']['orderBy'];
+				$this->internal['descFlag']=$lConf[$detailTable.'.']['descFlag'];
+				
 					//	Exec query on detail table, for every record related to our group record
 				$detailRes = $this->pi_exec_query( $detailTable, 0, ' AND ' . $foreign_column . ' in (' . $this->internal['previousRow']['uid'] . ')' );
 
@@ -665,9 +676,12 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					$detailCount++;
 				}
 
-				//	Restore row and table to internal storage
+				//	Restore row,  table, and order by to internal storage
 				$this->internal['currentRow'] = $this->internal['previousRow'];
 				$this->internal['currentTable'] = $this->internal['previousTable'];
+				$this->internal['orderByList'] = $this->internal['previousOrderByList'];
+				$this->internal['orderBy'] = $this->internal['previousOrderBy'];
+				$this->internal['descFlag'] = $this->internal['previousdescFlag'];
 
 					//	Aggregate groupContent into content if detail records exist.
 				if( $detailCount > 0 )
@@ -975,17 +989,17 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 							//	If this resource is the default resource type, we use the subpart marker name from typoscript config
 							if( $this->internal['currentRow']['type'] == '0' ) {
-								
+
 								$marker = $this->conf['defaultMarker'];
-								
+
 								//	Change the 'type' to 'default' to the typoscript setting is more user friendly.
 								$this->internal['currentRow']['type'] = 'default';
-								
+
 							}
-							
+
 							//	Retrieve the template subpart used to render this resource
 							$resourceTemplate = $this->cObj->getSubpart( $rowTemplate, $marker );
-				
+
 							if( $resourceTemplate )
 								$subpartArray[$marker] = $this->pi_list_row( $lConf, $resourceMarkerArray, $resourceTemplate, $this->internal['currentRow'] );
 
@@ -1028,7 +1042,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				case '###RESOURCE_CONTENT###':
 
 						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $this->conf['resource_types'], $this->conf['resource_types.'] );
-						
+
 				break;
 
 				case '###RESOURCE_LINK###':
@@ -1208,7 +1222,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 							),
 							FALSE,
 							$this->conf['pidSingleView'] ? $this->conf['pidSingleView']:0
-							)
+						)
 					);
 
 				break;
@@ -1229,6 +1243,24 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 				break;
 
+				case '###TOPIC_LINK###':
+
+					$wrappedSubpartArray[$key] = explode(
+						'|',
+						$this->pi_list_linkSingle(
+							'|',
+							$row['uid'],
+							$this->conf['allowCaching'],
+							array(
+								'recordType' => 'tx_wecsermons_topics',
+							),
+							FALSE,
+							$this->conf['pidSingleView'] ? $this->conf['pidSingleView']:0
+						)
+					);
+
+				break;
+				
 				case '###SEASON_TITLE###':
 					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_seasons' );
@@ -1453,6 +1485,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					'###TOPIC_TITLE###' => 'title',
 					'###TOPIC_DESCRIPTION###' => 'description',
 					'###ALTERNATING_CLASS###' => '',
+					'###TOPIC_LINK###' => '',
 				);
 	 		break;
 
@@ -1711,7 +1744,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 			//	Get the file location and name of our template file
 			$templateFile = $this->getTemplateFile();
-			$this->template['total'] = $this->cObj->fileResource( $this->internal['templateFile'] );  
+			$this->template['total'] = $this->cObj->fileResource( $this->internal['templateFile'] );
 			$this->template['list'] =  $this->getNamedTemplateContent('', 'list');
 			$this->template['content'] = $this->getNamedSubpart('CONTENT', $this->template['list'] );
 			$this->template['item'] = $this->getNamedSubpart('ITEM', $this->template['content'] );
@@ -1770,7 +1803,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		tx_wecsermons_resource_types.mime_type,
 		tx_wecsermons_resource_types.querystring_param,
 		tx_wecsermons_resource_types.typoscript_object_name
-		
+
 		from tx_wecsermons_resources
 				join tx_wecsermons_sermons_resources_uid_mm on tx_wecsermons_resources.uid=tx_wecsermons_sermons_resources_uid_mm.uid_foreign
 		join tx_wecsermons_sermons on tx_wecsermons_sermons.uid=tx_wecsermons_sermons_resources_uid_mm.uid_local
@@ -1968,7 +2001,7 @@ function get_foreign_column( $currentTable, $relatedTable ) {
 	t3lib_div::loadTCA( $currentTable );
 
 	foreach( $GLOBALS['TCA'][$currentTable]['columns'] as $columnName => $value ) {
-			if( $value['config']['foreign_table'] == $relatedTable )
+			if( $value['config']['foreign_table'] == $relatedTable || $value['config']['allowed'] == $relatedTable )
 				return $columnName;
 	}
 
