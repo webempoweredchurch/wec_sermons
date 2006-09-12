@@ -135,9 +135,45 @@ $TCA["tx_wecsermons_resources"] = Array (
 				'minitems' => 0,
 			)
 		),
-		"url" => Array (		
+		"webaddress1" => Array (		
 			"exclude" => 1,		
-			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resources.url",		
+			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resources.webaddress1",		
+			"config" => Array (
+				"type" => "input",	
+				"size" => "30",	
+				'wizards' => Array(
+					'_PADDING' => 2,
+					'link' => Array(
+						'type' => 'popup',
+						'title' => 'Link',
+						'icon' => 'link_popup.gif',
+						'script' => 'browse_links.php?mode=wizard',
+						'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1'
+					)
+				)
+			)
+		),
+		"webaddress2" => Array (		
+			"exclude" => 1,		
+			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resources.webaddress2",		
+			"config" => Array (
+				"type" => "input",	
+				"size" => "30",	
+				'wizards' => Array(
+					'_PADDING' => 2,
+					'link' => Array(
+						'type' => 'popup',
+						'title' => 'Link',
+						'icon' => 'link_popup.gif',
+						'script' => 'browse_links.php?mode=wizard',
+						'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1'
+					)
+				)
+			)
+		),
+		"webaddress3" => Array (		
+			"exclude" => 1,		
+			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resources.webaddress3",		
 			"config" => Array (
 				"type" => "input",	
 				"size" => "30",	
@@ -317,11 +353,13 @@ $TCA["tx_wecsermons_resource_types"] = Array (
 					Array("LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resource_types.avail_fields.I.0", "description"),
 					Array("LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resource_types.avail_fields.I.1", "graphic"),
 					Array("LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resource_types.avail_fields.I.2", "file"),
-					Array("LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resource_types.avail_fields.I.3", "url"),
+					Array("LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resource_types.avail_fields.I.3", "webaddress1"),
+					Array("LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resource_types.avail_fields.I.4", "webaddress2"),
+					Array("LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resource_types.avail_fields.I.5", "webaddress3"),
 				),
-				"size" => 4,	
+				"size" => 6,	
 				"minitems" => 0,
-				"maxitems" => 4,	
+				"maxitems" => 6,	
 				
 			),
 		),

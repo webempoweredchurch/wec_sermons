@@ -967,8 +967,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 							$this->internal['currentRow'] = $resource;
 							$this->local_cObj->start( $this->internal['currentRow'] );
 
-							//	If resource type's type = '1', then process differently. type = 1 means we're processing an extension/plugin
-							if( $this->internal['currentRow']['type_type']  == '1') {
+							//	If resource type's type = '1', then process querystring parameter if it is not null. type = 1 means we're processing an extension/plugin
+							if( $this->internal['currentRow']['type_type']  == '1' && $this->internal['currentRow']['querystring_param']) {
 
 									//	Overwrite the resource type field with the resource title. This allows us to pass through to the CASE object which will use the 'title' to determine the custom rendering for this specific resource.
 //								$this->internal['currentRow']['type'] = $this->internal['currentRow']['title'];
@@ -1029,9 +1029,19 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						$markerArray[$key] = $this->local_cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_resources.']['graphic.'] );
 				break;
 
-				case '###RESOURCE_URL###':
+				case '###RESOURCE_WEBADDRESS1###':
 					if( $row[$fieldName] )
-						$markerArray[$key] = $this->local_cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_resources.']['url.'] );
+						$markerArray[$key] = $this->local_cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_resources.']['webaddress1.'] );
+				break;
+
+				case '###RESOURCE_WEBADDRESS2###':
+					if( $row[$fieldName] )
+						$markerArray[$key] = $this->local_cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_resources.']['webaddress2.'] );
+				break;
+
+				case '###RESOURCE_WEBADDRESS3###':
+					if( $row[$fieldName] )
+						$markerArray[$key] = $this->local_cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_resources.']['webaddress3.'] );
 				break;
 
 				case '###RESOURCE_FILE###':
@@ -1507,7 +1517,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					'###RESOURCE_DESCRIPTION###' => 'description',
 					'###RESOURCE_GRAPHIC###' => 'graphic',
 					'###RESOURCE_FILE###' => 'file',
-					'###RESOURCE_URL###' => 'url',
+					'###RESOURCE_WEBADDRESS1###' => 'webaddress1',
+					'###RESOURCE_WEBADDRESS2###' => 'webaddress2',
+					'###RESOURCE_WEBADDRESS3###' => 'webaddress3',
 					'###RESOURCE_CONTENT###' => '',
 					'###ALTERNATING_CLASS###' => '',
 					'###RESOURCE_LINK###' => '',
@@ -1793,7 +1805,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		tx_wecsermons_resources.description,
 		tx_wecsermons_resources.graphic,
 		tx_wecsermons_resources.file,
-		tx_wecsermons_resources.url,
+		tx_wecsermons_resources.webaddress1,
+		tx_wecsermons_resources.webaddress2,
+		tx_wecsermons_resources.webaddress3,
 		tx_wecsermons_resources.rendered_record,
 		tx_wecsermons_resource_types.type type_type,
 		tx_wecsermons_resource_types.description type_description,

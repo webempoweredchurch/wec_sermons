@@ -18,7 +18,9 @@ CREATE TABLE tx_wecsermons_resources (
 	graphic blob NOT NULL,
 	type blob NOT NULL,
 	file blob NOT NULL,
-	url tinytext NOT NULL,
+	webaddress1 tinytext NOT NULL,
+	webaddress2 tinytext NOT NULL,
+	webaddress3 tinytext NOT NULL,
 	rendered_record blob NOT NULL,
 	
 	PRIMARY KEY (uid),
