@@ -212,7 +212,7 @@ $TCA["tx_wecsermons_resources"] = Array (
 		),	
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n _diffsource, hidden;;1, title;;;;2-2-2, type, description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts],  graphic;;;;3-3-3, file;;;;4-4-4,url"),
+		"0" => Array("showitem" => "type, title;;;;2-2-2, description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts],  graphic;;;;3-3-3, file;;;;4-4-4,url,sys_language_uid;;;;1-1-1, l18n_parent, l18n _diffsource, hidden;;1"),
 //		"plugin" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n _diffsource, hidden;;1, title;;;;2-2-2, type, rendered_record"),
 	),
 	"palettes" => Array (
@@ -591,8 +591,8 @@ $TCA["tx_wecsermons_sermons"] = Array (
 						'icon' => 'add.gif',
 						'params' => Array(
 							'table'=>'tx_wecsermons_series',
-							'pid' => '###STORAGE_PID###',
-							'setValue' => 'set'
+							'pid' => '###CURRENT_PID###',
+							'setValue' => 'append'
 						),
 						'script' => 'wizard_add.php',
 					),
@@ -625,8 +625,8 @@ $TCA["tx_wecsermons_sermons"] = Array (
 						'icon' => 'add.gif',
 						'params' => Array(
 							'table'=>'tx_wecsermons_topics',
-							'pid' => '###STORAGE_PID###',
-							'setValue' => 'set'
+							'pid' => '###CURRENT_PID###',
+							'setValue' => 'append'
 						),
 						'script' => 'wizard_add.php',
 					),
@@ -675,8 +675,8 @@ $TCA["tx_wecsermons_sermons"] = Array (
 						'icon' => 'add.gif',
 						'params' => Array(
 							'table'=>'tx_wecsermons_resources',
-							'pid' => '###STORAGE_PID###',
-							'setValue' => 'set'
+							'pid' => '###CURRENT_PID###',
+							'setValue' => 'append'
 						),
 						'script' => 'wizard_add.php',
 					),
@@ -697,7 +697,7 @@ $TCA["tx_wecsermons_sermons"] = Array (
 			"config" => Array (
 				"type" => "group",	
 				"internal_type" => "db",	
-				"allowed" => "tx_wecsermons_speakers",	
+				"allowed" => "tx_wecsermons_speakers",
 				"size" => 4,	
 				"minitems" => 0,
 				"maxitems" => 100,	
@@ -709,8 +709,8 @@ $TCA["tx_wecsermons_sermons"] = Array (
 						'icon' => 'add.gif',
 						'params' => Array(
 							'table'=>'tx_wecsermons_speakers',
-							'pid' => '###STORAGE_PID###',
-							'setValue' => 'set'
+							'pid' => '###CURRENT_PID###',
+							'setValue' => 'append'
 						),
 						'script' => 'wizard_add.php',
 					),
@@ -858,8 +858,8 @@ $TCA["tx_wecsermons_series"] = Array (
 						'icon' => 'add.gif',
 						'params' => Array(
 							'table'=>'tx_wecsermons_seasons',
-							'pid' => '###STORAGE_PID###',
-							'setValue' => 'set'
+							'pid' => '###CURRENT_PID###',
+							'setValue' => 'append'
 						),
 						'script' => 'wizard_add.php',
 					),
@@ -892,8 +892,8 @@ $TCA["tx_wecsermons_series"] = Array (
 						'icon' => 'add.gif',
 						'params' => Array(
 							'table'=>'tx_wecsermons_topics',
-							'pid' => '###STORAGE_PID###',
-							'setValue' => 'set'
+							'pid' => '###CURRENT_PID###',
+							'setValue' => 'append'
 						),
 						'script' => 'wizard_add.php',
 					),
