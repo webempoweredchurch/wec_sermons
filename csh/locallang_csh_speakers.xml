@@ -11,6 +11,8 @@
         <languageKey index="default" type="array">
             <label index=".description">The speaker, or representative of the sermon, if applicable.</label>
             <label index=".details">A speaker</label>
+             <label index="fullname.description">The full name, or display name, of the speaker</label>
+            <label index="fullname.details"></label>
              <label index="lastname.description">Last name of the speaker</label>
             <label index="lastname.details"></label>
              <label index="firstname.description">First name of the speaker</label>

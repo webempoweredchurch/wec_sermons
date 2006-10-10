@@ -1070,13 +1070,24 @@ $TCA["tx_wecsermons_speakers"] = Array (
 				"default" => "0"
 			)
 		),
+		"fullname" => Array (		
+			"exclude" => 1,		
+			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_speakers.fullname",		
+			"config" => Array (
+				"type" => "input",	
+				"size" => "40",	
+				"max" => "80",
+				"eval" => "required",
+			)
+		),
 		"firstname" => Array (		
 			"exclude" => 1,		
 			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_speakers.firstname",		
 			"config" => Array (
 				"type" => "input",	
-				"size" => "30",	
-				"eval" => "required",
+				"size" => "15",	
+				"max" => "50",
+				"eval" => "",
 			)
 		),
 		"lastname" => Array (		
@@ -1084,8 +1095,9 @@ $TCA["tx_wecsermons_speakers"] = Array (
 			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_speakers.lastname",		
 			"config" => Array (
 				"type" => "input",	
-				"size" => "30",	
-				"eval" => "required",
+				"size" => "15",	
+				"max" => "50",
+				"eval" => "",
 			)
 		),
 		"email" => Array (		
@@ -1123,10 +1135,11 @@ $TCA["tx_wecsermons_speakers"] = Array (
 
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "hidden;;1;;1-1-1, lastname;;;;2-2-2, firstname, email, url, photo")
+		"0" => Array("showitem" => "hidden;;;;1-1-1, fullname;;2;;2-2-2, email;;;;3-3-3, url, photo")
 	),
 	"palettes" => Array (
-		"1" => Array("showitem" => "")
+		"1" => Array("showitem" => ""),
+		"2" => Array("showitem" => "firstname, lastname")
 	)
 );
 ?>

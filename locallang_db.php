@@ -73,6 +73,7 @@ $LOCAL_LANG = Array (
 		'tx_wecsermons_seasons' => 'SMS Seasons',	
 		'tx_wecsermons_seasons.title' => 'Season Name',	
 		'tx_wecsermons_speakers' => 'SMS Speakers',	
+		'tx_wecsermons_speakers.fullname' => 'Full Name',	
 		'tx_wecsermons_speakers.firstname' => 'First Name',	
 		'tx_wecsermons_speakers.lastname' => 'Last Name',	
 		'tx_wecsermons_speakers.email' => 'E-mail Address',	

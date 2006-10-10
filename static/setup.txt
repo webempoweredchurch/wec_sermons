@@ -373,6 +373,12 @@ plugin.tx_wecsermons_pi1 {
 				}
 			}
 
+			fullname = TEXT
+			fullname {
+				wrap = |
+				field = fullname
+			}
+			
 			firstname = TEXT
 			firstname {
 				wrap = |
@@ -405,7 +411,6 @@ plugin.tx_wecsermons_pi1 {
 				field = email
 
 			}
-
 		}
 
 		tx_wecsermons_topics {

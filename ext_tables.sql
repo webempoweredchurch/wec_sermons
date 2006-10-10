@@ -191,6 +191,7 @@ CREATE TABLE tx_wecsermons_speakers (
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
+	fullname tinytext NOT NULL,
 	firstname tinytext NOT NULL,
 	lastname tinytext NOT NULL,
 	url tinytext NOT NULL,
