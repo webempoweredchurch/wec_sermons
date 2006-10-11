@@ -79,7 +79,9 @@ BACK_LINK	- link back to the list view
 </pre>
 
 
-<br />
+<h2>Layout #1 Styles</h2>
+<br/>
+
 <h3>TEMPLATE_LIST1</h3>
 <em>This is a template style for a list of sermons, and related information.</em>
 <br />
@@ -197,8 +199,9 @@ Sermon Topic: ###TOPIC_TITLE###
 	<div><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></div>
 <!-- ###TEMPLATE_SPEAKER_SINGLE1### end -->
 
-<br /><br /><br /><br /><hr />
-<br />
+<h2>Layout #2 Styles</h2>
+<br/>
+
 <h3>TEMPLATE_LIST2</h3>
 <em>This is a template style for displaying a sermon listing, grouped by series.</em>
 <br />
@@ -310,6 +313,8 @@ Sermon Topic: ###TOPIC_TITLE###
 	<!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###-->
 <!-- ###TEMPLATE_SERIES_SINGLE2### end -->
 
+<h2>Layout #3 Styles</h2>
+<br/>
 <h3>TEMPLATE_LIST3</h3>
 <em>This is an example template for styling a list of resources.</em>
 <br />
@@ -394,52 +399,49 @@ Sermon Topic: ###TOPIC_TITLE###
 
 
 <!-- ###TEMPLATE_SERMON_SINGLE3### begin -->
-<!--###CONTENT###-->
-###SERMON_TITLE###
-###SERMON_OCCURANCE_DATE###
-###SERMON_DESCRIPTION###
-###SERMON_SCRIPTURE###
-###SERMON_GRAPHIC###
-
-<!--###SERMON_SERIES###-->
-<!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###-->
-<!--###SERMON_SERIES###-->
-
-<!--###SERMON_SPEAKERS###-->
-###SPEAKER_LASTNAME### ###SPEAKER_FIRSTNAME###<br/>
-<!--###SERMON_SPEAKERS###-->
-
-<!--###MP3_RESOURCES###-->
-<div id="mp3-resources">
-	<!--###RESOURCE_LINK###--> ###RESOURCE_TITLE### <!--###RESOURCE_LINK###-->
-</div>
-<!--###MP3_RESOURCES###-->
-
-<!--###PDF_RESOURCES###-->
-###RESOURCE_TITLE###
-###RESOURCE_FILE###
-###RESOURCE_URL###
-<!--###PDF_RESOURCES###-->
-
-<!--###DEFAULT_RESOURCES###-->
-###RESOURCE_CONTENT###
-<!--###DEFAULT_RESOURCES###-->
-
-<!--###SERMON_TOPICS###-->
-Sermon Topic: ###TOPIC_TITLE###
-<!--###SERMON_TOPICS###-->
-
-<!--###NEWS_RESOURCES###-->
-<div id="news_plugin">
-	###RESOURCE_TITLE###
-	###RESOURCE_CONTENT###
-</div>
-<!--###NEWS_RESOURCES###-->
-
-
-
-<!--###CONTENT###-->
-<!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###-->
+	<!--###CONTENT###-->
+		###SERMON_TITLE###
+		###SERMON_OCCURANCE_DATE###
+		###SERMON_DESCRIPTION###
+		###SERMON_SCRIPTURE###
+		###SERMON_GRAPHIC###
+		
+		<!--###SERMON_SERIES###-->
+			<!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###-->
+		<!--###SERMON_SERIES###-->
+		
+		<!--###SERMON_SPEAKERS###-->
+			###SPEAKER_LASTNAME### ###SPEAKER_FIRSTNAME###<br/>
+		<!--###SERMON_SPEAKERS###-->
+		
+		<!--###MP3_RESOURCES###-->
+			<div id="mp3-resources">
+				<!--###RESOURCE_LINK###--> ###RESOURCE_TITLE### <!--###RESOURCE_LINK###-->
+			</div>
+		<!--###MP3_RESOURCES###-->
+		
+		<!--###PDF_RESOURCES###-->
+			###RESOURCE_TITLE### <!--###RESOURCE_LINK###-->###RESOURCE_FILE###<!--###RESOURCE_LINK###-->
+		<!--###PDF_RESOURCES###-->
+		
+		<!--###DEFAULT_RESOURCES###-->
+			###RESOURCE_CONTENT###
+		<!--###DEFAULT_RESOURCES###-->
+		
+		<!--###SERMON_TOPICS###-->
+			Sermon Topic: ###TOPIC_TITLE###
+		<!--###SERMON_TOPICS###-->
+		
+		<!--###NEWS_RESOURCES###-->
+			<div id="news_plugin">
+				###RESOURCE_TITLE### ###RESOURCE_CONTENT###
+			</div>
+		<!--###NEWS_RESOURCES###-->
+		
+		
+		
+	<!--###CONTENT###-->
+	<!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###-->
 <!-- ###TEMPLATE_SERMON_SINGLE3### end -->
 
 
@@ -560,3 +562,6 @@ Sermon Topic: ###TOPIC_TITLE###
 	<!--###CONTENT###-->
 <!--###TEMPLATE_RESOURCE_MP3### end-->
 
+
+	<body>
+</html>

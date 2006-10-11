@@ -145,6 +145,45 @@ class tx_wecsermons_resourceTypeTca {
 	 	//	Return the processed fields csv string with right-most comma trimmed.
 	 	return rtrim( $processedFields, ',' );
 	}
+	
+	/**
+	 * this function seems to needed for compatibility with TYPO3 3.7.0.
+	 * In this TYPO3 version tcemain ckecks the existence of the method "processDatamap_preProcessIncomingFieldArray()" but calls "processDatamap_preProcessFieldArray()"
+	 *
+	 * @return	void
+	 */
+	function processDatamap_preProcessIncomingFieldArray() {
+
+	}
+	
+	/**
+	 * This method is called by a hook in the TYPO3 Core Engine (TCEmain) when a record is saved. We use it to disable saving of the current record if it has categories assigned that are not allowed for the BE user.
+	 *
+	 * @param	array		$fieldArray: The field names and their values to be processed (passed by reference)
+	 * @param	string		$table: The table TCEmain is currently processing
+	 * @param	string		$id: The records id (if any)
+	 * @param	object		$pObj: Reference to the parent object (TCEmain)
+	 * @return	void
+	 * @access public
+	 */
+	function processDatamap_preProcessFieldArray(&$fieldArray, $table, $id, &$pObj) {
+		if ($table == 'tx_wecsermons_sermons' || $table == 'tx_wecsermons_series' 
+			|| $table == 'tx_wecsermons_speakers' || $table == 'tx_wecsermons_resources' 
+			|| $table == 'tx_wecsermons_topics' || $table == 'tx_wecsermons_seasons'
+		) {
+			
+				// direct preview
+			if (isset($GLOBALS['_POST']['_savedokview_x']) && !$fieldArray['type'] && !$GLOBALS['BE_USER']->workspace)	{
+					// if "savedokview" has been pressed and current article has "type" 0 (= normal news article) and the beUser works in the LIVE workspace open current record in single view
+				$pagesTSC = t3lib_BEfunc::getPagesTSconfig($GLOBALS['_POST']['popViewId']); // get page TSconfig
+				if ($pagesTSC['tx_wecsermons.']['singlePid']) {
+					$GLOBALS['_POST']['popViewId_addParams'] = ($fieldArray['sys_language_uid']>0?'&L='.$fieldArray['sys_language_uid']:'').'&no_cache=1&tx_wecsermons_pi1%5BrecordType%5D='.$table.'&tx_wecsermons_pi1%5BshowUid%5D='.$id;
+					$GLOBALS['_POST']['popViewId'] = $pagesTSC['tx_wecsermons.']['singlePid'];
+				}
+
+			}
+		}
+	}	
 
 }
 
