@@ -7,10 +7,10 @@ plugin.tx_wecsermons_pi1 {
 
 	userFunc = tx_wecsermons_pi1->main
 
-	CMD = 
-	detailTable = 
-	groupTable = 
-	
+	CMD =
+	detailTable =
+	groupTable =
+
 	pidList =
 	recursive =
 
@@ -21,7 +21,7 @@ plugin.tx_wecsermons_pi1 {
 
 	# Whether the extension caches content or not
 	allowCaching = {$plugin.tx_wecsermons_pi1.allowCaching}
-	
+
 	# Rendering of text items. re-use the RTE parseFunc configuration for normal content
 	general_stdWrap {
 		parseFunc < tt_content.text.20.parseFunc
@@ -40,7 +40,7 @@ plugin.tx_wecsermons_pi1 {
 
 	#	The subpart marker used to define resources of type 'default'
 	defaultMarker = ###DEFAULT_RESOURCES###
-	
+
 	# CASE for rendering ###RESOURCE_CONTENT###
 	# Resource types are identified by thier typoscript_object_name field.
 	resource_types = CASE
@@ -67,7 +67,7 @@ plugin.tx_wecsermons_pi1 {
 
 			wrap = <table>|</table>
 		}
-		
+
 		# Type MP3
 		MP3 = COA
 		MP3 {
@@ -87,7 +87,7 @@ plugin.tx_wecsermons_pi1 {
 			typolink {
 				parameter = uploads/tx_wecsermons/{field:file}
 				parameter.insertData = 1
-	
+
 			}
 			10 = TEXT
 			10.field = title
@@ -137,7 +137,7 @@ plugin.tx_wecsermons_pi1 {
 
 		tx_wecsermons_sermons {
 
-				# Wrap for the title column
+			# Wrap for the title column
 			title = TEXT
 			title {
 				wrap = |
@@ -145,7 +145,7 @@ plugin.tx_wecsermons_pi1 {
 				field = title
 			}
 
-				# Specific date wrap for the occurance_date column in tx_wecsermons_sermons table
+			# Specific date wrap for the occurance_date column in tx_wecsermons_sermons table
 			occurance_date = TEXT
 			occurance_date {
 				strftime = %B %d, %Y
@@ -220,7 +220,7 @@ plugin.tx_wecsermons_pi1 {
 						extTarget = _blank
 					}
 				}
-				
+
 				MP3 {
 					typolink = 1
 					typolink {
@@ -257,8 +257,10 @@ plugin.tx_wecsermons_pi1 {
 
 			description = TEXT
 			description {
-				crop = 75|...
-				parseFunc < tt_content.text.20.parseFunc
+				crop = 75| &nbsp;...|1
+				wrap = <p class='bodytext'>|</p>
+				stripHtml = 1
+				trip = 1
 			}
 
 			url = TEXT
@@ -348,8 +350,8 @@ plugin.tx_wecsermons_pi1 {
 
 		tx_wecsermons_speakers {
 
-				# If typolink is set, then we use this configuration to generate the link for the ###SPEAKER_LINK### TYPO tag.
-				# If typolink = 0, then we generate a link to the speaker's single view
+			# If typolink is set, then we use this configuration to generate the link for the ###SPEAKER_LINK### TYPO tag.
+			# If typolink = 0, then we generate a link to the speaker's single view
 			typolink = 0
 			typolink {
 				parameter.field = url
@@ -378,7 +380,7 @@ plugin.tx_wecsermons_pi1 {
 				wrap = |
 				field = fullname
 			}
-			
+
 			firstname = TEXT
 			firstname {
 				wrap = |
@@ -444,14 +446,11 @@ plugin.tx_wecsermons_pi1 {
 	# *****************
 	listView {
 
-		# list of column names added to the order by SQL clause
-		orderByList = startdate
-		
 		# Start date filter, which is applied to the list omiting all dates previous to the date set
-		startDate = 
-		
+		startDate =
+
 		# End date filter, applied to the list omiting all dates later than the date set
-		endDate = 
+		endDate =
 
 		# *****************
 		# Browse Box Settings
@@ -509,22 +508,22 @@ plugin.tx_wecsermons_pi1 {
 			strftime = %A,  %b. %d %Y
 		}
 
-			# Table that records will be shown from
+		# Table that records will be shown from
 		detail_table = tx_wecsermons_sermons
 
-			# Table that records in detail will be grouped by
+		# Table that records in detail will be grouped by
 		group_table =
 
 		tx_wecsermons_sermons {
 
-				# Allowed data columns to search in
+			# Allowed data columns to search in
 			searchFieldList = title,description,scripture,keywords
 
-			orderByList = occurance_date,title
+			orderByList = occurance_date,title,description
 			orderBy = occurance_date
 			descFlag = 1
 
-				# Wrap for the title column
+			# Wrap for the title column
 			title = TEXT
 			title {
 				wrap = |<br/>
@@ -532,7 +531,7 @@ plugin.tx_wecsermons_pi1 {
 				field = title
 			}
 
-				# Specific date wrap for the occurance_date column in tx_wecsermons_sermons table
+			# Specific date wrap for the occurance_date column in tx_wecsermons_sermons table
 			occurance_date = TEXT
 			occurance_date {
 				strftime = %A,  %b. %d %Y
@@ -542,8 +541,9 @@ plugin.tx_wecsermons_pi1 {
 
 			description = TEXT
 			description {
-				crop = 75|...
+				crop = 75| &nbsp;...|1
 				stripHtml = 1
+				trim = 1
 				wrap = <p class='bodytext'>|</p>
 				field = description
 			}
@@ -606,7 +606,7 @@ plugin.tx_wecsermons_pi1 {
 				2 {
 					typolink = 0
 				}
-				
+
 				MP3 {
 					typolink = 0
 				}
@@ -614,11 +614,12 @@ plugin.tx_wecsermons_pi1 {
 
 			}
 
-				# Allowed data columns to search in
+			# Allowed data columns to search in
 			searchFieldList = title,description,scripture,keywords
 
 			title = TEXT
 			title {
+				field = title
 				wrap = |<br/>
 			}
 
@@ -629,8 +630,11 @@ plugin.tx_wecsermons_pi1 {
 
 			description = TEXT
 			description {
-				crop = 150|...
-				parseFunc < tt_content.text.20.parseFunc
+				field = description
+				crop = 150| &nbsp;...|1
+				stripHtml = 1
+				trim = 1
+				wrap = <p class="bodytext">|</p>
 			}
 
 
@@ -649,7 +653,7 @@ plugin.tx_wecsermons_pi1 {
 
 		tx_wecsermons_series {
 
-				# Allowed data columns to search in
+			# Allowed data columns to search in
 			searchFieldList = title,description,scripture,keywords
 
 			title = TEXT
@@ -678,9 +682,11 @@ plugin.tx_wecsermons_pi1 {
 
 			description = TEXT
 			description {
-				crop = 150|...
-				parseFunc < tt_content.text.20.parseFunc
+				crop = 150| &nbsp;...|1
 				field = description
+				stripHtml = 1
+				trim = 1
+				wrap = <p class="bodytext">|</p>
 			}
 
 			scripture = TEXT
@@ -718,15 +724,15 @@ plugin.tx_wecsermons_pi1 {
 
 		tx_wecsermons_speakers {
 
-				# If typolink is set, then we use this configuration to generate the link for the ###SPEAKER_LINK### TYPO tag.
-				# If typolink = 0, then we generate a link to the speaker's single view
+			# If typolink is set, then we use this configuration to generate the link for the ###SPEAKER_LINK### TYPO tag.
+			# If typolink = 0, then we generate a link to the speaker's single view
 			typolink = 0
 			typolink {
 				parameter.field = url
 				extTarget = _blank
 			}
 
-				# Allowed data columns to search in
+			# Allowed data columns to search in
 			searchFieldList = title,description,scripture,keywords
 
 			photo = IMAGE
@@ -775,20 +781,22 @@ plugin.tx_wecsermons_pi1 {
 			}
 
 		}
-		
+
 		tx_wecsermons_topics {
-			
+
 			title = TEXT
 			title {
 				wrap = |<br/>
 				field = title
 			}
-			
+
 			description = TEXT
 			description {
-				crop = 75|...
-				parseFunc < tt_content.text.20.parseFunc
+				crop = 75| &nbsp;...|1
 				field = description
+				stripHtml = 1
+				trim = 1
+				wrap = <p class="bodytext">|</p>
 			}
 
 		}
@@ -836,33 +844,56 @@ plugin.tx_wecsermons_pi1 {
 			typolink =
 		}
 	}
-	
+
 	xmlView {
-		
+
 		results_at_a_time = 5
 		desc_flag = 1
-		
+
+		# TODO: allow multiple resource types here
+		# TOTO: change to name of resource type specified in v.0.5.2 of extension
 		#	EnclosureType specifies which custom resource type will be included as an <enclosure/> for podcasting.
 		enclosureType = 2
+
+			# Type tells the plugin how to render the ###RESOURCE_LINK### tag for a resource.
+			# If typolink = 0, then links to the single view of a resource.
+			resource_types {
+
+				# Default resource type. **MUST** be configured by administrator
+				0 {
+					typolink = 0
+
+				}
+
+				PDF {
+					typolink = 0
+				}
+
+				MP3 {
+					typolink = 0
+				}
+
+
+			}
 	}
 }
 
-	# Empty default set CSS styles (these go into the document header):
+# Empty default set CSS styles (these go into the document header):
 plugin.tx_wecsermons_pi1._CSS_DEFAULT_STYLE >
 plugin.tx_wecsermons_pi1._CSS_DEFAULT_STYLE (
 /*------------------------------- WEC SMS -------------------------------------------*/
 
-div.tx-wecsermons-pi1-list1 { margin: 1em 0 1em; padding: 0 0 1em;} 
-#tx-wecsermons-pi1-list2 th { background-color: #779976; text-align: left;} 
+div.tx-wecsermons-pi1-list1 { margin: 1em 0 1em; padding: 0 0 1em;}
+#tx-wecsermons-pi1-list2 th { background-color: #779976; text-align: left;}
 #tx-wecsermons-pi1-list2 a { color: #003399; }
-#tx-wecsermons-pi1-list2 td { background-color: #ACCCAB;} 
-div.tx-wecsermons-sermon-description { text-align: justify; } 
+#tx-wecsermons-pi1-list2 td { background-color: #ACCCAB;}
+div.tx-wecsermons-sermon-description { text-align: justify; }
 )
 
-	# Example of how to overrule LOCAL_LANG values for the plugin:
+# Example of how to overrule LOCAL_LANG values for the plugin:
 plugin.tx_wecsermons_pi1._LOCAL_LANG.default  {
 
 	pi_list_searchBox_search = Search!
 }
-	# Example of how to set default values from TS in the incoming array, $this->piVars of the plugin:
+# Example of how to set default values from TS in the incoming array, $this->piVars of the plugin:
 #plugin.tx_wecsermons_pi1._DEFAULT_PI_VARS.test = test

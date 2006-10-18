@@ -230,6 +230,32 @@
 				</config>
 			</TCEforms>
 		</detail_table>
+		<sermons_order_by>
+			    <TCEforms>
+			      <label>LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.sermons_order_by</label>
+			      <config>
+			        <type>select</type>
+					<items type="array">
+	                     <numIndex index="1" type="array">
+	                            <numIndex index="0">LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.sermons_order_by.I.0</numIndex>
+	                            <numIndex index="1">title</numIndex>
+	                    </numIndex>
+	                     <numIndex index="2" type="array">
+	                            <numIndex index="0">LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.sermons_order_by.I.1</numIndex>
+	                            <numIndex index="1">occurance_date</numIndex>
+	                    </numIndex>
+	                     <numIndex index="3" type="array">
+	                            <numIndex index="0">LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.sermons_order_by.I.2</numIndex>
+	                            <numIndex index="1">description</numIndex>
+	                    </numIndex>
+					</items>
+					<maxitems>3</maxitems>
+					<size>3</size>
+					<selectedListStyle>width:120px</selectedListStyle>
+					<itemListStyle>width:120px</itemListStyle>
+				</config>
+			</TCEforms>
+		</sermons_order_by>
 	</el>
 	</ROOT>
 	</slistView>

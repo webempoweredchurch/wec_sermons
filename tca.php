@@ -727,7 +727,7 @@ $TCA["tx_wecsermons_sermons"] = Array (
 		),
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1, hidden;;1, l18n_parent, l18n_diffsource, title;;;;2-2-2, occurance_date;;;;3-3-3, description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts];4-4-4,scripture;;;;5-5-5, series_uid, topics_uid, resources_uid, speakers_uid, graphic, keywords"),
+		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1, hidden;;1, l18n_parent, l18n_diffsource, title;;;;2-2-2, occurance_date, scripture, description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts], resources_uid;;;;3-3-3, speakers_uid, series_uid, topics_uid, graphic;;;;4-4-4, keywords"),
 	),
 	"palettes" => Array (
 		"1" => Array("showitem" => "starttime, endtime, fe_group")

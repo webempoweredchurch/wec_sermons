@@ -477,7 +477,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 */
 	function listView($content,$lConf)	{
 
-			// If a single element should be displayed, jump to single view
+		// If a single element should be displayed, jump to single view
 		if ($this->piVars['showUid'])	{
 
 			return $this->singleView('',$this->conf['singleView.']);
@@ -498,7 +498,12 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$this->internal['showRange']=$lConf['showRange'];
 
 			$this->internal['orderByList']=$lConf[$this->piVars['recordType'].'.']['orderByList'];
-			$this->internal['orderBy']=$lConf[$this->piVars['recordType'].'.']['orderBy'];
+
+			//	If listing sermon records, check if order was specified in the FE Plugin and load from there. Otherwise load from typoscript, or 'title' as default.
+			if( $this->piVars['recordType'] == 'tx_wecsermons_sermons' )
+				$this->internal['orderBy'] = getConfigVal( $this, 'sermons_order_by', 'slistView', 'orderBy', $lConf[$this->piVars['recordType'].'.'], 'title' );
+			else
+				$this->internal['orderBy']=$lConf[$this->piVars['recordType'].'.']['orderBy'];
 			$this->internal['descFlag']=$lConf[$this->piVars['recordType'].'.']['descFlag'];
 
 /*	This commented section will enable us to search through multiple tables to perform deeper searches in the future
@@ -568,7 +573,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 			$detailTable = getConfigVal( $this, 'detail_table', 'slistView', 'detail_table', $lConf );
 			$this->template['group'] = $this->cObj->getSubpart( $template, '###GROUP###' );
-			
+
 			//	Change the orderBy clause to match the group table
 			$this->internal['orderByList']=$lConf[$groupTable.'.']['orderByList'];
 			$this->internal['orderBy']=$lConf[$groupTable.'.']['orderBy'];
@@ -605,7 +610,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				return $format;
 
 			}
-			//	Check if detail_table is in list of allowed tables	
+			//	Check if detail_table is in list of allowed tables
 			if( ! t3lib_div::inList( $this->conf['allowedTables'], $detailTable ) ) {
 
 				$error = array();
@@ -666,7 +671,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				$this->internal['orderByList']=$lConf[$detailTable.'.']['orderByList'];
 				$this->internal['orderBy']=$lConf[$detailTable.'.']['orderBy'];
 				$this->internal['descFlag']=$lConf[$detailTable.'.']['descFlag'];
-				
+
 					//	Exec query on detail table, for every record related to our group record
 				$detailRes = $this->pi_exec_query( $detailTable, 0, ' AND ' . $foreign_column . ' in (' . $this->internal['previousRow']['uid'] . ')' );
 
@@ -1270,7 +1275,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					);
 
 				break;
-				
+
 				case '###SEASON_TITLE###':
 					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_seasons' );
