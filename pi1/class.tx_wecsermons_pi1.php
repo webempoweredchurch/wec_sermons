@@ -93,6 +93,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		$this->pi_loadLL();		// Loading the LOCAL_LANG values
 			//	TODO: Determine if we need a layout code logic block or not
 		$this->internal['layoutCode'] = getConfigVal( $this, 'layout', 'sDEF', 'layoutCode', $lConf, 1 );	//	Set layoutCode into internal storage
+
 // ( $this->internal['layoutCode'] );
 	}
 
@@ -341,6 +342,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 				//	TODO: allow specification of what record to draw from TypoScript
 			$resource = $this->getResources( '' , $this->piVars['showUid'] ) ;
+
 			$this->internal['currentRow'] = $resource[0];
 
 			//	Retreive the template name from the resource
@@ -1020,38 +1022,52 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 				case '###RESOURCE_TITLE###':
 					if( $row[$fieldName] ) {
-						$markerArray[$key] = $this->local_cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_resources.']['title.'] );
+						$this->local_cObj->start( $row, 'tx_wecsermons_resources' );
+						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_resources.']['title'], $lConf['tx_wecsermons_resources.']['title.'] );
 					}
+					
 				break;
 
 				case '###RESOURCE_DESCRIPTION###':
-					if( $row[$fieldName] )
-						$markerArray[$key] = $this->local_cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_resources.']['description.'] );
+					if( $row[$fieldName] ) {
+						$this->local_cObj->start( $row, 'tx_wecsermons_resources' );
+						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_resources.']['description'], $lConf['tx_wecsermons_resources.']['description.'] );
+					}
 				break;
 
 				case '###RESOURCE_GRAPHIC###':
-					if( $row[$fieldName] )
-						$markerArray[$key] = $this->local_cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_resources.']['graphic.'] );
+					if( $row[$fieldName] ) {
+						$this->local_cObj->start( $row, 'tx_wecsermons_resources' );
+						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_resources.']['graphic'], $lConf['tx_wecsermons_resources.']['graphic.'] );
+					}
 				break;
 
 				case '###RESOURCE_WEBADDRESS1###':
-					if( $row[$fieldName] )
-						$markerArray[$key] = $this->local_cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_resources.']['webaddress1.'] );
+					if( $row[$fieldName] ) {
+						$this->local_cObj->start( $row, 'tx_wecsermons_resources' );
+						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_resources.']['webaddress1'], $lConf['tx_wecsermons_resources.']['webaddress1.'] );
+					}
 				break;
 
 				case '###RESOURCE_WEBADDRESS2###':
-					if( $row[$fieldName] )
-						$markerArray[$key] = $this->local_cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_resources.']['webaddress2.'] );
+					if( $row[$fieldName] ) {
+						$this->local_cObj->start( $row, 'tx_wecsermons_resources' );
+						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_resources.']['webaddress2'], $lConf['tx_wecsermons_resources.']['webaddress2.'] );
+					}
 				break;
 
 				case '###RESOURCE_WEBADDRESS3###':
-					if( $row[$fieldName] )
-						$markerArray[$key] = $this->local_cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_resources.']['webaddress3.'] );
+					if( $row[$fieldName] ) {
+						$this->local_cObj->start( $row, 'tx_wecsermons_resources' );
+						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_resources.']['webaddress3'], $lConf['tx_wecsermons_resources.']['webaddress3.'] );
+					}
 				break;
 
 				case '###RESOURCE_FILE###':
-					if( $row[$fieldName] )
-						$markerArray[$key] = $this->local_cObj->stdWrap( $row[$fieldName], $lConf['tx_wecsermons_resources.']['file.'] );
+					if( $row[$fieldName] ) {
+						$this->local_cObj->start( $row, 'tx_wecsermons_resources' );
+						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_resources.']['file'], $lConf['tx_wecsermons_resources.']['file.'] );
+					}
 				break;
 
 				case '###RESOURCE_CONTENT###':
@@ -1066,6 +1082,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					if( $lConf['tx_wecsermons_resources.']['resource_types.'][$row['type'].'.']['typolink'] ) {
 
 						$wrappedSubpartArray[$key] = $this->local_cObj->typolinkWrap( $lConf['tx_wecsermons_resources.']['resource_types.'][$row['type'].'.']['typolink.'] );
+
 					}
 					else {	//	Render a link to single view
 

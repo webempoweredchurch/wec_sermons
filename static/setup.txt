@@ -83,23 +83,6 @@ plugin.tx_wecsermons_pi1 {
 
 		# Type PDF
 		PDF = COA
-		PDF {
-			typolink {
-				parameter = uploads/tx_wecsermons/{field:file}
-				parameter.insertData = 1
-
-			}
-			10 = TEXT
-			10.field = title
-			10.wrap = <tr><td>|</td>
-
-			20 = TEXT
-			20.field = file
-			20.wrap = <td>|</td></tr>
-			20.typolink < .typoLink
-
-			wrap = <table>|</table>
-		}
 
 		discussion < plugin.tx_wecdiscussion_pi1
 
@@ -212,7 +195,7 @@ plugin.tx_wecsermons_pi1 {
 				}
 
 				# Type PDF
-				2 {
+				PDF {
 					typolink = 1
 					typolink {
 						parameter = uploads/tx_wecsermons/{field:file}
@@ -234,10 +217,8 @@ plugin.tx_wecsermons_pi1 {
 			}
 
 			title = TEXT
-			title {
-				wrap = |<br/>
-			}
-
+			title.field = title
+			
 			graphic = IMAGE
 			graphic {
 				file {
@@ -260,28 +241,21 @@ plugin.tx_wecsermons_pi1 {
 				crop = 75| &nbsp;...|1
 				wrap = <p class='bodytext'>|</p>
 				stripHtml = 1
-				trip = 1
+				trim = 1
+				field = description
 			}
 
-			url = TEXT
-			url {
-				typolink {
-					parameter.field = url
-				}
+			webaddress1 = TEXT
+			webaddress1.typolink.parameter.field = webaddress1
 
-				wrap = |<br/>
-			}
+			webaddress2 = TEXT
+			webaddress2.typolink.parameter.field = webaddress3
+
+			webaddress3 = TEXT
+			webaddress3.typolink.parameter.field = webaddress3
 
 			file = TEXT
-			file {
-				typolink {
-					parameter = uploads/tx_wecsermons/{field:file}
-					parameter.insertData = 1
-				}
-
-				wrap = |<br/>
-
-			}
+			file.field = file
 
 		}
 
@@ -591,19 +565,19 @@ plugin.tx_wecsermons_pi1 {
 
 		tx_wecsermons_resources {
 
-
+			typolink = 0
 			# Type tells the plugin how to render the ###RESOURCE_LINK### tag for a resource.
 			# If typolink = 0, then links to the single view of a resource.
 			resource_types {
 
 				# Default resource type. **MUST** be configured by administrator
-				0 {
+				PDF{
 					typolink = 0
 
 				}
 
 				# Type PDF
-				2 {
+				DOC {
 					typolink = 0
 				}
 
@@ -618,16 +592,25 @@ plugin.tx_wecsermons_pi1 {
 			searchFieldList = title,description,scripture,keywords
 
 			title = TEXT
-			title {
-				field = title
-				wrap = |<br/>
-			}
+			title.field = title
 
 			graphic = IMAGE
 			graphic {
-				wrap = |<br/>
-			}
+				file {
+					import = uploads/tx_wecsermons/
+					import.field = graphic
+					width = 32m
+					height = 32m
+				}
+				imageLinkWrap = 1
+				imageLinkWrap {
+					enable = 1
+					JSwindow = 1
+					JSwindow.expand = 20,20
+				}
 
+			}
+			
 			description = TEXT
 			description {
 				field = description
@@ -638,13 +621,14 @@ plugin.tx_wecsermons_pi1 {
 			}
 
 
-			url = TEXT
-			url {
-				typolink {
-					parameter.field = url
-				}
+			webaddress1 = TEXT
+			webaddress1.typolink.parameter.field = webaddress1
 
-			}
+			webaddress2 = TEXT
+			webaddress2.typolink.parameter.field = webaddress3
+
+			webaddress3 = TEXT
+			webaddress3.typolink.parameter.field = webaddress3
 
 			file = TEXT
 			file.field = file
