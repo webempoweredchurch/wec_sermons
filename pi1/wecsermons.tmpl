@@ -21,13 +21,16 @@ SERMON_OCCURANCE_DATE - Date the sermon was presented on
 SERMON_DESCRIPTION - Description, or HTML detail of a sermon
 SERMON_SCRIPTURE - Scriptures that the sermon refers to
 SERMON_GRAPHIC - A graphic shown with the sermon
-SERMON_RESOURCES - Not used in template. Only a placeholder in PHP so resources are processed. See Resource, and Resource Type records for appropriate markers.
 
 --RESOURCES
 RESOURCE_TITLE	-	Title of resource
 RESOURCE_DESCRIPTION	-	Full resource description
 RESOURCE_GRAPHIC	-	Graphic of resource
-RESOURCE_CONTENT	-	The resource itself
+RESOURCE_FILE - The filename of an uploaded file
+RESOURCE_WEBADDRESS1 - A web address or url associated with this resource
+RESOURCE_WEBADDRESS2 - A web address or url associated with this resource
+RESOURCE_WEBADDRESS3 - A web address or url associated with this resource
+RESOURCE_CONTENT	-	The resource content generated throgh TypoScript, allowing complex output of resources that can not be accomplished through marker tags alone.
 
 --SERIES
 SERIES_TITLE - Title of sermon series
@@ -52,17 +55,17 @@ SPEAKER_PHOTO - Photograph of the speaker
 SPEAKER_EMAIL - Speakers e-mail address they can be contacted at
 
 --MISC
-ALTERNATING_CLASS - This is the class attribute inserted for alternating odd/even rows in list views
+ALTERNATING_CLASS - This is a CSS class attribute inserted for alternating colors of odd and even rows in list views
 BROWSE_LINKS - A results browser, allowing pagination of results in list view
 
 <em>Language Markers (see pi1/locallang.php):</em>
-LATEST_HEADER - header for the LATEST element
 BACK_TO_LIST - Text to return to list-view from single-view template
 
 
 <em>Subparts:</em>
 CONTENT - <strong>**REQUIRED**</strong> This is a container that houses the primary content of a template.
 ITEM - <strong>**REQUIRED**</strong> The repeating content area representing one record within a list.
+GROUP - This is required only when the "Group By" option of the plug-in is defined. Used to group the list by related records.
 SERMON_SPEAKERS - Listing of speakers related to a sermon
 SERMON_TOPICS - General topics that the sermon is associated with. Aka, category
 SERMON_SERIES - The sermon series a sermon is related to
@@ -116,6 +119,12 @@ BACK_LINK	- link back to the list view
 						<!--###SERIES_SEASON###-->###SEASON_TITLE###<!--###SERIES_SEASON###-->
 				<!--###SERMON_SERIES###-->
 
+				<!--###DEFAULT_RESOURCES###-->
+					Title: <!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--><br/>
+					File: ###RESOURCE_FILE###<br/>
+					Graphic: ###RESOURCE_GRAPHIC###<br/>
+				<!--###DEFAULT_RESOURCES###-->
+		
 			</div>
 		<!-- ###ITEM### end -->
 	<!-- ###CONTENT### end -->
@@ -149,7 +158,11 @@ BACK_LINK	- link back to the list view
 Sermon Topic: ###TOPIC_TITLE###
 <!--###SERMON_TOPICS###-->
 
-###SERMON_RESOURCES###
+<!--###DEFAULT_RESOURCES###-->
+	Title: <!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--><br/>
+	File: ###RESOURCE_FILE###<br/>
+	Graphic: ###RESOURCE_GRAPHIC###<br/>	
+<!--###DEFAULT_RESOURCES###-->
 
 <!--###CONTENT###-->
 <!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###-->
@@ -226,7 +239,7 @@ Sermon Topic: ###TOPIC_TITLE###
     </TR>
     <!-- ###GROUP### end -->
 
-    <!-- ###DETAIL### begin
+    <!-- ###ITEM### begin
   		This begins the template for record detail
   	-->
     <TR class='###ALTERNATING_CLASS###' vAlign='top'>
@@ -236,7 +249,7 @@ Sermon Topic: ###TOPIC_TITLE###
       </TD>
       <TD>###SERMON_TITLE###</TD>
     </TR>
-    <!-- ###DETAIL### end -->
+    <!-- ###ITEM### end -->
     <!-- ###CONTENT### end -->
    </TBODY>
 </TABLE>
@@ -424,7 +437,12 @@ Sermon Topic: ###TOPIC_TITLE###
 			###RESOURCE_TITLE### <!--###RESOURCE_LINK###-->###RESOURCE_FILE###<!--###RESOURCE_LINK###-->
 		<!--###PDF_RESOURCES###-->
 		
+		Default:
 		<!--###DEFAULT_RESOURCES###-->
+			Title: ###RESOURCE_TITLE###<br/>
+			File: ###RESOURCE_FILE###<br/>
+			Graphic: ###RESOURCE_GRAPHIC###<br/>
+			
 			###RESOURCE_CONTENT###
 		<!--###DEFAULT_RESOURCES###-->
 		
@@ -563,5 +581,18 @@ Sermon Topic: ###TOPIC_TITLE###
 <!--###TEMPLATE_RESOURCE_MP3### end-->
 
 
+<br />
+<h3>TEMPLATE_RESOURCES_DEFAULT</h3>
+<em>This is an example template for styling a MP3 resource item.</em>
+<br />
+
+<!--###TEMPLATE_RESOURCES_DEFAULT### begin-->
+	<!--###CONTENT###-->
+			<div id="tx-wecsermons-pi1-default-resources">
+				###RESOURCE_TITLE###
+				<!--###RESOURCE_LINK###--> ###RESOURCE_FILE###<!--###RESOURCE_LINK###-->
+			</div>
+	<!--###CONTENT###-->
+<!--###TEMPLATE_RESOURCES_DEFAULT### end-->
 	<body>
 </html>

@@ -89,6 +89,7 @@ $LOCAL_LANG = Array (
 		'tx_wecsermons.pi_flexform.layout.I.0' => 'Layout 1',
 		'tx_wecsermons.pi_flexform.layout.I.1' => 'Layout 2',
 		'tx_wecsermons.pi_flexform.layout.I.2' => 'Layout 3',
+		'tx_wecsermons.pi_flexform.layout.I.3' => 'Layout 4',
 		'tx_wecsermons.pi_flexform.display' => 'What to Display:',
 		'tx_wecsermons.pi_flexform.display.I.0' => 'SINGLE',
 		'tx_wecsermons.pi_flexform.display.I.1' => 'LIST',

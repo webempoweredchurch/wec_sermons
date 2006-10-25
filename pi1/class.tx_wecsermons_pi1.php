@@ -107,8 +107,11 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 */
 	function main($content,$conf)	{
 
+
 		$this->local_cObj = t3lib_div::makeInstance('tslib_cObj'); // Local cObj.
 		$this->init($conf);
+
+#debug( $this->conf['listView.']['tx_wecsermons_resources.'] ,1);
 
 		//	First check if extension template was loaded by checking existence of resource_types configuration array
 		if( ! is_array( $this->conf['resource_types.'] ) ) {
@@ -311,28 +314,22 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		//	Check if table is in allowedTables
 		if( ! t3lib_div::inList( $this->conf['allowedTables'], $this->internal['currentTable']  ) ) {
 
-			$error = array();
-			$error['type'] = htmlspecialchars( 'WEC Sermons Error!' );
-			$error['message'] = htmlspecialchars( ' Row from requested table was not listed in the "allowedTables" typoscript configuration.' );
-			$error['detail'] = htmlspecialchars( 'Requested Table: ' . $this->internal['currentTable']  . '. allowedTables: ' . $this->conf['allowedTables'] );
-
-			return sprintf( '<p>%s<br/> %s</p>
-			<p>%s</p>
-			', $error['type'], $error['message'], $error['detail'] );
+			return $this->throwError(
+				'WEC Sermons Error!',
+				'Row from requested table was not listed in the "allowedTables" typoscript configuration.',
+				'Requested Table: ' . $this->internal['currentTable']  . '. allowedTables: ' . $this->conf['allowedTables'] 
+			);
 
 		}
 
 		//	Check if showUid is an int
 		if( ! t3lib_div::testInt( $this->piVars['showUid'] ) ) {
 
-			$error = array();
-			$error['type'] = htmlspecialchars( 'WEC Sermons Error!' );
-			$error['message'] = htmlspecialchars( ' UID for requested resource was not valid.' );
-			$error['detail'] = htmlspecialchars( 'Requested UID: ' . $this->piVars['showUid'] );
-
-			return sprintf( '<p>%s<br/> %s</p>
-			<p>%s</p>
-			', $error['type'], $error['message'], $error['detail'] );
+			return $this->throwError(
+				'WEC Sermons Error!',
+				'UID for requested resource was not valid.'.
+				'Requested UID: ' . $this->piVars['showUid'] 
+			);
 
 		}
 
@@ -347,6 +344,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 			//	Retreive the template name from the resource
 			$templateName = $this->internal['currentRow']['template_name'];
+			if( $this->internal['currentRow']['type'] == '0' ) 
+				$templateName = $this->conf['defaultTemplate'];
 
 			$this->loadTemplate();
 			$this->template['single'] = $this->getNamedSubpart( $templateName, $this->template['total'] );
@@ -584,47 +583,32 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				//Run a series of checks before branching to grouping logic, return error if necessary
 			if( $groupTable == '' || ! $this->template['group'] ) {
 
-				$error = array();
-				$error['type'] = htmlspecialchars( 'WEC Sermons Error!' );
-				$error['message'] = htmlspecialchars( ' "group_table" option was specified, but no ###GROUP### tag was found in the template.' );
-				$error['detail'] = htmlspecialchars( 'Template file: ' . $this->internal['templateFile'] );
-
-				$format =  sprintf( '<p>%s<br/> %s</p>
-				<p>%s</p>
-				', $error['type'], $error['message'], $error['detail'] );
-
-				return $format;
+				return $this->throwError(
+					'WEC Sermons Error!',
+					'"group_table" option was specified, but no ###GROUP### tag was found in the template.',
+					'Specified Template file: ' . $this->internal['templateFile']
+				);
 			}
 
 
 			//	Check if group_table is in list of allowed tables
 			if( ! t3lib_div::inList( $this->conf['allowedTables'], $groupTable ) ) {
-
-				$error = array();
-				$error['type'] = htmlspecialchars( 'WEC Sermons Error!' );
-				$error['message'] = htmlspecialchars( 'Table specified in "group_table" option is not in the list of allowed tables option, ".allowedTables"' );
-				$error['detail'] = '';
-
-				$format =  sprintf( '<p>%s<br/> %s</p>
-				<p>%s</p>
-				', $error['type'], $error['message'], $error['detail'] );
-
-				return $format;
+				
+				return $this->throwError(
+					'WEC Sermons Error!',
+					'Table specified in "Group By" option, ['.$groupTable.'], is not in the list of allowed tables specified in TypoScript configuration: plugin.tx_wecsermons_pi1.allowedTables',
+					'Allowed tables:'.$this->conf['allowedTables']
+				);
 
 			}
 			//	Check if detail_table is in list of allowed tables
 			if( ! t3lib_div::inList( $this->conf['allowedTables'], $detailTable ) ) {
 
-				$error = array();
-				$error['type'] = htmlspecialchars( 'WEC Sermons Error!' );
-				$error['message'] = htmlspecialchars( 'Table specified in "detail_table" option is not in the list of allowed tables option, ".allowedTables"' );
-				$error['detail'] = '';
-
-				$format =  sprintf( '<p>%s<br/> %s</p>
-				<p>%s</p>
-				', $error['type'], $error['message'], $error['detail'] );
-
-				return $format;
+				return $this->throwError( 
+					'WEC Sermons Error!',
+					'Table specified in "Detail" option, ['.$detailTable.'], is not in the list of allowed tables specified in TypoScript configuration: plugin.tx_wecsermons_pi1.allowedTables',
+					'Allowed tables: '.$this->conf['allowedTables']
+				);
 
 			}
 
@@ -639,23 +623,17 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$foreign_column = get_foreign_column( $detailTable, $this->internal['groupTable'] );
 
 			if( ! $foreign_column ) {
-				$error = array();
-				$error['type'] = htmlspecialchars( 'WEC Sermons Error!' );
-				$error['message'] = htmlspecialchars( 'Grouping tag, "###GROUP###" was found in template, but was not related to "' . $groupTable . '"' );
-				$error['detail'] = '';
 
-				$format =  sprintf( '<p>%s<br/> %s</p><p>%s</p>',
-					$error['type'],
-					$error['message'],
-					$error['detail']
+				return $this->throwError( 
+					'WEC Sermons Error!',
+					'The "Group By" option was specified, but was no relation was found to the table specified in "Detail"',
+					'Detail: '.$detailTable. ' Group:'.$this->internal['groupTable']
 				);
 
-				return $format;
-				return '<p>WEC Sermons Error!<br/> Grouping tag, &quot;###GROUP###&quot; was found in template, but was not related to &quot;detail_table&quot;</p>';
 			}
 				//	Retreive marker array and template for the detail table
 			$detailMarkArray = $this->getMarkerArray( $detailTable );
-			$detailTemplate = $this->template['item'] = $this->getNamedSubpart( 'DETAIL', $template );
+			$detailTemplate = $this->template['item'] = $this->getNamedSubpart( 'ITEM', $template );
 
 				//	Iterate every record in groupTable
 			while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) ) {
@@ -1078,8 +1056,12 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 				case '###RESOURCE_LINK###':
 
+					if( $row['type'] == '0' )
+						$row['type'] = 'default';
+						
 					//	If 'typolink' segment is defined, render a link as defined by 'typolink', otherwise render a link to the resources' single view
 					if( $lConf['tx_wecsermons_resources.']['resource_types.'][$row['type'].'.']['typolink'] ) {
+						$this->local_cObj->start( $row, 'tx_wecsermons_resources' );
 
 						$wrappedSubpartArray[$key] = $this->local_cObj->typolinkWrap( $lConf['tx_wecsermons_resources.']['resource_types.'][$row['type'].'.']['typolink.'] );
 

@@ -29,6 +29,8 @@
  * @subpackage tx_wecsermons
  */
 
+#require_once(PATH_t3lib.'class.t3lib_BEfunc.php');
+
  /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
@@ -54,6 +56,12 @@ class tx_wecsermons_resourceTypeTca {
 	 * @return	void
 	 */
 	function getMainFields_preProcess($table,$row,&$pObj) {
+		
+		if( $row['list_type'] = 'wec_sermons_pi1' ) {
+		
+#			t3lib_div::loadTCA('tt_content');
+#			debug( t3lib_BEfunc::getFlexFormDS( $GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config'], $row, $table ) );
+		}
 
 		if( $table == 'tx_wecsermons_resources' ) {
 
@@ -78,6 +86,25 @@ class tx_wecsermons_resourceTypeTca {
 		}
 
 	}
+
+//	function pi1LayoutItems( &$params, &$pObj ) {
+//
+////TODO: Figure out how to grab the current page in the backend.
+//debug( $GLOBALS );
+//		$tsConfig = t3lib_BEfunc::getPagesTSconfig( $GLOBALS [ '_POST' ][ 'popViewId' ] );
+//		$tsConfig = $tsConfig['tx_wecsermons.']['layout.'];
+//
+//		foreach( $tsConfig as $key => $value ) {
+//			$params['items'][] = array (
+//				$value,
+//				$key,
+//				''
+//			);
+//		}
+//		
+//	}
+
+
 
 	/**
 	 * resourceType_items: A TCA[config][itemsProcFunc] implementation used from tx_wecsermons_resources
@@ -153,7 +180,6 @@ class tx_wecsermons_resourceTypeTca {
 	 * @return	void
 	 */
 	function processDatamap_preProcessIncomingFieldArray() {
-
 	}
 	
 	/**
