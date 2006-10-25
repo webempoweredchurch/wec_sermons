@@ -92,9 +92,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		$this->pi_setPiVarDefaults(); // Set default piVars from TS
 		$this->pi_loadLL();		// Loading the LOCAL_LANG values
 			//	TODO: Determine if we need a layout code logic block or not
-		$this->internal['layoutCode'] = getConfigVal( $this, 'layout', 'sDEF', 'layoutCode', $lConf, 1 );	//	Set layoutCode into internal storage
+		$this->internal['layoutCode'] = $this->getConfigVal( $this, 'layout', 'sDEF', 'layoutCode', $lConf, 1 );	//	Set layoutCode into internal storage
 
-// ( $this->internal['layoutCode'] );
+
 	}
 
 	/**
@@ -125,14 +125,14 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		//	Check if typoscript config 'tutorial' is an integer, otherwise set to 0
 		if( t3lib_div::testInt( $this->conf['tutorial'] ) == false ) $this->conf['tutorial'] = 0;
 
-		$tutorial = getConfigVal( $this, 'tutorial', 'sMisc', 'tutorial', $this->conf, 0 );
+		$tutorial = $this->getConfigVal( $this, 'tutorial', 'sMisc', 'tutorial', $this->conf, 0 );
 
 		//	If tutorial enabled, walk through tutorial
 		if( $tutorial )
 			return $this->getTutorial( $tutorial );
 
 		//	Get the 'what to display' value from plugin or typoscript, plugin overriding
-		$display = getConfigVal( $this, 'display', 'sDEF', 'CMD', $this->conf );
+		$display = $this->getConfigVal( $this, 'display', 'sDEF', 'CMD', $this->conf );
 
 		//	Check codes for 'xml', and if found then we only display the RSS and nothing else.
 		//	The XML output can not be displayed along with any other view.
@@ -145,10 +145,10 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		$this->conf['allowedTables'] = str_replace( ' ', '', $this->conf['allowedTables'] );
 
 		//	Recursive setting from plugin overrides typoscript
-		$this->conf['recursive'] = getConfigVal( $this, 'recursive', 'sDEF', 'recursive', $this->conf, 0 );
+		$this->conf['recursive'] = $this->getConfigVal( $this, 'recursive', 'sDEF', 'recursive', $this->conf, 0 );
 
 		//	Find the starting point in the page tree to search for the record, use current page as default
-		$startingPoint = getConfigVal($this, 'startingpoint', 'sDEF', 'startingpoint', $lConf, $GLOBALS['TSFE']->id );
+		$startingPoint = $this->getConfigVal($this, 'startingpoint', 'sDEF', 'startingpoint', $lConf, $GLOBALS['TSFE']->id );
 
 		//	If configured to use the General Storage Folder of the site, include that in the list of pids
 		if( $this->conf['useStoragePid'] ) {
@@ -193,12 +193,17 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					$this->internal['currentCode'] = 'SEARCH';
 					$content .= $this->searchView( $content, $this->conf['searchView.'] );
 					break;
+					
+				case 'LATEST':
+					$this->internal['currentCode'] = 'LATEST';
+					$content .= $this->latestView( $content, $this->conf['latestView.'] );
+					break;
 
 				default:
 					$content .= $this->throwError(
 						'Configuration Error',
 						'Plugin setting "What to Display" was not specified, or TypoScript Setup property "CMD" was incorrect or not found.',
-						'What to Display:' . $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'display', 'sDEF')
+						'What to Display:' . $this->getConfigVal( $this, 'display', 'sDEF', 'CMD', $this->conf )
 					);
 					break;
 			}	//	End Primary switch
@@ -226,7 +231,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			//	TODO: Modify code to allow other records to be shown. Right now we're assuming sermons only.
 
 			//	Get the related table entries to the group, using 'tx_wecsermons_sermons' if none specified
-		$tableToList = getConfigVal( $this, 'detail_table', 'slistView', 'detail_table', $lConf, 'tx_wecsermons_sermons' );
+		$tableToList = $this->getConfigVal( $this, 'detail_table', 'slistView', 'detail_table', $lConf, 'tx_wecsermons_sermons' );
 
 			//	Load the correct marker array and load the item template
 		$markerArray = $this->getMarkerArray( $tableToList );
@@ -234,8 +239,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			//	TODO: Modify the date selection to include other tables and date fields
 
 			//	If start or end date was set, then add this to the query WHERE clause.
-		$startDate = getConfigVal( $this, 'startDate', 'slistView', 'startDate', $lConf );
-		$endDate = getConfigVal( $this, 'endDate', 'slistView', 'endDate', $lConf );
+		$startDate = $this->getConfigVal( $this, 'startDate', 'slistView', 'startDate', $lConf );
+		$endDate = $this->getConfigVal( $this, 'endDate', 'slistView', 'endDate', $lConf );
 		$where = '';
 		$where .= $startDate ? ' AND occurance_date >= ' . $startDate : '';
 		$where .= $endDate ? ' AND occurance_date <= ' .  $endDate  : '';
@@ -438,7 +443,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		$markerArray['###SEARCH_BUTTON_NAME###'] = $this->pi_getLL('pi_list_searchBox_search');
 
 			//	Find the PID that we should post form data to
-		$pid = getConfigVal( $this, '', '', 'pidSearchView', $this->conf, $GLOBALS['TSFE']->id );
+		$pid = $this->getConfigVal( $this, '', '', 'pidSearchView', $this->conf, $GLOBALS['TSFE']->id );
 
 		$markerArray['###FORM_ACTION###'] = $this->cObj->typolink_URL( array( 'parameter' => $pid ) );
 
@@ -487,7 +492,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 				//	Intialize query params if not set
 			if (!isset($this->piVars['pointer']))	$this->piVars['pointer']=0;
-			if( !isset( $this->piVars['recordType'] ) ) $this->piVars['recordType'] = getConfigVal( $this, 'detail_table', 'slistView', 'detail_table', $lConf, 'tx_wecsermons_sermons' );
+			if( !isset( $this->piVars['recordType'] ) ) $this->piVars['recordType'] = $this->getConfigVal( $this, 'detail_table', 'slistView', 'detail_table', $lConf, 'tx_wecsermons_sermons' );
 
 				// Initialize some query parameters, and internal variables
 			list($this->internal['orderBy'],$this->internal['descFlag']) = explode(':',$this->piVars['sort']);
@@ -502,7 +507,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 			//	If listing sermon records, check if order was specified in the FE Plugin and load from there. Otherwise load from typoscript, or 'title' as default.
 			if( $this->piVars['recordType'] == 'tx_wecsermons_sermons' )
-				$this->internal['orderBy'] = getConfigVal( $this, 'sermons_order_by', 'slistView', 'orderBy', $lConf[$this->piVars['recordType'].'.'], 'title' );
+				$this->internal['orderBy'] = $this->getConfigVal( $this, 'sermons_order_by', 'slistView', 'orderBy', $lConf[$this->piVars['recordType'].'.'], 'title' );
 			else
 				$this->internal['orderBy']=$lConf[$this->piVars['recordType'].'.']['orderBy'];
 			$this->internal['descFlag']=$lConf[$this->piVars['recordType'].'.']['descFlag'];
@@ -567,12 +572,12 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		//	 Gather all our output into $content
 		$content = '';
 		$subpartArray = array();
-		$groupTable = getConfigVal( $this, 'group_table', 'slistView', 'group_table', $lConf );
+		$groupTable = $this->getConfigVal( $this, 'group_table', 'slistView', 'group_table', $lConf );
 
 		//	If grouping was specified, branch to process group list
 		if( $groupTable ) {
 
-			$detailTable = getConfigVal( $this, 'detail_table', 'slistView', 'detail_table', $lConf );
+			$detailTable = $this->getConfigVal( $this, 'detail_table', 'slistView', 'detail_table', $lConf );
 			$this->template['group'] = $this->cObj->getSubpart( $template, '###GROUP###' );
 
 			//	Change the orderBy clause to match the group table
@@ -620,7 +625,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 			$res = $this->pi_exec_query($groupTable);
 				//	Search TCA for relation to previous table where columns.[colName].config.foreign_table = $this->internal['groupTable']
-			$foreign_column = get_foreign_column( $detailTable, $this->internal['groupTable'] );
+			$foreign_column = $this->get_foreign_column( $detailTable, $this->internal['groupTable'] );
 
 			if( ! $foreign_column ) {
 
@@ -679,7 +684,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		else {	//	No group found, just provide a straight list
 
 				//	Get the related table entries to the group, using 'tx_wecsermons_sermons' if none specified
-			$tableToList = getConfigVal( $this, 'detail_table', 'slistView', 'detail_table', $lConf, 'tx_wecsermons_sermons' );
+			$tableToList = $this->getConfigVal( $this, 'detail_table', 'slistView', 'detail_table', $lConf, 'tx_wecsermons_sermons' );
 
 				//	Load the correct marker array and load the item template
 			$markerArray = $this->getMarkerArray( $tableToList );
@@ -689,8 +694,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				//	TODO: Modify the date selection to include other tables and date fields
 
 				//	If start or end date was set, then add this to the query WHERE clause.
-			$startDate = getConfigVal( $this, 'startDate', 'slistView', 'startDate', $lConf );
-			$endDate = getConfigVal( $this, 'endDate', 'slistView', 'endDate', $lConf );
+			$startDate = $this->getConfigVal( $this, 'startDate', 'slistView', 'startDate', $lConf );
+			$endDate = $this->getConfigVal( $this, 'endDate', 'slistView', 'endDate', $lConf );
 			$where = '';
 			$where .= $startDate ? ' AND occurance_date >= ' . $startDate : '';	//	$GLOBALS['TYPO3_DB']->fullQuoteStr( strftime( '%m-%d-%y', $startDate ), $tableToList ) : '';
 			$where .= $endDate ? ' AND occurance_date <= ' .  $endDate  : '';
@@ -959,7 +964,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 //								$this->internal['currentRow']['type'] = $this->internal['currentRow']['title'];
 
 									//	Parse the table_uid string from record into the value for the querystring_param
-								list(,$queryStringVal) = array_values( splitTableAndUID($this->internal['currentRow']['rendered_record'] ) );
+								list(,$queryStringVal) = array_values( $this->splitTableAndUID($this->internal['currentRow']['rendered_record'] ) );
 
 									//	Break apart our querystring_param from it's stored form of 'plugin[param]'
 								$queryString = split( "\[|\]", $this->internal['currentRow']['querystring_param'] );
@@ -1366,7 +1371,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				case '###BACK_LINK###':
 
 					//	If recordType is not set, retreive value or set it to sermons table. This is in case of hard linking to the single view instead of linking through the list view.
-					if( ! isset( $this->piVars['recordType'] ) ) $this->piVars['recordType'] = getConfigVal( $this, 'detail_table', 'slistView', 'detail_table', $lConf, 'tx_wecsermons_sermons' );
+					if( ! isset( $this->piVars['recordType'] ) ) $this->piVars['recordType'] = $this->getConfigVal( $this, 'detail_table', 'slistView', 'detail_table', $lConf, 'tx_wecsermons_sermons' );
 
 					$wrappedSubpartArray[$key] = explode(
 						'|',
@@ -1972,98 +1977,100 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			return $content;
 	}	// End getTutorial
 
+
+	/**
+	 * uniqueCsv:	Given any number of CSV strings, this function combines the strings, returning a CSV string without duplicate values.
+	 *
+	 * @return	string		A CSV string, with unique values.
+	 */
+	function uniqueCsv()	{
+		$max = func_num_args();
+		$ttlString = '';
+		for( $i =0; $i < $max; $i++ )  {
+			$ttlString .=func_get_arg($i) .  ',';
+	
+		}
+		return implode(',', array_unique( t3lib_div::trimExplode(',', $ttlString, 1) ) );
+	}
+	
+	/**
+	 * unique_array: Given any number of single dimensional arrays, this function combines the arrays, returning an array without duplicate values.
+	 *
+	 * @return	string		An array, without duplicate values.
+	 */
+	function unique_array() {
+		$max = func_num_args();
+		$ttlString = '';
+		for( $i =0; $i < $max; $i++ )  {
+			$ttlString .=func_get_arg($i) .  ',';
+	
+		}
+		return array_unique( t3lib_div::trimExplode(',', $ttlString, 1) ) ;
+	
+	}
+	
+	/**
+	 * get_foreign_column: Searches through the TCA array of the current table name for a related table, returning the column name used to create the relation.
+	 *
+	 * @param	string		$currentTable: Table name to search through
+	 * @param	string		$relatedTable: Related table to search for
+	 * @return	string		The column name that relates currentTable to relatedTable. Returns null if no relation is found.
+	 */
+	function get_foreign_column( $currentTable, $relatedTable ) {
+	
+		//	Load up the tca for given table
+		$GLOBALS['TSFE']->includeTCA($TCAloaded = 1);
+		t3lib_div::loadTCA( $currentTable );
+	
+		foreach( $GLOBALS['TCA'][$currentTable]['columns'] as $columnName => $value ) {
+				if( $value['config']['foreign_table'] == $relatedTable || $value['config']['allowed'] == $relatedTable )
+					return $columnName;
+		}
+	
+		return '';
+	
+	}
+	
+	/**
+	 * getConfigVal: Return the value from either plugin flexform, typoscript, or default value, in that order
+	 *
+	 * @param	object		$Obj: Parent object calling this function
+	 * @param	string		$ffField: Field name of the flexform value
+	 * @param	string		$ffSheet: Sheet name where flexform value is located
+	 * @param	string		$TSfieldname: Property name of typoscript value
+	 * @param	array		$lConf: TypoScript configuration array from local scope
+	 * @param	mixed		$default: The default value to assign if no other values are assigned from TypoScript or Plugin Flexform
+	 * @return	mixed		Configuration value found in any config, or default
+	 */
+	function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default = '' ) {
+	
+		//	Retrieve values stored in flexform and typoscript
+		$ffValue = $Obj->pi_getFFvalue($Obj->cObj->data['pi_flexform'], $ffField, $ffSheet);
+		$tsValue = $lConf[$TSfieldname];
+	
+		//	Use flexform value if present, otherwise typoscript value
+		$retVal = $ffValue ? $ffValue : $tsValue;
+	
+			//	Return value if found, otherwise default
+		return $retVal ? $retVal : $default;
+	}
+	
+	/**
+	 * splitTableAndUID: Helper function that splits a table name and uid from the format stored by the TYPO3 backend, returning the values in an array. Format: 'tablename_uid'
+	 *
+	 * @param	string		$record: The string value of tablename and uid in the form 'table_uid'
+	 * @return	array		Array in the form array( 'table' => tablename, 'uid' => uid )
+	 */
+	function splitTableAndUID($record) {
+		$break = strrpos($record, "_");
+		$uid = substr($record, $break+1);
+		$table = substr($record, 0, $break);
+	
+		return array("table" => $table, "uid" => $uid);
+	}
+
 }	// End class tx_wecsermons_pi1
 
-/**
- * uniqueCsv:	Given any number of CSV strings, this function combines the strings, returning a CSV string without duplicate values.
- *
- * @return	string		A CSV string, with unique values.
- */
-function uniqueCsv()	{
-	$max = func_num_args();
-	$ttlString = '';
-	for( $i =0; $i < $max; $i++ )  {
-		$ttlString .=func_get_arg($i) .  ',';
-
-	}
-	return implode(',', array_unique( t3lib_div::trimExplode(',', $ttlString, 1) ) );
-}
-
-/**
- * unique_array: Given any number of single dimensional arrays, this function combines the arrays, returning an array without duplicate values.
- *
- * @return	string		An array, without duplicate values.
- */
-function unique_array() {
-	$max = func_num_args();
-	$ttlString = '';
-	for( $i =0; $i < $max; $i++ )  {
-		$ttlString .=func_get_arg($i) .  ',';
-
-	}
-	return array_unique( t3lib_div::trimExplode(',', $ttlString, 1) ) ;
-
-}
-
-/**
- * get_foreign_column: Searches through the TCA array of the current table name for a related table, returning the column name used to create the relation.
- *
- * @param	string		$currentTable: Table name to search through
- * @param	string		$relatedTable: Related table to search for
- * @return	string		The column name that relates currentTable to relatedTable. Returns null if no relation is found.
- */
-function get_foreign_column( $currentTable, $relatedTable ) {
-
-	//	Load up the tca for given table
-	$GLOBALS['TSFE']->includeTCA($TCAloaded = 1);
-	t3lib_div::loadTCA( $currentTable );
-
-	foreach( $GLOBALS['TCA'][$currentTable]['columns'] as $columnName => $value ) {
-			if( $value['config']['foreign_table'] == $relatedTable || $value['config']['allowed'] == $relatedTable )
-				return $columnName;
-	}
-
-	return '';
-
-}
-
-/**
- * getConfigVal: Return the value from either plugin flexform, typoscript, or default value, in that order
- *
- * @param	object		$Obj: Parent object calling this function
- * @param	string		$ffField: Field name of the flexform value
- * @param	string		$ffSheet: Sheet name where flexform value is located
- * @param	string		$TSfieldname: Property name of typoscript value
- * @param	array		$lConf: TypoScript configuration array from local scope
- * @param	mixed		$default: The default value to assign if no other values are assigned from TypoScript or Plugin Flexform
- * @return	mixed		Configuration value found in any config, or default
- */
-function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default = '' ) {
-
-	//	Retrieve values stored in flexform and typoscript
-	$ffValue = $Obj->pi_getFFvalue($Obj->cObj->data['pi_flexform'], $ffField, $ffSheet);
-	$tsValue = $lConf[$TSfieldname];
-
-	//	Use flexform value if present, otherwise typoscript value
-	$retVal = $ffValue ? $ffValue : $tsValue;
-
-		//	Return value if found, otherwise default
-	return $retVal ? $retVal : $default;
-}
-
-/**
- * splitTableAndUID: Helper function that splits a table name and uid from the format stored by the TYPO3 backend, returning the values in an array. Format: 'tablename_uid'
- *
- * @param	string		$record: The string value of tablename and uid in the form 'table_uid'
- * @return	array		Array in the form array( 'table' => tablename, 'uid' => uid )
- */
-function splitTableAndUID($record) {
-	$break = strrpos($record, "_");
-	$uid = substr($record, $break+1);
-	$table = substr($record, 0, $break);
-
-	return array("table" => $table, "uid" => $uid);
-}
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_sermons/pi1/class.tx_wecsermons_pi1.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_sermons/pi1/class.tx_wecsermons_pi1.php']);
 }
