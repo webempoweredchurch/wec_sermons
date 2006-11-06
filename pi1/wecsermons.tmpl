@@ -158,11 +158,19 @@ BACK_LINK	- link back to the list view
 Sermon Topic: ###TOPIC_TITLE###
 <!--###SERMON_TOPICS###-->
 
-<!--###DEFAULT_RESOURCES###-->
-	Title: <!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--><br/>
-	File: ###RESOURCE_FILE###<br/>
-	Graphic: ###RESOURCE_GRAPHIC###<br/>	
-<!--###DEFAULT_RESOURCES###-->
+<div class="tx-wecsermons-pi1-default">
+	<!--###DEFAULT_RESOURCES###-->
+		###RESOURCE_GRAPHIC###
+		###RESOURCE_TITLE###
+		<!--###RESOURCE_LINK###-->###RESOURCE_FILE###<!--###RESOURCE_LINK###-->
+		
+	<!--###DEFAULT_RESOURCES###-->
+</div>
+
+<!--###PDF_RESOURCES###-->
+###RESOURCE_CONTENT###
+<!--###PDF_RESOURCES###-->
+
 
 <!--###CONTENT###-->
 <!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###-->
@@ -251,6 +259,7 @@ Sermon Topic: ###TOPIC_TITLE###
     </TR>
     <!-- ###ITEM### end -->
     <!-- ###CONTENT### end -->
+    <tr><td colspan="2">			###BROWSE_LINKS###</td></tr>
    </TBODY>
 </TABLE>
 <!-- ###TEMPLATE_LIST2### end -->
@@ -428,9 +437,7 @@ Sermon Topic: ###TOPIC_TITLE###
 		<!--###SERMON_SPEAKERS###-->
 		
 		<!--###MP3_RESOURCES###-->
-			<div id="mp3-resources">
-				<!--###RESOURCE_LINK###--> ###RESOURCE_TITLE### <!--###RESOURCE_LINK###-->
-			</div>
+			###RESOURCE_CONTENT###
 		<!--###MP3_RESOURCES###-->
 		
 		<!--###PDF_RESOURCES###-->
@@ -462,31 +469,59 @@ Sermon Topic: ###TOPIC_TITLE###
 	<!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###-->
 <!-- ###TEMPLATE_SERMON_SINGLE3### end -->
 
-
 <br />
-<h3>TEMPLATE_RESOURCE_LIST</h3>
-<em>This is an example template for styling a list of resources.</em>
-<br />
-<!-- ###TEMPLATE_RESOURCE_LIST### begin -->
-<DIV class="wecsermons-pi1-resource-list">
-	<DIV id="wecsermons-pi1-resources-title" class="resource-detail"><!-- ###RESOURCE_LINK### --> ###RESOURCE_TITLE###<!-- ###RESOURCE_LINK### --></DIV>
-	<DIV id="wecsermons-pi1-resources-description" class="resource-detail">###RESOURCE_DESCRIPTION_TRUNC###</DIV>
-</DIV>
-<!-- ###TEMPLATE_RESOURCE_LIST### end -->
-
-<br />
-<h3>TEMPLATE_RESOURCE_SINGLE</h3>
-<em>This is an example template for styling a single resource item.</em>
+<h3>TEMPLATE_LIST4</h3>
+<em>Template for customized view of a sermon listing.</em>
 <br />
 
-<!-- ###TEMPLATE_RESOURCE_SINGLE### begin -->
-<div class="tx-wecsermons-pi1-resource-single">
-###RESOURCE_TITLE### <br/>
-###RESOURCE_DESCRIPTION###<br/>
-###RESOURCE_GRAPHIC### <br/>
-###RESOURCE_CONTENT### <br/>
-</div>
-<!-- ###TEMPLATE_RESOURCE_SINGLE### end -->
+<!-- ###TEMPLATE_LIST4### begin -->
+
+	<!--###CONTENT###-->
+		<!--###ITEM###-->
+		<br/>MP3:<br/>
+		<!--###MP3_RESOURCES###-->
+			<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
+		<!--###MP3_RESOURCES###-->
+		
+		<br/>FLV:<br/>
+		<!--###FLASH_VIDEO_RESOURCES###-->
+			<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
+		<!--###FLASH_VIDEO_RESOURCES###-->
+		
+		<br/>PDF:<br/>
+		<!--###PDF_RESOURCES###-->
+			<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
+		<!--###PDF_RESOURCES###-->
+		
+		<br/>POLL:<br/>
+		<!--###POLL_RESOURCES###-->
+			<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
+		<!--###POLL_RESOURCES###-->		
+		
+		<br/>Default:<br/>
+		<!--###DEFAULT_RESOURCES###-->
+			Title: 			<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--><br/>
+			File: ###RESOURCE_FILE###<br/>
+			Graphic: ###RESOURCE_GRAPHIC###<br/>
+			
+			###RESOURCE_CONTENT###
+		<!--###DEFAULT_RESOURCES###-->
+
+		<br/>News:<br/>
+		<!--###NEWS_RESOURCES###-->
+			<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
+			<br/><br/>
+			###RESOURCE_CONTENT###
+		<!--###NEWS_RESOURCES###-->
+		
+		<br/>Discussion:<br/>
+		<!--###DISCUSSION_RESOURCE###-->
+			<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
+		<!--###DISCUSSION_RESOURCE###-->
+		<!--###ITEM###-->
+	<!--###CONTENT###-->
+		
+<!-- ###TEMPLATE_LIST4### end -->
 
 <!-- ###TEMPLATE_SPEAKERS_LIST### end -->
 <!-- ###TEMPLATE_SPEAKERS_LIST### end -->
@@ -538,10 +573,11 @@ Sermon Topic: ###TOPIC_TITLE###
 <br />
 
 <!-- ###TEMPLATE_RESOURCE_NEWS### begin -->
-<div id="news_plugin">
-	###RESOURCE_TITLE###
-	###RESOURCE_CONTENT###
-</div>
+	<!--###CONTENT###-->
+		<div id="tx-wecsermons-pi1-news">
+			###RESOURCE_CONTENT###
+		</div>
+	<!--###CONTENT###-->
 <!-- ###TEMPLATE_RESOURCE_NEWS### end -->
 
 <br />
@@ -550,20 +586,9 @@ Sermon Topic: ###TOPIC_TITLE###
 <br />
 
 <!--###TEMPLATE_RESOURCE_PDF### begin-->
-<table>
-	<tbody>
-		<tr>
 			<!--###CONTENT###-->
-			<td>
-				<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
-			</td>
-			<td>
 				###RESOURCE_CONTENT###
-			</td>
 			<!--###CONTENT###-->
-		</tr>
-	</tbody>
-</table>
 <!--###TEMPLATE_RESOURCE_PDF### end-->
 
 
@@ -574,25 +599,57 @@ Sermon Topic: ###TOPIC_TITLE###
 
 <!--###TEMPLATE_RESOURCE_MP3### begin-->
 	<!--###CONTENT###-->
-			<div id="mp3-resources">
-				<!--###RESOURCE_LINK###--> ###RESOURCE_TITLE### <!--###RESOURCE_LINK###-->
-			</div>
+			###RESOURCE_CONTENT###
 	<!--###CONTENT###-->
 <!--###TEMPLATE_RESOURCE_MP3### end-->
 
 
 <br />
-<h3>TEMPLATE_RESOURCES_DEFAULT</h3>
+<h3>TEMPLATE_RESOURCE_FLASH_VIDEO</h3>
+<em>This is an example template for styling a FLV resource item.</em>
+<br />
+
+<!--###TEMPLATE_RESOURCE_FLASH_VIDEO### begin-->
+	<!--###CONTENT###-->
+			###RESOURCE_CONTENT###
+	<!--###CONTENT###-->
+<!--###TEMPLATE_RESOURCE_FLASH_VIDEO### end-->
+
+
+<br />
+<h3>TEMPLATE_RESOURCE_POLL</h3>
+<em>This is an example template for styling a Poll resource item.</em>
+<br />
+
+<!--###TEMPLATE_RESOURCE_POLL### begin-->
+	<!--###CONTENT###-->
+			###RESOURCE_CONTENT###
+	<!--###CONTENT###-->
+<!--###TEMPLATE_RESOURCE_POLL### end-->
+
+<br />
+<h3>TEMPLATE_RESOURCE_DISCUSSION</h3>
+<em>This is an example template for styling a Discussion resource item.</em>
+<br />
+
+<!--###TEMPLATE_RESOURCE_DISCUSSION### begin-->
+	<!--###CONTENT###-->
+			###RESOURCE_CONTENT###
+	<!--###CONTENT###-->
+<!--###TEMPLATE_RESOURCE_DISCUSSION### end-->
+
+<br />
+<h3>TEMPLATE_RESOURCE_DEFAULT</h3>
 <em>This is an example template for styling a MP3 resource item.</em>
 <br />
 
-<!--###TEMPLATE_RESOURCES_DEFAULT### begin-->
+<!--###TEMPLATE_RESOURCE_DEFAULT### begin-->
 	<!--###CONTENT###-->
 			<div id="tx-wecsermons-pi1-default-resources">
 				###RESOURCE_TITLE###
 				<!--###RESOURCE_LINK###--> ###RESOURCE_FILE###<!--###RESOURCE_LINK###-->
 			</div>
 	<!--###CONTENT###-->
-<!--###TEMPLATE_RESOURCES_DEFAULT### end-->
+<!--###TEMPLATE_RESOURCE_DEFAULT### end-->
 	<body>
 </html>

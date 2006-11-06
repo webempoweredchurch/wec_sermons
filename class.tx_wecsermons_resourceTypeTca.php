@@ -56,12 +56,9 @@ class tx_wecsermons_resourceTypeTca {
 	 * @return	void
 	 */
 	function getMainFields_preProcess($table,$row,&$pObj) {
-		
-		if( $row['list_type'] = 'wec_sermons_pi1' ) {
-		
-#			t3lib_div::loadTCA('tt_content');
-#			debug( t3lib_BEfunc::getFlexFormDS( $GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config'], $row, $table ) );
-		}
+
+# Keep this line for future functionality, possibly manipulating pi1's flexform		
+#		if( $row['list_type'] = 'wec_sermons_pi1' ) {
 
 		if( $table == 'tx_wecsermons_resources' ) {
 
@@ -72,7 +69,9 @@ class tx_wecsermons_resourceTypeTca {
 			$resource = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'*',
 				'tx_wecsermons_resource_types',
-				' deleted = 0 AND hidden = 0 '
+				' deleted = 0 AND hidden = 0 ',
+				'',
+				'sorting'
 			);
 
 			//	Convert each tx_wecsermons_resource_types record into a 'types' TCA array
@@ -81,7 +80,7 @@ class tx_wecsermons_resourceTypeTca {
 				$GLOBALS['TCA']['tx_wecsermons_resources']['types'][$resourceType['typoscript_object_name']] = array( 'showitem' => "type, title;;;;2-2-2, " . $this->processAvailableFields( $resourceType['avail_fields'] ) . ($resourceType['type'] == '1' ? ',rendered_record' : '') . ",sys_language_uid;;;;1-1-1, l18n_parent, l18n _diffsource, hidden;;1" );
 			}
 
-//debug( $GLOBALS['TCA']['tx_wecsermons_resources']['types'] ,1);
+#debug( $GLOBALS['TCA']['tx_wecsermons_resources']['types'] ,1);
 
 		}
 
@@ -124,7 +123,9 @@ class tx_wecsermons_resourceTypeTca {
 		$resource = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'*',
 			'tx_wecsermons_resource_types',
-				' deleted = 0 AND hidden = 0 '
+				' deleted = 0 AND hidden = 0 ',
+				'',
+				'sorting'
 		);
 
 		//	Convert each tx_wecsermons_resource_types record into a selectable 'record type' for tx_wecsermons_resource records

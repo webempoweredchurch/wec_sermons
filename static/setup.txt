@@ -31,6 +31,15 @@ plugin.tx_wecsermons_pi1 {
 	general_dateWrap {
 		strftime = %A,  %b. %d %Y
 	}
+	
+	stdHeader = COA
+	stdHeader {
+		10 = TEXT
+		10.field = title
+		10.dataWrap = <div class="csc-header csc-header-n{cObj:parentRecordNumber}">|</div>
+		10.fieldRequired = title
+		10.prefixComment = 2 | Header:
+	}
 
 	# Marker based template file, which defines each view
 	templateFile = {$plugin.tx_wecsermons_pi1.file.templateFile}
@@ -40,7 +49,7 @@ plugin.tx_wecsermons_pi1 {
 
 	#	The subpart marker used to define resources of type 'default'
 	defaultMarker = ###DEFAULT_RESOURCES###
-	defaultTemplate = ###TEMPLATE_RESOURCES_DEFAULT###
+	defaultTemplate = ###TEMPLATE_RESOURCE_DEFAULT###
 
 	# CASE for rendering ###RESOURCE_CONTENT###
 	# Resource types are identified by thier typoscript_object_name field.
@@ -50,42 +59,90 @@ plugin.tx_wecsermons_pi1 {
 		# Use the field 'type' on a tx_wecsermons_resources record
 		key.field = typoscript_object_name
 
-		# This is the 'Default' resource type. This rendering will be used if the proper key has not been defined yet.
-		default = COA
-
-		default {
-			10 = TEXT
-			10.field = title
-			10.wrap = <tr><td>|</td>
-
-			20 = TEXT
-			20.field = file
-			20.wrap = <td>|</td></tr>
-			20.typolink = 1
-			20.typolink {
-				parameter.insertData = 1
-				parameter.data = uploads/tx_wecsermons/{field:file}
-			}
-
-			wrap = <table>|</table>
-		}
-
-		# Type MP3
+		# MP3 Audio
 		MP3 = COA
 		MP3 {
-			10 = TEXT
-			10.field = title
-			10.wrap = MP3: |
-			10.typolink = 1
-			10.typolink {
+			10 = < plugin.tx_wecsermons_pi1.stdHeader
+						
+			20 < plugin.tx_wecflashplayer_pi2
+			20 {
+				audiobase.value = uploads/tx_wecsermons/
+				audiofile.setCurrent.field = file
+				audiofile.setCurrent.listNum = 0
+				audiofile.current = 1
+			}
+			
+			30 = TEXT
+			30.field = description
+			30.parseFunc < plugin.tx_wecsermons_pi1.general_stdWrap
+			
+			wrap = <div class="tx-wecsermons-pi1-mp3">|</div>
+		}
+		
+		# Flash video
+		FLV = COA
+		FLV {
+		
+			10 = < plugin.tx_wecsermons_pi1.stdHeader
+						
+			20 < plugin.tx_wecflashplayer_pi1
+			20 {
+				videobase.value = uploads/tx_wecsermons/
+				videohigh.setCurrent.field = file
+				videohigh.setCurrent.listNum = 0
+				videohigh.current = 1
+				videolow.setCurrent.field = file
+				videolow.setCurrent.listNum = 1
+				videolow.current = 1
+			}
+
+			30 = TEXT
+			30.field = description
+			30.parseFunc < plugin.tx_wecsermons_pi1.general_stdWrap
+			
+			wrap = <div class="tx-wecsermons-pi1-flv">|</div>
+		}
+		
+		# PDF (Portable Document)
+		PDF = COA
+		PDF {
+			10 = IMAGE
+			10 {
+				
+				prefixComment = 2 | PDF Preview:
+				altText.field = title
+				file.import = uploads/tx_wecsermons/
+				file.import.field = file
+				file.width = 150m
+				file.height  = 150m
+				wrap = <div class="tx-wecsermons-pi1-pdf-preview" style="float: left;">|</div>
+				stdWrap.typolink {
+					parameter = uploads/tx_wecsermons/{field:file}
+					parameter {
+						setCurrent.field = file
+						setCurrent.listNum = 0
+						insertData = 1
+					}
+				}
+			}
+			
+			20 = TEXT
+			20.prefixComment = 2 | PDF File Link:
+			20.field = title
+			20.typolink {
 				parameter = uploads/tx_wecsermons/{field:file}
 				parameter.insertData = 1
 			}
+			20.wrap = <p class="bodytext">|</p>
+			
+			30 = TEXT
+			30.field = description
+			30.parseFunc < plugin.tx_wecsermons_pi1.general_stdWrap
+			
+			wrap = <div class="tx-wecsermons-pi1-pdf">|</div>
 		}
 
-		# Type PDF
-		PDF = COA
-
+		# WEC Discussion plugin
 		discussion < plugin.tx_wecdiscussion_pi1
 
 
@@ -97,15 +154,46 @@ plugin.tx_wecsermons_pi1 {
 			templateFile = EXT:wec_sermons/res/tt_news_v2_template.html
 		}
 
+		poll < plugin.tx_jkpoll_pi1
+		poll {
+			type = 1	
+		} 
 
 		JPG = COA
 		JPG {
 			10 = IMAGE
 			10.import = uploads/tx_wecsermons/
 			10.import.field = graphic
+			10.width = 150px
 
+			# Caption
 			20 = TEXT
 			20.field = title
+			20.required = 1
+			20.fontTag = <div class="tx-wecsermons-pi1-jpg-caption">|</div>
+			
+			wrap = <div class="tx-wecsermons-pi1-jpg">|</div>
+		}
+
+		# This is the 'Default' resource type. This rendering will be used if the proper key has not been defined for the resource you are rendering.
+		# To define a new resource key, create a new property within the plugin.tx_wecsermons_pi1.resource_types CASE cObject. You can use the 'default' property as a starting point.
+		default = COA
+		default {
+
+			10 = < plugin.tx_wecsermons_pi1.stdHeader
+
+			20 = TEXT
+			20.field = file
+			20.listNum = 0
+			20.typolink = 1
+			20.typolink {
+				parameter = uploads/tx_wecsermons/{current:1}
+				parameter.setCurrent.field = file
+				parameter.setCurrent.listNum = 0
+				parameter.insertData = 1
+				extTarget = _blank			
+			}
+
 		}
 
 	}
@@ -115,7 +203,7 @@ plugin.tx_wecsermons_pi1 {
 
 		back = TEXT
 		back {
-			parseFunc < plugin.tx_wecsermons_pi1.general_stdWrap
+			parseFunc < plugin.tx_wecsermons_pi1.general_stdWrap.parseFunc
 		}
 
 		layoutCode =
@@ -126,7 +214,7 @@ plugin.tx_wecsermons_pi1 {
 			title = TEXT
 			title {
 				wrap = |
-				parseFunc < plugin.tx_wecsermons_pi1.general_stdWrap
+				parseFunc < plugin.tx_wecsermons_pi1.general_stdWrap.parseFunc
 				field = title
 			}
 
@@ -139,7 +227,7 @@ plugin.tx_wecsermons_pi1 {
 
 			description = TEXT
 			description {
-				parseFunc < plugin.tx_wecsermons_pi1.general_stdWrap
+				parseFunc < plugin.tx_wecsermons_pi1.general_stdWrap.parseFunc
 				field = description
 			}
 
@@ -186,6 +274,7 @@ plugin.tx_wecsermons_pi1 {
 
 		tx_wecsermons_resources {
 
+			# If typolink = 0, then links to the single view of a resource.
 			typolink = 1
 			typolink {
 				parameter = uploads/tx_wecsermons/{current:1}
@@ -195,15 +284,9 @@ plugin.tx_wecsermons_pi1 {
 				extTarget = _blank
 			}
 			
-			# resource_types defines whether to render the ###RESOURCE_LINK### tag as a link to the resources' single view, or how to link to the resource.
-			# If typolink = 0, then links to the single view of a resource.
+			# resource_types properties define whether to render the ###RESOURCE_LINK### tag as a link to the resources' single view, or by a typolink configuration.
+			# See the TSRef for details on the typolink data type: http://typo3.org/documentation/document-library/references/doc_core_tsref/current/view/5/8/
 			resource_types {
-
-				# Default resource type, links to the first file in the list
-				default {
-					typolink < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources.typolink
-
-				}
 
 				# Type PDF
 				PDF {
@@ -214,13 +297,25 @@ plugin.tx_wecsermons_pi1 {
 					typolink < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources.typolink
 				}
 
+				# Default resource type, links to the first file in the list
+				default {
+					typolink < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources.typolink
+
+				}
 			}
 
 			title = TEXT
 			title.field = title
+			title.wrap = <dl><dt>|<dt>
 			
+			file = TEXT
+			file.field = file
+			file.listNum = 0
+			file.wrap = <dd>|</dd></dl>
+
 			graphic = IMAGE
 			graphic {
+				wrap = <div class="tx-wecsermons-pi1-resource-graphic">|<div>
 				file {
 					import = uploads/tx_wecsermons/
 					import.field = graphic
@@ -233,7 +328,6 @@ plugin.tx_wecsermons_pi1 {
 					JSwindow = 1
 					JSwindow.expand = 20,20
 				}
-
 			}
 
 			description = TEXT
@@ -254,9 +348,6 @@ plugin.tx_wecsermons_pi1 {
 			webaddress3 = TEXT
 			webaddress3.typolink.parameter.field = webaddress3
 
-			file = TEXT
-			file.field = file
-			file.listNum = 0
 
 		}
 
@@ -566,29 +657,30 @@ plugin.tx_wecsermons_pi1 {
 
 		tx_wecsermons_resources {
 
-			typolink = 1
-			# Type tells the plugin how to render the ###RESOURCE_LINK### tag for a resource.
 			# If typolink = 0, then links to the single view of a resource.
+			typolink = 0
+			typolink {
+				parameter = uploads/tx_wecsermons/{current:1}
+				parameter.setCurrent.field = file
+				parameter.setCurrent.listNum = 0
+				parameter.insertData = 1
+				extTarget = _blank
+			}
+
+			# resource_types properties define whether to render the ###RESOURCE_LINK### tag as a link to the resources' single view, or by a typolink configuration.
+			# See the TSRef for details on the typolink data type: http://typo3.org/documentation/document-library/references/doc_core_tsref/current/view/5/8/
 			resource_types {
 
-				# Default resource type. **MUST** be configured by administrator
-				default {
-					typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
-				}
+				PDF.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
 
-				# Type PDF
-				PDF{
-					typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
-				}
+				DOC.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
 
-				DOC {
-					typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
-				}
+				MP3.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
+				
+				discussion.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
 
-				MP3 {
-					typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
-				}
-
+				# Default resource type.
+				default.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
 
 			}
 
@@ -603,8 +695,8 @@ plugin.tx_wecsermons_pi1 {
 				file {
 					import = uploads/tx_wecsermons/
 					import.field = graphic
-					width = 32m
-					height = 32m
+					width = 64m
+					height = 64m
 				}
 				imageLinkWrap = 1
 				imageLinkWrap {
@@ -877,8 +969,10 @@ div.tx-wecsermons-pi1-list1 { margin: 1em 0 1em; padding: 0 0 1em;}
 #tx-wecsermons-pi1-list2 a { color: #003399; }
 #tx-wecsermons-pi1-list2 td { background-color: #ACCCAB;}
 div.tx-wecsermons-sermon-description { text-align: justify; }
-)
+div.tx-wecsermons-pi1-default dl {  margin-top: 0px; margin-bottom: 1em;}
 
+div.tx-wecsermons-pi1-flv div.tx-wecflashplayer-pi1 { float: left; }
+)
 # Example of how to overrule LOCAL_LANG values for the plugin:
 plugin.tx_wecsermons_pi1._LOCAL_LANG.default  {
 

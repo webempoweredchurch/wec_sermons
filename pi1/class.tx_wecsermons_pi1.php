@@ -79,7 +79,6 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	var $pi_checkCHash = TRUE;
 	var $template = null;
 
-
 	/**
 	 * init: performs some initialization of our class
 	 *
@@ -91,8 +90,11 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		$this->pi_initPIflexForm(); // Init FlexForm configuration for plugin
 		$this->pi_setPiVarDefaults(); // Set default piVars from TS
 		$this->pi_loadLL();		// Loading the LOCAL_LANG values
+			
 			//	TODO: Determine if we need a layout code logic block or not
 		$this->internal['layoutCode'] = $this->getConfigVal( $this, 'layout', 'sDEF', 'layoutCode', $lConf, 1 );	//	Set layoutCode into internal storage
+		# Using $this->pi_isOnlyFields: this holds a comma-separated list of fieldnames which - if they are among the GETvars - will not disable caching for the page with pagebrowser.
+		$this->pi_isOnlyFields .= ",recordType";
 
 
 	}
@@ -110,6 +112,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 		$this->local_cObj = t3lib_div::makeInstance('tslib_cObj'); // Local cObj.
 		$this->init($conf);
+
 
 #debug( $this->conf['listView.']['tx_wecsermons_resources.'] ,1);
 
@@ -639,6 +642,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				//	Retreive marker array and template for the detail table
 			$detailMarkArray = $this->getMarkerArray( $detailTable );
 			$detailTemplate = $this->template['item'] = $this->getNamedSubpart( 'ITEM', $template );
+			
+			//	Counter for number of sermons shown on a 'page'
+			$detailCount = 0;
 
 				//	Iterate every record in groupTable
 			while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) ) {
@@ -660,7 +666,6 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					//	Exec query on detail table, for every record related to our group record
 				$detailRes = $this->pi_exec_query( $detailTable, 0, ' AND ' . $foreign_column . ' in (' . $this->internal['previousRow']['uid'] . ')' );
 
-				$detailCount = 0;
 				while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $detailRes ) ) {
 					$groupContent .= $this->pi_list_row( $lConf, $detailMarkArray, $detailTemplate, $this->internal['currentRow'] );
 					$detailCount++;
@@ -957,23 +962,6 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 							$this->internal['currentRow'] = $resource;
 							$this->local_cObj->start( $this->internal['currentRow'] );
 
-							//	If resource type's type = '1', then process querystring parameter if it is not null. type = 1 means we're processing an extension/plugin
-							if( $this->internal['currentRow']['type_type']  == '1' && $this->internal['currentRow']['querystring_param']) {
-
-									//	Overwrite the resource type field with the resource title. This allows us to pass through to the CASE object which will use the 'title' to determine the custom rendering for this specific resource.
-//								$this->internal['currentRow']['type'] = $this->internal['currentRow']['title'];
-
-									//	Parse the table_uid string from record into the value for the querystring_param
-								list(,$queryStringVal) = array_values( $this->splitTableAndUID($this->internal['currentRow']['rendered_record'] ) );
-
-									//	Break apart our querystring_param from it's stored form of 'plugin[param]'
-								$queryString = split( "\[|\]", $this->internal['currentRow']['querystring_param'] );
-
-									//	Push the custom string onto the querystring.
-								t3lib_div::_GETset( t3lib_div::array_merge( $_GET, array( $queryString[0] => array( $queryString[1] => $queryStringVal) ) ) );
-
-							}
-
 							//	Use the marker name from the resource_type record
 							$marker = $this->internal['currentRow']['marker_name'];
 
@@ -1055,7 +1043,21 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 				case '###RESOURCE_CONTENT###':
 
-						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $this->conf['resource_types'], $this->conf['resource_types.'] );
+					//	If resource type's type = '1' and querystring parameter is not null, inject the parameter into the querystring. Type = 1 means we're processing an extension/plugin
+					if( $this->internal['currentRow']['type_type']  == '1' && $this->internal['currentRow']['querystring_param']) {
+
+							//	Parse the table_uid string from record into the value for the querystring_param
+						list(,$queryStringVal) = array_values( $this->splitTableAndUID($this->internal['currentRow']['rendered_record'] ) );
+
+							//	Break apart our querystring_param from it's stored form of 'plugin[param]'
+						$queryString = split( "\[|\]", $this->internal['currentRow']['querystring_param'] );
+
+							//	Push the custom string onto the querystring.
+						t3lib_div::_GETset( t3lib_div::array_merge( $_GET, array( $queryString[0] => array( $queryString[1] => $queryStringVal) ) ) );
+
+					}
+
+					$markerArray[$key] = $this->local_cObj->cObjGetSingle( $this->conf['resource_types'], $this->conf['resource_types.'] );
 
 				break;
 
@@ -1063,7 +1065,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 					if( $row['type'] == '0' )
 						$row['type'] = 'default';
-						
+
 					//	If 'typolink' segment is defined, render a link as defined by 'typolink', otherwise render a link to the resources' single view
 					if( $lConf['tx_wecsermons_resources.']['resource_types.'][$row['type'].'.']['typolink'] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_resources' );
@@ -1364,13 +1366,18 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				break;
 
 				case '###BROWSE_LINKS###':
+					
+					//	Disable the counter within the results browser if we are producing a grouped list view.
+					//	TODO: Enable accurate counting of results in the results browser
+					if( $this->getConfigVal( $this, 'group_table', 'slistView', 'group_table', $lConf ) ) $lConf['showResultCount'] = 0;
 
 					$markerArray['###BROWSE_LINKS###'] = $this->pi_list_browseresults($lConf['showResultCount'], '', $lConf['browseBox_linkWraps.'] );
+			
 				break;
 
 				case '###BACK_LINK###':
 
-					//	If recordType is not set, retreive value or set it to sermons table. This is in case of hard linking to the single view instead of linking through the list view.
+					//	Retrieve the posted recordType from piVars. If unset, use tx_wecsermons_sermons as default. This is in case of hard linking to the single view improperly, instead of linking through the list view.
 					if( ! isset( $this->piVars['recordType'] ) ) $this->piVars['recordType'] = $this->getConfigVal( $this, 'detail_table', 'slistView', 'detail_table', $lConf, 'tx_wecsermons_sermons' );
 
 					$wrappedSubpartArray[$key] = explode(

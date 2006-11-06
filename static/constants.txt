@@ -1,6 +1,6 @@
 plugin.tx_wecsermons_pi1 {
 
-	# cat=plugin.tx_wecsermons_pi1/enable/1; type=boolean; label= Allow Caching: How many results are shown on each page.
+	# cat=plugin.tx_wecsermons_pi1/enable/1; type=boolean; label= Allow Caching: Whether or not pages containing the wec_sermons_pi1 plugin are cached. (Can greatly reduce responsiveness of these pages if set to 0!!)
 	allowCaching = 1
 
 	# cat=plugin.tx_wecsermons_pi1/enable/2; type=boolean; label= Use Storage Folder: Whether the SMS looks for records in the "General Storage Folder."
