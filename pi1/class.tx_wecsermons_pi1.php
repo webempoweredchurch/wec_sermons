@@ -963,12 +963,12 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 							$this->local_cObj->start( $this->internal['currentRow'] );
 
 							//	Use the marker name from the resource_type record
-							$marker = $this->internal['currentRow']['marker_name'];
+							$marker = $this->getMarkerName( $this->internal['currentRow']['marker_name'] );
 
 							//	If this resource is the default resource type, we use the subpart marker name from typoscript config
 							if( $this->internal['currentRow']['type'] == '0' ) {
 
-								$marker = $this->conf['defaultMarker'];
+								$marker = $this->getMarkerName( $this->conf['defaultMarker'] );
 
 								//	Change the 'type' to 'default' to the typoscript setting is more user friendly.
 								$this->internal['currentRow']['type'] = 'default';
@@ -1400,9 +1400,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				}	// End Switch
 
 			//	Hook  for processing extra markers
-			if( is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_wecsermons_pi1']['processMarker'] ) ) {
+			if( is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_wecsermons_pi1']['postProcessMarkers'] ) ) {
 
-				foreach( $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_wecsermons_pi1']['processMarker'] as $classRef ) {
+				foreach( $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_wecsermons_pi1']['postProcessMarkers'] as $classRef ) {
 
 					$processObject = &t3lib_div::getUserObj( $classRef, 'tx_' );
 
@@ -1746,11 +1746,24 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		// Make sure template is loaded into instance of our class
 		$this->loadTemplate();
 
-		//	Fix subpart name if TYPO tags were not inserted
-		$subpartName = strrpos( $subpartName, '###') ? strtoupper( $subpartName ) :  '###'.strtoupper( $subpartName ).'###';
+		//	Get corrected marker name, appending and prepending ### if necessary
+		$subpartName = $this->getMarkerName( $subpartName );
 
 		return $this->cObj->getSubpart( $content, $subpartName );
 
+	}
+	
+	/**
+	 * 
+	 *
+	 *
+	 *
+	 *
+	 */
+	 function getMarkerName( $markerName ) {
+	 	
+	 	//	Fix subpart name if TYPO tags were not inserted
+		return $markerName = strrpos( $markerName, '###') ? strtoupper( $markerName ) :  '###'.strtoupper( $markerName ).'###';
 	}
 
 	/**
@@ -1874,11 +1887,11 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 		//	Iterate every marker, setting the associated subpart to an empty string
 		while( $marker = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) )
-			$subpartArray[$marker['marker_name']] = '';
+			$subpartArray[$this->getMarkerName( $marker['marker_name'] )] = '';
 
 		//	Set the default resource type marker subpart to an empty string
-		$subpartArray[$this->conf['defaultMarker']] = '';
-
+		$subpartArray[$this->getMarkerName( $this->conf['defaultMarker'] )] = '';
+debug( $subpartArray ,1);
 	}
 
 	/**
