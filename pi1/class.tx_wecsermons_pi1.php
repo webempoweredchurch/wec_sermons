@@ -1891,7 +1891,6 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 		//	Set the default resource type marker subpart to an empty string
 		$subpartArray[$this->getMarkerName( $this->conf['defaultMarker'] )] = '';
-debug( $subpartArray ,1);
 	}
 
 	/**
