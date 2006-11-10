@@ -198,7 +198,9 @@ plugin.tx_wecsermons_pi1 {
 
 	}
 
+	# *****************
 	# Single view configuration
+	# *****************
 	singleView {
 
 		back = TEXT
@@ -223,6 +225,7 @@ plugin.tx_wecsermons_pi1 {
 			occurance_date {
 				strftime = %B %d, %Y
 				wrap = |<br/>
+				field = occurance_date
 			}
 
 			description = TEXT
@@ -332,10 +335,7 @@ plugin.tx_wecsermons_pi1 {
 
 			description = TEXT
 			description {
-				crop = 75| &nbsp;...|1
-				wrap = <p class='bodytext'>|</p>
-				stripHtml = 1
-				trim = 1
+				parseFunc < tt_content.text.20.parseFunc
 				field = description
 			}
 
@@ -970,8 +970,12 @@ div.tx-wecsermons-pi1-list1 { margin: 1em 0 1em; padding: 0 0 1em;}
 #tx-wecsermons-pi1-list2 td { background-color: #ACCCAB;}
 div.tx-wecsermons-sermon-description { text-align: justify; }
 div.tx-wecsermons-pi1-default dl {  margin-top: 0px; margin-bottom: 1em;}
-
 div.tx-wecsermons-pi1-flv div.tx-wecflashplayer-pi1 { float: left; }
+
+.tx-wecsermons-pi1-example p { border-bottom: 1px dashed #FFB5B5; }
+#tx-wecsermons-pi1-series-example { background-color: #C9FFC9; padding: .5em; }
+#tx-wecsermons-pi1-speakers-example { background-color: #FFBDBD; padding: .5em; }
+#tx-wecsermons-pi1-mp3-example { background-color: #FFFFBF; padding: .5em; }
 )
 # Example of how to overrule LOCAL_LANG values for the plugin:
 plugin.tx_wecsermons_pi1._LOCAL_LANG.default  {
