@@ -74,7 +74,7 @@ plugin.tx_wecsermons_pi1 {
 			
 			30 = TEXT
 			30.field = description
-			30.parseFunc < plugin.tx_wecsermons_pi1.general_stdWrap
+			30.parseFunc < plugin.tx_wecsermons_pi1.general_stdWrap.parseFunc
 			
 			wrap = <div class="tx-wecsermons-pi1-mp3">|</div>
 		}
@@ -98,7 +98,7 @@ plugin.tx_wecsermons_pi1 {
 
 			30 = TEXT
 			30.field = description
-			30.parseFunc < plugin.tx_wecsermons_pi1.general_stdWrap
+			30.parseFunc < plugin.tx_wecsermons_pi1.general_stdWrap.parseFunc
 			
 			wrap = <div class="tx-wecsermons-pi1-flv">|</div>
 		}
@@ -137,7 +137,7 @@ plugin.tx_wecsermons_pi1 {
 			
 			30 = TEXT
 			30.field = description
-			30.parseFunc < plugin.tx_wecsermons_pi1.general_stdWrap
+			30.parseFunc < plugin.tx_wecsermons_pi1.general_stdWrap.parseFunc
 			
 			wrap = <div class="tx-wecsermons-pi1-pdf">|</div>
 		}

@@ -90,8 +90,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		$this->pi_initPIflexForm(); // Init FlexForm configuration for plugin
 		$this->pi_setPiVarDefaults(); // Set default piVars from TS
 		$this->pi_loadLL();		// Loading the LOCAL_LANG values
-			
-			//	TODO: Determine if we need a layout code logic block or not
+
+		//	TODO: Determine if we need a layout code logic block or not
 		$this->internal['layoutCode'] = $this->getConfigVal( $this, 'layout', 'sDEF', 'layoutCode', $lConf, 1 );	//	Set layoutCode into internal storage
 		# Using $this->pi_isOnlyFields: this holds a comma-separated list of fieldnames which - if they are among the GETvars - will not disable caching for the page with pagebrowser.
 		$this->pi_isOnlyFields .= ",recordType";
@@ -113,13 +113,10 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		$this->local_cObj = t3lib_div::makeInstance('tslib_cObj'); // Local cObj.
 		$this->init($conf);
 
-
-#debug( $this->conf['listView.']['tx_wecsermons_resources.'] ,1);
-
 		//	First check if extension template was loaded by checking existence of resource_types configuration array
 		if( ! is_array( $this->conf['resource_types.'] ) ) {
 			return $this->throwError(
-				'WEC Sermons Error!',
+				'WEC Sermon Management System Error!',
 				'The extension template for WEC SMS was not loaded!',
 				'Please edit your template record and add the "WEC SMS" template to the "Include static (from extension)" field.'
 			);
@@ -196,7 +193,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					$this->internal['currentCode'] = 'SEARCH';
 					$content .= $this->searchView( $content, $this->conf['searchView.'] );
 					break;
-					
+
 				case 'LATEST':
 					$this->internal['currentCode'] = 'LATEST';
 					$content .= $this->latestView( $content, $this->conf['latestView.'] );
@@ -226,37 +223,37 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 */
 	function xmlView ($content, $lConf) {
 
-			//	Retrieve the number we want to limit our items to
+		//	Retrieve the number we want to limit our items to
 		$this->piVars['pointer']=0;
 		$this->internal['results_at_a_time'] = $lConf['results_at_a_time'];
 		$this->internal['descFlag'] = $lConf['descFlag'];
 
-			//	TODO: Modify code to allow other records to be shown. Right now we're assuming sermons only.
+		//	TODO: Modify code to allow other records to be shown. Right now we're assuming sermons only.
 
-			//	Get the related table entries to the group, using 'tx_wecsermons_sermons' if none specified
+		//	Get the related table entries to the group, using 'tx_wecsermons_sermons' if none specified
 		$tableToList = $this->getConfigVal( $this, 'detail_table', 'slistView', 'detail_table', $lConf, 'tx_wecsermons_sermons' );
 
-			//	Load the correct marker array and load the item template
+		//	Load the correct marker array and load the item template
 		$markerArray = $this->getMarkerArray( $tableToList );
 
-			//	TODO: Modify the date selection to include other tables and date fields
+		//	TODO: Modify the date selection to include other tables and date fields
 
-			//	If start or end date was set, then add this to the query WHERE clause.
+		//	If start or end date was set, then add this to the query WHERE clause.
 		$startDate = $this->getConfigVal( $this, 'startDate', 'slistView', 'startDate', $lConf );
 		$endDate = $this->getConfigVal( $this, 'endDate', 'slistView', 'endDate', $lConf );
 		$where = '';
 		$where .= $startDate ? ' AND occurance_date >= ' . $startDate : '';
 		$where .= $endDate ? ' AND occurance_date <= ' .  $endDate  : '';
 
-			// Make listing query, pass query to SQL database:
+		// Make listing query, pass query to SQL database:
 		$res = $this->pi_exec_query($tableToList,0,$where);
 
 		$sermons = array();
 		$content = '';
 
-			//	Iterate over the matching sermons.
-			//	Retrieve related resource information and update the data row
-			//	Retrieve the first speaker and update data row
+		//	Iterate over the matching sermons.
+		//	Retrieve related resource information and update the data row
+		//	Retrieve the first speaker and update data row
 		while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) ) {
 
 			//	Retreive the array of related resources to this sermon record
@@ -264,18 +261,18 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 			foreach( $resources as $resource ) {
 
-					//	If the resource is the type allowed as an enclosure in this view, then calculate the url and size.
+				//	If the resource is the type allowed as an enclosure in this view, then calculate the url and size.
 				if( $resource['type'] == $lConf['enclosureType'] ) {
 
-						//	Retrieve a typolink conf that tells us how to render the link to the resource. Must be provided by admin!
+					//	Retrieve a typolink conf that tells us how to render the link to the resource. Must be provided by admin!
 					$this->local_cObj->start($resource);
 					$typolinkConf = $this->conf['resource_types.'][$resource['type'].'.']['typolink.'];
 
-						//	Render the relative and absolute paths to the file
+					//	Render the relative and absolute paths to the file
 					$relPath =  $this->local_cObj->typolink_URL( $typolinkConf );
 					$absPath = PATH_site . $relPath;
 
-						//	Retrieve file info for the file.
+					//	Retrieve file info for the file.
 					$fileInfo = t3lib_basicFileFunctions::getTotalFileInfo( $absPath );
 
 					$row['size'] = $fileInfo['size'];
@@ -323,9 +320,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		if( ! t3lib_div::inList( $this->conf['allowedTables'], $this->internal['currentTable']  ) ) {
 
 			return $this->throwError(
-				'WEC Sermons Error!',
+				'WEC Sermon Management System Error!',
 				'Row from requested table was not listed in the "allowedTables" typoscript configuration.',
-				'Requested Table: ' . $this->internal['currentTable']  . '. allowedTables: ' . $this->conf['allowedTables'] 
+				'Requested Table: ' . $this->internal['currentTable']  . '. allowedTables: ' . $this->conf['allowedTables']
 			);
 
 		}
@@ -334,25 +331,24 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		if( ! t3lib_div::testInt( $this->piVars['showUid'] ) ) {
 
 			return $this->throwError(
-				'WEC Sermons Error!',
+				'WEC Sermon Management System Error!',
 				'UID for requested resource was not valid.'.
-				'Requested UID: ' . $this->piVars['showUid'] 
+				'Requested UID: ' . $this->piVars['showUid']
 			);
 
 		}
 
-			//	Retrieve the template key, which is the translation between the real table name and the template naming.
-			//	Branch between resource templates and other templates
-		if( $this->internal['currentTable'] == 'tx_wecsermons_resources' ) {
+		//	Branch between processing resource records and other records
+		if( $this->internal['currentTable'] == 'tx_wecsermons_resources' ) {	// If current table is resources
 
-				//	TODO: allow specification of what record to draw from TypoScript
-			$resource = $this->getResources( '' , $this->piVars['showUid'] ) ;
+			//	TODO: allow specification of what record to draw from TypoScript
+			$resource = $this->getResources( '' , $this->piVars['showUid'] );
 
 			$this->internal['currentRow'] = $resource[0];
 
 			//	Retreive the template name from the resource
 			$templateName = $this->internal['currentRow']['template_name'];
-			if( $this->internal['currentRow']['type'] == '0' ) 
+			if( $this->internal['currentRow']['type'] == '0' )
 				$templateName = $this->conf['defaultTemplate'];
 
 			$this->loadTemplate();
@@ -361,24 +357,40 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			if(! $this->template['single'] ) {
 
 					return $this->throwError(
-						'WEC Sermons Error!',
+						'WEC Sermon Management System Error!',
 						'Unable to retrieve content for specified template.',
 						'Requested Template: ' . $templateName
 					 );
 			}
+			
+			//	Process sermon & related markers
+
+			//	Store the current table and row while we switch to another table for a moment
+			$previousTable = $this->internal['currentTable'];
+			$this->internal['currentTable'] = 'tx_wecsermons_sermons';
+			$previousRow = $this->internal['currentRow'];
+			
+			$this->internal['currentRow'] = $this->pi_getRecord($this->internal['currentTable'],$this->piVars['sermonUid']);
+			$this->template['single'] = $this->pi_list_row( $lConf, $this->getMarkerArray('tx_wecsermons_sermons'), $this->template['single'], $this->internal['currentRow'] );
+
+			//	Restore the previous table and row
+			$this->internal['currentTable'] = $previousTable;
+			$this->internal['currentRow'] = $previousRow;			
+
 		}
 		else {
+
+			//	Retrieve the template key, which is the translation between the real table name and the template naming.
 			$templateKey = $this->getTemplateKey( $this->internal['currentTable'] );
 			$this->template['single'] = $this->getNamedTemplateContent( $templateKey );
 
-				//	TODO: allow specification of what record to draw from TypoScript
+			//	TODO: allow specification of what record to draw from TypoScript
 			$this->internal['currentRow'] = $this->pi_getRecord($this->piVars['recordType'],$this->piVars['showUid']);
-
-				//	Report an error if we couldn't pull up the template.
+			//	Report an error if we couldn't pull up the template.
 			if(! $this->template['single'] ) {
 
 					return $this->throwError(
-						'WEC Sermons Error!',
+						'WEC Sermon Management System Error!',
 						'Unable to retrieve content for specified template.',
 						sprintf (
 							'Requested Template: ###TEMPLATE_%s_%s%s###',
@@ -389,26 +401,26 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					 );
 			}
 
-		// This changes the title of the page to reflect the title of the record we're viewing, and sets the title of the page for use in indexed search results:
-		if ($this->internal['currentRow']['title'])  {
-			$GLOBALS['TSFE']->indexedDocTitle=$this->internal['currentRow']['title'];
-			$GLOBALS['TSFE']->page['title']=$this->internal['currentRow']['title'];
-		}
 		}
 
+		// This appends the title of the record we're viewing to the HTML TITLE tag, for improved searching
+		if ($this->internal['currentRow']['title'])  {
+			$GLOBALS['TSFE']->indexedDocTitle .= ' : ' .$this->internal['currentRow']['title'];
+			$GLOBALS['TSFE']->page['title'] .= ' : ' .$this->internal['currentRow']['title'];
+		}
 
 		$this->template['content'] = $this->cObj->getSubpart( $this->template['single'], '###CONTENT###' );
 
-			//	Retrieve the markerArray for the right table
+		//	Retrieve the markerArray for the right table
 		$markerArray = $this->getMarkerArray( $this->internal['currentTable'] );
 
-			//	Process row
+		//	Process row
 		$content .= $this->cObj->substituteSubpart( $this->template['single'], '###CONTENT###', $this->pi_list_row($lConf, $markerArray, $this->template['content'], $this->internal['currentRow'] ) );
 
-			//	Parse for additional markers. Browse results, etc.
+		//	Parse for additional markers. Browse results, etc.
 		$markerArray = $this->getMarkerArray();
 
-			//	Call pi_list_row to substitute last markers and return results
+		//	Call pi_list_row to substitute last markers and return results
 		return $this->pi_list_row( $lConf, $markerArray, $content );
 
 	}
@@ -445,7 +457,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 		$markerArray['###SEARCH_BUTTON_NAME###'] = $this->pi_getLL('pi_list_searchBox_search');
 
-			//	Find the PID that we should post form data to
+		//	Find the PID that we should post form data to
 		$pid = $this->getConfigVal( $this, '', '', 'pidSearchView', $this->conf, $GLOBALS['TSFE']->id );
 
 		$markerArray['###FORM_ACTION###'] = $this->cObj->typolink_URL( array( 'parameter' => $pid ) );
@@ -493,11 +505,11 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 		} else {	//	Otherwise continue with list view
 
-				//	Intialize query params if not set
+			//	Intialize query params if not set
 			if (!isset($this->piVars['pointer']))	$this->piVars['pointer']=0;
 			if( !isset( $this->piVars['recordType'] ) ) $this->piVars['recordType'] = $this->getConfigVal( $this, 'detail_table', 'slistView', 'detail_table', $lConf, 'tx_wecsermons_sermons' );
 
-				// Initialize some query parameters, and internal variables
+			// Initialize some query parameters, and internal variables
 			list($this->internal['orderBy'],$this->internal['descFlag']) = explode(':',$this->piVars['sort']);
 			$this->internal['results_at_a_time']=t3lib_div::intInRange($lConf['results_at_a_time'],0,1000,20);		// Number of results to show in a listing.
 			$this->internal['maxPages']=t3lib_div::intInRange($lConf['maxPages'],0,1000,5);;		// The maximum number of "pages" in the browse-box: "Page 1", "Page 2", etc.
@@ -517,10 +529,10 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 /*	This commented section will enable us to search through multiple tables to perform deeper searches in the future
 
-				//	Check if selected table is in list of allowed tables, throw error if necessary
+			//	Check if selected table is in list of allowed tables, throw error if necessary
 			if($this->piVars['sword_table'] && ! t3lib_div::inList( $this->conf['searchView.']['searchTables'], trim( $this->piVars['sword_table'] ) ) ) {
 				return $this->throwError(
-					'WEC Sermons Error',
+					'WEC Sermon Management System Error',
 					"The table name '" . $this->piVars['sword_table'] . "' was not in the allowed list of tables: '" . $this->conf['searchView.']['searchTables'],
 					"Please check the TypoScript configuration for the setting of 'searchView.searchTables'"
 				);
@@ -531,14 +543,14 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$this->internal['searchFieldList']=$this->conf['searchView.']['searchFieldArray.'][$this->internal['sword_table'].'.']['searchFieldList'];
 
 
-				//	Load the template file. By default, this populates the $this->template array with the list template from ###TEMPLATE_LIST{layoutCode}###
+			//	Load the template file. By default, this populates the $this->template array with the list template from ###TEMPLATE_LIST{layoutCode}###
 			$this->loadTemplate();
 
-				//	Report an error if we couldn't pull up the template.
+			//	Report an error if we couldn't pull up the template.
 			if(! $this->template['list'] ) {
 
 				return $this->throwError(
-					'WEC Sermons Error!',
+					'WEC Sermon Management System Error!',
 					'Unable to retrieve content for specified template.',
 					sprintf (
 							'Requested Template: ###TEMPLATE_LIST%s###
@@ -554,10 +566,10 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 			$content = $this->cObj->substituteSubpart( $this->template['list'], '###CONTENT###', $this->pi_list_makelist($lConf, $this->template['content'] ) );
 
-				//	Parse for additional markers. Browse results, etc.
+			//	Parse for additional markers. Browse results, etc.
 			$markerArray = $this->getMarkerArray();
 
-				//	Call pi_list_row to substitute last markers and return results
+			//	Call pi_list_row to substitute last markers and return results
 			return $this->pi_list_row( $lConf, $markerArray, $content );
 		}
 	}
@@ -588,11 +600,11 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$this->internal['orderBy']=$lConf[$groupTable.'.']['orderBy'];
 			$this->internal['descFlag']=$lConf[$groupTable.'.']['descFlag'];
 
-				//Run a series of checks before branching to grouping logic, return error if necessary
+			//Run a series of checks before branching to grouping logic, return error if necessary
 			if( $groupTable == '' || ! $this->template['group'] ) {
 
 				return $this->throwError(
-					'WEC Sermons Error!',
+					'WEC Sermon Management System Error!',
 					'"group_table" option was specified, but no ###GROUP### tag was found in the template.',
 					'Specified Template file: ' . $this->internal['templateFile']
 				);
@@ -601,9 +613,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 			//	Check if group_table is in list of allowed tables
 			if( ! t3lib_div::inList( $this->conf['allowedTables'], $groupTable ) ) {
-				
+
 				return $this->throwError(
-					'WEC Sermons Error!',
+					'WEC Sermon Management System Error!',
 					'Table specified in "Group By" option, ['.$groupTable.'], is not in the list of allowed tables specified in TypoScript configuration: plugin.tx_wecsermons_pi1.allowedTables',
 					'Allowed tables:'.$this->conf['allowedTables']
 				);
@@ -612,8 +624,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			//	Check if detail_table is in list of allowed tables
 			if( ! t3lib_div::inList( $this->conf['allowedTables'], $detailTable ) ) {
 
-				return $this->throwError( 
-					'WEC Sermons Error!',
+				return $this->throwError(
+					'WEC Sermon Management System Error!',
 					'Table specified in "Detail" option, ['.$detailTable.'], is not in the list of allowed tables specified in TypoScript configuration: plugin.tx_wecsermons_pi1.allowedTables',
 					'Allowed tables: '.$this->conf['allowedTables']
 				);
@@ -627,32 +639,32 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$this->internal['currentTable'] = $this->internal['groupTable'] = $groupTable;
 
 			$res = $this->pi_exec_query($groupTable);
-				//	Search TCA for relation to previous table where columns.[colName].config.foreign_table = $this->internal['groupTable']
+			//	Search TCA for relation to previous table where columns.[colName].config.foreign_table = $this->internal['groupTable']
 			$foreign_column = $this->get_foreign_column( $detailTable, $this->internal['groupTable'] );
 
 			if( ! $foreign_column ) {
 
-				return $this->throwError( 
-					'WEC Sermons Error!',
+				return $this->throwError(
+					'WEC Sermon Management System Error!',
 					'The "Group By" option was specified, but was no relation was found to the table specified in "Detail"',
 					'Detail: '.$detailTable. ' Group:'.$this->internal['groupTable']
 				);
 
 			}
-				//	Retreive marker array and template for the detail table
+			//	Retreive marker array and template for the detail table
 			$detailMarkArray = $this->getMarkerArray( $detailTable );
 			$detailTemplate = $this->template['item'] = $this->getNamedSubpart( 'ITEM', $template );
-			
+
 			//	Counter for number of sermons shown on a 'page'
 			$detailCount = 0;
 
-				//	Iterate every record in groupTable
+			//	Iterate every record in groupTable
 			while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) ) {
 
-					//	Process the current row
+				//	Process the current row
 				$groupContent .= $this->pi_list_row( $lConf, $markerArray, $groupTemplate, $this->internal['currentRow'] );
 
-					//	Store previous row, table and order by as we switch to retreiving detail
+				//	Store previous row, table and order by as we switch to retreiving detail
 				$this->internal['previousRow'] = $this->internal['currentRow'];
 				$this->internal['previousTable'] = $this->internal['currentTable'];
 				$this->internal['currentTable'] = $detailTable;
@@ -663,7 +675,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				$this->internal['orderBy']=$lConf[$detailTable.'.']['orderBy'];
 				$this->internal['descFlag']=$lConf[$detailTable.'.']['descFlag'];
 
-					//	Exec query on detail table, for every record related to our group record
+				//	Exec query on detail table, for every record related to our group record
 				$detailRes = $this->pi_exec_query( $detailTable, 0, ' AND ' . $foreign_column . ' in (' . $this->internal['previousRow']['uid'] . ')' );
 
 				while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $detailRes ) ) {
@@ -678,7 +690,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				$this->internal['orderBy'] = $this->internal['previousOrderBy'];
 				$this->internal['descFlag'] = $this->internal['previousdescFlag'];
 
-					//	Aggregate groupContent into content if detail records exist.
+				//	Aggregate groupContent into content if detail records exist.
 				if( $detailCount > 0 )
 					$content .= $groupContent;
 
@@ -688,28 +700,28 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		}	//	End if group
 		else {	//	No group found, just provide a straight list
 
-				//	Get the related table entries to the group, using 'tx_wecsermons_sermons' if none specified
+			//	Get the related table entries to the group, using 'tx_wecsermons_sermons' if none specified
 			$tableToList = $this->getConfigVal( $this, 'detail_table', 'slistView', 'detail_table', $lConf, 'tx_wecsermons_sermons' );
 
-				//	Load the correct marker array and load the item template
+			//	Load the correct marker array and load the item template
 			$markerArray = $this->getMarkerArray( $tableToList );
 			$itemTemplate = $this->cObj->getSubpart( $template, '###ITEM###' );
 			$this->internal['currentTable'] = $this->internal['groupTable'] = 'tx_wecsermons_series';
 
-				//	TODO: Modify the date selection to include other tables and date fields
+			//	TODO: Modify the date selection to include other tables and date fields
 
-				//	If start or end date was set, then add this to the query WHERE clause.
+			//	If start or end date was set, then add this to the query WHERE clause.
 			$startDate = $this->getConfigVal( $this, 'startDate', 'slistView', 'startDate', $lConf );
 			$endDate = $this->getConfigVal( $this, 'endDate', 'slistView', 'endDate', $lConf );
 			$where = '';
 			$where .= $startDate ? ' AND occurance_date >= ' . $startDate : '';	//	$GLOBALS['TYPO3_DB']->fullQuoteStr( strftime( '%m-%d-%y', $startDate ), $tableToList ) : '';
 			$where .= $endDate ? ' AND occurance_date <= ' .  $endDate  : '';
 
-				// Get number of records:
+			// Get number of records:
 			$res = $this->pi_exec_query($tableToList,1, $where);
 			list($this->internal['res_count']) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 
-				// Make listing query, pass query to SQL database:
+			// Make listing query, pass query to SQL database:
 			$res = $this->pi_exec_query($tableToList,0,$where);
 
 			$count = 1;
@@ -740,8 +752,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		$wrappedSubpartArray = array();
 		$subpartArray = array();
 
-			//	Using passed markerArray, process each key and insert field content
-			//	The reason we are have this looping structure is for future off-loading of this logic
+		//	Using passed markerArray, process each key and insert field content
+		//	The reason we are have this looping structure is for future off-loading of this logic
 		foreach( $markerArray as $key => $value ) {
 
 				$fieldName = $value;
@@ -761,7 +773,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				case '###SERMON_OCCURANCE_DATE###':
 					if( $row[$fieldName] )
 					{
-							//	Wrap the date, choosing from one of three settings in typoscript
+						//	Wrap the date, choosing from one of three settings in typoscript
 						$dateWrap = $lConf['tx_wecsermons_sermons.']['occurance_date.'] ? $lConf['tx_wecsermons_sermons.']['occurance_date.'] : $lConf['general_dateWrap.'];
 						if( ! $dateWrap ) $dateWrap = $this->conf['general_dateWrap.'];
 
@@ -818,7 +830,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						$seriesMarkerArray = $this->getMarkerArray('tx_wecsermons_series');
 						$seriesContent = '';
 
-							//	Store the current table and row while we switch to another table for a moment
+						//	Store the current table and row while we switch to another table for a moment
 						$this->internal['previousTable'] = $this->internal['currentTable'];
 						$this->internal['currentTable'] = 'tx_wecsermons_series';
 						$this->internal['previousRow'] = $this->internal['currentRow'];
@@ -832,16 +844,16 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 						$count = 0;
 						while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $seriesRes ) ) {
-								//	Recursive call to $this->pi_list_row() to populate each series marker
+							//	Recursive call to $this->pi_list_row() to populate each series marker
 							$seriesContent .= $this->pi_list_row( $lConf, $seriesMarkerArray, $seriesTemplate, $this->internal['currentRow'] );
 							$count++;
 						}
 
-						//	Restore the preview table and row
+					//	Restore the previous table and row
 					$this->internal['currentTable'] = $this->internal['previousTable'];
 					$this->internal['currentRow'] = $this->internal['previousRow'];
 
-					//	Replace marker content with subpart, wrapping stdWrap
+						//	Replace marker content with subpart, wrapping stdWrap
 						if( $count > 0 )
 							$subpartArray[$key] = $this->cObj->stdWrap( $seriesContent, $lConf['tx_wecsermons_sermons.']['series.'] );
 
@@ -854,17 +866,17 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					$subpartArray[$key] = '';
 					if( $row[$fieldName] ) {
 
-							//	Get the speakers subpart
+						//	Get the speakers subpart
 						$speakerTemplate = $this->cObj->getSubpart( $rowTemplate, $key );
 						$speakerMarkerArray = $this->getMarkerArray('tx_wecsermons_speakers');
 						$speakerContent = '';
 
-							//	Store the current table and row while we switch to another table for a moment
+						//	Store the current table and row while we switch to another table for a moment
 						$this->internal['previousTable'] = $this->internal['currentTable'];
 						$this->internal['currentTable'] = 'tx_wecsermons_speakers';
 						$this->internal['previousRow'] = $this->internal['currentRow'];
 
-							//	Retrieve all speaker records that are related to this sermon
+						//	Retrieve all speaker records that are related to this sermon
 						$speakerRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 							'tx_wecsermons_speakers.*',
 							'tx_wecsermons_speakers',
@@ -874,16 +886,16 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						$count = 0;
 						while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $speakerRes ) ) {
 
-								//	Recursive call to $this->pi_list_row() to populate each speaker marker
+							//	Recursive call to $this->pi_list_row() to populate each speaker marker
 							$speakerContent .= $this->pi_list_row( $lConf, $speakerMarkerArray, $speakerTemplate, $this->internal['currentRow'] );
 							$count++;
 						}
 
-							//	Restore the preview table and row
+						//	Restore the previous table and row
 						$this->internal['currentTable'] = $this->internal['previousTable'];
 						$this->internal['currentRow'] = $this->internal['previousRow'];
 
-							//	Replace marker content with subpart, wrapping stdWrap
+						//	Replace marker content with subpart, wrapping stdWrap
 						if( $count > 0 )
 							$subpartArray[$key] = $this->cObj->stdWrap( $speakerContent, $lConf['tx_wecsermons_sermons.']['speakers.'] );
 
@@ -896,12 +908,12 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 					if( $row[$fieldName] ) {
 
-							//	Load the topics subpart
+						//	Load the topics subpart
 						$topicTemplate = $this->cObj->getSubpart( $rowTemplate, $key );
 						$topicMarkerArray = $this->getMarkerArray('tx_wecsermons_topics');
 						$topicContent = '';
 
-							//	Store the current table and row while we switch to another table for a moment
+						//	Store the current table and row while we switch to another table for a moment
 						$this->internal['previousTable'] = $this->internal['currentTable'];
 						$this->internal['currentTable'] = 'tx_wecsermons_topics';
 						$this->internal['previousRow'] = $this->internal['currentRow'];
@@ -915,16 +927,16 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						$count = 0;
 						while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $topicRes ) ) {
 
-								//	Recursive call to $this->pi_list_row() to populate each topic marker
+							//	Recursive call to $this->pi_list_row() to populate each topic marker
 							$topicContent .= $this->pi_list_row( $lConf, $topicMarkerArray, $topicTemplate, $this->internal['currentRow'] );
 							$count++;
 						}
 
-							//	Restore the preview table and row
+						//	Restore the previous table and row
 						$this->internal['currentTable'] = $this->internal['previousTable'];
 						$this->internal['currentRow'] = $this->internal['previousRow'];
 
-							//	Replace marker content with subpart
+						//	Replace marker content with subpart
 						if( $count > 0 )
 							$subpartArray[$key] = $this->cObj->stdWrap( $topicContent, $lConf['tx_wecsermons_sermons.']['topics.'] );
 
@@ -937,7 +949,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					$marker = '';
 					$markerArray[$key] = '';
 
-						//	Find all the possible markers and set to empty string.
+					//	Find all the possible markers and set to empty string.
 					$this->emptyResourceSubparts( $subpartArray );
 
 					if( $row[$fieldName] ) {
@@ -948,13 +960,13 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 						$resourceMarkerArray = $this->getMarkerArray('tx_wecsermons_resources');
 
-							//	Store the current table and row while we switch to another table for a moment
+						//	Store the current table and row while we switch to another table for a moment
 						$this->internal['previousTable'] = $this->internal['currentTable'];
 						$this->internal['currentTable'] = 'tx_wecsermons_resources';
 						$this->internal['previousRow'] = $this->internal['currentRow'];
 
 
-							//	Retrieve related resources to this sermon
+						//	Retrieve related resources to this sermon
 						$resources = $this->getResources( $row['uid'] );
 
 						foreach( $resources as $resource ) {
@@ -983,7 +995,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 						}
 
-						//	Restore the preview table and row
+						//	Restore the previous table and row
 						$this->internal['currentTable'] = $this->internal['previousTable'];
 						$this->internal['currentRow'] = $this->internal['previousRow'];
 
@@ -996,7 +1008,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						$this->local_cObj->start( $row, 'tx_wecsermons_resources' );
 						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_resources.']['title'], $lConf['tx_wecsermons_resources.']['title.'] );
 					}
-					
+
 				break;
 
 				case '###RESOURCE_DESCRIPTION###':
@@ -1046,13 +1058,13 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					//	If resource type's type = '1' and querystring parameter is not null, inject the parameter into the querystring. Type = 1 means we're processing an extension/plugin
 					if( $this->internal['currentRow']['type_type']  == '1' && $this->internal['currentRow']['querystring_param']) {
 
-							//	Parse the table_uid string from record into the value for the querystring_param
+						//	Parse the table_uid string from record into the value for the querystring_param
 						list(,$queryStringVal) = array_values( $this->splitTableAndUID($this->internal['currentRow']['rendered_record'] ) );
 
-							//	Break apart our querystring_param from it's stored form of 'plugin[param]'
+						//	Break apart our querystring_param from it's stored form of 'plugin[param]'
 						$queryString = split( "\[|\]", $this->internal['currentRow']['querystring_param'] );
 
-							//	Push the custom string onto the querystring.
+						//	Push the custom string onto the querystring.
 						t3lib_div::_GETset( t3lib_div::array_merge( $_GET, array( $queryString[0] => array( $queryString[1] => $queryStringVal) ) ) );
 
 					}
@@ -1083,6 +1095,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 								$this->conf['allowCaching'],
 								array(
 									'recordType' => 'tx_wecsermons_resources',
+									'sermonUid' => $this->internal['previousRow']['uid'], 
 								),
 								FALSE,
 								$this->conf['pidSingleView'] ? $this->conf['pidSingleView']:0
@@ -1175,7 +1188,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 							$count++;
 						}
 
-						//	Restore the preview table and row
+						//	Restore the previous table and row
 						$this->internal['currentTable'] = $this->internal['previousTable'];
 						$this->internal['currentRow'] = $this->internal['previousRow'];
 
@@ -1218,7 +1231,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 							$count++;
 						}
 
-						//	Restore the preview table and row
+						//	Restore the previous table and row
 						$this->internal['currentTable'] = $this->internal['previousTable'];
 						$this->internal['currentRow'] = $this->internal['previousRow'];
 
@@ -1366,13 +1379,13 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				break;
 
 				case '###BROWSE_LINKS###':
-					
+
 					//	Disable the counter within the results browser if we are producing a grouped list view.
 					//	TODO: Enable accurate counting of results in the results browser
 					if( $this->getConfigVal( $this, 'group_table', 'slistView', 'group_table', $lConf ) ) $lConf['showResultCount'] = 0;
 
 					$markerArray['###BROWSE_LINKS###'] = $this->pi_list_browseresults($lConf['showResultCount'], '', $lConf['browseBox_linkWraps.'] );
-			
+
 				break;
 
 				case '###BACK_LINK###':
@@ -1449,13 +1462,13 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 				'###SERMON_OCCURANCE_DATE###' => 'occurance_date',
 	 				'###SERMON_DESCRIPTION###' => 'description',
 	 				'###SERMON_SCRIPTURE###' => 'scripture',
-	 				'###SERMON_TOPICS###' => 'topics_uid',
-	 				'###SERMON_SERIES###' => 'series_uid',
-	 				'###SERMON_SPEAKERS###' => 'speakers_uid',
 					'###SERMON_GRAPHIC###' => 'graphic',
 					'###SERMON_LINK###' => '',
 					'###ALTERNATING_CLASS###' => '',
-	 				'###SERMON_RESOURCES###' => 'resources_uid',		//	Only included to kick off the processing of resources. Resource markers are defined in the resource_type records or resource record if of type 'plugin'
+					'###SERMON_TOPICS###' => 'topics_uid',
+					'###SERMON_SERIES###' => 'series_uid',
+					'###SERMON_SPEAKERS###' => 'speakers_uid',
+					'###SERMON_RESOURCES###' => 'resources_uid',		//	Only included to kick off the processing of resources. Resource markers are defined in the resource_type records or resource record if of type 'plugin'
 	 			);
 
 /*
@@ -1517,6 +1530,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 	 		case 'tx_wecsermons_speakers':
 	 			$markerArray = array (
+	 				'###SPEAKER_FULLNAME###' => 'fullname',
 					'###SPEAKER_FIRSTNAME###' => 'firstname',
 					'###SPEAKER_LASTNAME###' => 'lastname',
 					'###SPEAKER_EMAIL###' => 'email',
@@ -1752,16 +1766,16 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		return $this->cObj->getSubpart( $content, $subpartName );
 
 	}
-	
+
 	/**
-	 * 
+	 *
 	 *
 	 *
 	 *
 	 *
 	 */
 	 function getMarkerName( $markerName ) {
-	 	
+
 	 	//	Fix subpart name if TYPO tags were not inserted
 		return $markerName = strrpos( $markerName, '###') ? strtoupper( $markerName ) :  '###'.strtoupper( $markerName ).'###';
 	}
@@ -2007,11 +2021,11 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		$ttlString = '';
 		for( $i =0; $i < $max; $i++ )  {
 			$ttlString .=func_get_arg($i) .  ',';
-	
+
 		}
 		return implode(',', array_unique( t3lib_div::trimExplode(',', $ttlString, 1) ) );
 	}
-	
+
 	/**
 	 * unique_array: Given any number of single dimensional arrays, this function combines the arrays, returning an array without duplicate values.
 	 *
@@ -2022,12 +2036,12 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		$ttlString = '';
 		for( $i =0; $i < $max; $i++ )  {
 			$ttlString .=func_get_arg($i) .  ',';
-	
+
 		}
 		return array_unique( t3lib_div::trimExplode(',', $ttlString, 1) ) ;
-	
+
 	}
-	
+
 	/**
 	 * get_foreign_column: Searches through the TCA array of the current table name for a related table, returning the column name used to create the relation.
 	 *
@@ -2036,20 +2050,20 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 * @return	string		The column name that relates currentTable to relatedTable. Returns null if no relation is found.
 	 */
 	function get_foreign_column( $currentTable, $relatedTable ) {
-	
+
 		//	Load up the tca for given table
 		$GLOBALS['TSFE']->includeTCA($TCAloaded = 1);
 		t3lib_div::loadTCA( $currentTable );
-	
+
 		foreach( $GLOBALS['TCA'][$currentTable]['columns'] as $columnName => $value ) {
 				if( $value['config']['foreign_table'] == $relatedTable || $value['config']['allowed'] == $relatedTable )
 					return $columnName;
 		}
-	
+
 		return '';
-	
+
 	}
-	
+
 	/**
 	 * getConfigVal: Return the value from either plugin flexform, typoscript, or default value, in that order
 	 *
@@ -2062,18 +2076,18 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 * @return	mixed		Configuration value found in any config, or default
 	 */
 	function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default = '' ) {
-	
+
 		//	Retrieve values stored in flexform and typoscript
 		$ffValue = $Obj->pi_getFFvalue($Obj->cObj->data['pi_flexform'], $ffField, $ffSheet);
 		$tsValue = $lConf[$TSfieldname];
-	
+
 		//	Use flexform value if present, otherwise typoscript value
 		$retVal = $ffValue ? $ffValue : $tsValue;
-	
-			//	Return value if found, otherwise default
+
+		//	Return value if found, otherwise default
 		return $retVal ? $retVal : $default;
 	}
-	
+
 	/**
 	 * splitTableAndUID: Helper function that splits a table name and uid from the format stored by the TYPO3 backend, returning the values in an array. Format: 'tablename_uid'
 	 *
@@ -2084,7 +2098,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		$break = strrpos($record, "_");
 		$uid = substr($record, $break+1);
 		$table = substr($record, 0, $break);
-	
+
 		return array("table" => $table, "uid" => $uid);
 	}
 
