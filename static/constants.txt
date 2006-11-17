@@ -15,9 +15,27 @@ plugin.tx_wecsermons_pi1 {
 	# cat=plugin.tx_wecsermons_pi1/file/1; type=file[html,htm,tmpl,txt]; label= Template File: HTML template file for display of a List View.
 	file.templateFile = EXT:wec_sermons/pi1/wecsermons.tmpl
 	
-	# cat=plugin.tx_wecsermons_pi1/typo/2; type=text; label= List View - Alternating class: string appended to the end of the alternating class, appearing as tx-wecsermons-pi1-{string}
+	# cat=plugin.tx_wecsermons_pi1/typo/1; type=text; label= List View - Alternating class: string appended to the end of the alternating class, appearing as tx-wecsermons-pi1-{string}
 	listView.alternatingClass = tx-wecsermons-pi1-list-odd
 	
+	# cat=plugin.tx_wecsermons_pi1/typo/2; type=text; label= Header for Related Topics: The text header added before the list of topics, if related to other records
+	topicsHeader = 
+
+	# cat=plugin.tx_wecsermons_pi1/typo/3; type=text; label= Header for Related Season: The text header added before the season, if related to other records
+	seasonHeader = 
+
+	# cat=plugin.tx_wecsermons_pi1/typo/4; type=text; label= Header for Related Series: The text header added before the list of series, if related to other records
+	seriesHeader = 
+
+	# cat=plugin.tx_wecsermons_pi1/typo/5; type=text; label= Header for Series Start Date: The text header added before the start date of a series
+	seriesStartDateHeader = 
+
+	# cat=plugin.tx_wecsermons_pi1/typo/6; type=text; label= Header for Series End Date: The text header added before the end date list of series
+	seriesEndDateHeader = 
+
+	# cat=plugin.tx_wecsermons_pi1/typo/7; type=text; label= Header for Related: The text header added before the list of speakers, if related to other records
+	speakersHeader = 
+
 	# cat=plugin.tx_wecsermons_pi1/links/1; type=int+; label= Single View - Single PID: The UID of the page where the Single View is displayed. (If you set this, you should also set pidListView!)
 	pidSingleView = 
 

@@ -96,7 +96,6 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		# Using $this->pi_isOnlyFields: this holds a comma-separated list of fieldnames which - if they are among the GETvars - will not disable caching for the page with pagebrowser.
 		$this->pi_isOnlyFields .= ",recordType";
 
-
 	}
 
 	/**
@@ -404,9 +403,11 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		}
 
 		// This appends the title of the record we're viewing to the HTML TITLE tag, for improved searching
-		if ($this->internal['currentRow']['title'])  {
-			$GLOBALS['TSFE']->indexedDocTitle .= ' : ' .$this->internal['currentRow']['title'];
-			$GLOBALS['TSFE']->page['title'] .= ' : ' .$this->internal['currentRow']['title'];
+		
+		$field = $GLOBALS['TCA'][$this->internal['currentTable']]['ctrl']['label'];
+		if ($field)  {
+			$GLOBALS['TSFE']->indexedDocTitle .= ' : ' .$this->internal['currentRow'][$field];
+			$GLOBALS['TSFE']->page['title'] .= ' : ' .$this->internal['currentRow'][$field];
 		}
 
 		$this->template['content'] = $this->cObj->getSubpart( $this->template['single'], '###CONTENT###' );
@@ -1300,6 +1301,14 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						$this->local_cObj->start( $row, 'tx_wecsermons_seasons' );
 						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_seasons.']['title'], $lConf['tx_wecsermons_seasons.']['title.'] );
 
+					}
+
+				break;
+
+				case '###SPEAKER_FULLNAME###':
+					if( $row[$fieldName] ) {
+						$this->local_cObj->start( $row, 'tx_wecsermons_speakers' );
+						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_speakers.']['fullname'], $lConf['tx_wecsermons_speakers.']['fullname.'] );
 					}
 
 				break;

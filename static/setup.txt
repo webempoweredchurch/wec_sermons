@@ -216,7 +216,6 @@ plugin.tx_wecsermons_pi1 {
 			title = TEXT
 			title {
 				wrap = |
-				parseFunc < plugin.tx_wecsermons_pi1.general_stdWrap.parseFunc
 				field = title
 			}
 
@@ -236,7 +235,13 @@ plugin.tx_wecsermons_pi1 {
 
 			scripture = TEXT
 			scripture {
-				wrap = |<br/>
+				typolink {
+					parameter = http://www.biblegateway.com/passage/?search={current:1}&version=31;&interface=print
+					parameter.setCurrent.field = scripture
+					parameter.setCurrent.rawUrlEncode = 1
+					parameter.insertData = 1
+					extTarget = _blank
+				}
 				field = scripture
 			}
 
@@ -259,17 +264,29 @@ plugin.tx_wecsermons_pi1 {
 
 			topics = TEXT
 			topics {
-				wrap = <div class="tx-wecsermons-sermon-topics">|</div>
+				innerWrap = {$plugin.tx_wecsermons_pi1.topicsHeader}
+				innerWrap.wrap = |<br/>
+				innerWrap.required = 1
+				
+				wrap = <div class="tx-wecsermons-sermon-topics"> Related Topics:<br/>|</div>
 			}
 
 			speakers = TEXT
 			speakers {
+				innerWrap = {$plugin.tx_wecsermons_pi1.speakersHeader}
+				innerWrap.wrap = |<br/>
+				innerWrap.required = 1
+				
 				wrap = <div class="tx-wecsermons-sermon-speakers">|</div>
 
 			}
 
 			series = TEXT
 			series {
+				innerWrap = {$plugin.tx_wecsermons_pi1.seriesHeader}
+				innerWrap.wrap = |<br/>
+				innerWrap.required = 1
+				
 				wrap = <div class="tx-wecsermons-sermon-series">|</div>
 			}
 
@@ -384,17 +401,31 @@ plugin.tx_wecsermons_pi1 {
 
 			scripture = TEXT
 			scripture {
-				wrap = |<br/>
+				typolink {
+					parameter = http://www.biblegateway.com/passage/?search={current:1}&version=31;&interface=print
+					parameter.setCurrent.field = scripture
+					parameter.setCurrent.rawUrlEncode = 1
+					parameter.insertData = 1
+					extTarget = _blank
+				}
 				field = scripture
 			}
 
 			topics = TEXT
 			topics {
-				wrap = |<br/> 
+				innerWrap = {$plugin.tx_wecsermons_pi1.topicsHeader}
+				innerWrap.wrap = |<br/>
+				innerWrap.required = 1
+				
+				wrap = <div class="tx-wecsermons-sermon-topics">|</div>
 			}
 
 			startdate = TEXT
 			startdate {
+				innerWrap = {$plugin.tx_wecsermons_pi1.seriesStartDateHeader}
+				innerWrap.wrap = |&nbsp;
+				innerWrap.required = 1
+				
 				strftime = %A,  %b. %d %Y
 				wrap = |
 				field = startdate
@@ -402,13 +433,21 @@ plugin.tx_wecsermons_pi1 {
 
 			enddate = TEXT
 			enddate {
+				innerWrap = {$plugin.tx_wecsermons_pi1.seriesEndDateHeader}
+				innerWrap.wrap = |&nbsp;
+				innerWrap.required = 1
+				
 				strftime = %A,  %b. %d %Y
-				wrap = |<br/>
+				wrap = |
 				field = enddate
 			}
 
 			season = TEXT
 			season {
+				innerWrap = {$plugin.tx_wecsermons_pi1.seasonHeader}
+				innerWrap.wrap = |<br/>
+				innerWrap.required = 1
+				
 				wrap = <div class="tx-wecsermons-sermon-season">|</div>
 			}
 
@@ -616,18 +655,14 @@ plugin.tx_wecsermons_pi1 {
 
 			scripture = TEXT
 			scripture {
-				wrap = |<br/>
+				typolink {
+					parameter = http://www.biblegateway.com/passage/?search={current:1}&version=31;&interface=print
+					parameter.setCurrent.field = scripture
+					parameter.setCurrent.rawUrlEncode = 1
+					parameter.insertData = 1
+					extTarget = _blank
+				}
 				field = scripture
-			}
-
-			topics = TEXT
-			topics {
-				wrap = <div class="tx-wecsermons-topics">|</div>
-			}
-
-			series = TEXT
-			series {
-				wrap = <div class="tx-wecsermons-series">|</div>
 			}
 
 			graphic = IMAGE
@@ -647,8 +682,30 @@ plugin.tx_wecsermons_pi1 {
 				}
 			}
 
+			topics = TEXT
+			topics {
+				innerWrap = {$plugin.tx_wecsermons_pi1.topicsHeader}
+				innerWrap.wrap = |<br/>
+				innerWrap.required = 1
+				
+				wrap = <div class="tx-wecsermons-topics">|</div>
+			}
+
+			series = TEXT
+			series {
+				innerWrap = {$plugin.tx_wecsermons_pi1.seriesHeader}
+				innerWrap.wrap = |<br/>
+				innerWrap.required = 1
+				
+				wrap = <div class="tx-wecsermons-series">|</div>
+			}
+
 			speakers = TEXT
 			speakers {
+				innerWrap = {$plugin.tx_wecsermons_pi1.speakersHeader}
+				innerWrap.wrap = |<br/>
+				innerWrap.required = 1
+				
 				wrap = <div class="tx-wecsermons-speakers">|</div>
 
 			}
@@ -772,31 +829,53 @@ plugin.tx_wecsermons_pi1 {
 
 			scripture = TEXT
 			scripture {
-				wrap = |<br/>
+				typolink {
+					parameter = http://www.biblegateway.com/passage/?search={current:1}&version=31;&interface=print
+					parameter.setCurrent.field = scripture
+					parameter.setCurrent.rawUrlEncode = 1
+					parameter.insertData = 1
+					extTarget = _blank
+				}
 				field = scripture
 			}
 
 			topics = TEXT
 			topics {
+				innerWrap = {$plugin.tx_wecsermons_pi1.topicsHeader}
+				innerWrap.wrap = |<br/>
+				innerWrap.required = 1
+				
 				wrap = |<br/>
 			}
 
 			startdate = TEXT
 			startdate {
+				innerWrap = {$plugin.tx_wecsermons_pi1.seriesStartDateHeader}
+				innerWrap.wrap = |&nbsp;
+				innerWrap.required = 1
+
 				strftime = %A,  %b. %d %Y
-				wrap = |<br/>
+				wrap = |
 				field = startdate
 			}
 
 			enddate = TEXT
 			enddate {
+				innerWrap = {$plugin.tx_wecsermons_pi1.seriesEndDateHeader}
+				innerWrap.wrap = |&nbsp;
+				innerWrap.required = 1
+				
 				strftime = %A,  %b. %d %Y
-				wrap = |<br/>
+				wrap = |
 				field = enddate
 			}
 
 			season = TEXT
 			season {
+				innerWrap = {$plugin.tx_wecsermons_pi1.seasonHeader}
+				innerWrap.wrap = |<br/>
+				innerWrap.required = 1
+				
 				wrap = |<br/>
 
 			}
@@ -831,6 +910,12 @@ plugin.tx_wecsermons_pi1 {
 					JSwindow = 1
 					JSwindow.expand = 20,20
 				}
+			}
+			
+			fullname = TEXT
+			fullname {
+				wrap = |
+				field = fullname
 			}
 
 			firstname = TEXT
@@ -975,7 +1060,11 @@ div.tx-wecsermons-pi1-flv div.tx-wecflashplayer-pi1 { float: left; }
 .tx-wecsermons-pi1-example p { border-bottom: 1px dashed #FFB5B5; }
 #tx-wecsermons-pi1-series-example { background-color: #C9FFC9; padding: .5em; }
 #tx-wecsermons-pi1-speakers-example { background-color: #FFBDBD; padding: .5em; }
-#tx-wecsermons-pi1-mp3-example { background-color: #FFFFBF; padding: .5em; }
+#tx-wecsermons-pi1-topics-example { background-color: #FFFFBF; padding: .5em; }
+#tx-wecsermons-pi1-mp3-example { background-color: #FFABFF; padding: .5em; }
+#tx-wecsermons-pi1-flv-example { background-color: #C7FFFE; padding: .5em; }
+#tx-wecsermons-pi1-pdf-example { background-color: #C4C4FF; padding: .5em; }
+#tx-wecsermons-pi1-default-example { background-color: #D9D9D9; padding: .5em; }
 )
 # Example of how to overrule LOCAL_LANG values for the plugin:
 plugin.tx_wecsermons_pi1._LOCAL_LANG.default  {

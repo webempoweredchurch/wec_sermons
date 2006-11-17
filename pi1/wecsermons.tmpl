@@ -470,6 +470,8 @@ Sermon Topic: ###TOPIC_TITLE###
 	<!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###-->
 <!-- ###TEMPLATE_SERMON_SINGLE3### end -->
 
+<h2>Layout #4 Styles</h2> 
+<br />
 <br />
 <h3>TEMPLATE_LIST4</h3>
 <em>Template for customized view of a sermon listing.</em>
@@ -522,7 +524,7 @@ Sermon Topic: ###TOPIC_TITLE###
 		<!--###SERMON_SPEAKERS### begin-->
 		<div id="tx-wecsermons-pi1-speakers-example" class="tx-wecsermons-pi1-example">	
 			<p>Speaker Full Name:<br/>
-			###SPEAKER_FULLNAME###</p>
+			<!--###SPEAKER_LINK###-->###SPEAKER_FULLNAME###<!--###SPEAKER_LINK###--></p>
 			
 			<p>Speaker First Name:<br/>
 			###SPEAKER_FIRSTNAME###</p>
@@ -541,9 +543,19 @@ Sermon Topic: ###TOPIC_TITLE###
 		</div>
 		<!--###SERMON_SPEAKERS### end-->
 
+		<!--###SERMON_TOPICS### begin-->
+		<div id="tx-wecsermons-pi1-topics-example" class="tx-wecsermons-pi1-example">	
+			<p>Title:<br/>
+			###TOPIC_TITLE###</p>
+			
+			<p>Description:<br/>
+			###TOPIC_DESCRIPTION###</p>
+		</div>
+		<!--###SERMON_TOPICS### end-->
+
 		<!--###MP3_RESOURCES###-->
-		<br/>MP3:<br/>
 		<div id="tx-wecsermons-pi1-mp3-example" class="tx-wecsermons-pi1-example">	
+		<br/>MP3:<br/>
 			<p>Resource Title: (with link to single view using &#60;&#33;&#45;&#45;&#35;&#35;&#35;&#82;&#69;&#83;&#79;&#85;&#82;&#67;&#69;&#95;&#76;&#73;&#78;&#75;&#35;&#35;&#35;&#45;&#45;&#62; wrapping tags)<br/>
 			<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--></p>
 		
@@ -564,11 +576,7 @@ Sermon Topic: ###TOPIC_TITLE###
 		
 			<p>Resource web address 3:<br/>
 			###RESOURCE_WEBADDRESS3###</p>
-		
-			<p>Resource Content:<br/>
-			###RESOURCE_CONTENT###</p>
-		</div>
-		<!--###MP3_RESOURCES###-->
+
 
 			<p>Summary:<br/>
 				For each resource type that exists or is created, there is a <strong>marker tag</strong> which is used in a sermon's list view or single view.
@@ -586,9 +594,13 @@ Sermon Topic: ###TOPIC_TITLE###
 					through marker tags alone.</li>
 			</ul>
 
+		</div>
+		<!--###MP3_RESOURCES###-->
+
 		
-		<br/>FLV:<br/>
 		<!--###FLASH_VIDEO_RESOURCES###-->
+		<div id="tx-wecsermons-pi1-flv-example" class="tx-wecsermons-pi1-example">	
+			<br/>FLV:<br/>
 			<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--></p>
 		
 			<p>Resource Description:<br/>
@@ -608,29 +620,29 @@ Sermon Topic: ###TOPIC_TITLE###
 		
 			<p>Resource web address 3:<br/>
 			###RESOURCE_WEBADDRESS3###</p>
-		
-			<p>Resource Content:<br/>
-			###RESOURCE_CONTENT###</p>
+		</div>
 		<!--###FLASH_VIDEO_RESOURCES###-->
 		
-		<br/>PDF:<br/>
 		<!--###PDF_RESOURCES###-->
+		<div id="tx-wecsermons-pi1-pdf-example" class="tx-wecsermons-pi1-example">	
+			<br/>PDF:<br/>
 			<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
+		</div>
 		<!--###PDF_RESOURCES###-->
 		
+		<br/>Default:<br/>
+		<!--###DEFAULT_RESOURCES###-->
+		<div id="tx-wecsermons-pi1-default-example" class="tx-wecsermons-pi1-example">	
+			<br/>Default:<br/>
+			<p>Title:<br/>
+				<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--></p>
+		</div>
+		<!--###DEFAULT_RESOURCES###-->
+
 		<br/>POLL:<br/>
 		<!--###POLL_RESOURCES###-->
 			<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
 		<!--###POLL_RESOURCES###-->		
-		
-		<br/>Default:<br/>
-		<!--###DEFAULT_RESOURCES###-->
-			Title: 			<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--><br/>
-			File: ###RESOURCE_FILE###<br/>
-			Graphic: ###RESOURCE_GRAPHIC###<br/>
-			
-			###RESOURCE_CONTENT###
-		<!--###DEFAULT_RESOURCES###-->
 
 		<br/>News:<br/>
 		<!--###NEWS_RESOURCES###-->
@@ -648,115 +660,31 @@ Sermon Topic: ###TOPIC_TITLE###
 		
 <!-- ###TEMPLATE_LIST4### end -->
 
-<h2>Layout #4 Styles</h2> 
-<br />
-<h3>TEMPLATE_LIST4</h3>
-<em>This is an example template for styling a list of resources.</em> 
-<br />
-<!-- ###TEMPLATE_LIST4### begin -->
-		<div class="wecsermon-list-browselink">
-			###BROWSE_LINKS###
-			<br />
-		</div>
-	<!-- ###CONTENT### begin -->
-		<!-- ###ITEM### begin -->
-				<p>Sermon Title: (with link to single view using &gt;!--###SERMON_LINK###--&lt; wrapping tags)<br/>
-				<!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###--></p>	
-				
-				<span class="wecsermon-list-occurdate">###SERMON_OCCURANCE_DATE###</span>
-				<span class="wecsermon-list-serieslink"><!--###SERMON_SERIES###--><!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###--><!--###SERMON_SERIES###--></span>
-			</div>
-			<div class="wecsermon-list-sermongraphic">
-				###SERMON_GRAPHIC###
-			</div>
-			<div class="wecsermon-list-sermondesc">
-				###SERMON_DESCRIPTION###
-				<br />
-				###SERMON_SCRIPTURE###
-			</div>
-			<!--###SERMON_SPEAKERS###-->
-			<div class="wecsermon-list-speakerphoto">
-				###SPEAKER_PHOTO###
-			</div>
-			<div class="wecsermon-list-speakername">
-				<!--###SPEAKER_LINK###-->###SPEAKER_FIRSTNAME###&nbsp;###SPEAKER_LASTNAME###<!--###SPEAKER_LINK###-->
-			</div>
-			<!--###SERMON_SPEAKERS###-->
-			<div class="wecsermon-list-resources-left">
-				SERMON RESOURCES:
-				<br />
-				<!--###VIDEOSERMON### begin-->
-				<!--###RESOURCE_LINK###-->Video<!--###RESOURCE_LINK###-->
-				<!--###VIDEOSERMON### end-->
-				<br />
-				<!--###MP3_RESOURCES### begin-->
-				<!--###RESOURCE_LINK###-->Audio<!--###RESOURCE_LINK###-->
-				<!--###MP3_RESOURCES### end-->
-				<br />
-				<!--###TEXTSERMON### begin-->
-				text:&nbsp;<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
-				<!--###TEXTSERMON### end-->
-			</div>
-			<div class="wecsermon-list-resources-middle">
-				<br />
-				<!--###GROUPIMPACT### begin-->
-				group impact:&nbsp;<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
-				<!--###GROUPIMPACT### end-->
-				<br />
-				<!--###EXPANDEDGROUPSIMPACT### begin-->
-				expanded group impact:&nbsp;<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
-				<!--###EXPANDEDGROUPSIMPACT### end-->
-				<br />
-				<!--###PDF_RESOURCES### begin-->
-				bulletin:&nbsp;<!--###RESOURCE_LINK###-->###RESOURCE_FILE###<!--###RESOURCE_LINK###-->
-				<!--###PDF_RESOURCES### end-->
-			</div>
-			<div class="wecsermon-list-resources-right">
-				<!--###ESTOREGRAPHICS### begin-->
-				graphics:&nbsp;<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
-				<!--###ESTOREGRAPHICS### end-->
-				<br />
-			</div>
-			<div class="wecsermon-list-ornament-1">
-				b<span class="wecsermon-list-ornament-2">&#183;</span>a
-			</div>
-		</div>
-		
-		<!-- ###ITEM### end -->
-	<!-- ###CONTENT### end -->
-		<div class="wecsermon-list-browselink">
-			<br />
-			###BROWSE_LINKS###
-		</div>
-<!--###TEMPLATE_LIST4### end -->
-
-
 <br />
 <h3>TEMPLATE_SERIES_SINGLE4</h3>
 <em>Template for a view of the sermon series.</em> 
 <br />
 <!--###TEMPLATE_SERIES_SINGLE4### begin -->
 	<!--###CONTENT### begin-->
-		###SERIES_TITLE###
-		###SERIES_DESCRIPTION###
-		###SERIES_SCRIPTURE###
-		###SERIES_STARTDATE###
-		###SERIES_ENDDATE###
-		###SERIES_GRAPHIC### 
-
-		<!--###SERIES_SEASON###-->
-		###SEASON_TITLE### 
-		<!--###SERIES_SEASON###-->
-
-		<!--###SERIES_TOPICS###-->
-		###TOPIC_TITLE###
-		###TOPIC_DESCRIPTION### 
-		<!--###SERIES_TOPICS###-->
-
+			<p>Series Title:<br/>
+			###SERIES_TITLE###</p>
+			
+			<p>Series Description:<br/>
+			###SERIES_DESCRIPTION###</p>
+			
+			<p>Series Scripture:<br/>
+			###SERIES_SCRIPTURE###</p>
+			
+			<p>Series Start Date:<br/>
+			###SERIES_STARTDATE###</p>
+			
+			<p>Series End Date:<br/>
+			###SERIES_ENDDATE###</p>
+			
+			<p>Series Graphic:<br/>
+			###SERIES_GRAPHIC###</p>
 	<!--###CONTENT### end-->
-	<!--###BACK_LINK###-->
-	###BACK_TO_LIST###
-	<!--###BACK_LINK###-->
+	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_SERIES_SINGLE4### end -->
 
 
@@ -766,70 +694,22 @@ Sermon Topic: ###TOPIC_TITLE###
 <br />
 <!-- ###TEMPLATE_SERMON_SINGLE4### begin -->
 	<!--###CONTENT### begin-->
-		<div style="margin-bottom: 25px;">
-			<div style="background-color: lime; margin-bottom: 10px;">
-				<!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###--><span style="padding-left: 20px;">###SERMON_OCCURANCE_DATE###</span>
-				<span style="float: right;">series:&nbsp;<!--###SERMON_SERIES###--><!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###--><!--###SERMON_SERIES###--></span>
-			</div>
-			<div style="float: left; width: 216px; height: 162px; background-color: blue; margin-right: 10px; margin-bottom: 10px;">
-				###SERMON_GRAPHIC###
-			</div>
-			<div style="position: absolute; left: 234px; width: 360px; background-color: red; margin-bottom: 10px;">
-			<div style="text-align: center;">
-				<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="320" height="240" id="FLVPlayer"> 
-					<param name="allowFlashAutoInstall" value="true">
-					<param name="movie" value="fileadmin/common/video_only.swf" /> 
-					<param name="align" value="middle" /> 
-					<param name="quality" value="autohigh" /> 
-					<param name="scale" value="noscale" />
-					<param name="bgcolor" value="#000000" />
-					<param name="FlashVars" value="&MM_ComponentVersion=1&skinName=Clear_Skin_3&streamName=http://ginghamsburg.org/###MOVIEMARKER###&autoPlay=true&autoRewind=false" /> 
-					<embed src="fileadmin/common/video_only.swf" flashvars="&MM_ComponentVersion=1&skinName=Clear_Skin_3&streamName=http://ginghamsburg.org/fileadmin/local/sermons/media06/DNA-h&autoPlay=true&autoRewind=false" quality="autohigh" bgcolor="#000000" scale="noscale" width="340" height="400" name="FLVPlayer" align="middle" type="application/x-shockwave-flash" pluginspage="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash" />
-				</object>
-			</div>
-			</div>
-			<!--###SERMON_SPEAKERS###-->
-			<div style="float: right; background-color: yellow; width: 120px; height: 145px;">
-				###SPEAKER_PHOTO###
-			</div>
-			<div style="float: right; clear: right; width: 120px; background-color: olive; text-align: center;">
-				<!--###SPEAKER_LINK###-->###SPEAKER_FIRSTNAME###&nbsp;###SPEAKER_LASTNAME###<!--###SPEAKER_LINK###-->
-			</div>
-			<!--###SERMON_SPEAKERS###-->
-			<div style="float: left; clear: left; width: 216px; background-color: tan; margin-right: 10px;">
-					SERMON RESOURCES:
-					<br />
-					<!--###MP3_RESOURCES### begin-->
-						audio:&nbsp;<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
-					<!--###MP3_RESOURCES### end-->
-					<br />
-					<!--###TEXTSERMON### begin-->
-						text:&nbsp;<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
-					<!--###TEXTSERMON### end-->
-					<br />
-					<!--###PDF_RESOURCES### begin-->
-						bulletin:&nbsp;<!--###RESOURCE_LINK###-->###RESOURCE_FILE###<!--###RESOURCE_LINK###-->
-					<!--###PDF_RESOURCES### end-->
-					<br />
-					<!--###GROUPIMPACT### begin-->
-						group impact:&nbsp;<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
-					<!--###GROUPIMPACT### end-->
-					<br />
-					<!--###EXPANDEDGROUPIMPACT### begin-->
-						expanded group impact:&nbsp;<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
-					<!--###EXPANDEDGROUPIMPACT### end-->
-					<br />
-					<!--###ESTOREGRAPHICS### begin-->
-						graphics:&nbsp;<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
-					<!--###ESTOREGRAPHICS### end-->
-				</div>
-			</div>
-		</div>
+		<p>Sermon Title:<br/>
+		###SERMON_TITLE###</p>	
+		
+		<p>Sermon Occurance Date:<br/>
+		###SERMON_OCCURANCE_DATE###</p>
+		
+		Sermon Description:<br/>
+		###SERMON_DESCRIPTION###
+		
+		<p>Sermon Scripture:<br/>
+		###SERMON_SCRIPTURE###</p>
+		
+		<p>Sermon Graphic:<br/>
+		###SERMON_GRAPHIC###</p>
 	<!--###CONTENT### end-->
-	<div style="clear: left;">
-		<br />
-		<!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###-->
-	</div>
+	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_SERMON_SINGLE4### end -->
 
 <br />
@@ -838,13 +718,25 @@ Sermon Topic: ###TOPIC_TITLE###
 <br />
 <!-- ###TEMPLATE_SPEAKER_SINGLE4### begin -->
 	<!--###CONTENT### begin-->
-		###SPEAKER_FIRSTNAME###<br/>
-		###SPEAKER_LASTNAME###<br/>
-		###SPEAKER_URL###<br/>
-		###SPEAKER_PHOTO###<br/>
-		###SPEAKER_EMAIL###<br/>
+			<p>Speaker Full Name:<br/>
+			###SPEAKER_FULLNAME###</p>
+			
+			<p>Speaker First Name:<br/>
+			###SPEAKER_FIRSTNAME###</p>
+			
+			<p>Speaker Last Name:<br/>
+			###SPEAKER_LASTNAME###</p>
+			
+			<p>Speaker URL:<br/>
+			###SPEAKER_URL###</p>
+			
+			<p>Speaker Photo:<br/>
+			###SPEAKER_PHOTO###</p>
+			
+			<p>Speaker E-mail:<br/>
+			###SPEAKER_EMAIL###</p>
 	<!--###CONTENT### begin-->
-
+	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_SPEAKER_SINGLE4### end -->
 
 <br />
@@ -853,10 +745,13 @@ Sermon Topic: ###TOPIC_TITLE###
 <br />
 <!-- ###TEMPLATE_TOPIC_SINGLE4### begin -->
 	<!--###CONTENT### begin-->
-		###TOPIC_TITLE###<br/>
-		###TOPIC_DESCRIPTION ###<br/>
+			<p>Title:<br/>
+			###TOPIC_TITLE###</p>
+			
+			<p>Description:<br/>
+			###TOPIC_DESCRIPTION###</p>
 	<!--###CONTENT### begin-->
-
+	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_TOPIC_SINGLE4### end -->
 
 <br />
@@ -865,9 +760,13 @@ Sermon Topic: ###TOPIC_TITLE###
 <br />
 <!-- ###TEMPLATE_SEASON_SINGLE4### begin -->
 	<!--###CONTENT### begin-->
-		###SEASON_TITLE###<br/>
+			<p>Title:<br/>
+			###SEASON_TITLE###</p>
+			
+			<p>Description:<br/>
+			###SEASON_DESCRIPTION###</p>
 	<!--###CONTENT### begin-->
-
+	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_SEASON_SINGLE4### end -->
 
 <!--###TEMPLATE_SEARCHBOX1### begin-->
@@ -922,6 +821,7 @@ Sermon Topic: ###TOPIC_TITLE###
 			###RESOURCE_CONTENT###
 		</div>
 	<!--###CONTENT###-->
+	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_RESOURCE_NEWS### end -->
 
 <br />
@@ -933,6 +833,7 @@ Sermon Topic: ###TOPIC_TITLE###
 			<!--###CONTENT###-->
 				###RESOURCE_CONTENT###
 			<!--###CONTENT###-->
+	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!--###TEMPLATE_RESOURCE_PDF### end-->
 
 
@@ -945,6 +846,7 @@ Sermon Topic: ###TOPIC_TITLE###
 	<!--###CONTENT###-->
 			###RESOURCE_CONTENT###
 	<!--###CONTENT###-->
+	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!--###TEMPLATE_RESOURCE_MP3### end-->
 
 
@@ -957,6 +859,7 @@ Sermon Topic: ###TOPIC_TITLE###
 	<!--###CONTENT###-->
 			###RESOURCE_CONTENT###
 	<!--###CONTENT###-->
+	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!--###TEMPLATE_RESOURCE_FLASH_VIDEO### end-->
 
 
@@ -969,6 +872,7 @@ Sermon Topic: ###TOPIC_TITLE###
 	<!--###CONTENT###-->
 			###RESOURCE_CONTENT###
 	<!--###CONTENT###-->
+	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!--###TEMPLATE_RESOURCE_POLL### end-->
 
 <br />
@@ -980,6 +884,7 @@ Sermon Topic: ###TOPIC_TITLE###
 	<!--###CONTENT###-->
 			###RESOURCE_CONTENT###
 	<!--###CONTENT###-->
+	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!--###TEMPLATE_RESOURCE_DISCUSSION### end-->
 
 <br />
@@ -994,6 +899,7 @@ Sermon Topic: ###TOPIC_TITLE###
 				<!--###RESOURCE_LINK###--> ###RESOURCE_FILE###<!--###RESOURCE_LINK###-->
 			</div>
 	<!--###CONTENT###-->
+	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!--###TEMPLATE_RESOURCE_DEFAULT### end-->
 	<body>
 </html>
