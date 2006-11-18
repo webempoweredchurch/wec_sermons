@@ -58,6 +58,10 @@
 	                            <numIndex index="0">LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.display.I.4</numIndex>
 	                            <numIndex index="1">SEARCH</numIndex>
 	                    </numIndex>
+	                     <numIndex index="6" type="array">
+	                            <numIndex index="0">LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.display.I.5</numIndex>
+	                            <numIndex index="1">LATEST</numIndex>
+	                    </numIndex>
 					</items>
 					<maxitems>100</maxitems>
 					<size>6</size>

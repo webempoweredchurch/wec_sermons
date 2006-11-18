@@ -6,11 +6,29 @@ plugin.tx_wecsermons_pi1 {
 	# cat=plugin.tx_wecsermons_pi1/enable/2; type=boolean; label= Use Storage Folder: Whether the SMS looks for records in the "General Storage Folder."
 	useStoragePid = 1
 
-	# cat=plugin.tx_wecsermons_pi1/dims/1; type=text; label= List View - Results Per Page: How many results are shown on each page. (Applied to lists.)
+	# cat=plugin.tx_wecsermons_pi1/enable/3; type=boolean; label= LIST View - Enable Empty Groups: Enable display of empty "group" results. (Those group results which have no related "detail" records.)
+	listView.emptyGroups = 0
+
+	# cat=plugin.tx_wecsermons_pi1/enable/4; type=boolean; label= LATEST View - Enable Empty Groups: Enable display of empty "group" results. (Those group results which have no related "detail" records.)
+	latestView.emptyGroups = 0
+
+	# cat=plugin.tx_wecsermons_pi1/dims/1; type=text; label= LIST View - Results Per Page: How many results are shown on each page. (Applied to lists.)
 	listView.results_at_a_time = 20
 	
-	# cat=plugin.tx_wecsermons_pi1/dims/2; type=text; label= List View - Max Pages Shown: How many pages are shown in the record browser between the <prev> and <next> links. (Applied to lists.)
+	# cat=plugin.tx_wecsermons_pi1/dims/2; type=text; label= LIST View - Max Pages Shown: How many pages are shown in the record browser between the <prev> and <next> links. (Applied to lists.)
 	listView.maxPages = 5
+
+	# cat=plugin.tx_wecsermons_pi1/dims/3; type=text; label= LIST View - Maxium Group Results: Maxium group results returned. (Applied to LIST view only.)
+	listView.maxGroupResults = 5
+
+	# cat=plugin.tx_wecsermons_pi1/dims/4; type=text; label= LIST View - Maxium Detail Results: Maxium detail results returned. (Applied to LIST view only.)
+	listView.maxdetailResults = 20
+
+	# cat=plugin.tx_wecsermons_pi1/dims/5; type=text; label= LATEST View - Maxium Group Results: Maxium group results returned. (Applied to LATEST view only.)
+	latestView.maxGroupResults = 5
+
+	# cat=plugin.tx_wecsermons_pi1/dims/6; type=text; label= LATEST View - Maxium Detail Results: Maxium detail results returned. (Applied to LATEST view only.)
+	latestView.maxdetailResults = 20
 
 	# cat=plugin.tx_wecsermons_pi1/file/1; type=file[html,htm,tmpl,txt]; label= Template File: HTML template file for display of a List View.
 	file.templateFile = EXT:wec_sermons/pi1/wecsermons.tmpl

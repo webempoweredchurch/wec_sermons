@@ -10,9 +10,6 @@
 <br />
 <pre>
 
-<strong>Common markers:</strong>
-These are substituted in all news item displaying templates:
-
 <em>Markers:</em>
 
 --SERMONS
@@ -23,14 +20,14 @@ SERMON_SCRIPTURE - Scriptures that the sermon refers to
 SERMON_GRAPHIC - A graphic shown with the sermon
 
 --RESOURCES
-RESOURCE_TITLE	-	Title of resource
-RESOURCE_DESCRIPTION	-	Full resource description
-RESOURCE_GRAPHIC	-	Graphic of resource
+RESOURCE_TITLE	 - Title of resource
+RESOURCE_DESCRIPTION - Full resource description
+RESOURCE_GRAPHIC - Graphic of resource
 RESOURCE_FILE - The filename of an uploaded file
 RESOURCE_WEBADDRESS1 - A web address or url associated with this resource
 RESOURCE_WEBADDRESS2 - A web address or url associated with this resource
 RESOURCE_WEBADDRESS3 - A web address or url associated with this resource
-RESOURCE_CONTENT	-	The resource content generated throgh TypoScript, allowing complex output of resources that can not be accomplished through marker tags alone.
+RESOURCE_CONTENT - The resource content generated throgh TypoScript, allowing complex output of resources that can not be accomplished through marker tags alone.
 
 --SERIES
 SERIES_TITLE - Title of sermon series
@@ -46,6 +43,7 @@ TOPIC_DESCRIPTION - Description or HTML detail of the topic
 
 --SEASONS
 SEASON_TITLE - Title of the season
+SEASON_DESCRIPTION - Description of the season
 
 --SPEAKERS
 SPEAKER_FIRSTNAME - First name of the speaker
@@ -59,11 +57,11 @@ ALTERNATING_CLASS - This is a CSS class attribute inserted for alternating color
 BROWSE_LINKS - A results browser, allowing pagination of results in list view
 
 <em>Language Markers (see pi1/locallang.php):</em>
-BACK_TO_LIST - Text to return to list-view from single-view template
+BACK_TO_LIST - Header text used in the BACK_LINK, returning to the list-view. Used in single-view templates.
 
 
 <em>Subparts:</em>
-CONTENT - <strong>**REQUIRED**</strong> This is a container that houses the primary content of a template.
+CONTENT - <strong>**REQUIRED**</strong> This is a subpart marker that wraps the primary content of a template.
 ITEM - <strong>**REQUIRED**</strong> The repeating content area representing one record within a list.
 GROUP - This is required only when the "Group By" option of the plug-in is defined. Used to group the list by related records.
 SERMON_SPEAKERS - Listing of speakers related to a sermon
@@ -71,6 +69,7 @@ SERMON_TOPICS - General topics that the sermon is associated with. Aka, category
 SERMON_SERIES - The sermon series a sermon is related to
 SERIES_SEASON - Season a series is related to
 SERIES_TOPICS - General topic that the series is associated with. Aka, category
+SERIES_SEASON - The season associated with this series
 DEFAULT_RESOURCES -	The subpart name of the 'default' resource type
 
 <em>Wrapped Subparts:</em>
@@ -78,7 +77,8 @@ SERMON_LINK - link to a sermon's single view
 SERIES_LINK - link to sermon series' single view
 RESOURCE_LINK - link to a resource's single view
 TOPIC_LINK - link to a topic's single view
-BACK_LINK	- link back to the list view
+SEASON_LINK - link to a season's single view
+BACK_LINK - link back to the list view
 </pre>
 
 
@@ -124,8 +124,8 @@ BACK_LINK	- link back to the list view
 					File: ###RESOURCE_FILE###<br/>
 					Graphic: ###RESOURCE_GRAPHIC###<br/>
 				<!--###DEFAULT_RESOURCES###-->
-				
-		
+
+
 			</div>
 		<!-- ###ITEM### end -->
 	<!-- ###CONTENT### end -->
@@ -164,7 +164,7 @@ Sermon Topic: ###TOPIC_TITLE###
 		###RESOURCE_GRAPHIC###
 		###RESOURCE_TITLE###
 		<!--###RESOURCE_LINK###-->###RESOURCE_FILE###<!--###RESOURCE_LINK###-->
-		
+
 	<!--###DEFAULT_RESOURCES###-->
 </div>
 
@@ -276,7 +276,7 @@ Sermon Topic: ###TOPIC_TITLE###
 				###SERMON_GRAPHIC###
 			</div>
 			<p>###SERMON_TITLE###</p>
-			
+
 			<!--###SERMON_SPEAKERS###-->
 				<!--###SPEAKER_LINK###-->Pastor ###SPEAKER_FIRSTNAME### ###SPEAKER_LASTNAME###<!--###SPEAKER_LINK###--><br/>
 			<!--###SERMON_SPEAKERS###-->
@@ -360,7 +360,7 @@ Sermon Topic: ###TOPIC_TITLE###
 				<!--###MP3_RESOURCES###-->
 					<p>MP3: <!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--></p>
 				<!--###MP3_RESOURCES###-->
-				
+
 				<!--###SERMON_SPEAKERS###-->
 						###SPEAKER_PHOTO###
 						<div class="tx-wecsermons-speakers-caption">
@@ -400,16 +400,16 @@ Sermon Topic: ###TOPIC_TITLE###
 		###SERIES_STARTDATE###
 		###SERIES_ENDDATE###
 		###SERIES_GRAPHIC###
-		
+
 		<!--###SERIES_SEASON###-->
 		###SEASON_TITLE###
 		<!--###SERIES_SEASON###-->
-		
+
 		<!--###SERIES_TOPICS###-->
 		###TOPIC_TITLE###
 		###TOPIC_DESCRIPTION###
 		<!--###SERIES_TOPICS###-->
-	
+
 	<!--###CONTENT###-->
 <!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###-->
 <!-- ###TEMPLATE_SERIES_SINGLE3### end -->
@@ -428,15 +428,15 @@ Sermon Topic: ###TOPIC_TITLE###
 		###SERMON_DESCRIPTION###
 		###SERMON_SCRIPTURE###
 		###SERMON_GRAPHIC###
-		
+
 		<!--###SERMON_SERIES###-->
 			<!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###-->
 		<!--###SERMON_SERIES###-->
-		
+
 		<!--###SERMON_SPEAKERS###-->
 			###SPEAKER_LASTNAME### ###SPEAKER_FIRSTNAME###<br/>
 		<!--###SERMON_SPEAKERS###-->
-		
+
 		<!--###MP3_RESOURCES###-->
 			###RESOURCE_CONTENT###
 		<!--###MP3_RESOURCES###-->
@@ -444,33 +444,33 @@ Sermon Topic: ###TOPIC_TITLE###
 		<!--###PDF_RESOURCES###-->
 			###RESOURCE_TITLE### <!--###RESOURCE_LINK###-->###RESOURCE_FILE###<!--###RESOURCE_LINK###-->
 		<!--###PDF_RESOURCES###-->
-		
+
 		Default:
 		<!--###DEFAULT_RESOURCES###-->
 			Title: ###RESOURCE_TITLE###<br/>
 			File: ###RESOURCE_FILE###<br/>
 			Graphic: ###RESOURCE_GRAPHIC###<br/>
-			
+
 			###RESOURCE_CONTENT###
 		<!--###DEFAULT_RESOURCES###-->
-		
+
 		<!--###SERMON_TOPICS###-->
 			Sermon Topic: ###TOPIC_TITLE###
 		<!--###SERMON_TOPICS###-->
-		
+
 		<!--###NEWS_RESOURCES###-->
 			<div id="news_plugin">
 				###RESOURCE_TITLE### ###RESOURCE_CONTENT###
 			</div>
 		<!--###NEWS_RESOURCES###-->
-		
-		
-		
+
+
+
 	<!--###CONTENT###-->
 	<!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###-->
 <!-- ###TEMPLATE_SERMON_SINGLE3### end -->
 
-<h2>Layout #4 Styles</h2> 
+<h2>Layout #4 Styles</h2>
 <br />
 <br />
 <h3>TEMPLATE_LIST4</h3>
@@ -479,210 +479,159 @@ Sermon Topic: ###TOPIC_TITLE###
 
 <!-- ###TEMPLATE_LIST4### begin -->
 
+	<h2>Summary:</h2>
+	<p>This is an example list view of sermon records. This template is named &#35;&#35;&#35;&#84;&#69;&#77;&#80;&#76;&#65;&#84;&#69;&#95;&#76;&#73;&#83;&#84;&#52;&#35;&#35;&#35;, and should be located in: typo3conf/ext/tx_wecsermons/pi1/wecsermons.tmpl, from your TYPO3 installation folder.</p>
+	<p>This template prototypes most of the markers that can be used in the SMS, and the built in resource types that come with the <a href="http://webempoweredchurch.com/gettingstarted/installing/">WEC Starter Package</a>, or as a TYPO3 import package.</p>
+	<p>For each resource type that exists or is created, there are specialized <strong>tags</strong> which tell the SMS where to place content in your template.<br/>
+	F.e. MP3 resources use the <strong>template subpart tag</strong> &#60;&#33;&#45;&#45;&#35;&#35;&#35;&#77;&#80;&#51;&#95;&#82;&#69;&#83;&#79;&#85;&#82;&#67;&#69;&#83;&#35;&#35;&#35;&#45;&#45;&#62;.
+	Within this <strong>template subpart tag</strong>, there are <strong>marker tags</strong> that can be used, and are identical for every resource:</p>
+	<ul>
+		<li>&#35;&#35;&#35;&#82;&#69;&#83;&#79;&#85;&#82;&#67;&#69;&#95;&#84;&#73;&#84;&#76;&#69;&#35;&#35;&#35;	-	Title of resource</li>
+		<li>&#35;&#35;&#35;&#82;&#69;&#83;&#79;&#85;&#82;&#67;&#69;&#95;&#68;&#69;&#83;&#67;&#82;&#73;&#80;&#84;&#73;&#79;&#78;&#35;&#35;&#35;	-	Description of the resource</li>
+		<li>&#35;&#35;&#35;&#82;&#69;&#83;&#79;&#85;&#82;&#67;&#69;&#95;&#71;&#82;&#65;&#80;&#72;&#73;&#67;&#35;&#35;&#35;	-	Graphic of resource</li>
+		<li>&#35;&#35;&#35;&#82;&#69;&#83;&#79;&#85;&#82;&#67;&#69;&#95;&#70;&#73;&#76;&#69;&#35;&#35;&#35; - The filename of an uploaded file</li>
+		<li>&#35;&#35;&#35;&#82;&#69;&#83;&#79;&#85;&#82;&#67;&#69;&#95;&#87;&#69;&#66;&#65;&#68;&#68;&#82;&#69;&#83;&#83;&#49;&#35;&#35;&#35; - A web address or url associated with this resource</li>
+		<li>&#35;&#35;&#35;&#82;&#69;&#83;&#79;&#85;&#82;&#67;&#69;&#95;&#87;&#69;&#66;&#65;&#68;&#68;&#82;&#69;&#83;&#83;&#50;&#35;&#35;&#35; - A web address or url associated with this resource</li>
+		<li>&#35;&#35;&#35;&#82;&#69;&#83;&#79;&#85;&#82;&#67;&#69;&#95;&#87;&#69;&#66;&#65;&#68;&#68;&#82;&#69;&#83;&#83;&#51;&#35;&#35;&#35; - A web address or url associated with this resource</li>
+		<li>&#35;&#35;&#35;&#82;&#69;&#83;&#79;&#85;&#82;&#67;&#69;&#95;&#67;&#79;&#78;&#84;&#69;&#78;&#84;&#35;&#35;&#35; - The resource content generated throgh TypoScript, allowing complex output of resources that can not be accomplished
+			through marker tags alone.</li>
+	</ul>
+	<p>Please refer to the top of this file, wecsermons.tmpl, for all markers, subparts, and wrapped subparts that are available.</p>
+	<p>Although there are many things you can do with the SMS extension upon first installing it, it is highly customizable to the needs of your organization.<br/><br/></p>
+	<hr/>
+
 	<!--###CONTENT###-->
 		<!--###ITEM###-->
 
 		<p>Sermon Title: (with link to single view using &lt;&#33;&#45;&#45;&#35;&#35;&#35;&#83;&#69;&#82;&#77;&#79;&#78;&#95;&#76;&#73;&#78;&#75;&#35;&#35;&#35;&#45;&#45;&gt; wrapping tags)<br/>
-		<!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###--></p>	
-		
-		<p>Sermon Occurance Date:<br/>
-		###SERMON_OCCURANCE_DATE###</p>
-		
-		<p>Sermon Description:<br/>
-		###SERMON_DESCRIPTION###</p>
-		
-		<p>Sermon Scripture:<br/>
-		###SERMON_SCRIPTURE###</p>
-		
-		<p>Sermon Graphic:<br/>
-		###SERMON_GRAPHIC###</p>
-		
+		<!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###--></p>
+
+
 		<!--###SERMON_SERIES### begin-->
-		<div id="tx-wecsermons-pi1-series-example" class="tx-wecsermons-pi1-example">	
-		<div><strong>Sermon Series:</strong></div>
-			
+		<div id="tx-wecsermons-pi1-series-example" class="tx-wecsermons-pi1-example">
+		<p><strong>Sermon Series:</strong></p>
+
 			<p>Series Title:<br/>
 			<!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###--></p>
-			
-			<p>Series Description:<br/>
-			###SERIES_DESCRIPTION###</p>
-			
-			<p>Series Scripture:<br/>
-			###SERIES_SCRIPTURE###</p>
-			
-			<p>Series Start Date:<br/>
-			###SERIES_STARTDATE###</p>
-			
-			<p>Series End Date:<br/>
-			###SERIES_ENDDATE###</p>
-			
-			<p>Series Graphic:<br/>
-			###SERIES_GRAPHIC###</p>
+
 		</div>
 		<!--###SERMON_SERIES### end-->
-		
+
 		<!--###SERMON_SPEAKERS### begin-->
-		<div id="tx-wecsermons-pi1-speakers-example" class="tx-wecsermons-pi1-example">	
+		<div id="tx-wecsermons-pi1-speakers-example" class="tx-wecsermons-pi1-example">
+			<p><strong>Speakers:</strong></p>
+
 			<p>Speaker Full Name:<br/>
 			<!--###SPEAKER_LINK###-->###SPEAKER_FULLNAME###<!--###SPEAKER_LINK###--></p>
-			
-			<p>Speaker First Name:<br/>
-			###SPEAKER_FIRSTNAME###</p>
-			
-			<p>Speaker Last Name:<br/>
-			###SPEAKER_LASTNAME###</p>
-			
-			<p>Speaker URL:<br/>
-			###SPEAKER_URL###</p>
-			
-			<p>Speaker Photo:<br/>
-			###SPEAKER_PHOTO###</p>
-			
-			<p>Speaker E-mail:<br/>
-			###SPEAKER_EMAIL###</p>
+
 		</div>
 		<!--###SERMON_SPEAKERS### end-->
 
 		<!--###SERMON_TOPICS### begin-->
-		<div id="tx-wecsermons-pi1-topics-example" class="tx-wecsermons-pi1-example">	
+		<div id="tx-wecsermons-pi1-topics-example" class="tx-wecsermons-pi1-example">
+			<p><strong>Topics:</strong></p>
+
 			<p>Title:<br/>
-			###TOPIC_TITLE###</p>
-			
+			<!--###TOPIC_LINK###-->###TOPIC_TITLE###<!--###TOPIC_LINK###--></p>
+
 			<p>Description:<br/>
 			###TOPIC_DESCRIPTION###</p>
 		</div>
 		<!--###SERMON_TOPICS### end-->
 
 		<!--###MP3_RESOURCES###-->
-		<div id="tx-wecsermons-pi1-mp3-example" class="tx-wecsermons-pi1-example">	
-		<br/>MP3:<br/>
-			<p>Resource Title: (with link to single view using &#60;&#33;&#45;&#45;&#35;&#35;&#35;&#82;&#69;&#83;&#79;&#85;&#82;&#67;&#69;&#95;&#76;&#73;&#78;&#75;&#35;&#35;&#35;&#45;&#45;&#62; wrapping tags)<br/>
+		<div id="tx-wecsermons-pi1-mp3-example" class="tx-wecsermons-pi1-example">
+			<p><strong>MP3 Resources:</strong></p>
+			<p>Resource Title:<br/>
 			<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--></p>
-		
-			<p>Resource Description:<br/>
-			###RESOURCE_DESCRIPTION###</p>
-
-			<p>Resource Graphic:<br/>
-			###RESOURCE_GRAPHIC###</p>
-
-			<p>Resource File:<br/>
-			###RESOURCE_FILE###</p>
-		
-			<p>Resource web address 1:<br/>
-			###RESOURCE_WEBADDRESS1###</p>
-		
-			<p>Resource web address 2:<br/>
-			###RESOURCE_WEBADDRESS2###</p>
-		
-			<p>Resource web address 3:<br/>
-			###RESOURCE_WEBADDRESS3###</p>
-
-
-			<p>Summary:<br/>
-				For each resource type that exists or is created, there is a <strong>marker tag</strong> which is used in a sermon's list view or single view.
-				For MP3 resources, the marker tag is &#60;&#33;&#45;&#45;&#35;&#35;&#35;&#77;&#80;&#51;&#95;&#82;&#69;&#83;&#79;&#85;&#82;&#67;&#69;&#83;&#35;&#35;&#35;&#45;&#45;&#62;. 
-				Within this marker tag, there are more tags that can be used, and are identical for every resource.</p>
-			<ul>			
-				<li>RESOURCE_TITLE	-	Title of resource</li>
-				<li>RESOURCE_DESCRIPTION	-	Full resource description</li>
-				<li>RESOURCE_GRAPHIC	-	Graphic of resource</li>
-				<li>RESOURCE_FILE - The filename of an uploaded file</li>
-				<li>RESOURCE_WEBADDRESS1 - A web address or url associated with this resource</li>
-				<li>RESOURCE_WEBADDRESS2 - A web address or url associated with this resource</li>
-				<li>RESOURCE_WEBADDRESS3 - A web address or url associated with this resource</li>
-				<li>RESOURCE_CONTENT	-	The resource content generated throgh TypoScript, allowing complex output of resources that can not be accomplished 
-					through marker tags alone.</li>
-			</ul>
 
 		</div>
 		<!--###MP3_RESOURCES###-->
 
-		
+
 		<!--###FLASH_VIDEO_RESOURCES###-->
-		<div id="tx-wecsermons-pi1-flv-example" class="tx-wecsermons-pi1-example">	
-			<br/>FLV:<br/>
+		<div id="tx-wecsermons-pi1-flv-example" class="tx-wecsermons-pi1-example">
+			<p><strong>Flash Video Resources:</strong></p>
 			<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--></p>
-		
-			<p>Resource Description:<br/>
-			###RESOURCE_DESCRIPTION###</p>
 
-			<p>Resource Graphic:<br/>
-			###RESOURCE_GRAPHIC###</p>
-
-			<p>Resource File:<br/>
-			###RESOURCE_FILE###</p>
-		
-			<p>Resource web address 1:<br/>
-			###RESOURCE_WEBADDRESS1###</p>
-		
-			<p>Resource web address 2:<br/>
-			###RESOURCE_WEBADDRESS2###</p>
-		
-			<p>Resource web address 3:<br/>
-			###RESOURCE_WEBADDRESS3###</p>
 		</div>
 		<!--###FLASH_VIDEO_RESOURCES###-->
-		
+
 		<!--###PDF_RESOURCES###-->
-		<div id="tx-wecsermons-pi1-pdf-example" class="tx-wecsermons-pi1-example">	
-			<br/>PDF:<br/>
+		<div id="tx-wecsermons-pi1-pdf-example" class="tx-wecsermons-pi1-example">
+			<p><strong>PDF Resources:</strong></p>
 			<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
 		</div>
 		<!--###PDF_RESOURCES###-->
-		
-		<br/>Default:<br/>
+
 		<!--###DEFAULT_RESOURCES###-->
-		<div id="tx-wecsermons-pi1-default-example" class="tx-wecsermons-pi1-example">	
-			<br/>Default:<br/>
+		<div id="tx-wecsermons-pi1-default-example" class="tx-wecsermons-pi1-example">
+			<p><strong>Default Resources:</strong></p>
 			<p>Title:<br/>
 				<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--></p>
 		</div>
 		<!--###DEFAULT_RESOURCES###-->
 
-		<br/>POLL:<br/>
 		<!--###POLL_RESOURCES###-->
-			<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
-		<!--###POLL_RESOURCES###-->		
+			<p><strong>Poll Resources:</strong></p>
 
-		<br/>News:<br/>
+			<p>Title:<br/>
+			<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--></p>
+		<!--###POLL_RESOURCES###-->
+
 		<!--###NEWS_RESOURCES###-->
-			<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
-			<br/><br/>
-			###RESOURCE_CONTENT###
+			<p><strong>News Resources:</strong></p>
+
+			<p>Title:<br/>
+			<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--></p>
 		<!--###NEWS_RESOURCES###-->
-		
-		<br/>Discussion:<br/>
+
 		<!--###DISCUSSION_RESOURCE###-->
-			<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
+			<p><strong>Discussion Resources:</strong></p>
+
+			<p>Title:<br/>
+			<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--></p>
 		<!--###DISCUSSION_RESOURCE###-->
+		<hr/>
 		<!--###ITEM###-->
 	<!--###CONTENT###-->
-		
+
 <!-- ###TEMPLATE_LIST4### end -->
 
 <br />
 <h3>TEMPLATE_SERIES_SINGLE4</h3>
-<em>Template for a view of the sermon series.</em> 
+<em>Template for a view of the sermon series.</em>
 <br />
 <!--###TEMPLATE_SERIES_SINGLE4### begin -->
 	<!--###CONTENT### begin-->
 			<p>Series Title:<br/>
 			###SERIES_TITLE###</p>
-			
+
 			<p>Series Description:<br/>
 			###SERIES_DESCRIPTION###</p>
-			
+
 			<p>Series Scripture:<br/>
 			###SERIES_SCRIPTURE###</p>
-			
+
 			<p>Series Start Date:<br/>
 			###SERIES_STARTDATE###</p>
-			
+
 			<p>Series End Date:<br/>
 			###SERIES_ENDDATE###</p>
-			
+
 			<p>Series Graphic:<br/>
 			###SERIES_GRAPHIC###</p>
+
+			<!--###SERIES_SEASON### begin-->
+			<p>Season Title:<br/>
+			<!--###SEASON_LINK###-->###SEASON_TITLE###<!--###SEASON_LINK###--></p>
+			<!--###SERIES_SEASON### end-->
+
+			<!--###SERIES_TOPICS### begin-->
+			<p>Topic Title:<br/>
+			<!--###TOPIC_LINK###-->###TOPIC_TITLE###<!--###TOPIC_LINK###--></p>
+			<!--###SERIES_TOPICS### end-->
+
 	<!--###CONTENT### end-->
 	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_SERIES_SINGLE4### end -->
@@ -690,22 +639,22 @@ Sermon Topic: ###TOPIC_TITLE###
 
 <br />
 <h3>TEMPLATE_SERMON_SINGLE4</h3>
-<em>Template for a view of a single sermon.</em> 
+<em>Template for a view of a single sermon.</em>
 <br />
 <!-- ###TEMPLATE_SERMON_SINGLE4### begin -->
 	<!--###CONTENT### begin-->
 		<p>Sermon Title:<br/>
-		###SERMON_TITLE###</p>	
-		
+		###SERMON_TITLE###</p>
+
 		<p>Sermon Occurance Date:<br/>
 		###SERMON_OCCURANCE_DATE###</p>
-		
+
 		Sermon Description:<br/>
 		###SERMON_DESCRIPTION###
-		
+
 		<p>Sermon Scripture:<br/>
 		###SERMON_SCRIPTURE###</p>
-		
+
 		<p>Sermon Graphic:<br/>
 		###SERMON_GRAPHIC###</p>
 	<!--###CONTENT### end-->
@@ -714,60 +663,65 @@ Sermon Topic: ###TOPIC_TITLE###
 
 <br />
 <h3>TEMPLATE_SPEAKER_SINGLE4</h3>
-<em>Template for a speaker single view.</em> 
+<em>Template for a speaker single view.</em>
 <br />
 <!-- ###TEMPLATE_SPEAKER_SINGLE4### begin -->
 	<!--###CONTENT### begin-->
 			<p>Speaker Full Name:<br/>
 			###SPEAKER_FULLNAME###</p>
-			
+
 			<p>Speaker First Name:<br/>
 			###SPEAKER_FIRSTNAME###</p>
-			
+
 			<p>Speaker Last Name:<br/>
 			###SPEAKER_LASTNAME###</p>
-			
+
 			<p>Speaker URL:<br/>
 			###SPEAKER_URL###</p>
-			
+
 			<p>Speaker Photo:<br/>
 			###SPEAKER_PHOTO###</p>
-			
+
 			<p>Speaker E-mail:<br/>
 			###SPEAKER_EMAIL###</p>
-	<!--###CONTENT### begin-->
+	<!--###CONTENT### end-->
 	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_SPEAKER_SINGLE4### end -->
 
 <br />
 <h3>TEMPLATE_TOPIC_SINGLE4</h3>
-<em>Template for a speaker single view.</em> 
+<em>Template for a speaker single view.</em>
 <br />
 <!-- ###TEMPLATE_TOPIC_SINGLE4### begin -->
 	<!--###CONTENT### begin-->
 			<p>Title:<br/>
 			###TOPIC_TITLE###</p>
-			
+
 			<p>Description:<br/>
 			###TOPIC_DESCRIPTION###</p>
-	<!--###CONTENT### begin-->
+	<!--###CONTENT### end-->
 	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_TOPIC_SINGLE4### end -->
 
 <br />
 <h3>TEMPLATE_SEASON_SINGLE4</h3>
-<em>Template for a speaker single view.</em> 
+<em>Template for a speaker single view.</em>
 <br />
 <!-- ###TEMPLATE_SEASON_SINGLE4### begin -->
 	<!--###CONTENT### begin-->
 			<p>Title:<br/>
 			###SEASON_TITLE###</p>
-			
+
 			<p>Description:<br/>
 			###SEASON_DESCRIPTION###</p>
-	<!--###CONTENT### begin-->
+	<!--###CONTENT### end-->
 	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_SEASON_SINGLE4### end -->
+
+
+<!--###TEMPLATE_RETURN4### begin-->
+	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
+<!--###TEMPLATE_RETURN4### end-->
 
 <!--###TEMPLATE_SEARCHBOX1### begin-->
 <div class="tx-wecsermons-pi1-searchbox">

@@ -1036,9 +1036,29 @@ $TCA["tx_wecsermons_seasons"] = Array (
 				"eval" => "required",
 			)
 		),
+		"description" => Array (		
+			"exclude" => 1,		
+			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_seasons.description",		
+			"config" => Array (
+				"type" => "text",
+				"cols" => "30",
+				"rows" => "5",
+				"wizards" => Array(
+					"_PADDING" => 2,
+					"RTE" => Array(
+						"notNewRecords" => 1,
+						"RTEonly" => 1,
+						"type" => "script",
+						"title" => "Full screen Rich Text Editing|Formatteret redigering i hele vinduet",
+						"icon" => "wizard_rte2.gif",
+						"script" => "wizard_rte.php",
+					),
+				),
+			)
+		),
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1,hidden;;1, title;;;;2-2-2")
+		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1,hidden;;1, title;;;;2-2-2, description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts]")
 	),
 	"palettes" => Array (
 		"1" => Array("showitem" => "")

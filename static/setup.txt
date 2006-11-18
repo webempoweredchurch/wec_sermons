@@ -223,7 +223,7 @@ plugin.tx_wecsermons_pi1 {
 			occurance_date = TEXT
 			occurance_date {
 				strftime = %B %d, %Y
-				wrap = |<br/>
+				wrap = |
 				field = occurance_date
 			}
 
@@ -247,7 +247,7 @@ plugin.tx_wecsermons_pi1 {
 
 			graphic = IMAGE
 			graphic {
-			wrap = |<br/>
+			wrap = |
 				file {
 					import = uploads/tx_wecsermons/
 					import.field = graphic
@@ -268,7 +268,7 @@ plugin.tx_wecsermons_pi1 {
 				innerWrap.wrap = |<br/>
 				innerWrap.required = 1
 				
-				wrap = <div class="tx-wecsermons-sermon-topics"> Related Topics:<br/>|</div>
+				wrap = <div class="tx-wecsermons-pi1-sermon-topics">|</div>
 			}
 
 			speakers = TEXT
@@ -277,7 +277,7 @@ plugin.tx_wecsermons_pi1 {
 				innerWrap.wrap = |<br/>
 				innerWrap.required = 1
 				
-				wrap = <div class="tx-wecsermons-sermon-speakers">|</div>
+				wrap = <div class="tx-wecsermons-pi1-sermon-speakers">|</div>
 
 			}
 
@@ -287,7 +287,7 @@ plugin.tx_wecsermons_pi1 {
 				innerWrap.wrap = |<br/>
 				innerWrap.required = 1
 				
-				wrap = <div class="tx-wecsermons-sermon-series">|</div>
+				wrap = <div class="tx-wecsermons-pi1-sermon-series">|</div>
 			}
 
 		}
@@ -335,7 +335,7 @@ plugin.tx_wecsermons_pi1 {
 
 			graphic = IMAGE
 			graphic {
-				wrap = <div class="tx-wecsermons-pi1-resource-graphic">|<div>
+				wrap = <div class="tx-wecsermons-pi1-pi1-resource-graphic">|<div>
 				file {
 					import = uploads/tx_wecsermons/
 					import.field = graphic
@@ -372,13 +372,13 @@ plugin.tx_wecsermons_pi1 {
 
 			title = TEXT
 			title {
-				wrap = |<br/>
+				wrap = |
 				field = title
 			}
 
 			graphic = IMAGE
 			graphic {
-			wrap = |<br/>
+			wrap = |
 				file {
 					import = uploads/tx_wecsermons/
 					import.field = graphic
@@ -417,7 +417,7 @@ plugin.tx_wecsermons_pi1 {
 				innerWrap.wrap = |<br/>
 				innerWrap.required = 1
 				
-				wrap = <div class="tx-wecsermons-sermon-topics">|</div>
+				wrap = <div class="tx-wecsermons-pi1-sermon-topics">|</div>
 			}
 
 			startdate = TEXT
@@ -448,7 +448,7 @@ plugin.tx_wecsermons_pi1 {
 				innerWrap.wrap = |<br/>
 				innerWrap.required = 1
 				
-				wrap = <div class="tx-wecsermons-sermon-season">|</div>
+				wrap = <div class="tx-wecsermons-pi1-sermon-season">|</div>
 			}
 
 		}
@@ -465,7 +465,7 @@ plugin.tx_wecsermons_pi1 {
 
 			photo = IMAGE
 			photo {
-			wrap = |<br/>
+			wrap = |
 				file {
 					import = uploads/tx_wecsermons/
 					import.field = photo
@@ -542,6 +542,13 @@ plugin.tx_wecsermons_pi1 {
 				wrap = |
 				field = title
 			}
+			
+			description = TEXT
+			description {
+				parseFunc < tt_content.text.20.parseFunc
+				field = description
+			}
+
 		}
 
 	}
@@ -564,7 +571,9 @@ plugin.tx_wecsermons_pi1 {
 		# *****************
 
 		# How many results to show on each page
-		results_at_a_time = {$plugin.tx_wecsermons_pi1.listView.results_at_a_time}
+		maxdetailResults = {$plugin.tx_wecsermons_pi1.listView.maxdetailResults}
+		maxGroupResults = {$plugin.tx_wecsermons_pi1.listView.maxGroupResults}
+		emptyGroups = {$plugin.tx_wecsermons_pi1.listView.emptyGroups}
 
 		# Maximum number of pages that are shown in the page browser
 		maxPages = {$plugin.tx_wecsermons_pi1.listView.maxPages}
@@ -631,7 +640,7 @@ plugin.tx_wecsermons_pi1 {
 			# Wrap for the title column
 			title = TEXT
 			title {
-				wrap = |<br/>
+				wrap = |
 #				parseFunc < tt_content.text.20.parseFunc
 				field = title
 			}
@@ -640,7 +649,7 @@ plugin.tx_wecsermons_pi1 {
 			occurance_date = TEXT
 			occurance_date {
 				strftime = %A,  %b. %d %Y
-				wrap = |<br/>
+				wrap = |
 				field = occurance_date
 			}
 
@@ -667,7 +676,7 @@ plugin.tx_wecsermons_pi1 {
 
 			graphic = IMAGE
 			graphic {
-			wrap = |<br/>
+			wrap = |
 				file {
 					import = uploads/tx_wecsermons/
 					import.field = graphic
@@ -688,7 +697,7 @@ plugin.tx_wecsermons_pi1 {
 				innerWrap.wrap = |<br/>
 				innerWrap.required = 1
 				
-				wrap = <div class="tx-wecsermons-topics">|</div>
+				wrap = <div class="tx-wecsermons-pi1-topics">|</div>
 			}
 
 			series = TEXT
@@ -697,7 +706,7 @@ plugin.tx_wecsermons_pi1 {
 				innerWrap.wrap = |<br/>
 				innerWrap.required = 1
 				
-				wrap = <div class="tx-wecsermons-series">|</div>
+				wrap = <div class="tx-wecsermons-pi1-series">|</div>
 			}
 
 			speakers = TEXT
@@ -706,7 +715,7 @@ plugin.tx_wecsermons_pi1 {
 				innerWrap.wrap = |<br/>
 				innerWrap.required = 1
 				
-				wrap = <div class="tx-wecsermons-speakers">|</div>
+				wrap = <div class="tx-wecsermons-pi1-speakers">|</div>
 
 			}
 
@@ -793,16 +802,21 @@ plugin.tx_wecsermons_pi1 {
 
 			# Allowed data columns to search in
 			searchFieldList = title,description,scripture,keywords
+			
+			# Specify the ordering of records in list views
+			orderByList = title,startdate
+			orderBy = title
+			descFlag = 1
 
 			title = TEXT
 			title {
-				wrap = |<br/>
+				wrap = |
 				field = title
 			}
 
 			graphic = IMAGE
 			graphic {
-			wrap = |<br/>
+			wrap = |
 				file {
 					import = uploads/tx_wecsermons/
 					import.field = graphic
@@ -845,7 +859,7 @@ plugin.tx_wecsermons_pi1 {
 				innerWrap.wrap = |<br/>
 				innerWrap.required = 1
 				
-				wrap = |<br/>
+				wrap = |
 			}
 
 			startdate = TEXT
@@ -876,7 +890,7 @@ plugin.tx_wecsermons_pi1 {
 				innerWrap.wrap = |<br/>
 				innerWrap.required = 1
 				
-				wrap = |<br/>
+				wrap = <div id="tx-wecsermons-pi1-season|</div>
 
 			}
 
@@ -897,7 +911,7 @@ plugin.tx_wecsermons_pi1 {
 
 			photo = IMAGE
 			photo {
-			wrap = |<br/>
+			wrap = |
 				file {
 					import = uploads/tx_wecsermons/
 					import.field = photo
@@ -933,7 +947,7 @@ plugin.tx_wecsermons_pi1 {
 			url = TEXT
 			url {
 				typolink.parameter.field = url
-				wrap = |<br/>
+				wrap = |
 				value = |
 				field = url
 			}
@@ -942,7 +956,7 @@ plugin.tx_wecsermons_pi1 {
 			email {
 				typolink = 1
 				typolink.parameter.field = email
-				wrap = |<br/>
+				wrap = |
 				field = email
 			}
 
@@ -952,7 +966,7 @@ plugin.tx_wecsermons_pi1 {
 
 			title = TEXT
 			title {
-				wrap = |<br/>
+				wrap = |
 				field = title
 			}
 
@@ -974,10 +988,40 @@ plugin.tx_wecsermons_pi1 {
 				wrap = |
 				field = title
 			}
+
+			description {
+				crop = 150| &nbsp;...|1
+				field = description
+				stripHtml = 1
+				trim = 1
+				wrap = <p class="bodytext">|</p>
+			}
+
 		}
 
 	}
 
+	latestView < .listView
+	latestView {
+	
+		maxdetailResults = {$plugin.tx_wecsermons_pi1.latestView.maxdetailResults}
+		maxGroupResults = {$plugin.tx_wecsermons_pi1.latestView.maxGroupResults}
+		emptyGroups = {$plugin.tx_wecsermons_pi1.latestView.emptyGroups}
+
+		tx_wecsermons_sermons {
+			orderByList = occurance_date,title
+			orderBy = occurance_date,title
+			descFlag = 0
+		}
+	
+		tx_wecsermons_series {
+			orderByList = startdate,title
+			orderBy = startdate,title
+			descFlag = 0
+		}
+	
+	}
+	
 	searchView {
 
 		# Allowed data columns to search in
@@ -1053,11 +1097,10 @@ div.tx-wecsermons-pi1-list1 { margin: 1em 0 1em; padding: 0 0 1em;}
 #tx-wecsermons-pi1-list2 th { background-color: #779976; text-align: left;}
 #tx-wecsermons-pi1-list2 a { color: #003399; }
 #tx-wecsermons-pi1-list2 td { background-color: #ACCCAB;}
-div.tx-wecsermons-sermon-description { text-align: justify; }
+div.tx-wecsermons-pi1-sermon-description { text-align: justify; }
 div.tx-wecsermons-pi1-default dl {  margin-top: 0px; margin-bottom: 1em;}
 div.tx-wecsermons-pi1-flv div.tx-wecflashplayer-pi1 { float: left; }
 
-.tx-wecsermons-pi1-example p { border-bottom: 1px dashed #FFB5B5; }
 #tx-wecsermons-pi1-series-example { background-color: #C9FFC9; padding: .5em; }
 #tx-wecsermons-pi1-speakers-example { background-color: #FFBDBD; padding: .5em; }
 #tx-wecsermons-pi1-topics-example { background-color: #FFFFBF; padding: .5em; }
