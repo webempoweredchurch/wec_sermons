@@ -1,4 +1,4 @@
-<html xmlns="http://www.w3.org/1999/xhtml">
+ <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Sermon Template</title>
 </head>
@@ -133,6 +133,54 @@ BACK_LINK - link back to the list view
 <!-- ###TEMPLATE_LIST1### end -->
 
 
+<h3>TEMPLATE_LATEST1</h3>
+<em>This is a template style for a the latest sermons, and related information.</em>
+<br />
+
+<!-- ###TEMPLATE_LATEST1### begin -->
+	<!-- ###CONTENT### begin -->
+		<!-- ###ITEM### begin -->
+
+			<div style='border-bottom: 1px dotted black;' class='###ALTERNATING_CLASS###' id="tx-wecsermons-pi1-list1">
+				<!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###-->
+				Presented On: ###SERMON_OCCURANCE_DATE###<br/>
+				###SERMON_DESCRIPTION###
+				###SERMON_SCRIPTURE###
+				###SERMON_GRAPHIC###
+				<!--###SERMON_SPEAKERS###-->
+						###SPEAKER_PHOTO###
+						<div class="tx-wecsermons-speakers-caption">
+						<!--###SPEAKER_LINK###-->###SPEAKER_LASTNAME###, ###SPEAKER_FIRSTNAME### <!--###SPEAKER_LINK###-->
+						</div>
+				<!--###SERMON_SPEAKERS###-->
+
+
+				<!--###SERMON_TOPICS###-->
+						###TOPIC_TITLE###
+						###TOPIC_DESCRIPTION###
+				<!--###SERMON_TOPICS###-->
+
+				<!--###SERMON_SERIES###-->
+						<!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###-->
+						###SERIES_STARTDATE###
+						###SERIES_ENDDATE###
+						<!--###SERIES_SEASON###-->###SEASON_TITLE###<!--###SERIES_SEASON###-->
+				<!--###SERMON_SERIES###-->
+
+				<!--###DEFAULT_RESOURCES###-->
+					Title: <!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--><br/>
+					File: ###RESOURCE_FILE###<br/>
+					Graphic: ###RESOURCE_GRAPHIC###<br/>
+				<!--###DEFAULT_RESOURCES###-->
+
+
+			</div>
+		<!-- ###ITEM### end -->
+	<!-- ###CONTENT### end -->
+			###BROWSE_LINKS###
+<!-- ###TEMPLATE_LATEST1### end -->
+
+
 <br />
 <h3>TEMPLATE_SERMON_SINGLE1</h3>
 <em>Template for single view of a sermon.</em>
@@ -231,10 +279,7 @@ Sermon Topic: ###TOPIC_TITLE###
 <br />
 <br />
 
-<!-- ###TEMPLATE_LIST2### begin
-	This template is in progress, developing a abstracted grouping mechanism for related records, simliar to a Crystal Reports 'group'
--->
-
+<!-- ###TEMPLATE_LIST2### begin-->
 <TABLE width="489" cellpadding="3" cellspacing="1" id="tx-wecsermons-pi1-list2">
   <TBODY>
     <!-- ###CONTENT### begin
@@ -266,16 +311,13 @@ Sermon Topic: ###TOPIC_TITLE###
 <!-- ###TEMPLATE_LIST2### end -->
 
 <h3>TEMPLATE_LATEST2</h3>
-<em>This is a template style for displaying a sermon listing, grouped by series.</em>
+<em>This is a template style for displaying the latest sermons, grouped by series.</em>
 <br />
 <br />
 <br />
 <br />
 
-<!-- ###TEMPLATE_LATEST2### begin
-	This template is in progress, developing a abstracted grouping mechanism for related records, simliar to a Crystal Reports 'group'
--->
-
+<!-- ###TEMPLATE_LATEST2### begin-->
 <TABLE width="489" cellpadding="3" cellspacing="1" id="tx-wecsermons-pi1-latest2">
   <TBODY>
     <!-- ###CONTENT### begin
@@ -379,8 +421,10 @@ Sermon Topic: ###TOPIC_TITLE###
 
 <h2>Layout #3 Styles</h2>
 <br/>
+<br/>
+<br/>
 <h3>TEMPLATE_LIST3</h3>
-<em>This is an example template for styling a list of resources.</em>
+<em>This is a template style for displaying a sermon listing.</em>
 <br />
 
 <!-- ###TEMPLATE_LIST3### begin -->
@@ -427,6 +471,55 @@ Sermon Topic: ###TOPIC_TITLE###
 	<!-- ###CONTENT### end -->
 			###BROWSE_LINKS###
 <!-- ###TEMPLATE_LIST3### end -->
+
+<h3>TEMPLATE_LATEST3</h3>
+<em>This is a template style for displaying the latest sermon listing, grouped by series.</em>
+<br />
+
+<!-- ###TEMPLATE_LATEST3### begin -->
+	<!-- ###CONTENT### begin -->
+		<!-- ###ITEM### begin -->
+
+			<div style='border-bottom: 1px dotted black;' class='###ALTERNATING_CLASS###'>
+				<!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###-->
+				###SERMON_OCCURANCE_DATE###
+				###SERMON_DESCRIPTION###
+				###SERMON_SCRIPTURE###
+				###SERMON_GRAPHIC###
+
+				<!--###PDF_RESOURCES###-->
+					###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->###RESOURCE_FILE###<!--###RESOURCE_LINK###-->
+				<!--###PDF_RESOURCES###-->
+
+				<!--###MP3_RESOURCES###-->
+					<p>MP3: <!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--></p>
+				<!--###MP3_RESOURCES###-->
+
+				<!--###SERMON_SPEAKERS###-->
+						###SPEAKER_PHOTO###
+						<div class="tx-wecsermons-speakers-caption">
+						<!--###SPEAKER_LINK###-->###SPEAKER_LASTNAME###, ###SPEAKER_FIRSTNAME### <!--###SPEAKER_LINK###-->
+						</div>
+				<!--###SERMON_SPEAKERS###-->
+
+
+				<!--###SERMON_TOPICS###-->
+						###TOPIC_TITLE###
+						###TOPIC_DESCRIPTION###
+				<!--###SERMON_TOPICS###-->
+
+				<!--###SERMON_SERIES###-->
+						<!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###-->
+						###SERIES_STARTDATE###
+						###SERIES_ENDDATE###
+						<!--###SERIES_SEASON###-->###SEASON_TITLE###<!--###SERIES_SEASON###-->
+				<!--###SERMON_SERIES###-->
+
+			</div>
+		<!-- ###ITEM### end -->
+	<!-- ###CONTENT### end -->
+			###BROWSE_LINKS###
+<!-- ###TEMPLATE_LATEST3### end -->
 
 <br />
 <h3>TEMPLATE_SERIES_SINGLE3</h3>
@@ -640,7 +733,7 @@ Sermon Topic: ###TOPIC_TITLE###
 <!-- ###TEMPLATE_LIST4### end -->
 
 <h3>TEMPLATE_LATEST4</h3>
-<em>Template for customized view of a sermon listing.</em>
+<em>Template for customized view of the latest sermons listing.</em>
 <br />
 
 <!-- ###TEMPLATE_LATEST4### begin -->
