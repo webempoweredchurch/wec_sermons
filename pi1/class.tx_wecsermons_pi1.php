@@ -30,37 +30,40 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
  *
  *
  *
- *   75: class tx_wecsermons_pi1 extends tslib_pibase
- *   89:     function init($conf)
- *  107:     function main($content,$conf)
- *  215:     function xmlView ($content, $lConf)
- *  304:     function singleView($content,$lConf)
- *  414:     function searchView($content,$lConf)
- *  429:     function pi_list_searchbox($lConf)
- *  478:     function listView($content,$lConf)
- *  559:     function pi_list_makelist($lConf, $template)
- *  730:     function pi_list_row($lConf, $markerArray = array(), $rowTemplate, $row ='', $c = 2)
- * 1383:     function getMarkerArray( $tableName = '' )
- * 1518:     function formatStr( $str )
- * 1532:     function getTemplateKey($tableName)
- * 1575:     function getUrlToList ( $absolute )
- * 1592:     function getUrlToSingle ( $absolute, $tableName, $uid )
- * 1611:     function getFeAdminList( $tableName = '' )
- * 1631:     function getNamedTemplateContent($keyName = 'sermon', $view = 'single')
- * 1684:     function getNamedSubpart( $subpartName, $content )
- * 1701:     function loadTemplate()
- * 1727:     function getTemplateFile()
- * 1750:     function getResources( $sermonUid = '', $resourceUid = '')
- * 1803:     function emptyResourceSubparts( &$subpartArray )
- * 1829:     function throwError( $type, $message, $detail = '' )
- * 1853:     function getTutorial ( $tutorial )
- * 1931:     function uniqueCsv()
- * 1946:     function unique_array()
- * 1964:     function get_foreign_column( $currentTable, $relatedTable )
- * 1990:     function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default = '' )
- * 2009:     function splitTableAndUID($record)
+ *   78: class tx_wecsermons_pi1 extends tslib_pibase
+ *   91:     function init($conf)
+ *  112:     function main($content,$conf)
+ *  226:     function xmlView ($content, $lConf)
+ *  315:     function singleView($content,$lConf)
+ *  443:     function searchView($content,$lConf)
+ *  458:     function pi_list_searchbox($lConf)
+ *  506:     function latestView($content,$lConf)
+ *  570:     function listView($content,$lConf)
+ *  668:     function pi_list_makelist($lConf, $template)
+ *  851:     function pi_list_row($lConf, $markerArray = array(), $rowTemplate, $row ='', $c = 2)
+ * 1595:     function getMarkerArray( $tableName = '' )
+ * 1736:     function formatStr( $str )
+ * 1750:     function getTemplateKey($tableName)
+ * 1793:     function getUrlToList ( $absolute )
+ * 1810:     function getUrlToSingle ( $absolute, $tableName, $uid )
+ * 1829:     function getFeAdminList( $tableName = '' )
+ * 1849:     function getNamedTemplateContent($keyName = 'sermon', $view = 'single')
+ * 1903:     function getNamedSubpart( $subpartName, $content )
+ * 1920:     function getMarkerName( $markerName )
+ * 1933:     function loadTemplate( $view = 'LIST')
+ * 1959:     function getTemplateFile()
+ * 1986:     function getGroupResult($groupTable, $detailTable, $foreignColumn, $lConf )
+ * 2026:     function getResources( $sermonUid = '', $resourceUid = '')
+ * 2081:     function emptyResourceSubparts( &$subpartArray )
+ * 2106:     function throwError( $type, $message, $detail = '' )
+ * 2130:     function getTutorial ( $tutorial )
+ * 2207:     function uniqueCsv()
+ * 2222:     function unique_array()
+ * 2240:     function get_foreign_column( $currentTable, $relatedTable )
+ * 2266:     function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default = '' )
+ * 2285:     function splitTableAndUID($record)
  *
- * TOTAL FUNCTIONS: 28
+ * TOTAL FUNCTIONS: 31
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -144,10 +147,10 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		$this->conf['allowedTables'] = str_replace( ' ', '', $this->conf['allowedTables'] );
 
 		//	Recursive setting from plugin overrides typoscript
-		$this->conf['recursive'] = $this->getConfigVal( $this, 'recursive', 'sDEF', 'recursive', $this->conf, 0 );
+		$this->conf['recursive'] = $this->getConfigVal( $this, 'recursive', 'sDEF', 'pidList', $this->conf, 0 );
 
-		//	Find the starting point in the page tree to search for the record, use current page as default
-		$startingPoint = $this->getConfigVal($this, 'startingpoint', 'sDEF', 'startingpoint', $lConf, $GLOBALS['TSFE']->id );
+		//	Find the starting point in the page tree to search for WEC SMS records, use current page as default
+		$this->conf['pidList'] = $this->getConfigVal($this, 'startingpoint', 'sDEF', 'pidList', $this->conf, $GLOBALS['TSFE']->id );
 
 		//	If configured to use the General Storage Folder of the site, include that in the list of pids
 		if( $this->conf['useStoragePid'] ) {
@@ -157,10 +160,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$storagePid = (string) $rootPids['_STORAGE_PID'];
 
 			//	Merge all lists from typoscript, storagePid, and startingpoint specified at plugin and assign to pidList
-			$this->conf['pidList'] .= ','. $storagePid . ','. $startingPoint;
+			$this->conf['pidList'] .= ','. $storagePid;
 		}
-		else 	//	Merge lists from typoscript and startingpoint specified at plugin into pidList
-			$this->conf['pidList'] .= ','. $startingPoint;
 
 		$codes = $this->internal['codes'] = t3lib_div::trimExplode(',',$display,0);
 
@@ -195,7 +196,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 				case 'LATEST':
 					$this->internal['currentCode'] = 'LATEST';
-					$content .= $this->listView( $content, $this->conf['latestView.'] );
+					$content .= $this->latestView( $content, $this->conf['latestView.'] );
 					break;
 
 				default:
@@ -212,17 +213,6 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		return $content;
 
 	}
-	
-	/**
-	 * latestView: This function provides output for the latest n entries of a list view
-	 *
-	 * @param	string		$content: Any previous content that this function will append itself to.
-	 * @param	array		$lConf: Locally scoped configuration array from TypoScript for latestView
-	 * @return	string		Complete XML content
-	 */
-	 function latestView( $content, $lConf ) {
-	 	
-	}
 
 	/**
 	 * xmlView: This function will output a list view of sermons in XML format.
@@ -234,26 +224,20 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	function xmlView ($content, $lConf) {
 
 		//	Retrieve the number we want to limit our items to
-		$this->piVars['pointer']=0;
-		$this->internal['results_at_a_time'] = $lConf['results_at_a_time'];
-		$this->internal['descFlag'] = $lConf['descFlag'];
+		$this->internal['results_at_a_time'] = $lConf['maxdetailResults'];
+		$this->internal['orderByList']=$lConf[$tableToList.'.']['orderByList'];
+		$this->internal['orderBy'] = $lConf['useCreationDate'] ? 'crdate' : $orderBy;
+		$this->internal['descFlag']='1'; //	Hardcode descending = 1 for latest view
+
 
 		//	TODO: Modify code to allow other records to be shown. Right now we're assuming sermons only.
 
 		//	Get the related table entries to the group, using 'tx_wecsermons_sermons' if none specified
-		$tableToList = $this->getConfigVal( $this, 'detail_table', 'slistView', 'detail_table', $lConf, 'tx_wecsermons_sermons' );
+		$tableToList = $this->piVars['recordType'] ? $this->piVars['recordType'] : ($this->conf['detailTable'] ? $this->conf['detailTable'] : 'tx_wecsermons_sermons' );
 
 		//	Load the correct marker array and load the item template
 		$markerArray = $this->getMarkerArray( $tableToList );
 
-		//	TODO: Modify the date selection to include other tables and date fields
-
-		//	If start or end date was set, then add this to the query WHERE clause.
-		$startDate = $this->getConfigVal( $this, 'startDate', 'slistView', 'startDate', $lConf );
-		$endDate = $this->getConfigVal( $this, 'endDate', 'slistView', 'endDate', $lConf );
-		$where = '';
-		$where .= $startDate ? ' AND occurance_date >= ' . $startDate : '';
-		$where .= $endDate ? ' AND occurance_date <= ' .  $endDate  : '';
 
 		// Make listing query, pass query to SQL database:
 		$res = $this->pi_exec_query($tableToList,0,$where);
@@ -272,11 +256,11 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			foreach( $resources as $resource ) {
 
 				//	If the resource is the type allowed as an enclosure in this view, then calculate the url and size.
-				if( $resource['type'] == $lConf['enclosureType'] ) {
+				if( !strcmp( $resource['type'], $lConf['enclosureType'] ) ) {
 
 					//	Retrieve a typolink conf that tells us how to render the link to the resource. Must be provided by admin!
 					$this->local_cObj->start($resource);
-					$typolinkConf = $this->conf['resource_types.'][$resource['type'].'.']['typolink.'];
+					$typolinkConf = $this->conf['singleView.']['tx_wecsermons_resources.']['resource_types.'][$resource['type'].'.']['typolink.'];
 
 					//	Render the relative and absolute paths to the file
 					$relPath =  $this->local_cObj->typolink_URL( $typolinkConf );
@@ -291,7 +275,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				}
 
 			}
-			$row['item_link'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL'). $this->pi_linkTP_keepPIvars_url( array( 'showUid' => $row['uid'], 'recordType' => $tableToList), 1 );
+			$row['item_link'] = $this->getUrlToSingle( 1, $tableToList, $row['uid'] );
 
 			if( $row['speakers_uid'] ) {
 
@@ -300,7 +284,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 				//	Retreive only the first speaker
 				$speaker = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $speakerRes );
-				$row['author'] = $speaker ? $speaker['firstname'] . ' ' . $speaker['lastname'] : '';
+				$row['author'] = $speaker ? $speaker['fullname'] : '';
 
 			}
 			$sermons[] = $row;
@@ -357,7 +341,11 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$this->internal['currentRow'] = $resource[0];
 
 			//	Retreive the template name from the resource
-			$templateName = $this->internal['currentRow']['template_name'];
+
+			$templateName = $this->internal['currentRow']['template_name'] ?
+				$this->internal['currentRow']['template_name'] :
+				'TEMPLATE_' . trim( $this->internal['currentRow']['marker_name'], '#' );
+
 			if( $this->internal['currentRow']['type'] == '0' )
 				$templateName = $this->conf['defaultTemplate'];
 
@@ -372,20 +360,20 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						'Requested Template: ' . $templateName
 					 );
 			}
-			
+
 			//	Process sermon & related markers
 
 			//	Store the current table and row while we switch to another table for a moment
 			$previousTable = $this->internal['currentTable'];
 			$this->internal['currentTable'] = 'tx_wecsermons_sermons';
 			$previousRow = $this->internal['currentRow'];
-			
+
 			$this->internal['currentRow'] = $this->pi_getRecord($this->internal['currentTable'],$this->piVars['sermonUid']);
 			$this->template['single'] = $this->pi_list_row( $lConf, $this->getMarkerArray('tx_wecsermons_sermons'), $this->template['single'], $this->internal['currentRow'] );
 
 			//	Restore the previous table and row
 			$this->internal['currentTable'] = $previousTable;
-			$this->internal['currentRow'] = $previousRow;			
+			$this->internal['currentRow'] = $previousRow;
 
 		}
 		else {
@@ -414,7 +402,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		}
 
 		// This appends the title of the record we're viewing to the HTML TITLE tag, for improved searching
-		
+
 		$field = $GLOBALS['TCA'][$this->internal['currentTable']]['ctrl']['label'];
 		if ($field)  {
 			$GLOBALS['TSFE']->indexedDocTitle .= ' : ' .$this->internal['currentRow'][$field];
@@ -500,6 +488,69 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 	}
 
+	/**
+	 * listView: Generates the LIST view of the SMS
+	 *
+	 * @param	string		$content: Any previous content that this function will append itself to.
+	 * @param	array		$lConf: Locally scoped configuration array from TypoScript for list view
+	 * @return	string		Complete list view content
+	 */
+	function latestView($content,$lConf)	{
+
+		$orderBy = '';
+
+		// If a single element should be displayed, jump to single view
+		if ($this->piVars['showUid'])	{
+
+			return $this->singleView('',$this->conf['singleView.']);
+
+		}
+
+		//	If listing sermon records, check if order was specified in the FE Plugin and load from there. Otherwise load from typoscript, or 'title' as default.
+		 $orderBy = !strcmp( $this->piVars['recordType'], 'tx_wecsermons_sermons' ) ?
+		 	$this->getConfigVal( $this, 'sermons_order_by', 'slistView', 'orderBy', $lConf[$this->piVars['recordType'].'.'], 'title' ) :
+		 	$lConf[$this->piVars['recordType'].'.']['orderBy'];
+
+		$this->internal['maxPages']=t3lib_div::intInRange($lConf['maxPages'],0,1000,5);		// The maximum number of "pages" in the browse-box: "Page 1", "Page 2", etc.
+		$this->internal['dontLinkActivePage']=$lConf['dontLinkActivePage'];
+		$this->internal['showFirstLast']=$lConf['showFirstLast'];
+		$this->internal['pagefloat']=$lConf['pagefloat'];
+		$this->internal['showRange']=$lConf['showRange'];
+		$this->internal['orderByList']=$lConf[$this->piVars['recordType'].'.']['orderByList'];
+		$this->internal['orderBy'] = $lConf['useCreationDate'] ? 'crdate' : $orderBy;
+
+		//	Hardcode descending = 1 for latest view
+		$this->internal['descFlag']='1';
+
+		$this->loadTemplate('latest');
+
+		//	Report an error if we couldn't pull up the template.
+		if(! $this->template['list'] ) {
+
+			return $this->throwError(
+				'WEC Sermon Management System Error!',
+				'Unable to retrieve content for specified template.',
+				sprintf (
+						'Requested Template: ###TEMPLATE_LATEST%s###
+
+						Template File: %s
+						',
+						$this->internal['layoutCode'],
+						$this->conf['templateFile']
+					)
+				 );
+
+		}
+
+		$content = $this->cObj->substituteSubpart( $this->template['list'], '###CONTENT###', $this->pi_list_makelist($lConf, $this->template['content'] ) );
+
+		//	Parse for additional markers. Browse results, etc.
+		$markerArray = $this->getMarkerArray();
+
+		//	Call pi_list_row to substitute last markers and return results
+		return $this->pi_list_row( $lConf, $markerArray, $content );
+
+	}
 
 	/**
 	 * listView: Generates the LIST view of the SMS
@@ -515,82 +566,87 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 			return $this->singleView('',$this->conf['singleView.']);
 
-		} else {	//	Otherwise continue with list view
+		}
 
-			//	Intialize query params if not set
-			if (!isset($this->piVars['pointer']))	$this->piVars['pointer']=0;
-			if( !isset( $this->piVars['recordType'] ) ) $this->piVars['recordType'] = $this->getConfigVal( $this, 'detail_table', 'slistView', 'detail_table', $lConf, 'tx_wecsermons_sermons' );
+		//	Otherwise continue with list view
 
-			// Initialize some query parameters, and internal variables
-			$this->internal['descFlag']=$lConf[$this->piVars['recordType'].'.']['descFlag'];
-			$this->internal['maxPages']=t3lib_div::intInRange($lConf['maxPages'],0,1000,5);;		// The maximum number of "pages" in the browse-box: "Page 1", "Page 2", etc.
-			$this->internal['dontLinkActivePage']=$lConf['dontLinkActivePage'];
-			$this->internal['showFirstLast']=$lConf['showFirstLast'];
-			$this->internal['pagefloat']=$lConf['pagefloat'];
-			$this->internal['showRange']=$lConf['showRange'];
+		//	Intialize query params if not set
+		if (!isset($this->piVars['pointer']))	$this->piVars['pointer']=0;
+		if( !isset( $this->piVars['recordType'] ) ) $this->piVars['recordType'] = $this->getConfigVal( $this, 'detail_table', 'slistView', 'detailTable', $this->conf, 'tx_wecsermons_sermons' );
 
-			$this->internal['orderByList']=$lConf[$this->piVars['recordType'].'.']['orderByList'];
-			list($this->internal['orderBy'],$this->internal['descFlag']) = explode(':',$this->piVars['sort']);
+		// Initialize some query parameters, and internal variables
+		$this->internal['descFlag']=$lConf[$this->piVars['recordType'].'.']['descFlag'];
+		$this->internal['maxPages']=t3lib_div::intInRange($lConf['maxPages'],0,1000,5);		// The maximum number of "pages" in the browse-box: "Page 1", "Page 2", etc.
+		$this->internal['dontLinkActivePage']=$lConf['dontLinkActivePage'];
+		$this->internal['showFirstLast']=$lConf['showFirstLast'];
+		$this->internal['pagefloat']=$lConf['pagefloat'];
+		$this->internal['showRange']=$lConf['showRange'];
 
-			//	If listing sermon records, check if order was specified in the FE Plugin and load from there. Otherwise load from typoscript, or 'title' as default.
-			if( $this->piVars['recordType'] == 'tx_wecsermons_sermons' )
-				$this->internal['orderBy'] = $this->getConfigVal( $this, 'sermons_order_by', 'slistView', 'orderBy', $lConf[$this->piVars['recordType'].'.'], 'title' );
-			else
-				$this->internal['orderBy']=$lConf[$this->piVars['recordType'].'.']['orderBy'];
-				
-			//	If request is for lastest view
-			if( !strcmp( $this->internal['currentCode'], 'LATEST' ) ) {
+		$this->internal['orderByList']=$lConf[$this->piVars['recordType'].'.']['orderByList'];
 
-				// Only use orderBy from typoscript config
-				$this->internal['orderBy']=$lConf[$this->piVars['recordType'].'.']['orderBy'];
-				
-			}
+		//	TODO: Find proper way to set this from piVar sort, and check if still used at all.
+#			list($this->internal['orderBy'],$this->internal['descFlag']) = explode(':',$this->piVars['sort']);
+		$this->internal['orderBy'] = $lConf[$this->piVars['recordType'].'.']['orderBy'];
+
+		//	If listing sermon records, check if order was specified in the FE Plugin and load from there. Otherwise load from typoscript, or 'title' as default.
+		if( $this->piVars['recordType'] == 'tx_wecsermons_sermons' )
+			$this->internal['orderBy'] = $this->getConfigVal( $this, 'sermons_order_by', 'slistView', 'orderBy', $lConf[$this->piVars['recordType'].'.'], 'title' );
+		else
+			$this->internal['orderBy']=$lConf[$this->piVars['recordType'].'.']['orderBy'];
+
+		//	If request is for lastest view
+		if( !strcmp( $this->internal['currentCode'], 'LATEST' ) ) {
+
+			// Only use orderBy from typoscript config
+			$this->internal['orderBy']=$lConf[$this->piVars['recordType'].'.']['orderBy'];
+
+		}
 
 /*	This commented section will enable us to search through multiple tables to perform deeper searches in the future
 
-			//	Check if selected table is in list of allowed tables, throw error if necessary
-			if($this->piVars['sword_table'] && ! t3lib_div::inList( $this->conf['searchView.']['searchTables'], trim( $this->piVars['sword_table'] ) ) ) {
-				return $this->throwError(
-					'WEC Sermon Management System Error',
-					"The table name '" . $this->piVars['sword_table'] . "' was not in the allowed list of tables: '" . $this->conf['searchView.']['searchTables'],
-					"Please check the TypoScript configuration for the setting of 'searchView.searchTables'"
-				);
-			}
+		//	Check if selected table is in list of allowed tables, throw error if necessary
+		if($this->piVars['sword_table'] && ! t3lib_div::inList( $this->conf['searchView.']['searchTables'], trim( $this->piVars['sword_table'] ) ) ) {
+			return $this->throwError(
+				'WEC Sermon Management System Error',
+				"The table name '" . $this->piVars['sword_table'] . "' was not in the allowed list of tables: '" . $this->conf['searchView.']['searchTables'],
+				"Please check the TypoScript configuration for the setting of 'searchView.searchTables'"
+			);
+		}
 */
 
-			$this->internal['sword_table'] = 'tx_wecsermons_sermons';	//	Migrate to $this->piVars['sword_table'] in future
-			$this->internal['searchFieldList']=$this->conf['searchView.']['searchFieldArray.'][$this->internal['sword_table'].'.']['searchFieldList'];
+		$this->internal['sword_table'] = 'tx_wecsermons_sermons';	//	Migrate to $this->piVars['sword_table'] in future
+		$this->internal['searchFieldList']=$this->conf['searchView.']['searchFieldArray.'][$this->internal['sword_table'].'.']['searchFieldList'];
 
 
-			//	Load the template file. By default, this populates the $this->template array with the list template from ###TEMPLATE_LIST{layoutCode}###
-			$this->loadTemplate();
+		//	Load the template file. By default, this populates the $this->template array with the list template from ###TEMPLATE_LIST{layoutCode}###
+		$this->loadTemplate();
 
-			//	Report an error if we couldn't pull up the template.
-			if(! $this->template['list'] ) {
+		//	Report an error if we couldn't pull up the template.
+		if(! $this->template['list'] ) {
 
-				return $this->throwError(
-					'WEC Sermon Management System Error!',
-					'Unable to retrieve content for specified template.',
-					sprintf (
-							'Requested Template: ###TEMPLATE_LIST%s###
+			return $this->throwError(
+				'WEC Sermon Management System Error!',
+				'Unable to retrieve content for specified template.',
+				sprintf (
+						'Requested Template: ###TEMPLATE_LIST%s###
 
-							Template File: %s
-							',
-							$this->internal['layoutCode'],
-							$this->conf['templateFile']
-						)
-					 );
+						Template File: %s
+						',
+						$this->internal['layoutCode'],
+						$this->conf['templateFile']
+					)
+				 );
 
-			}
-
-			$content = $this->cObj->substituteSubpart( $this->template['list'], '###CONTENT###', $this->pi_list_makelist($lConf, $this->template['content'] ) );
-
-			//	Parse for additional markers. Browse results, etc.
-			$markerArray = $this->getMarkerArray();
-
-			//	Call pi_list_row to substitute last markers and return results
-			return $this->pi_list_row( $lConf, $markerArray, $content );
 		}
+
+		$content = $this->cObj->substituteSubpart( $this->template['list'], '###CONTENT###', $this->pi_list_makelist($lConf, $this->template['content'] ) );
+
+		//	Parse for additional markers. Browse results, etc.
+		$markerArray = $this->getMarkerArray();
+
+		//	Call pi_list_row to substitute last markers and return results
+		return $this->pi_list_row( $lConf, $markerArray, $content );
+
 	}
 
 	/**
@@ -611,13 +667,19 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		//	If grouping was specified, branch to process group list
 		if( $groupTable ) {
 
-			$detailTable = $this->getConfigVal( $this, 'detail_table', 'slistView', 'detail_table', $lConf );
+			$detailTable = $this->getConfigVal( $this, 'detail_table', 'slistView', 'detailTable', $this->conf );
 			$this->template['group'] = $this->cObj->getSubpart( $template, '###GROUP###' );
 
 			//	Change the orderBy clause to match the group table
 			$this->internal['orderByList']=$lConf[$groupTable.'.']['orderByList'];
-			$this->internal['orderBy']=$lConf[$groupTable.'.']['orderBy'];
+			$this->internal['orderBy']= $lConf[$groupTable.'.']['orderBy'];
 			$this->internal['descFlag']=$lConf[$groupTable.'.']['descFlag'];
+
+			//	Check if rendering LATEST view, making changes to ordering as appropriate.
+			if( !strcmp( $this->internal['currentCode'], 'LATEST' ) ) {
+				$this->internal['descFlag']='1';
+				if( $lConf['useCreationDate'] )  $this->internal['orderBy']='crdate';
+			}
 
 			//Run a series of checks before branching to grouping logic, return error if necessary
 			if( $groupTable == '' || ! $this->template['group'] ) {
@@ -692,7 +754,14 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				$this->internal['orderBy']=$lConf[$detailTable.'.']['orderBy'];
 				$this->internal['descFlag']=$lConf[$detailTable.'.']['descFlag'];
 				$this->internal['results_at_a_time'] = t3lib_div::intInRange($lConf['maxdetailResults'],1,1000);
-	
+
+				//	Check if rendering LATEST view, making changes to ordering as appropriate.
+				if( !strcmp( $this->internal['currentCode'], 'LATEST' ) ) {
+					$this->internal['descFlag']='1';
+					if( $lConf['useCreationDate'] )  $this->internal['orderBy']='crdate';
+				}
+
+
 				//	Process the current row
 				$content .= $this->pi_list_row( $lConf, $markerArray, $groupTemplate, $this->internal['currentRow'] );
 
@@ -722,7 +791,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		else {	//	No group found, just provide a straight list
 
 			//	Get the related table entries to the group, using 'tx_wecsermons_sermons' if none specified
-			$tableToList = $this->getConfigVal( $this, 'detail_table', 'slistView', 'detail_table', $lConf, 'tx_wecsermons_sermons' );
+			$tableToList = $this->getConfigVal( $this, 'detail_table', 'slistView', 'detailTable', $this->conf, 'tx_wecsermons_sermons' );
 
 			//	Load the correct marker array and load the item template
 			$markerArray = $this->getMarkerArray( $tableToList );
@@ -738,6 +807,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$where = '';
 			$where .= $startDate ? ' AND occurance_date >= ' . $startDate : '';	//	$GLOBALS['TYPO3_DB']->fullQuoteStr( strftime( '%m-%d-%y', $startDate ), $tableToList ) : '';
 			$where .= $endDate ? ' AND occurance_date <= ' .  $endDate  : '';
+
 
 			// Get number of records:
 			$res = $this->pi_exec_query($tableToList,1, $where);
@@ -1117,7 +1187,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 								$this->conf['allowCaching'],
 								array(
 									'recordType' => 'tx_wecsermons_resources',
-									'sermonUid' => $this->internal['previousRow']['uid'], 
+									'sermonUid' => $this->internal['previousRow']['uid'],
 								),
 								FALSE,
 								$this->conf['pidSingleView'] ? $this->conf['pidSingleView']:0
@@ -1440,7 +1510,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					//	Disable the counter within the results browser if we are producing a grouped list view.
 					//	TODO: Enable accurate counting of results in the results browser
 					if( $this->getConfigVal( $this, 'group_table', 'slistView', 'group_table', $lConf ) ) $lConf['showResultCount'] = 0;
-					
+
 					// Remove browsebox if in LATEST view
 					if( !strcmp( $this->internal['currentCode'], 'LATEST' ) ) {
 						$markerArray['###BROWSE_LINKS###'] = '';
@@ -1454,7 +1524,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				case '###BACK_LINK###':
 
 					//	Retrieve the posted recordType from piVars. If unset, use tx_wecsermons_sermons as default. This is in case of hard linking to the single view improperly, instead of linking through the list view.
-					if( ! isset( $this->piVars['recordType'] ) ) $this->piVars['recordType'] = $this->getConfigVal( $this, 'detail_table', 'slistView', 'detail_table', $lConf, 'tx_wecsermons_sermons' );
+					if( ! isset( $this->piVars['recordType'] ) ) $this->piVars['recordType'] = $this->getConfigVal( $this, 'detail_table', 'slistView', 'detailTable', $this->conf, 'tx_wecsermons_sermons' );
 
 					$wrappedSubpartArray[$key] = explode(
 						'|',
@@ -1779,6 +1849,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		switch( $view ) {
 
 			case 'LIST':
+			case 'LATEST':
 				$templateContent = $this->cObj->getSubpart(
 					$this->template['total'],
 					sprintf( '###TEMPLATE_%s%s###',
@@ -1833,11 +1904,10 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	}
 
 	/**
+	 * getMarkerName:	Fixes marker names with prepended and appended hash marks
 	 *
-	 *
-	 *
-	 *
-	 *
+	 * @param	string		$markerName: The marker string to be corrected if necessary
+	 * @return	string		The fixed marker string, ready for use
 	 */
 	 function getMarkerName( $markerName ) {
 
@@ -1849,9 +1919,10 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 * loadTemplate: Reads in a template file and populates the $template array member variable with the total content, and various other subparts:
 	 * 	list, content, item
 	 *
+	 * @param	string		$view	The name of the view we are loading, such as LATEST, or LIST
 	 * @return	void
 	 */
-	function loadTemplate() {
+	function loadTemplate( $view = 'LIST') {
 
 		if( ! $this->template ) {
 			$this->template = array(
@@ -1865,7 +1936,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			//	Get the file location and name of our template file
 			$templateFile = $this->getTemplateFile();
 			$this->template['total'] = $this->cObj->fileResource( $this->internal['templateFile'] );
-			$this->template['list'] =  $this->getNamedTemplateContent('', 'list');
+			$this->template['list'] =  $this->getNamedTemplateContent('', $view);
 			$this->template['content'] = $this->getNamedSubpart('CONTENT', $this->template['list'] );
 			$this->template['item'] = $this->getNamedSubpart('ITEM', $this->template['content'] );
 
@@ -1891,17 +1962,18 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		return $templateFile;
 
 	}
-	
+
 	/**
 	 * getGroupResult: Retrieves the result set for group records, when grouping is enabled.
-	 * 'emptyGroups' option toggles the option to return group records which currently have no records related to them.
+	 * 'emptyGroups,' defined as a constant in LIST or LATEST views, toggles the option to return group records which currently have no records related to them.
 	 * 'orderBy' will determine the ordering of record set.
 	 * 'maxGroupResults' will determine how many groups are returned
 	 *
-	 * @param	string	$groupTable: The table name to group by
-	 * @param	string	$detailTable: The table name to display detail records by
-	 * @param	string	$foreignColumn: The column name by which detail records are related back to group records.
-	 *
+	 * @param	string		$groupTable: The table name to group by
+	 * @param	string		$detailTable: The table name to display detail records by
+	 * @param	string		$foreignColumn: The column name by which detail records are related back to group records.
+	 * @param	array		$lConf: Locally scoped configuration array from TypoScript
+	 * @return	resource		A sql resource returned from sql_query()
 	 */
 	 function getGroupResult($groupTable, $detailTable, $foreignColumn, $lConf ) {
 		$pointer = $this->piVars['pointer'];
@@ -1926,7 +1998,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		$from = " FROM " . $groupTable;
 		$join = " LEFT JOIN ". $detailTable . " on " . $groupTable . ".uid = ".$detailTable.".".$foreignColumn;
 		$groupBy = " GROUP BY ".$groupTable.".uid";
-		$having = $lConf['emptyGroups'] ? " HAVING count(".$detailTable.".uid) > 0" : "";
+		$having = ' HAVING 1=1' . $this->cObj->enableFields($groupTable);
+		$having .= $lConf['emptyGroups'] ? '' : " AND count(".$detailTable.".uid) > 0";
 		$limit = " LIMIT ".($pointer*$results_at_a_time).",".$results_at_a_time;
 
 		$query = 	$select . $from . $join . $groupBy . $having . $orderBy . $limit;

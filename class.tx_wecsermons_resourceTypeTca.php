@@ -36,12 +36,14 @@
  *
  *
  *
- *   46: class tx_wecsermons_resourceTypeTca
- *   56:     function getMainFields_preProcess($table,$row,&$pObj)
- *   89:     function resourceType_items( &$params, &$pObj )
- *  121:     function processAvailableFields( $availFields )
+ *   50: class tx_wecsermons_resourceTypeTca
+ *   60:     function getMainFields_preProcess($table,$row,&$pObj)
+ *  117:     function resourceType_items( &$params, &$pObj )
+ *  153:     function processAvailableFields( $availFields )
+ *  185:     function processDatamap_preProcessIncomingFieldArray()
+ *  198:     function processDatamap_preProcessFieldArray(&$fieldArray, $table, $id, &$pObj)
  *
- * TOTAL FUNCTIONS: 3
+ * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -57,7 +59,7 @@ class tx_wecsermons_resourceTypeTca {
 	 */
 	function getMainFields_preProcess($table,$row,&$pObj) {
 
-# Keep this line for future functionality, possibly manipulating pi1's flexform		
+# Keep this line for future functionality, possibly manipulating pi1's flexform
 #		if( $row['list_type'] = 'wec_sermons_pi1' ) {
 
 		if( $table == 'tx_wecsermons_resources' ) {
@@ -100,7 +102,7 @@ class tx_wecsermons_resourceTypeTca {
 //				''
 //			);
 //		}
-//		
+//
 //	}
 
 
@@ -143,10 +145,10 @@ class tx_wecsermons_resourceTypeTca {
 	}
 
 	/**
-	 *	processAvailableFields	Function that performs pre-processing of the "types" portion of TCA, enabling RTE functionality and advanced backend form features.
+	 * processAvailableFields	Function that performs pre-processing of the "types" portion of TCA, enabling RTE functionality and advanced backend form features.
 	 *
 	 * @param	string		$$availFields: A csv string containing the possible available fields that can be displayed for a SMS resource
-	 * @return	[type]		Returns a processed csv string, ready to be appended to the "types" portion of TCA
+	 * @return	string		Returns a processed csv string, ready to be appended to the "types" portion of TCA
 	 */
 	 function processAvailableFields( $availFields ) {
 
@@ -173,7 +175,7 @@ class tx_wecsermons_resourceTypeTca {
 	 	//	Return the processed fields csv string with right-most comma trimmed.
 	 	return rtrim( $processedFields, ',' );
 	}
-	
+
 	/**
 	 * this function seems to needed for compatibility with TYPO3 3.7.0.
 	 * In this TYPO3 version tcemain ckecks the existence of the method "processDatamap_preProcessIncomingFieldArray()" but calls "processDatamap_preProcessFieldArray()"
@@ -182,7 +184,7 @@ class tx_wecsermons_resourceTypeTca {
 	 */
 	function processDatamap_preProcessIncomingFieldArray() {
 	}
-	
+
 	/**
 	 * This method is called by a hook in the TYPO3 Core Engine (TCEmain) when a record is saved. We use it to disable saving of the current record if it has categories assigned that are not allowed for the BE user.
 	 *
@@ -194,11 +196,11 @@ class tx_wecsermons_resourceTypeTca {
 	 * @access public
 	 */
 	function processDatamap_preProcessFieldArray(&$fieldArray, $table, $id, &$pObj) {
-		if ($table == 'tx_wecsermons_sermons' || $table == 'tx_wecsermons_series' 
-			|| $table == 'tx_wecsermons_speakers' || $table == 'tx_wecsermons_resources' 
+		if ($table == 'tx_wecsermons_sermons' || $table == 'tx_wecsermons_series'
+			|| $table == 'tx_wecsermons_speakers' || $table == 'tx_wecsermons_resources'
 			|| $table == 'tx_wecsermons_topics' || $table == 'tx_wecsermons_seasons'
 		) {
-			
+
 				// direct preview
 			if (isset($GLOBALS['_POST']['_savedokview_x']) && !$fieldArray['type'] && !$GLOBALS['BE_USER']->workspace)	{
 					// if "savedokview" has been pressed and current article has "type" 0 (= normal news article) and the beUser works in the LIVE workspace open current record in single view
@@ -210,7 +212,7 @@ class tx_wecsermons_resourceTypeTca {
 
 			}
 		}
-	}	
+	}
 
 }
 

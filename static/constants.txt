@@ -30,6 +30,9 @@ plugin.tx_wecsermons_pi1 {
 	# cat=plugin.tx_wecsermons_pi1/dims/6; type=text; label= LATEST View - Maxium Detail Results: Maxium detail results returned. (Applied to LATEST view only.)
 	latestView.maxdetailResults = 20
 
+	# cat=plugin.tx_wecsermons_pi1/dims/7; type=text; label= LATEST View - Use Creation Date: Enabling this causes LATEST view to order by creation date, instead of ordering specified in 'orderBy' of each table configuration. (Applied to LATEST view only.)
+	latestView.useCreationDate = 0
+
 	# cat=plugin.tx_wecsermons_pi1/file/1; type=file[html,htm,tmpl,txt]; label= Template File: HTML template file for display of a List View.
 	file.templateFile = EXT:wec_sermons/pi1/wecsermons.tmpl
 	
@@ -54,13 +57,16 @@ plugin.tx_wecsermons_pi1 {
 	# cat=plugin.tx_wecsermons_pi1/typo/7; type=text; label= Header for Related: The text header added before the list of speakers, if related to other records
 	speakersHeader = 
 
-	# cat=plugin.tx_wecsermons_pi1/links/1; type=int+; label= Single View - Single PID: The UID of the page where the Single View is displayed. (If you set this, you should also set pidListView!)
+	# cat=plugin.tx_wecsermons_pi1/links/1; type=int+; label= SMS Record Storage PID: The UID of the page where all SMS records are currently stored. (Must be set to use XML feed!)
+	pidList = 
+
+	# cat=plugin.tx_wecsermons_pi1/links/2; type=int+; label= Single View - Single PID: The UID of the page where the Single View is displayed. (If you set this, you should also set pidListView!)
 	pidSingleView = 
 
-	# cat=plugin.tx_wecsermons_pi1/links/2; type=int+; label= List View - List PID: The UID of the page where the List View is displayed
+	# cat=plugin.tx_wecsermons_pi1/links/3; type=int+; label= List View - List PID: The UID of the page where the List View is displayed
 	pidListView = 
 
-	# cat=plugin.tx_wecsermons_pi1/links/3; type=int+; label= Search View - Search PID: The UID of the page where the Search View is displayed
+	# cat=plugin.tx_wecsermons_pi1/links/4; type=int+; label= Search View - Search PID: The UID of the page where the Search View is displayed
 	pidSearchView = 
 
 }

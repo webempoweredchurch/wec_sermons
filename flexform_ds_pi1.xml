@@ -50,10 +50,6 @@
 	                            <numIndex index="0">LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.display.I.1</numIndex>
 	                            <numIndex index="1">LIST</numIndex>
 	                    </numIndex>
-	                     <numIndex index="3" type="array">
-	                            <numIndex index="0">LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.display.I.2</numIndex>
-	                            <numIndex index="1">XML</numIndex>
-	                    </numIndex>
 	                     <numIndex index="5" type="array">
 	                            <numIndex index="0">LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.display.I.4</numIndex>
 	                            <numIndex index="1">SEARCH</numIndex>
@@ -64,7 +60,7 @@
 	                    </numIndex>
 					</items>
 					<maxitems>100</maxitems>
-					<size>6</size>
+					<size>4</size>
 					<multiple>1</multiple>
 					<selectedListStyle>width:100px</selectedListStyle>
 					<itemListStyle>width:100px</itemListStyle>
@@ -257,8 +253,8 @@
 	                            <numIndex index="1">description</numIndex>
 	                    </numIndex>
 					</items>
-					<maxitems>3</maxitems>
-					<size>3</size>
+					<maxitems>1</maxitems>
+					<size>1</size>
 					<selectedListStyle>width:120px</selectedListStyle>
 					<itemListStyle>width:120px</itemListStyle>
 				</config>

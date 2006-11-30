@@ -344,7 +344,7 @@ $TCA["tx_wecsermons_resource_types"] = Array (
 			"config" => Array (
 				"type" => "input",
 				"size" => "30",	
-				"eval" => "required,upper,nospace",
+				"eval" => "upper,nospace",
 			)
 		),
 		"avail_fields" => Array (

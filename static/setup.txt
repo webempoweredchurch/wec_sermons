@@ -11,7 +11,7 @@ plugin.tx_wecsermons_pi1 {
 	detailTable =
 	groupTable =
 
-	pidList =
+	pidList = {$plugin.tx_wecsermons_pi1.pidList}
 	recursive =
 
 	useStoragePid  = {$plugin.tx_wecsermons_pi1.useStoragePid}
@@ -31,7 +31,7 @@ plugin.tx_wecsermons_pi1 {
 	general_dateWrap {
 		strftime = %A,  %b. %d %Y
 	}
-	
+
 	stdHeader = COA
 	stdHeader {
 		10 = TEXT
@@ -49,7 +49,7 @@ plugin.tx_wecsermons_pi1 {
 
 	#	The subpart marker used to define resources of type 'default'
 	defaultMarker = ###DEFAULT_RESOURCES###
-	defaultTemplate = ###TEMPLATE_RESOURCE_DEFAULT###
+	defaultTemplate = ###TEMPLATE_DEFAULT_RESOURCES###
 
 	# CASE for rendering ###RESOURCE_CONTENT###
 	# Resource types are identified by thier typoscript_object_name field.
@@ -63,7 +63,7 @@ plugin.tx_wecsermons_pi1 {
 		MP3 = COA
 		MP3 {
 			10 = < plugin.tx_wecsermons_pi1.stdHeader
-						
+
 			20 < plugin.tx_wecflashplayer_pi2
 			20 {
 				audiobase.value = uploads/tx_wecsermons/
@@ -71,20 +71,20 @@ plugin.tx_wecsermons_pi1 {
 				audiofile.setCurrent.listNum = 0
 				audiofile.current = 1
 			}
-			
+
 			30 = TEXT
 			30.field = description
 			30.parseFunc < plugin.tx_wecsermons_pi1.general_stdWrap.parseFunc
-			
+
 			wrap = <div class="tx-wecsermons-pi1-mp3">|</div>
 		}
-		
+
 		# Flash video
 		FLV = COA
 		FLV {
-		
+
 			10 = < plugin.tx_wecsermons_pi1.stdHeader
-						
+
 			20 < plugin.tx_wecflashplayer_pi1
 			20 {
 				videobase.value = uploads/tx_wecsermons/
@@ -99,16 +99,16 @@ plugin.tx_wecsermons_pi1 {
 			30 = TEXT
 			30.field = description
 			30.parseFunc < plugin.tx_wecsermons_pi1.general_stdWrap.parseFunc
-			
+
 			wrap = <div class="tx-wecsermons-pi1-flv">|</div>
 		}
-		
+
 		# PDF (Portable Document)
 		PDF = COA
 		PDF {
 			10 = IMAGE
 			10 {
-				
+
 				prefixComment = 2 | PDF Preview:
 				altText.field = title
 				file.import = uploads/tx_wecsermons/
@@ -125,7 +125,7 @@ plugin.tx_wecsermons_pi1 {
 					}
 				}
 			}
-			
+
 			20 = TEXT
 			20.prefixComment = 2 | PDF File Link:
 			20.field = title
@@ -134,11 +134,11 @@ plugin.tx_wecsermons_pi1 {
 				parameter.insertData = 1
 			}
 			20.wrap = <p class="bodytext">|</p>
-			
+
 			30 = TEXT
 			30.field = description
 			30.parseFunc < plugin.tx_wecsermons_pi1.general_stdWrap.parseFunc
-			
+
 			wrap = <div class="tx-wecsermons-pi1-pdf">|</div>
 		}
 
@@ -156,8 +156,8 @@ plugin.tx_wecsermons_pi1 {
 
 		poll < plugin.tx_jkpoll_pi1
 		poll {
-			type = 1	
-		} 
+			type = 1
+		}
 
 		JPG = COA
 		JPG {
@@ -171,7 +171,7 @@ plugin.tx_wecsermons_pi1 {
 			20.field = title
 			20.required = 1
 			20.fontTag = <div class="tx-wecsermons-pi1-jpg-caption">|</div>
-			
+
 			wrap = <div class="tx-wecsermons-pi1-jpg">|</div>
 		}
 
@@ -191,7 +191,7 @@ plugin.tx_wecsermons_pi1 {
 				parameter.setCurrent.field = file
 				parameter.setCurrent.listNum = 0
 				parameter.insertData = 1
-				extTarget = _blank			
+				extTarget = _blank
 			}
 
 		}
@@ -208,6 +208,7 @@ plugin.tx_wecsermons_pi1 {
 			parseFunc < plugin.tx_wecsermons_pi1.general_stdWrap.parseFunc
 		}
 
+		# Specify which layout will be used, also can be set in the front-end plugin
 		layoutCode =
 
 		tx_wecsermons_sermons {
@@ -267,7 +268,7 @@ plugin.tx_wecsermons_pi1 {
 				innerWrap = {$plugin.tx_wecsermons_pi1.topicsHeader}
 				innerWrap.wrap = |<br/>
 				innerWrap.required = 1
-				
+
 				wrap = <div class="tx-wecsermons-pi1-sermon-topics">|</div>
 			}
 
@@ -276,7 +277,7 @@ plugin.tx_wecsermons_pi1 {
 				innerWrap = {$plugin.tx_wecsermons_pi1.speakersHeader}
 				innerWrap.wrap = |<br/>
 				innerWrap.required = 1
-				
+
 				wrap = <div class="tx-wecsermons-pi1-sermon-speakers">|</div>
 
 			}
@@ -286,7 +287,7 @@ plugin.tx_wecsermons_pi1 {
 				innerWrap = {$plugin.tx_wecsermons_pi1.seriesHeader}
 				innerWrap.wrap = |<br/>
 				innerWrap.required = 1
-				
+
 				wrap = <div class="tx-wecsermons-pi1-sermon-series">|</div>
 			}
 
@@ -303,7 +304,7 @@ plugin.tx_wecsermons_pi1 {
 				parameter.insertData = 1
 				extTarget = _blank
 			}
-			
+
 			# resource_types properties define whether to render the ###RESOURCE_LINK### tag as a link to the resources' single view, or by a typolink configuration.
 			# See the TSRef for details on the typolink data type: http://typo3.org/documentation/document-library/references/doc_core_tsref/current/view/5/8/
 			resource_types {
@@ -327,7 +328,7 @@ plugin.tx_wecsermons_pi1 {
 			title = TEXT
 			title.field = title
 			title.wrap = <dl><dt>|<dt>
-			
+
 			file = TEXT
 			file.field = file
 			file.listNum = 0
@@ -416,7 +417,7 @@ plugin.tx_wecsermons_pi1 {
 				innerWrap = {$plugin.tx_wecsermons_pi1.topicsHeader}
 				innerWrap.wrap = |<br/>
 				innerWrap.required = 1
-				
+
 				wrap = <div class="tx-wecsermons-pi1-sermon-topics">|</div>
 			}
 
@@ -425,7 +426,7 @@ plugin.tx_wecsermons_pi1 {
 				innerWrap = {$plugin.tx_wecsermons_pi1.seriesStartDateHeader}
 				innerWrap.wrap = |&nbsp;
 				innerWrap.required = 1
-				
+
 				strftime = %A,  %b. %d %Y
 				wrap = |
 				field = startdate
@@ -436,7 +437,7 @@ plugin.tx_wecsermons_pi1 {
 				innerWrap = {$plugin.tx_wecsermons_pi1.seriesEndDateHeader}
 				innerWrap.wrap = |&nbsp;
 				innerWrap.required = 1
-				
+
 				strftime = %A,  %b. %d %Y
 				wrap = |
 				field = enddate
@@ -447,7 +448,7 @@ plugin.tx_wecsermons_pi1 {
 				innerWrap = {$plugin.tx_wecsermons_pi1.seasonHeader}
 				innerWrap.wrap = |<br/>
 				innerWrap.required = 1
-				
+
 				wrap = <div class="tx-wecsermons-pi1-sermon-season">|</div>
 			}
 
@@ -542,7 +543,7 @@ plugin.tx_wecsermons_pi1 {
 				wrap = |
 				field = title
 			}
-			
+
 			description = TEXT
 			description {
 				parseFunc < tt_content.text.20.parseFunc
@@ -554,7 +555,7 @@ plugin.tx_wecsermons_pi1 {
 	}
 
 	# *****************
-	# List View
+	# List View Configuration
 	# *****************
 	listView {
 
@@ -563,6 +564,9 @@ plugin.tx_wecsermons_pi1 {
 
 		# End date filter, applied to the list omiting all dates later than the date set
 		endDate =
+
+		# Specify which layout will be used, also can be set in the front-end plugin
+		layoutCode =
 
 		# *****************
 		# Browse Box Settings
@@ -622,17 +626,13 @@ plugin.tx_wecsermons_pi1 {
 			strftime = %A,  %b. %d %Y
 		}
 
-		# Table that records will be shown from
-		detail_table = tx_wecsermons_sermons
-
-		# Table that records in detail will be grouped by
-		group_table =
-
 		tx_wecsermons_sermons {
 
 			# Allowed data columns to search in
 			searchFieldList = title,description,scripture,keywords
 
+			# Define ordering configuration for this table
+			# orderBy should only include one field!
 			orderByList = occurance_date,title,description
 			orderBy = occurance_date
 			descFlag = 1
@@ -696,7 +696,7 @@ plugin.tx_wecsermons_pi1 {
 				innerWrap = {$plugin.tx_wecsermons_pi1.topicsHeader}
 				innerWrap.wrap = |<br/>
 				innerWrap.required = 1
-				
+
 				wrap = <div class="tx-wecsermons-pi1-topics">|</div>
 			}
 
@@ -705,7 +705,7 @@ plugin.tx_wecsermons_pi1 {
 				innerWrap = {$plugin.tx_wecsermons_pi1.seriesHeader}
 				innerWrap.wrap = |<br/>
 				innerWrap.required = 1
-				
+
 				wrap = <div class="tx-wecsermons-pi1-series">|</div>
 			}
 
@@ -714,7 +714,7 @@ plugin.tx_wecsermons_pi1 {
 				innerWrap = {$plugin.tx_wecsermons_pi1.speakersHeader}
 				innerWrap.wrap = |<br/>
 				innerWrap.required = 1
-				
+
 				wrap = <div class="tx-wecsermons-pi1-speakers">|</div>
 
 			}
@@ -742,7 +742,7 @@ plugin.tx_wecsermons_pi1 {
 				DOC.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
 
 				MP3.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
-				
+
 				discussion.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
 
 				# Default resource type.
@@ -751,7 +751,15 @@ plugin.tx_wecsermons_pi1 {
 			}
 
 			# Allowed data columns to search in
-			searchFieldList = title,description,scripture,keywords
+			searchFieldList = title,description,file,webaddress1,webaddress2,webaddress3
+
+			# Define ordering configuration for this table
+			# orderBy should only include one field!
+			orderByList = title,description
+			orderBy = title
+
+			# Boolean, if set = 1 then order descending
+			descFlag = 1
 
 			title = TEXT
 			title.field = title
@@ -772,7 +780,7 @@ plugin.tx_wecsermons_pi1 {
 				}
 
 			}
-			
+
 			description = TEXT
 			description {
 				field = description
@@ -802,10 +810,13 @@ plugin.tx_wecsermons_pi1 {
 
 			# Allowed data columns to search in
 			searchFieldList = title,description,scripture,keywords
-			
+
 			# Specify the ordering of records in list views
-			orderByList = title,startdate
-			orderBy = title
+			# orderBy should only include one field!
+			orderByList = title,startdate,enddate,season
+			orderBy = startdate
+
+			# Boolean, if set = 1 then order descending
 			descFlag = 1
 
 			title = TEXT
@@ -858,7 +869,7 @@ plugin.tx_wecsermons_pi1 {
 				innerWrap = {$plugin.tx_wecsermons_pi1.topicsHeader}
 				innerWrap.wrap = |<br/>
 				innerWrap.required = 1
-				
+
 				wrap = |
 			}
 
@@ -878,7 +889,7 @@ plugin.tx_wecsermons_pi1 {
 				innerWrap = {$plugin.tx_wecsermons_pi1.seriesEndDateHeader}
 				innerWrap.wrap = |&nbsp;
 				innerWrap.required = 1
-				
+
 				strftime = %A,  %b. %d %Y
 				wrap = |
 				field = enddate
@@ -889,7 +900,7 @@ plugin.tx_wecsermons_pi1 {
 				innerWrap = {$plugin.tx_wecsermons_pi1.seasonHeader}
 				innerWrap.wrap = |<br/>
 				innerWrap.required = 1
-				
+
 				wrap = <div id="tx-wecsermons-pi1-season|</div>
 
 			}
@@ -907,7 +918,15 @@ plugin.tx_wecsermons_pi1 {
 			}
 
 			# Allowed data columns to search in
-			searchFieldList = title,description,scripture,keywords
+			searchFieldList = fullname,firstname,lastname,email
+
+			# Specify the ordering of records in list views
+			# orderBy should only include one field!
+			orderByList = fullname,firstname,lastname,email
+			orderBy = lastname
+
+			# Boolean, if set = 1 then order descending
+			descFlag = 0
 
 			photo = IMAGE
 			photo {
@@ -925,7 +944,7 @@ plugin.tx_wecsermons_pi1 {
 					JSwindow.expand = 20,20
 				}
 			}
-			
+
 			fullname = TEXT
 			fullname {
 				wrap = |
@@ -964,6 +983,17 @@ plugin.tx_wecsermons_pi1 {
 
 		tx_wecsermons_topics {
 
+			# Allowed data columns to search in
+			searchFieldList = title,description
+
+			# Specify the ordering of records in list views
+			# orderBy should only include one field!
+			orderByList = title,description
+			orderBy = title
+
+			# Boolean, if set = 1 then order descending
+			descFlag = 0
+
 			title = TEXT
 			title {
 				wrap = |
@@ -983,6 +1013,17 @@ plugin.tx_wecsermons_pi1 {
 
 		tx_wecsermons_seasons {
 
+			# Allowed data columns to search in
+			searchFieldList = title,description
+
+			# Specify the ordering of records in list views
+			# orderBy should only include one field!
+			orderByList = title,description
+			orderBy = title
+
+			# Boolean, if set = 1 then order descending
+			descFlag = 0
+
 			title = TEXT
 			title {
 				wrap = |
@@ -1001,34 +1042,43 @@ plugin.tx_wecsermons_pi1 {
 
 	}
 
+	# *****************
+	# Latest view configuration
+	# *****************
 	latestView < .listView
 	latestView {
-	
+
 		maxdetailResults = {$plugin.tx_wecsermons_pi1.latestView.maxdetailResults}
 		maxGroupResults = {$plugin.tx_wecsermons_pi1.latestView.maxGroupResults}
 		emptyGroups = {$plugin.tx_wecsermons_pi1.latestView.emptyGroups}
+		useCreationDate = {$plugin.tx_wecsermons_pi1.latestView.useCreationDate}
+		groupByTable =
+		detailTable =
 
 		tx_wecsermons_sermons {
 			orderByList = occurance_date,title
-			orderBy = occurance_date,title
-			descFlag = 0
+			orderBy = occurance_date
+			descFlag = 1
 		}
-	
+
 		tx_wecsermons_series {
 			orderByList = startdate,title
-			orderBy = startdate,title
-			descFlag = 0
+			orderBy = startdate
+			descFlag = 1
 		}
-	
+
 	}
-	
+
+	# *****************
+	# Search view configuration
+	# *****************
 	searchView {
 
 		# Allowed data columns to search in
 		searchFieldList = title,description,scripture,keywords
 
 		orderByList = occurance_date,title
-		orderBy = occurance_date,title
+		orderBy = occurance_date
 		descFlag = 0
 
 		#	List of table names we can search into from the search box (Future use)
@@ -1055,22 +1105,25 @@ plugin.tx_wecsermons_pi1 {
 		}
 	}
 
+	# *****************
+	# XML view configuration
+	# *****************
 	xmlView {
 
-		results_at_a_time = 5
-		desc_flag = 1
+		maxdetailResults = 5
+		descFlag = 1
 
 		# TODO: allow multiple resource types here
 		# TOTO: change to name of resource type specified in v.0.5.2 of extension
 		#	EnclosureType specifies which custom resource type will be included as an <enclosure/> for podcasting.
-		enclosureType = 2
+		enclosureType = MP3
 
 			# Type tells the plugin how to render the ###RESOURCE_LINK### tag for a resource.
 			# If typolink = 0, then links to the single view of a resource.
 			resource_types {
 
 				# Default resource type. **MUST** be configured by administrator
-				0 {
+				0{
 					typolink = 0
 
 				}
@@ -1088,6 +1141,42 @@ plugin.tx_wecsermons_pi1 {
 	}
 }
 
+[global]
+podcast < plugin.tx_wecapi_list.rss2
+podcast {
+	typeNum = 200
+	10 < plugin.tx_wecsermons_pi1
+	10.CMD = XML
+	10.pidList = {$plugin.tx_wecsermons_pi1.pidList}
+}
+
+plugin.tx_wecapi_list {
+
+	tag_rendering {
+		channel_link >
+		channel_link = TEXT
+		channel_link.data = field:channel_link
+		channel_link.wrap = <link>|</link>
+		channel_description.stripHtml = 1
+
+		item_title.field = title
+		item_description {
+			field = description
+			stripHtml = 1
+			if.isTrue.field = description
+		}
+		item_link.field = item_link
+		item_comments.field = comments_link
+		item_pubdate.field = occurance_date
+		item_guid.field = item_link
+		item_source >
+		item_enclosure.if.isTrue.field = enclosure_url
+
+
+	}
+
+}
+
 # Empty default set CSS styles (these go into the document header):
 plugin.tx_wecsermons_pi1._CSS_DEFAULT_STYLE >
 plugin.tx_wecsermons_pi1._CSS_DEFAULT_STYLE (
@@ -1097,6 +1186,9 @@ div.tx-wecsermons-pi1-list1 { margin: 1em 0 1em; padding: 0 0 1em;}
 #tx-wecsermons-pi1-list2 th { background-color: #779976; text-align: left;}
 #tx-wecsermons-pi1-list2 a { color: #003399; }
 #tx-wecsermons-pi1-list2 td { background-color: #ACCCAB;}
+#tx-wecsermons-pi1-latest2 th { background-color: #779976; text-align: left;}
+#tx-wecsermons-pi1-latest2 a { color: #003399; }
+#tx-wecsermons-pi1-latest2 td { background-color: #ACCCAB;}
 div.tx-wecsermons-pi1-sermon-description { text-align: justify; }
 div.tx-wecsermons-pi1-default dl {  margin-top: 0px; margin-bottom: 1em;}
 div.tx-wecsermons-pi1-flv div.tx-wecflashplayer-pi1 { float: left; }
