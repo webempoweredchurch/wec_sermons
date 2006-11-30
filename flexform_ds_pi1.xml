@@ -7,7 +7,7 @@
         </TCEforms>
         <type>array</type>
         <el>
-        
+
         	<layout>
  			    <TCEforms>
 			      <label>LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.layout</label>
@@ -91,7 +91,7 @@
 						<numIndex index="0" type="array">
 							<numIndex index="0"></numIndex>
 							<numIndex index="1"></numIndex>
-						</numIndex>					
+						</numIndex>
 						<numIndex index="1" type="array">
 							<numIndex index="0">LLL:EXT:cms/locallang_ttc.php:recursive.I.1</numIndex>
 							<numIndex index="1">1</numIndex>
@@ -118,7 +118,7 @@
 					<size>1</size>
 				</config>
 			</TCEforms>
-		  </recursive>  
+		  </recursive>
 
 		<templateFile>
 		  	<TCEforms>
@@ -131,7 +131,7 @@
 					<size>1</size>
 				</config>
 			</TCEforms>
-		  </templateFile>  
+		  </templateFile>
 		</el>
     </ROOT>
     </sDEF>
@@ -173,7 +173,7 @@
 							<numIndex index="0" type="array">
 								<numIndex index="0"></numIndex>
 								<numIndex index="1"></numIndex>
-							</numIndex>					
+							</numIndex>
 	                     <numIndex index="1" type="array">
 	                            <numIndex index="0">LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.detail_table.I.0</numIndex>
 	                            <numIndex index="1">tx_wecsermons_sermons</numIndex>

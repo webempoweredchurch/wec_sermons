@@ -14,7 +14,7 @@ plugin.tx_wecsermons_pi1 {
 
 	# cat=plugin.tx_wecsermons_pi1/dims/1; type=text; label= LIST View - Results Per Page: How many results are shown on each page. (Applied to lists.)
 	listView.results_at_a_time = 20
-	
+
 	# cat=plugin.tx_wecsermons_pi1/dims/2; type=text; label= LIST View - Max Pages Shown: How many pages are shown in the record browser between the <prev> and <next> links. (Applied to lists.)
 	listView.maxPages = 5
 
@@ -35,38 +35,38 @@ plugin.tx_wecsermons_pi1 {
 
 	# cat=plugin.tx_wecsermons_pi1/file/1; type=file[html,htm,tmpl,txt]; label= Template File: HTML template file for display of a List View.
 	file.templateFile = EXT:wec_sermons/pi1/wecsermons.tmpl
-	
+
 	# cat=plugin.tx_wecsermons_pi1/typo/1; type=text; label= List View - Alternating class: string appended to the end of the alternating class, appearing as tx-wecsermons-pi1-{string}
 	listView.alternatingClass = tx-wecsermons-pi1-list-odd
-	
+
 	# cat=plugin.tx_wecsermons_pi1/typo/2; type=text; label= Header for Related Topics: The text header added before the list of topics, if related to other records
-	topicsHeader = 
+	topicsHeader =
 
 	# cat=plugin.tx_wecsermons_pi1/typo/3; type=text; label= Header for Related Season: The text header added before the season, if related to other records
-	seasonHeader = 
+	seasonHeader =
 
 	# cat=plugin.tx_wecsermons_pi1/typo/4; type=text; label= Header for Related Series: The text header added before the list of series, if related to other records
-	seriesHeader = 
+	seriesHeader =
 
 	# cat=plugin.tx_wecsermons_pi1/typo/5; type=text; label= Header for Series Start Date: The text header added before the start date of a series
-	seriesStartDateHeader = 
+	seriesStartDateHeader =
 
 	# cat=plugin.tx_wecsermons_pi1/typo/6; type=text; label= Header for Series End Date: The text header added before the end date list of series
-	seriesEndDateHeader = 
+	seriesEndDateHeader =
 
 	# cat=plugin.tx_wecsermons_pi1/typo/7; type=text; label= Header for Related: The text header added before the list of speakers, if related to other records
-	speakersHeader = 
+	speakersHeader =
 
 	# cat=plugin.tx_wecsermons_pi1/links/1; type=int+; label= SMS Record Storage PID: The UID of the page where all SMS records are currently stored. (Must be set to use XML feed!)
-	pidList = 
+	pidList =
 
 	# cat=plugin.tx_wecsermons_pi1/links/2; type=int+; label= Single View - Single PID: The UID of the page where the Single View is displayed. (If you set this, you should also set pidListView!)
-	pidSingleView = 
+	pidSingleView =
 
 	# cat=plugin.tx_wecsermons_pi1/links/3; type=int+; label= List View - List PID: The UID of the page where the List View is displayed
-	pidListView = 
+	pidListView =
 
 	# cat=plugin.tx_wecsermons_pi1/links/4; type=int+; label= Search View - Search PID: The UID of the page where the Search View is displayed
-	pidSearchView = 
+	pidSearchView =
 
 }

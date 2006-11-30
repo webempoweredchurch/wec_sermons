@@ -23,7 +23,7 @@ CREATE TABLE tx_wecsermons_resources (
 	webaddress2 tinytext NOT NULL,
 	webaddress3 tinytext NOT NULL,
 	rendered_record blob NOT NULL,
-	
+
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
@@ -56,7 +56,7 @@ CREATE TABLE tx_wecsermons_resource_types (
 	mime_type tinytext NOT NULL,
 	typoscript_object_name tinytext NOT NULL,
 	avail_fields blob NOT NULL,
-	
+
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
@@ -66,7 +66,7 @@ CREATE TABLE tx_wecsermons_resource_types (
 
 #
 # Table structure for table 'tx_wecsermons_sermons_resources_uid_mm'
-# 
+#
 #
 CREATE TABLE tx_wecsermons_sermons_resources_uid_mm (
   uid_local int(11) DEFAULT '0' NOT NULL,
@@ -108,7 +108,7 @@ CREATE TABLE tx_wecsermons_sermons (
 	record_type int(11) DEFAULT '0' NOT NULL,
 	resources_uid int(11) DEFAULT '0' NOT NULL,
 	speakers_uid blob NOT NULL,
-	
+
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
@@ -136,7 +136,7 @@ CREATE TABLE tx_wecsermons_series (
 	seasons_uid blob NOT NULL,
 	topics_uid blob NOT NULL,
 	keywords tinytext NOT NULL,
-	
+
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
@@ -157,7 +157,7 @@ CREATE TABLE tx_wecsermons_topics (
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
 	description text NOT NULL,
 	title tinytext NOT NULL,
-	
+
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
@@ -178,7 +178,7 @@ CREATE TABLE tx_wecsermons_seasons (
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
 	title tinytext NOT NULL,
 	description text NOT NULL,
-	
+
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
@@ -201,7 +201,7 @@ CREATE TABLE tx_wecsermons_speakers (
 	url tinytext NOT NULL,
 	photo blob NOT NULL,
 	email tinytext NOT NULL,
-	
+
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );

@@ -33,35 +33,35 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
  *   78: class tx_wecsermons_pi1 extends tslib_pibase
  *   91:     function init($conf)
  *  112:     function main($content,$conf)
- *  226:     function xmlView ($content, $lConf)
- *  315:     function singleView($content,$lConf)
- *  443:     function searchView($content,$lConf)
- *  458:     function pi_list_searchbox($lConf)
- *  506:     function latestView($content,$lConf)
- *  570:     function listView($content,$lConf)
- *  668:     function pi_list_makelist($lConf, $template)
- *  851:     function pi_list_row($lConf, $markerArray = array(), $rowTemplate, $row ='', $c = 2)
- * 1595:     function getMarkerArray( $tableName = '' )
- * 1736:     function formatStr( $str )
- * 1750:     function getTemplateKey($tableName)
- * 1793:     function getUrlToList ( $absolute )
- * 1810:     function getUrlToSingle ( $absolute, $tableName, $uid )
- * 1829:     function getFeAdminList( $tableName = '' )
- * 1849:     function getNamedTemplateContent($keyName = 'sermon', $view = 'single')
- * 1903:     function getNamedSubpart( $subpartName, $content )
- * 1920:     function getMarkerName( $markerName )
- * 1933:     function loadTemplate( $view = 'LIST')
- * 1959:     function getTemplateFile()
- * 1986:     function getGroupResult($groupTable, $detailTable, $foreignColumn, $lConf )
- * 2026:     function getResources( $sermonUid = '', $resourceUid = '')
- * 2081:     function emptyResourceSubparts( &$subpartArray )
- * 2106:     function throwError( $type, $message, $detail = '' )
- * 2130:     function getTutorial ( $tutorial )
- * 2207:     function uniqueCsv()
- * 2222:     function unique_array()
- * 2240:     function get_foreign_column( $currentTable, $relatedTable )
- * 2266:     function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default = '' )
- * 2285:     function splitTableAndUID($record)
+ *  223:     function xmlView ($content, $lConf)
+ *  309:     function singleView($content,$lConf)
+ *  437:     function searchView($content,$lConf)
+ *  452:     function pi_list_searchbox($lConf)
+ *  500:     function latestView($content,$lConf)
+ *  564:     function listView($content,$lConf)
+ *  662:     function pi_list_makelist($lConf, $template)
+ *  845:     function pi_list_row($lConf, $markerArray = array(), $rowTemplate, $row ='', $c = 2)
+ * 1589:     function getMarkerArray( $tableName = '' )
+ * 1730:     function formatStr( $str )
+ * 1744:     function getTemplateKey($tableName)
+ * 1787:     function getUrlToList ( $absolute )
+ * 1804:     function getUrlToSingle ( $absolute, $tableName, $uid )
+ * 1823:     function getFeAdminList( $tableName = '' )
+ * 1843:     function getNamedTemplateContent($keyName = 'sermon', $view = 'single')
+ * 1897:     function getNamedSubpart( $subpartName, $content )
+ * 1914:     function getMarkerName( $markerName )
+ * 1927:     function loadTemplate( $view = 'LIST')
+ * 1953:     function getTemplateFile()
+ * 1980:     function getGroupResult($groupTable, $detailTable, $foreignColumn, $lConf )
+ * 2020:     function getResources( $sermonUid = '', $resourceUid = '')
+ * 2075:     function emptyResourceSubparts( &$subpartArray )
+ * 2100:     function throwError( $type, $message, $detail = '' )
+ * 2124:     function getTutorial ( $tutorial )
+ * 2201:     function uniqueCsv()
+ * 2216:     function unique_array()
+ * 2234:     function get_foreign_column( $currentTable, $relatedTable )
+ * 2260:     function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default = '' )
+ * 2279:     function splitTableAndUID($record)
  *
  * TOTAL FUNCTIONS: 31
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -111,7 +111,6 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 */
 	function main($content,$conf)	{
 
-
 		$this->local_cObj = t3lib_div::makeInstance('tslib_cObj'); // Local cObj.
 		$this->init($conf);
 
@@ -129,7 +128,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 		$tutorial = $this->getConfigVal( $this, 'tutorial', 'sMisc', 'tutorial', $this->conf, 0 );
 
-		//	If tutorial enabled, walk through tutorial
+		//	If tutorial enabled, return tutorial content
 		if( $tutorial )
 			return $this->getTutorial( $tutorial );
 
@@ -252,10 +251,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 			//	Retreive the array of related resources to this sermon record
 			$resources = $this->getResources( $row['uid'] );
-
 			foreach( $resources as $resource ) {
 
-				//	If the resource is the type allowed as an enclosure in this view, then calculate the url and size.
+				//	If the resource is the type allowed as an enclosure in this view, then calculate the url and size, adding to result row
 				if( !strcmp( $resource['type'], $lConf['enclosureType'] ) ) {
 
 					//	Retrieve a typolink conf that tells us how to render the link to the resource. Must be provided by admin!
@@ -272,11 +270,13 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					$row['size'] = $fileInfo['size'];
 					$row['enclosure_url'] =  t3lib_div::getIndpEnv('TYPO3_SITE_URL'). $relPath;
 					$row['mime_type'] = $resource['mime_type'];
+
 				}
 
 			}
 			$row['item_link'] = $this->getUrlToSingle( 1, $tableToList, $row['uid'] );
 
+			//	If result row has speakers related to it, retrieve the fullname of the first speaker and add to result row as 'author'
 			if( $row['speakers_uid'] ) {
 
 				//	Query for related speakers
@@ -287,10 +287,12 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				$row['author'] = $speaker ? $speaker['fullname'] : '';
 
 			}
+
+			//	Collect each modified row into an array for passing to other function
 			$sermons[] = $row;
 		}
 
-
+		//	Call wecapi_list to retrieve the front-end content of this row of records.
 		 return tx_wecapi_list::getContent( $this, $sermons, $tableToList );
 
 	}
