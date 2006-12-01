@@ -733,6 +733,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$markerArray = $this->getMarkerArray( $groupTable );
 			$groupTemplate = $this->template['group'];
 			$groupContent = '';
+			$detailContent = '';
 
 			$res = $this->getGroupResult( $groupTable, $detailTable, $foreign_column, $lConf );
 
@@ -740,12 +741,14 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$detailMarkArray = $this->getMarkerArray( $detailTable );
 			$detailTemplate = $this->template['item'] = $this->getNamedSubpart( 'ITEM', $template );
 
-			//	Counter for number of sermons shown on a 'page'
+			//	Counter for number of group records, and detail records shown on a 'page'
+			$groupCount = 0;
 			$detailCount = 0;
 
 			//	Iterate every record in groupTable
 			while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) ) {
-
+				$groupCount++;
+				
 				//	Store previous row, table and order by as we switch to retreiving detail
 				$this->internal['previousRow'] = $this->internal['currentRow'];
 				$this->internal['previousTable'] = $this->internal['currentTable'];
@@ -766,18 +769,28 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 
 				//	Process the current row
-				$content .= $this->pi_list_row( $lConf, $markerArray, $groupTemplate, $this->internal['currentRow'] );
-
+				$groupContent = $this->pi_list_row( $lConf, $markerArray, $groupTemplate, $this->internal['currentRow'], $groupCount );
 
 				//	Exec query on detail table, for every record related to our group record
 				$detailRes = $this->pi_exec_query( $detailTable, 0, ' AND ' . $foreign_column . ' in (' . $this->internal['previousRow']['uid'] . ')' );
 
-				while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $detailRes ) ) {
-					$content .= $this->pi_list_row( $lConf, $detailMarkArray, $detailTemplate, $this->internal['currentRow'] );
-					$detailCount++;
-				}
+				$detailInnerCount = 0;
 
-				//	Aggregate groupContent into content if detail records exist.
+				while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $detailRes ) ) {
+					$detailCount++;
+					$detailInnerCount++;
+
+					$detailContent .= $this->pi_list_row( $lConf, $detailMarkArray, $detailTemplate, $this->internal['currentRow'], $detailInnerCount );
+				}
+				
+				$subpartArray = array(
+					'###GROUP###' => $groupContent,
+					'###ITEM###' => $detailContent
+				);
+				
+				$content .= $this->cObj->substituteMarkerArrayCached( $this->template['content'], array(), $subpartArray );
+				$detailContent = '';
+
 				if( $detailCount >= $this->internal['results_at_a_time'] ) break; // Break loop if we've met or exceeded our total detail count
 
 				//	Restore row,  table, and order by to internal storage
