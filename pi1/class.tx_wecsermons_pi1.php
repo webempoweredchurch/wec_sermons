@@ -34,34 +34,34 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
  *   91:     function init($conf)
  *  112:     function main($content,$conf)
  *  223:     function xmlView ($content, $lConf)
- *  309:     function singleView($content,$lConf)
- *  437:     function searchView($content,$lConf)
- *  452:     function pi_list_searchbox($lConf)
- *  500:     function latestView($content,$lConf)
- *  564:     function listView($content,$lConf)
- *  662:     function pi_list_makelist($lConf, $template)
- *  847:     function pi_list_row($lConf, $markerArray = array(), $rowTemplate, $row ='', $c = 2)
- * 1533:     function getMarkerArray( $tableName = '' )
- * 1644:     function formatStr( $str )
- * 1658:     function getTemplateKey($tableName)
- * 1701:     function getUrlToList ( $absolute )
- * 1718:     function getUrlToSingle ( $absolute, $tableName, $uid )
- * 1737:     function getFeAdminList( $tableName = '' )
- * 1757:     function getNamedTemplateContent($keyName = 'sermon', $view = 'single')
- * 1811:     function getNamedSubpart( $subpartName, $content )
- * 1828:     function getMarkerName( $markerName )
- * 1841:     function loadTemplate( $view = 'LIST')
- * 1867:     function getTemplateFile()
- * 1894:     function getGroupResult($groupTable, $detailTable, $foreignColumn, $lConf )
- * 1934:     function getResources( $sermonUid = '', $resourceUid = '')
- * 1989:     function emptyResourceSubparts( &$subpartArray )
- * 2014:     function throwError( $type, $message, $detail = '' )
- * 2038:     function getTutorial ( $tutorial )
- * 2115:     function uniqueCsv()
- * 2130:     function unique_array()
- * 2148:     function get_foreign_column( $currentTable, $relatedTable )
- * 2174:     function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default = '' )
- * 2193:     function splitTableAndUID($record)
+ *  311:     function singleView($content,$lConf)
+ *  439:     function searchView($content,$lConf)
+ *  454:     function pi_list_searchbox($lConf)
+ *  502:     function latestView($content,$lConf)
+ *  566:     function listView($content,$lConf)
+ *  664:     function pi_list_makelist($lConf, $template)
+ *  862:     function pi_list_row($lConf, $markerArray = array(), $rowTemplate, $row ='', $c = 2)
+ * 1548:     function getMarkerArray( $tableName = '' )
+ * 1659:     function formatStr( $str )
+ * 1673:     function getTemplateKey($tableName)
+ * 1716:     function getUrlToList ( $absolute )
+ * 1733:     function getUrlToSingle ( $absolute, $tableName, $uid )
+ * 1752:     function getFeAdminList( $tableName = '' )
+ * 1772:     function getNamedTemplateContent($keyName = 'sermon', $view = 'single')
+ * 1826:     function getNamedSubpart( $subpartName, $content )
+ * 1843:     function getMarkerName( $markerName )
+ * 1856:     function loadTemplate( $view = 'LIST')
+ * 1882:     function getTemplateFile()
+ * 1909:     function getGroupResult($groupTable, $detailTable, $foreignColumn, $lConf )
+ * 1949:     function getResources( $sermonUid = '', $resourceUid = '')
+ * 2004:     function emptyResourceSubparts( &$subpartArray )
+ * 2029:     function throwError( $type, $message, $detail = '' )
+ * 2053:     function getTutorial ( $tutorial )
+ * 2130:     function uniqueCsv()
+ * 2145:     function unique_array()
+ * 2163:     function get_foreign_column( $currentTable, $relatedTable )
+ * 2189:     function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default = '' )
+ * 2208:     function splitTableAndUID($record)
  *
  * TOTAL FUNCTIONS: 31
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -146,7 +146,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		$this->conf['allowedTables'] = str_replace( ' ', '', $this->conf['allowedTables'] );
 
 		//	Recursive setting from plugin overrides typoscript
-		$this->conf['recursive'] = $this->getConfigVal( $this, 'recursive', 'sDEF', 'pidList', $this->conf, 0 );
+		$this->conf['recursive'] = $this->getConfigVal( $this, 'recursive', 'sDEF', 'recursive', $this->conf, 0 );
 
 		//	Find the starting point in the page tree to search for WEC SMS records, use current page as default
 		$this->conf['pidList'] = $this->getConfigVal($this, 'startingpoint', 'sDEF', 'pidList', $this->conf, $GLOBALS['TSFE']->id );
@@ -222,24 +222,23 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 */
 	function xmlView ($content, $lConf) {
 
+		//	Get the related table entries to the group, using 'tx_wecsermons_sermons' if none specified
+		$tableToList = $this->piVars['recordType'] ? $this->piVars['recordType'] : ($this->conf['detailTable'] ? $this->conf['detailTable'] : 'tx_wecsermons_sermons' );
+
 		//	Retrieve the number we want to limit our items to
 		$this->internal['results_at_a_time'] = $lConf['maxdetailResults'];
 		$this->internal['orderByList']=$lConf[$tableToList.'.']['orderByList'];
-		$this->internal['orderBy'] = $lConf['useCreationDate'] ? 'crdate' : $orderBy;
 		$this->internal['descFlag']='1'; //	Hardcode descending = 1 for latest view
+
+		//	Retrieve ordering from typoscript, or 'title' as default.
+		$orderBy = $this->getConfigVal( $this, 'sermons_order_by', 'slistView', 'orderBy', $lConf[$tableToList.'.'], 'title' );
+		$this->internal['orderBy'] = $lConf['useCreationDate'] ? 'crdate' : $orderBy;
 
 
 		//	TODO: Modify code to allow other records to be shown. Right now we're assuming sermons only.
 
-		//	Get the related table entries to the group, using 'tx_wecsermons_sermons' if none specified
-		$tableToList = $this->piVars['recordType'] ? $this->piVars['recordType'] : ($this->conf['detailTable'] ? $this->conf['detailTable'] : 'tx_wecsermons_sermons' );
-
-		//	Load the correct marker array and load the item template
-		$markerArray = $this->getMarkerArray( $tableToList );
-
-
 		// Make listing query, pass query to SQL database:
-		$res = $this->pi_exec_query($tableToList,0,$where);
+		$res = $this->pi_exec_query($tableToList,0);
 
 		$sermons = array();
 		$content = '';
@@ -278,6 +277,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 			//	If result row has speakers related to it, retrieve the fullname of the first speaker and add to result row as 'author'
 			if( $row['speakers_uid'] ) {
+
+				$this->internal['orderByList'] = $lConf['tx_wecsermons_speakers.']['orderByList'];
+				$this->internal['orderBy'] = $lConf['tx_wecsermons_speakers.']['orderBy'];
 
 				//	Query for related speakers
 				$speakerRes = $this->pi_exec_query('tx_wecsermons_speakers', 0, ' AND uid in (' . $row['speakers_uid'] . ')' );
@@ -748,7 +750,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			//	Iterate every record in groupTable
 			while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) ) {
 				$groupCount++;
-				
+
 				//	Store previous row, table and order by as we switch to retreiving detail
 				$this->internal['previousRow'] = $this->internal['currentRow'];
 				$this->internal['previousTable'] = $this->internal['currentTable'];
@@ -782,12 +784,12 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 					$detailContent .= $this->pi_list_row( $lConf, $detailMarkArray, $detailTemplate, $this->internal['currentRow'], $detailInnerCount );
 				}
-				
+
 				$subpartArray = array(
 					'###GROUP###' => $groupContent,
 					'###ITEM###' => $detailContent
 				);
-				
+
 				$content .= $this->cObj->substituteMarkerArrayCached( $this->template['content'], array(), $subpartArray );
 				$detailContent = '';
 
@@ -2165,7 +2167,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		t3lib_div::loadTCA( $currentTable );
 
 		foreach( $GLOBALS['TCA'][$currentTable]['columns'] as $columnName => $value ) {
-				if( $value['config']['foreign_table'] == $relatedTable || $value['config']['allowed'] == $relatedTable )
+				if( !strcmp( $value['config']['foreign_table'], $relatedTable) || !strcmp( $value['config']['allowed'], $relatedTable ) )
 					return $columnName;
 		}
 
