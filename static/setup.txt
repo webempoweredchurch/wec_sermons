@@ -633,7 +633,7 @@ plugin.tx_wecsermons_pi1 {
 
 			# Define ordering configuration for this table
 			# orderBy should only include one field!
-			orderByList = occurance_date,title,description
+			orderByList = occurance_date,title,description,crdate
 			orderBy = occurance_date
 			descFlag = 1
 
@@ -755,7 +755,7 @@ plugin.tx_wecsermons_pi1 {
 
 			# Define ordering configuration for this table
 			# orderBy should only include one field!
-			orderByList = title,description
+			orderByList = title,description,crdate
 			orderBy = title
 
 			# Boolean, if set = 1 then order descending
@@ -813,7 +813,7 @@ plugin.tx_wecsermons_pi1 {
 
 			# Specify the ordering of records in list views
 			# orderBy should only include one field!
-			orderByList = title,startdate,enddate,season
+			orderByList = title,startdate,enddate,season,crdate
 			orderBy = startdate
 
 			# Boolean, if set = 1 then order descending
@@ -922,7 +922,7 @@ plugin.tx_wecsermons_pi1 {
 
 			# Specify the ordering of records in list views
 			# orderBy should only include one field!
-			orderByList = fullname,firstname,lastname,email
+			orderByList = fullname,firstname,lastname,email,crdate
 			orderBy = lastname
 
 			# Boolean, if set = 1 then order descending
@@ -988,7 +988,7 @@ plugin.tx_wecsermons_pi1 {
 
 			# Specify the ordering of records in list views
 			# orderBy should only include one field!
-			orderByList = title,description
+			orderByList = title,description,crdate
 			orderBy = title
 
 			# Boolean, if set = 1 then order descending
@@ -1018,7 +1018,7 @@ plugin.tx_wecsermons_pi1 {
 
 			# Specify the ordering of records in list views
 			# orderBy should only include one field!
-			orderByList = title,description
+			orderByList = title,description,crdate
 			orderBy = title
 
 			# Boolean, if set = 1 then order descending
@@ -1056,13 +1056,13 @@ plugin.tx_wecsermons_pi1 {
 		detailTable =
 
 		tx_wecsermons_sermons {
-			orderByList = occurance_date,title
+			orderByList = occurance_date,title,crdate
 			orderBy = occurance_date
 			descFlag = 1
 		}
 
 		tx_wecsermons_series {
-			orderByList = startdate,title
+			orderByList = startdate,title,crdate
 			orderBy = startdate
 			descFlag = 1
 		}
@@ -1108,47 +1108,45 @@ plugin.tx_wecsermons_pi1 {
 	# *****************
 	# XML view configuration
 	# *****************
+	xmlView < .listView
 	xmlView {
 
 		maxdetailResults = 5
 		descFlag = 1
+		orderByList = occurance_date,title,crdate
+		orderBy = occurance_date
 
 		# TODO: allow multiple resource types here
 		# TOTO: change to name of resource type specified in v.0.5.2 of extension
 		#	EnclosureType specifies which custom resource type will be included as an <enclosure/> for podcasting.
 		enclosureType = MP3
 
-			# Type tells the plugin how to render the ###RESOURCE_LINK### tag for a resource.
-			# If typolink = 0, then links to the single view of a resource.
-			resource_types {
-
-				# Default resource type. **MUST** be configured by administrator
-				0{
-					typolink = 0
-
-				}
-
-				PDF {
-					typolink = 0
-				}
-
-				MP3 {
-					typolink = 0
-				}
-
-
-			}
 	}
 }
 
 [global]
-podcast < plugin.tx_wecapi_list.rss2
+podcast = PAGE
 podcast {
+	config {
+		disableAllHeaderCode = 1
+		additionalHeaders = Content-type:application/xml
+		xhtml_cleaning = 0
+		admPanel = 0
+	}
+
 	typeNum = 200
-	10 < plugin.tx_wecsermons_pi1
-	10.CMD = XML
-	10.pidList = {$plugin.tx_wecsermons_pi1.pidList}
+	10 = HTML
+	10.value (
+<?xml version="1.0"?>
+	<rss version="2.0">
+		<warning>If you are seeing this, you need to configure the podcast page by inserting TypoScript into the setup field of your template record.</warning>
+		<recommendation>Please see the documentation provided with this Extension.</recommendation>
+	</rss>
+	)
 }
+
+vodcast < podcast
+vodcast.typeNum = 201
 
 plugin.tx_wecapi_list {
 
@@ -1171,7 +1169,6 @@ plugin.tx_wecapi_list {
 		item_guid.field = item_link
 		item_source >
 		item_enclosure.if.isTrue.field = enclosure_url
-
 
 	}
 
