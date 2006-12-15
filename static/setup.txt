@@ -52,8 +52,51 @@ plugin.tx_wecsermons_pi1 {
 	defaultMarker = ###DEFAULT_RESOURCES###
 	defaultTemplate = ###TEMPLATE_DEFAULT_RESOURCES###
 
-	# CASE for rendering ###RESOURCE_CONTENT###
-	# Resource types are identified by thier typoscript_object_name field.
+	# *******************
+	# Browse Box Settings
+	# *******************
+
+	# Whether the active page is a clickable link or text only
+	dontLinkActivePage =
+
+	# A boolean switch if the two links named "<< First" and "LAST >>" will be shown and point to the first or last page.
+	showFirstLast =
+
+	# Defines where the current page is shown in the list of pages in the Pagebrowser. If this var is an integer it will be interpreted as position in the list of pages. If its value is the keyword "center" the current page will be shown in the middle of the pagelist.
+	pagefloat =
+
+	# A boolean swith that displays the pagelinks in ranges f.e.: 1-5 6-10 11-15... instead of 1 2 3...
+	showRange =
+
+ 	# An integer switch that determines how the results browser will be rendered
+	#
+	# 1: (default) the text "Displaying results..." and the result-browser will be rendered.
+	# 2: only the text "Displaying results..." will be shown
+	showResultCount = 1
+
+	# *******************
+	# Browse Box Link Wraps
+	# *******************
+	browseBox_linkWraps {
+
+		disabledLinkWrap = <td nowrap="nowrap"><p>|</p></td>
+		inactiveLinkWrap = <td nowrap="nowrap"><p>|</p></td>
+		activeLinkWrap = <td class="tx-wecsermons-pi1-browsebox-SCell" nowrap="nowrap"><p>|</p></td>
+		browseLinksWrap = <table><tr>|</tr></table>
+		showResultsWrap = <p>|</p>
+		browseBoxWrap (
+			<!--
+			List browsing box:
+			-->
+			<div class="tx-wecsermons-pi1-browsebox">|</div>
+		)
+	}
+		
+	# ***************************
+	# Resource Types CASE cObject
+	# ***************************
+	
+	# Resource types are identified by thier typoscript_object_name field, and render content for the ###RESOURCE_CONTENT### template marker
 	resource_types = CASE
 	resource_types {
 
@@ -221,12 +264,12 @@ plugin.tx_wecsermons_pi1 {
 				field = title
 			}
 
-			# Specific date wrap for the occurance_date column in tx_wecsermons_sermons table
-			occurance_date = TEXT
-			occurance_date {
+			# Specific date wrap for the occurrence_date column in tx_wecsermons_sermons table
+			occurrence_date = TEXT
+			occurrence_date {
 				strftime = %B %d, %Y
 				wrap = |
-				field = occurance_date
+				field = occurrence_date
 			}
 
 			description = TEXT
@@ -311,13 +354,12 @@ plugin.tx_wecsermons_pi1 {
 			resource_types {
 
 				# Type PDF
-				PDF {
-					typolink < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources.typolink
-				}
+				PDF.typolink < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources.typolink
 
-				MP3 {
-					typolink < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources.typolink
-				}
+				MP3.typolink < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources.typolink
+			
+				News.typolink < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources.typolink
+				News.singlePid = 
 
 				# Default resource type, links to the first file in the list
 				default {
@@ -409,7 +451,7 @@ plugin.tx_wecsermons_pi1 {
 					parameter.setCurrent.rawUrlEncode = 1
 					parameter.insertData = 1
 					extTarget = _blank
-				}
+				}		
 				field = scripture
 			}
 
@@ -583,42 +625,6 @@ plugin.tx_wecsermons_pi1 {
 		# Maximum number of pages that are shown in the page browser
 		maxPages = {$plugin.tx_wecsermons_pi1.listView.maxPages}
 
-		# Whether the active page is a clickable link or text only
-		dontLinkActivePage =
-
-		# A boolean switch if the two links named "<< First" and "LAST >>" will be shown and point to the first or last page.
-		showFirstLast =
-
-		# Defines where the current page is shown in the list of pages in the Pagebrowser. If this var is an integer it will be interpreted as position in the list of pages. If its value is the keyword "center" the current page will be shown in the middle of the pagelist.
-		pagefloat =
-
-		# A boolean swith that displays the pagelinks in ranges f.e.: 1-5 6-10 11-15... instead of 1 2 3...
-		showRange =
-
-	 	# An integer switch that determines how the results browser will be rendered
-		#
-		# 1: (default) the text "Displaying results..." and the result-browser will be rendered.
-		# 2: only the text "Displaying results..." will be shown
-		showResultCount = 1
-
-		# *******************
-		# Browse Box Link Wraps
-		# *******************
-		browseBox_linkWraps {
-
-			disabledLinkWrap = <td nowrap="nowrap"><p>|</p></td>
-			inactiveLinkWrap = <td nowrap="nowrap"><p>|</p></td>
-			activeLinkWrap = <td class="tx-wecsermons-pi1-browsebox-SCell" nowrap="nowrap"><p>|</p></td>
-			browseLinksWrap = <table><tr>|</tr></table>
-			showResultsWrap = <p>|</p>
-			browseBoxWrap (
-				<!--
-				List browsing box:
-				-->
-				<div class="tx-wecsermons-pi1-browsebox">|</div>
-			)
-		}
-
 			# A string value appended to the CSS class name of odd rows of a list, [tx-wecsermons-pi1-{alternatingClass}]
 		alternatingClass = {$plugin.tx_wecsermons_pi1.listView.alternatingClass}
 
@@ -634,8 +640,8 @@ plugin.tx_wecsermons_pi1 {
 
 			# Define ordering configuration for this table
 			# orderBy should only include one field!
-			orderByList = occurance_date,title,description,crdate
-			orderBy = occurance_date
+			orderByList = occurrence_date,title,description,crdate
+			orderBy = occurrence_date
 			descFlag = 1
 
 			# Wrap for the title column
@@ -646,12 +652,12 @@ plugin.tx_wecsermons_pi1 {
 				field = title
 			}
 
-			# Specific date wrap for the occurance_date column in tx_wecsermons_sermons table
-			occurance_date = TEXT
-			occurance_date {
+			# Specific date wrap for the occurrence_date column in tx_wecsermons_sermons table
+			occurrence_date = TEXT
+			occurrence_date {
 				strftime = %A,  %b. %d %Y
 				wrap = |
-				field = occurance_date
+				field = occurrence_date
 			}
 
 			description = TEXT
@@ -1057,8 +1063,8 @@ plugin.tx_wecsermons_pi1 {
 		detailTable =
 
 		tx_wecsermons_sermons {
-			orderByList = occurance_date,title,crdate
-			orderBy = occurance_date
+			orderByList = occurrence_date,title,crdate
+			orderBy = occurrence_date
 			descFlag = 1
 		}
 
@@ -1078,8 +1084,8 @@ plugin.tx_wecsermons_pi1 {
 		# Allowed data columns to search in
 		searchFieldList = title,description,scripture,keywords
 
-		orderByList = occurance_date,title
-		orderBy = occurance_date
+		orderByList = occurrence_date,title
+		orderBy = occurrence_date
 		descFlag = 0
 
 		#	List of table names we can search into from the search box (Future use)
@@ -1114,8 +1120,8 @@ plugin.tx_wecsermons_pi1 {
 
 		maxdetailResults = 5
 		descFlag = 1
-		orderByList = occurance_date,title,crdate
-		orderBy = occurance_date
+		orderByList = occurrence_date,title,crdate
+		orderBy = occurrence_date
 
 		# TODO: allow multiple resource types here
 		# TOTO: change to name of resource type specified in v.0.5.2 of extension
@@ -1166,7 +1172,7 @@ plugin.tx_wecapi_list {
 		}
 		item_link.field = item_link
 		item_comments.field = comments_link
-		item_pubdate.field = occurance_date
+		item_pubdate.field = occurrence_date
 		item_guid.field = item_link
 		item_source >
 		item_enclosure.if.isTrue.field = enclosure_url

@@ -823,8 +823,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$startDate = $this->getConfigVal( $this, 'startDate', 'slistView', 'startDate', $lConf );
 			$endDate = $this->getConfigVal( $this, 'endDate', 'slistView', 'endDate', $lConf );
 			$where = '';
-			$where .= $startDate ? ' AND occurance_date >= ' . $startDate : '';	//	$GLOBALS['TYPO3_DB']->fullQuoteStr( strftime( '%m-%d-%y', $startDate ), $tableToList ) : '';
-			$where .= $endDate ? ' AND occurance_date <= ' .  $endDate  : '';
+			$where .= $startDate ? ' AND occurrence_date >= ' . $startDate : '';	//	$GLOBALS['TYPO3_DB']->fullQuoteStr( strftime( '%m-%d-%y', $startDate ), $tableToList ) : '';
+			$where .= $endDate ? ' AND occurrence_date <= ' .  $endDate  : '';
 
 
 			// Get number of records:
@@ -881,15 +881,15 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					}
 				break;
 
-				case '###SERMON_OCCURANCE_DATE###':
+				case '###SERMON_OCCURRENCE_DATE###':
 					if( $row[$fieldName] )
 					{
 						//	Wrap the date, choosing from one of three settings in typoscript
-						$dateWrap = $lConf['tx_wecsermons_sermons.']['occurance_date.'] ? $lConf['tx_wecsermons_sermons.']['occurance_date.'] : $lConf['general_dateWrap.'];
+						$dateWrap = $lConf['tx_wecsermons_sermons.']['occurrence_date.'] ? $lConf['tx_wecsermons_sermons.']['occurrence_date.'] : $lConf['general_dateWrap.'];
 						if( ! $dateWrap ) $dateWrap = $this->conf['general_dateWrap.'];
 
 						$this->local_cObj->start( $row, 'tx_wecsermons_sermons' );
-						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_sermons.']['occurance_date'], $dateWrap);
+						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_sermons.']['occurrence_date'], $dateWrap);
 					}
 				break;
 
@@ -1147,6 +1147,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 				case '###RESOURCE_LINK###':
 
+					//	Change 'type' field to readable format if set to default, for use in TypoScript
 					if( $row['type'] == '0' )
 						$row['type'] = 'default';
 
@@ -1158,6 +1159,30 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 					}
 					else {	//	Render a link to single view
+						
+						//	If this resource is a plugin/extension, 
+						//	and a record to render is specified,
+						//	and the PID to display this record is specified, then render the link to the single view of that record
+						if( $row['type_type'] > 0 && $row['rendered_record'] && $lConf['tx_wecsermons_resources.']['resource_types.'][$row['type'].'.']['singlePid']) {
+							
+							//	Parse the table_uid string from record into the value for the querystring_param
+							list(,$queryStringVal) = array_values( $this->splitTableAndUID($row['rendered_record'] ) );
+	
+							//	Break apart our querystring_param from it's stored form of 'plugin[param]'
+							$queryString = split( "\[|\]", $this->internal['currentRow']['querystring_param'] );
+	
+							$wrappedSubpartArray[$key] = explode( 
+								'|', 
+								$this->pi_linkToPage( 
+									'|', 
+									$lConf['tx_wecsermons_resources.']['resource_types.'][$row['type'].'.']['singlePid'], 
+									'',  
+									array( $queryString[0] => array( $queryString[1] => $queryStringVal) ) 
+								 ) 
+							);
+
+						}
+						else {
 						$wrappedSubpartArray[$key] = explode(
 							'|',
 							$this->pi_list_linkSingle(
@@ -1174,6 +1199,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						);
 
 					}
+				}
 
 				break;
 
@@ -1478,7 +1504,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						break;
 					}
 
-					$markerArray['###BROWSE_LINKS###'] = $this->pi_list_browseresults($lConf['showResultCount'], '', $lConf['browseBox_linkWraps.'] );
+					$markerArray['###BROWSE_LINKS###'] = $this->pi_list_browseresults($lConf['showResultCount'], '', $this->conf['browseBox_linkWraps.'] );
 
 				break;
 
@@ -1553,7 +1579,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 		case 'tx_wecsermons_sermons':
 	 			$markerArray = array (
 	 				'###SERMON_TITLE###' => 'title',
-	 				'###SERMON_OCCURANCE_DATE###' => 'occurance_date',
+	 				'###SERMON_OCCURRENCE_DATE###' => 'occurrence_date',
 	 				'###SERMON_DESCRIPTION###' => 'description',
 	 				'###SERMON_SCRIPTURE###' => 'scripture',
 					'###SERMON_GRAPHIC###' => 'graphic',

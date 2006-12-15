@@ -24,8 +24,38 @@
 			<label index="description.details">The description can be used to briefly describe the resource type.</label>
 			<label index="icon.description">An icon that represents this resource type.</label>
 			<label index="icon.details">The icon is a small image representing the type. </label>
-			<label index="avail_fields.description">Fields of a resource you would like to make available.</label>
-			<label index="avail_fields.details">Visible Resource fields are those fields you wish resources of this type to possess. The available fields are url, file, mime type, and description. When creating a resource of this type, fields you select here will be available.</label>
+			<label index="avail_fields.description">Select which fields you would like to make available on resources of this type.</label>
+			<label index="avail_fields.details">Visible Resource fields are those fields you wish resources of this type to possess. The available fields are description, icon, file, and any of three web addresses or urls. When assigning this type to a new SMS Resource record, these fields will be available.</label>
+			<label index="querystring_param.description">The plug-in's parameter that is appended to the query string.</label>
+			<label index="querystring_param.details">
+				<![CDATA[ The query string parameter is important for being able to view the records of another extension. This defines part of the query string that another extension will use to display or render one of its records. 
+				
+							I.e. the tt_news extension uses the query string parameter: <strong>tx_ttnews[tt_news]=3</strong>, to render the tt_news record with UID = 3. Knowing this requires researching the extension you wish you use with the SMS plug-in, and entering the appropriate string.]]>
+			</label>
+			<label index="querystring_param.syntax"><![CDATA[ Most often, this will be in the format of:
+				 tx_&lt;plugin_name&gt;[&lt;variable&gt;]
+				 
+				 I.e.: <strong>tx_jkpoll_pi1[uid]</strong> ]]>
+			</label>
+			<label index="rendering_page.description">The page which will render or display the single view of the plug-ins record.</label>
+			<label index="rendering_page.details">The page that is configured with an instance of the plug-in being associated with resource. That page should have the plug-in installed and configured for use. Please see the extensions own documentation on how to configure it for use.</label>
+			<label index="typoscript_object_name.description">The name of the TypoScript object, which can be defined for advanced output on the Front End.</label>
+			<label index="typoscript_object_name.details"><![CDATA[ Assigning the TypoScript object name, you are able to reference this name in the setup field of a template record at <em>plugin.tx_wecsermons_pi1.resource_types { ... }</em> and ]]></label>
+			<label index="typoscript_object_name.syntax">
+				<![CDATA[ 'PDF' being the <strong>TypoScript Object Name</strong> assigned to this resource type:
+				
+					plugin.tx_wecsermons_pi1.resource_types { 
+					PDF = COA
+					
+					PDF {
+						10 = IMAGE
+						10 { ... }
+						
+						20 = TEXT
+						20 { ... }
+					} 
+				} ]]>
+			</label>
         </languageKey>
     </data>
 </T3locallang>

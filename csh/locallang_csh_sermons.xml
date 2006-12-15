@@ -16,8 +16,8 @@
             <label index="_sys_language_uid.seeAlso">tt_content:sys_language_uid,pages:sys_language_uid,pages_language_overlay:sys_language_uid</label>
             <label index="title.description">The title of the sermon.</label>
             <label index="title.details">The sermon title will typically be the title of the sermon performed on your day of worship.</label>
-            <label index="occurance_date.description">The date this sermon was presented.</label>
-            <label index="occurance_date.details">Occurrence Date is date when this sermon was presented, or the materials associated with it were made available.</label>
+            <label index="occurrence_date.description">The date this sermon was presented.</label>
+            <label index="occurrence_date.details">Occurrence Date is date when this sermon was presented, or the materials associated with it were made available.</label>
             <label index="description.description">The general description given for this sermon.</label>
             <label index="description.details">The description can be used to briefly describe the sermon in detail, or to provide sermon notes or study guides. This is a flexible field that can be used however you imagine.</label>
             <label index="scripture.description">Scripture referenced in this sermon.</label>

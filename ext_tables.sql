@@ -56,6 +56,7 @@ CREATE TABLE tx_wecsermons_resource_types (
 	mime_type tinytext NOT NULL,
 	typoscript_object_name tinytext NOT NULL,
 	avail_fields blob NOT NULL,
+	rendering_page int(11) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -98,7 +99,7 @@ CREATE TABLE tx_wecsermons_sermons (
 	endtime int(11) DEFAULT '0' NOT NULL,
 	fe_group int(11) DEFAULT '0' NOT NULL,
 	title tinytext NOT NULL,
-	occurance_date int(11) DEFAULT '0' NOT NULL,
+	occurrence_date int(11) DEFAULT '0' NOT NULL,
 	description text NOT NULL,
 	scripture tinytext NOT NULL,
 	keywords tinytext NOT NULL,

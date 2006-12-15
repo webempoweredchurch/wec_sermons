@@ -8,7 +8,7 @@
 $LOCAL_LANG = Array (
 	'default' => Array (
 		'listFieldHeader_title' => 'Sermon Title',	
-		'listFieldHeader_occurance_date' => 'Date',	
+		'listFieldHeader_occurrence_date' => 'Date',	
 		'listFieldHeader_description' => 'Short Description',	
 		'listFieldHeader_scripture' => 'Scripture References (Comma separated)',	
 		'listFieldHeader_keywords' => 'Keywords',	

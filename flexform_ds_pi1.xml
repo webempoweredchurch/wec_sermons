@@ -246,7 +246,7 @@
 	                    </numIndex>
 	                     <numIndex index="2" type="array">
 	                            <numIndex index="0">LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.sermons_order_by.I.1</numIndex>
-	                            <numIndex index="1">occurance_date</numIndex>
+	                            <numIndex index="1">occurrence_date</numIndex>
 	                    </numIndex>
 	                     <numIndex index="3" type="array">
 	                            <numIndex index="0">LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.sermons_order_by.I.2</numIndex>

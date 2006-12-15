@@ -70,7 +70,7 @@ $TCA["tx_wecsermons_sermons"] = Array (
 		'dividers2tabs' => $confArr['noTabDividers']?FALSE:TRUE,
 		"transOrigPointerField" => "l18n_parent",
 		"transOrigDiffSourceField" => "l18n_diffsource",
-		"default_sortby" => "ORDER BY occurance_date DESC",
+		"default_sortby" => "ORDER BY occurrence_date DESC",
 		"delete" => "deleted",
 		"enablecolumns" => Array (
 			"disabled" => "hidden",
@@ -82,7 +82,7 @@ $TCA["tx_wecsermons_sermons"] = Array (
 		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_wecsermons_sermons.gif",
 	),
 	"feInterface" => Array (
-		"fe_admin_fieldList" => "sys_language_uid, l18n_parent, l18n_diffsource, hidden, starttime, endtime, fe_group, title, occurance_date, description, scripture, keywords, graphic, series_uid, topics_uid, record_type, resources_uid, speakers_uid",
+		"fe_admin_fieldList" => "sys_language_uid, l18n_parent, l18n_diffsource, hidden, starttime, endtime, fe_group, title, occurrence_date, description, scripture, keywords, graphic, series_uid, topics_uid, record_type, resources_uid, speakers_uid",
 	)
 );
 
