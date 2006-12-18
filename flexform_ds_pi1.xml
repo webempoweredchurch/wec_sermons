@@ -3,7 +3,7 @@
     <sDEF>
       <ROOT>
         <TCEforms>
-        <sheetTitle>General</sheetTitle>
+        <sheetTitle>LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.sDEF</sheetTitle>
         </TCEforms>
         <type>array</type>
         <el>
@@ -138,7 +138,7 @@
      <slistView>
     	<ROOT>
 	        <TCEforms>
-		        <sheetTitle>List View Settings</sheetTitle>
+		        <sheetTitle>LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.slistView</sheetTitle>
 	        </TCEforms>
 	        <type>array</type>
 	        <el>
@@ -266,7 +266,7 @@
 <sMisc>
 	<ROOT>
 	        <TCEforms>
-		        <sheetTitle>Misc</sheetTitle>
+		        <sheetTitle>LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.sMisc</sheetTitle>
 	        </TCEforms>
 	        <type>array</type>
 	        <el>

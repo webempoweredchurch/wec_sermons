@@ -84,6 +84,9 @@ $LOCAL_LANG = Array (
 		'tx_wecsermons_sermons.add' => 'Add New',
 		'tx_wecsermons_sermons.edit' => 'Edit',
 		'tt_content.list_type_pi1' => 'WEC Sermon Management System',
+		'tx_wecsermons.pi_flexform.sDEF' => 'General',
+		'tx_wecsermons.pi_flexform.slistView' => 'LIST View Settings',
+		'tx_wecsermons.pi_flexform.sMisc' => 'Tutorial',
 		'tx_wecsermons.pi_flexform.tutorial' => 'Choose your Tutorial:',
 		'tx_wecsermons.pi_flexform.tutorial.I.0' => 'Ginghamsburg',
 		'tx_wecsermons.pi_flexform.tutorial.I.1' => 'Living Water',
@@ -111,8 +114,8 @@ $LOCAL_LANG = Array (
 		'tx_wecsermons.pi_flexform.sermons_order_by.I.0' => 'Title',
 		'tx_wecsermons.pi_flexform.sermons_order_by.I.1' => 'Occurance Date',
 		'tx_wecsermons.pi_flexform.sermons_order_by.I.2' => 'Description',
-		'tx_wecsermons.pi_flexform.startDate' => 'Start Date Filter (All dates before this date are omited)',
-		'tx_wecsermons.pi_flexform.endDate' => 'End Date Filter (All dates after this date are omited)',
+		'tx_wecsermons.pi_flexform.startDate' => 'Omit Sermons Before Date (Sermons before this date are omited)',
+		'tx_wecsermons.pi_flexform.endDate' => 'Omit Sermons After Date (Sermons after this date are omited)',
 	),
 );
 ?>

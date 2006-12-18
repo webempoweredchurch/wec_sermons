@@ -100,7 +100,7 @@ plugin.tx_wecsermons_pi1 {
 	resource_types = CASE
 	resource_types {
 
-		# Use the field 'type' on a tx_wecsermons_resources record
+		# Use the field 'typoscript_object_name' on a tx_wecsermons_resources record
 		key.field = typoscript_object_name
 
 		# MP3 Audio
