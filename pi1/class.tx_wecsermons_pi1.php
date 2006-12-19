@@ -822,10 +822,10 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			//	If start or end date was set, then add this to the query WHERE clause.
 			$startDate = $this->getConfigVal( $this, 'startDate', 'slistView', 'startDate', $lConf );
 			$endDate = $this->getConfigVal( $this, 'endDate', 'slistView', 'endDate', $lConf );
+			
 			$where = '';
-			$where .= $startDate ? ' AND occurrence_date >= ' . $startDate : '';	//	$GLOBALS['TYPO3_DB']->fullQuoteStr( strftime( '%m-%d-%y', $startDate ), $tableToList ) : '';
-			$where .= $endDate ? ' AND occurrence_date <= ' .  $endDate  : '';
-
+			$where .= $startDate ? ' AND occurrence_date >= ' .  strtotime($startDate) : '';	//	$GLOBALS['TYPO3_DB']->fullQuoteStr( $startDate, $tableToList ) : '';
+			$where .= $endDate ? ' AND occurrence_date <= ' .  strtotime($endDate) : '';
 
 			// Get number of records:
 			$res = $this->pi_exec_query($tableToList,1, $where);
@@ -1495,16 +1495,17 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				case '###BROWSE_LINKS###':
 
 					//	Disable the counter within the results browser if we are producing a grouped list view.
-					//	TODO: Enable accurate counting of results in the results browser
-					if( $this->getConfigVal( $this, 'group_table', 'slistView', 'group_table', $lConf ) ) $lConf['showResultCount'] = 0;
+					//	TODO: Enable accurate counting of results in the results browser when specifying group
+					if( $this->getConfigVal( $this, 'group_table', 'slistView', 'groupTable', $lConf ) ) $lConf['showResultCount'] = 0;
 
+/* Why would we do this?
 					// Remove browsebox if in LATEST view
 					if( !strcmp( $this->internal['currentCode'], 'LATEST' ) ) {
 						$markerArray['###BROWSE_LINKS###'] = '';
 						break;
 					}
-
-					$markerArray['###BROWSE_LINKS###'] = $this->pi_list_browseresults($lConf['showResultCount'], '', $this->conf['browseBox_linkWraps.'] );
+*/
+					$markerArray['###BROWSE_LINKS###'] = $this->pi_list_browseresults($lConf['showResultCount'], '', $lConf['browseBox_linkWraps.'] );
 
 				break;
 

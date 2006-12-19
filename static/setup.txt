@@ -51,46 +51,6 @@ plugin.tx_wecsermons_pi1 {
 	#	The subpart marker used to define resources of type 'default'
 	defaultMarker = ###DEFAULT_RESOURCES###
 	defaultTemplate = ###TEMPLATE_DEFAULT_RESOURCES###
-
-	# *******************
-	# Browse Box Settings
-	# *******************
-
-	# Whether the active page is a clickable link or text only
-	dontLinkActivePage =
-
-	# A boolean switch if the two links named "<< First" and "LAST >>" will be shown and point to the first or last page.
-	showFirstLast =
-
-	# Defines where the current page is shown in the list of pages in the Pagebrowser. If this var is an integer it will be interpreted as position in the list of pages. If its value is the keyword "center" the current page will be shown in the middle of the pagelist.
-	pagefloat =
-
-	# A boolean swith that displays the pagelinks in ranges f.e.: 1-5 6-10 11-15... instead of 1 2 3...
-	showRange =
-
- 	# An integer switch that determines how the results browser will be rendered
-	#
-	# 1: (default) the text "Displaying results..." and the result-browser will be rendered.
-	# 2: only the text "Displaying results..." will be shown
-	showResultCount = 1
-
-	# *******************
-	# Browse Box Link Wraps
-	# *******************
-	browseBox_linkWraps {
-
-		disabledLinkWrap = <td nowrap="nowrap"><p>|</p></td>
-		inactiveLinkWrap = <td nowrap="nowrap"><p>|</p></td>
-		activeLinkWrap = <td class="tx-wecsermons-pi1-browsebox-SCell" nowrap="nowrap"><p>|</p></td>
-		browseLinksWrap = <table><tr>|</tr></table>
-		showResultsWrap = <p>|</p>
-		browseBoxWrap (
-			<!--
-			List browsing box:
-			-->
-			<div class="tx-wecsermons-pi1-browsebox">|</div>
-		)
-	}
 		
 	# ***************************
 	# Resource Types CASE cObject
@@ -617,6 +577,42 @@ plugin.tx_wecsermons_pi1 {
 		# See http://typo3.org/fileadmin/typo3api-4.0.0/df/d32/classtslib__pibase.html#ba8eebaed52748cdf9acb31562295378
 		# *****************
 
+		# Whether the active page is a clickable link or text only
+		dontLinkActivePage =
+	
+		# A boolean switch if the two links named "<< First" and "LAST >>" will be shown and point to the first or last page.
+		showFirstLast =
+	
+		# Defines where the current page is shown in the list of pages in the Pagebrowser. If this var is an integer it will be interpreted as position in the list of pages. If its value is the keyword "center" the current page will be shown in the middle of the pagelist.
+		pagefloat =
+	
+		# A boolean swith that displays the pagelinks in ranges f.e.: 1-5 6-10 11-15... instead of 1 2 3...
+		showRange =
+	
+	 	# An integer switch that determines how the results browser will be rendered
+		#
+		# 1: (default) the text "Displaying results..." and the result-browser will be rendered.
+		# 2: only the text "Displaying results..." will be shown
+		showResultCount = 1
+	
+		# *******************
+		# Browse Box Link Wraps
+		# *******************
+		browseBox_linkWraps {
+	
+			disabledLinkWrap = <td nowrap="nowrap"><p>|</p></td>
+			inactiveLinkWrap = <td nowrap="nowrap"><p>|</p></td>
+			activeLinkWrap = <td class="tx-wecsermons-pi1-browsebox-SCell" nowrap="nowrap"><p>|</p></td>
+			browseLinksWrap = <table><tr>|</tr></table>
+			showResultsWrap = <p>|</p>
+			browseBoxWrap (
+				<!--
+				List browsing box:
+				-->
+				<div class="tx-wecsermons-pi1-browsebox">|</div>
+			)
+		}
+		
 		# How many results to show on each page
 		maxdetailResults = {$plugin.tx_wecsermons_pi1.listView.maxdetailResults}
 		maxGroupResults = {$plugin.tx_wecsermons_pi1.listView.maxGroupResults}
@@ -908,7 +904,7 @@ plugin.tx_wecsermons_pi1 {
 				innerWrap.wrap = |<br/>
 				innerWrap.required = 1
 
-				wrap = <div id="tx-wecsermons-pi1-season|</div>
+				wrap = <div id="tx-wecsermons-pi1-season">|</div>
 
 			}
 
@@ -1059,8 +1055,6 @@ plugin.tx_wecsermons_pi1 {
 		maxGroupResults = {$plugin.tx_wecsermons_pi1.latestView.maxGroupResults}
 		emptyGroups = {$plugin.tx_wecsermons_pi1.latestView.emptyGroups}
 		useCreationDate = {$plugin.tx_wecsermons_pi1.latestView.useCreationDate}
-		groupByTable =
-		detailTable =
 
 		tx_wecsermons_sermons {
 			orderByList = occurrence_date,title,crdate
@@ -1183,27 +1177,9 @@ plugin.tx_wecapi_list {
 
 # Empty default set CSS styles (these go into the document header):
 plugin.tx_wecsermons_pi1._CSS_DEFAULT_STYLE >
+page.includeCSS.tx_wecsermons_pi1 = EXT:wec_sermons/res/tx_wecsermons_styles.css
 plugin.tx_wecsermons_pi1._CSS_DEFAULT_STYLE (
-/*------------------------------- WEC SMS -------------------------------------------*/
 
-div.tx-wecsermons-pi1-list1 { margin: 1em 0 1em; padding: 0 0 1em;}
-#tx-wecsermons-pi1-list2 th { background-color: #779976; text-align: left;}
-#tx-wecsermons-pi1-list2 a { color: #003399; }
-#tx-wecsermons-pi1-list2 td { background-color: #ACCCAB;}
-#tx-wecsermons-pi1-latest2 th { background-color: #779976; text-align: left;}
-#tx-wecsermons-pi1-latest2 a { color: #003399; }
-#tx-wecsermons-pi1-latest2 td { background-color: #ACCCAB;}
-div.tx-wecsermons-pi1-sermon-description { text-align: justify; }
-div.tx-wecsermons-pi1-default dl {  margin-top: 0px; margin-bottom: 1em;}
-div.tx-wecsermons-pi1-flv div.tx-wecflashplayer-pi1 { float: left; }
-
-#tx-wecsermons-pi1-series-example { background-color: #C9FFC9; padding: .5em; }
-#tx-wecsermons-pi1-speakers-example { background-color: #FFBDBD; padding: .5em; }
-#tx-wecsermons-pi1-topics-example { background-color: #FFFFBF; padding: .5em; }
-#tx-wecsermons-pi1-mp3-example { background-color: #FFABFF; padding: .5em; }
-#tx-wecsermons-pi1-flv-example { background-color: #C7FFFE; padding: .5em; }
-#tx-wecsermons-pi1-pdf-example { background-color: #C4C4FF; padding: .5em; }
-#tx-wecsermons-pi1-default-example { background-color: #D9D9D9; padding: .5em; }
 )
 # Example of how to overrule LOCAL_LANG values for the plugin:
 plugin.tx_wecsermons_pi1._LOCAL_LANG.default  {
