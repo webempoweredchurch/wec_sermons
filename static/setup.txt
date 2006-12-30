@@ -30,7 +30,7 @@ plugin.tx_wecsermons_pi1 {
 
 	# General wrap for dates in the wec_sermons extension
 	general_dateWrap {
-		strftime = %A,  %b. %d %Y
+		strftime = %A, %b %d %Y
 	}
 
 	stdHeader = COA
@@ -209,11 +209,16 @@ plugin.tx_wecsermons_pi1 {
 
 		back = TEXT
 		back {
+			value = Return
 			parseFunc < plugin.tx_wecsermons_pi1.general_stdWrap.parseFunc
 		}
 
 		# Specify which layout will be used, also can be set in the front-end plugin
 		layoutCode =
+
+		# General formatting of a date in list view.
+		# You may override the global date formatting by specifying a format at this level
+		general_dateWrap.strftime = 
 
 		tx_wecsermons_sermons {
 
@@ -227,7 +232,6 @@ plugin.tx_wecsermons_pi1 {
 			# Specific date wrap for the occurrence_date column in tx_wecsermons_sermons table
 			occurrence_date = TEXT
 			occurrence_date {
-				strftime = %B %d, %Y
 				wrap = |
 				field = occurrence_date
 			}
@@ -430,7 +434,6 @@ plugin.tx_wecsermons_pi1 {
 				innerWrap.wrap = |&nbsp;
 				innerWrap.required = 1
 
-				strftime = %A,  %b. %d %Y
 				wrap = |
 				field = startdate
 			}
@@ -441,7 +444,6 @@ plugin.tx_wecsermons_pi1 {
 				innerWrap.wrap = |&nbsp;
 				innerWrap.required = 1
 
-				strftime = %A,  %b. %d %Y
 				wrap = |
 				field = enddate
 			}
@@ -621,13 +623,12 @@ plugin.tx_wecsermons_pi1 {
 		# Maximum number of pages that are shown in the page browser
 		maxPages = {$plugin.tx_wecsermons_pi1.listView.maxPages}
 
-			# A string value appended to the CSS class name of odd rows of a list, [tx-wecsermons-pi1-{alternatingClass}]
+		# A string value appended to the CSS class name of odd rows of a list, [tx-wecsermons-pi1-{alternatingClass}]
 		alternatingClass = {$plugin.tx_wecsermons_pi1.listView.alternatingClass}
 
-			# General formatting of a date in list view
-		general_dateWrap {
-			strftime = %A,  %b. %d %Y
-		}
+		# General formatting of a date in list view.
+		# You may override the global date formatting by specifying a format at this level
+		general_dateWrap.strftime = 
 
 		tx_wecsermons_sermons {
 
@@ -651,7 +652,6 @@ plugin.tx_wecsermons_pi1 {
 			# Specific date wrap for the occurrence_date column in tx_wecsermons_sermons table
 			occurrence_date = TEXT
 			occurrence_date {
-				strftime = %A,  %b. %d %Y
 				wrap = |
 				field = occurrence_date
 			}
@@ -882,7 +882,6 @@ plugin.tx_wecsermons_pi1 {
 				innerWrap.wrap = |&nbsp;
 				innerWrap.required = 1
 
-				strftime = %A,  %b. %d %Y
 				wrap = |
 				field = startdate
 			}
@@ -893,7 +892,6 @@ plugin.tx_wecsermons_pi1 {
 				innerWrap.wrap = |&nbsp;
 				innerWrap.required = 1
 
-				strftime = %A,  %b. %d %Y
 				wrap = |
 				field = enddate
 			}
@@ -1166,7 +1164,7 @@ plugin.tx_wecapi_list {
 		}
 		item_link.field = item_link
 		item_comments.field = comments_link
-		item_pubdate.field = occurrence_date
+		item_pubdate.data = occurrence_date: D, d M Y h.i.s T
 		item_guid.field = item_link
 		item_source >
 		item_enclosure.if.isTrue.field = enclosure_url
@@ -1185,7 +1183,6 @@ plugin.tx_wecsermons_pi1._CSS_DEFAULT_STYLE (
 plugin.tx_wecsermons_pi1._LOCAL_LANG.default  {
 
 	pi_list_searchBox_search = Search!
-	tx_wecsermons.pi_flexform.layout.I.0 = Slezak
 }
 # Example of how to set default values from TS in the incoming array, $this->piVars of the plugin:
 #plugin.tx_wecsermons_pi1._DEFAULT_PI_VARS.test = test

@@ -255,7 +255,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				//	If the resource is the type allowed as an enclosure in this view, then calculate the url and size, adding to result row
 				if( !strcmp( $resource['type'], $lConf['enclosureType'] ) ) {
 
-					//	Retrieve a typolink conf that tells us how to render the link to the resource. Must be provided by admin!
+					//	Retrieve a typolink conf that tells us how to render the link to the resource attachment. Must be provided by admin!
 					$this->local_cObj->start($resource);
 					$typolinkConf = $this->conf['singleView.']['tx_wecsermons_resources.']['resource_types.'][$resource['type'].'.']['typolink.'];
 
@@ -273,6 +273,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				}
 
 			}
+			
 			$row['item_link'] = $this->getUrlToSingle( 1, $tableToList, $row['uid'] );
 
 			//	If result row has speakers related to it, retrieve the fullname of the first speaker and add to result row as 'author'
@@ -884,12 +885,14 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				case '###SERMON_OCCURRENCE_DATE###':
 					if( $row[$fieldName] )
 					{
+						$fieldConf = $lConf['tx_wecsermons_sermons.']['occurrence_date.'];
 						//	Wrap the date, choosing from one of three settings in typoscript
-						$dateWrap = $lConf['tx_wecsermons_sermons.']['occurrence_date.'] ? $lConf['tx_wecsermons_sermons.']['occurrence_date.'] : $lConf['general_dateWrap.'];
-						if( ! $dateWrap ) $dateWrap = $this->conf['general_dateWrap.'];
+						$dateWrap = $fieldConf['strftime'] ? $fieldConf['strftime'] : $lConf['general_dateWrap.']['strftime'];
+						if( ! $dateWrap ) $dateWrap = $this->conf['general_dateWrap.']['strftime'];
+						$fieldConf['strftime'] = $dateWrap;
 
 						$this->local_cObj->start( $row, 'tx_wecsermons_sermons' );
-						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_sermons.']['occurrence_date'], $dateWrap);
+						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_sermons.']['occurrence_date'], $fieldConf);
 					}
 				break;
 
@@ -1233,24 +1236,29 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 				case '###SERIES_STARTDATE###':
 					if( $row[$fieldName] ) {
+						$fieldConf = $lConf['tx_wecsermons_series.']['startdate.'];
 						//	Wrap the date, choosing from one of three settings in typoscript
-						$dateWrap = $lConf['tx_wecsermons_series.']['startdate.'] ? $lConf['tx_wecsermons_series.']['startdate.'] : $lConf['general_dateWrap.'];
-						if( ! $dateWrap ) $dateWrap = $this->conf['general_dateWrap.'];
+						$dateWrap = $fieldConf['strftime'] ? $fieldConf['strftime'] : $lConf['general_dateWrap.']['strftime'];
+						if( ! $dateWrap ) $dateWrap = $this->conf['general_dateWrap.']['strftime'];
+						$fieldConf['strftime'] = $dateWrap;
 
 						$this->local_cObj->start( $row, 'tx_wecsermons_series' );
-						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_series.']['startdate'], $dateWrap );
+						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_series.']['startdate'], $fieldConf );
 					}
 				break;
 
 				case '###SERIES_ENDDATE###':
 					if( $row[$fieldName] ) {
 
+						$fieldConf = $lConf['tx_wecsermons_series.']['enddate.'];
 						//	Wrap the date, choosing from one of three settings in typoscript
-						$dateWrap = $lConf['tx_wecsermons_series.']['enddate.'] ? $lConf['tx_wecsermons_series.']['enddate.'] : $lConf['general_dateWrap.'];
-						if( ! $dateWrap ) $dateWrap = $this->conf['general_dateWrap.'];
+						$dateWrap = $fieldConf['strftime'] ? $fieldConf['strftime'] : $lConf['general_dateWrap.']['strftime'];
+						if( ! $dateWrap ) $dateWrap = $this->conf['general_dateWrap.']['strftime'];
+						$fieldConf['strftime'] = $dateWrap;
+
 
 						$this->local_cObj->start( $row, 'tx_wecsermons_series' );
-						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_series.']['enddate'], $dateWrap );
+						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_series.']['enddate'], $fieldConf );
 					}
 				break;
 
@@ -1527,7 +1535,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 				case '###BACK_TO_LIST###':
 
-					$markerArray[$key] =  $this->cObj->stdWrap( $this->pi_getLL('back','Back'), $lConf['back.'] );
+					$markerArray[$key] =  $this->cObj->cObjGetSingle( $lConf['back'], $lConf['back.'] );
 
 				break;
 
