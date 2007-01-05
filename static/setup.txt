@@ -51,6 +51,9 @@ plugin.tx_wecsermons_pi1 {
 	#	The subpart marker used to define resources of type 'default'
 	defaultMarker = ###DEFAULT_RESOURCES###
 	defaultTemplate = ###TEMPLATE_DEFAULT_RESOURCES###
+	
+	# Bitrate is used to calculate the duration of an audio file
+	bitrate = {$plugin.tx_wecsermons_pi1.bitrate}
 		
 	# ***************************
 	# Resource Types CASE cObject
@@ -1154,20 +1157,22 @@ plugin.tx_wecapi_list {
 		channel_link = TEXT
 		channel_link.data = field:channel_link
 		channel_link.wrap = <link>|</link>
-		channel_description.stripHtml = 1
 
 		item_title.field = title
 		item_description {
 			field = description
-			stripHtml = 1
 			if.isTrue.field = description
 		}
 		item_link.field = item_link
 		item_comments.field = comments_link
-		item_pubdate.data = occurrence_date: D, d M Y h.i.s T
+		item_pubdate.field = occurrence_date
 		item_guid.field = item_link
 		item_source >
 		item_enclosure.if.isTrue.field = enclosure_url
+		item_itunes_summary.field = summary
+		item_itunes_subtitle.field = subtitle
+		item_itunes_duration.field = duration
+		item_itunes_duration.if.isTrue.field = enclosure_url
 
 	}
 

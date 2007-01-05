@@ -7,7 +7,7 @@ CREATE TABLE tx_wecsermons_resources (
 	tstamp int(11) DEFAULT '0' NOT NULL,
 	crdate int(11) DEFAULT '0' NOT NULL,
 	cruser_id int(11) DEFAULT '0' NOT NULL,
-    sorting int(10) unsigned DEFAULT '0' NOT NULL,
+  sorting int(10) unsigned DEFAULT '0' NOT NULL,
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l18n_parent int(11) DEFAULT '0' NOT NULL,
 	l18n_diffsource mediumblob NOT NULL,
@@ -16,6 +16,7 @@ CREATE TABLE tx_wecsermons_resources (
 	fe_group int(11) DEFAULT '0' NOT NULL,
 	description text NOT NULL,
 	title tinytext NOT NULL,
+	subtitle tinytext NOT NULL,
 	graphic blob NOT NULL,
 	type blob NOT NULL,
 	file blob NOT NULL,
@@ -23,6 +24,7 @@ CREATE TABLE tx_wecsermons_resources (
 	webaddress2 tinytext NOT NULL,
 	webaddress3 tinytext NOT NULL,
 	rendered_record blob NOT NULL,
+	summary tinytext NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)

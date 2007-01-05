@@ -79,7 +79,7 @@ class tx_wecsermons_resourceTypeTca {
 			//	Convert each tx_wecsermons_resource_types record into a 'types' TCA array
 			while( $resourceType = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $resource )  ) {
 
-				$GLOBALS['TCA']['tx_wecsermons_resources']['types'][$resourceType['typoscript_object_name']] = array( 'showitem' => "type, title;;;;2-2-2, " . $this->processAvailableFields( $resourceType['avail_fields'] ) . ($resourceType['type'] == '1' ? ',rendered_record' : '') . ",sys_language_uid;;;;1-1-1, l18n_parent, l18n _diffsource, hidden;;1" );
+				$GLOBALS['TCA']['tx_wecsermons_resources']['types'][$resourceType['typoscript_object_name']] = array( 'showitem' => "type;;;;1-1-1, title, " . $this->processAvailableFields( $resourceType['avail_fields'] ) . ($resourceType['type'] == '1' ? 'rendered_record,' : '') . " hidden;;1;;5-5-5" );
 			}
 
 #debug( $GLOBALS['TCA']['tx_wecsermons_resources']['types'] ,1);
@@ -160,7 +160,11 @@ class tx_wecsermons_resourceTypeTca {
 	 		switch( $field ) {
 
 	 			case 'description':
-	 				$processedFields .= 'description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts];3-3-3';
+	 				$processedFields .= ' description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts];3-3-3';
+	 				break;
+	 				
+	 			case 'itunes_metadata':
+	 				$processedFields .= ' subtitle;;;;4-4-4, summary,';
 	 				break;
 
 	 			default:
@@ -171,9 +175,8 @@ class tx_wecsermons_resourceTypeTca {
 
 	 		$processedFields .= ',';
 	 	}
-
-	 	//	Return the processed fields csv string with right-most comma trimmed.
-	 	return rtrim( $processedFields, ',' );
+	 	//	Return the processed fields csv string if string length > 1
+	 	return strlen( $processedFields ) > 1 ? $processedFields : '';
 	}
 
 	/**

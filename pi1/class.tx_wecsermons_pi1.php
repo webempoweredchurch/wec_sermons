@@ -269,11 +269,26 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					$row['size'] = $fileInfo['size'];
 					$row['enclosure_url'] =  t3lib_div::getIndpEnv('TYPO3_SITE_URL'). $relPath;
 					$row['mime_type'] = $resource['mime_type'];
+					$row['summary'] = $resource['summary'];
+					$row['subtitle'] = $resource['subtitle'];
+					
+					//	Calculate the approximate duration of the file, based on specifed bitrate
+					$duration = 0;
+					$sec = 0;
+							
+					if( t3lib_div::testInt($this->conf['bitrate']) ) {
+						$duration = (float) (($fileInfo['size'] * 8) / 1024) / $this->conf['bitrate'];
+						$sec = $duration % 60;
+						$sec = strlen( $sec ) < 2 ? '0'.$sec : $sec;
+						$row['duration'] = (round( $duration / 60)) .':'.$sec;
+					}
+					else
+						$row['duration'] = 0;
 
 				}
 
 			}
-			
+
 			$row['item_link'] = $this->getUrlToSingle( 1, $tableToList, $row['uid'] );
 
 			//	If result row has speakers related to it, retrieve the fullname of the first speaker and add to result row as 'author'
@@ -294,7 +309,6 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			//	Collect each modified row into an array for passing to other function
 			$sermons[] = $row;
 		}
-
 		//	Call wecapi_list to retrieve the front-end content of this row of records.
 		 return tx_wecapi_list::getContent( $this, $sermons, $tableToList );
 
@@ -1998,6 +2012,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		tx_wecsermons_resources.webaddress2,
 		tx_wecsermons_resources.webaddress3,
 		tx_wecsermons_resources.rendered_record,
+		tx_wecsermons_resources.subtitle,
+		tx_wecsermons_resources.summary,
 		tx_wecsermons_resource_types.type type_type,
 		tx_wecsermons_resource_types.description type_description,
 		tx_wecsermons_resource_types.icon,
