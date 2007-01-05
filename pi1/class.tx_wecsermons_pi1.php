@@ -287,7 +287,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 					// Check if we should link to the resource single view or the sermon single view
 					if( $lConf['itemLinkToResource'] )
-						$row['item_link'] = $this->getUrlToSingle( 1, 'tx_wecsermons_resources', $resource['uid'] );
+						$row['item_link'] = $this->getUrlToSingle( 1, 'tx_wecsermons_resources', $resource['uid'], $row['uid'] );
 					else
 						$row['item_link'] = $this->getUrlToSingle( 1, $tableToList, $row['uid'] );
 					
@@ -1785,9 +1785,18 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 * @param	int		$uid: An integer value that is the UID of the record we wish to get the URL for.
 	 * @return	string		Return value is the absolute or relative path to the requested SMS record.
 	 */
-	function getUrlToSingle ( $absolute, $tableName, $uid ) {
+	function getUrlToSingle ( $absolute, $tableName, $uid, $sermonUid = '' ) {
 
-		$piVar = array (
+		
+		$piVar = $sermonUid ?
+		
+		array (
+			'recordType' => $tableName,
+			'showUid' => $uid,
+			'sermonUid' => $sermonUid,
+		)
+		
+		: array (
 			'recordType' => $tableName,
 			'showUid' => $uid,
 		);
