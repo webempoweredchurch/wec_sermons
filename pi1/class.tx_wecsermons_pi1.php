@@ -285,11 +285,17 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					else
 						$row['duration'] = 0;
 
+					// Check if we should link to the resource single view or the sermon single view
+					if( $lConf['itemLinkToResource'] )
+						$row['item_link'] = $this->getUrlToSingle( 1, 'tx_wecsermons_resources', $resource['uid'] );
+					else
+						$row['item_link'] = $this->getUrlToSingle( 1, $tableToList, $row['uid'] );
+					
 				}
 
 			}
 
-			$row['item_link'] = $this->getUrlToSingle( 1, $tableToList, $row['uid'] );
+			
 
 			//	If result row has speakers related to it, retrieve the fullname of the first speaker and add to result row as 'author'
 			if( $row['speakers_uid'] ) {

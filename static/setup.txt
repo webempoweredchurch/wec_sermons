@@ -1117,6 +1117,9 @@ plugin.tx_wecsermons_pi1 {
 		descFlag = 1
 		orderByList = occurrence_date,title,crdate
 		orderBy = occurrence_date
+		
+		# By setting this to 1, the XML feed will link to the single view of a resource rather than a single view of a sermon
+		itemLinkToResource = 0
 
 		# TODO: allow multiple resource types here
 		# TOTO: change to name of resource type specified in v.0.5.2 of extension

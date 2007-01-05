@@ -28,7 +28,7 @@ require_once( t3lib_extMgm::extPath($_EXTKEY) . '/class.tx_wecsermons_xmlView.ph
 
 $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getMainFieldsClass'][] = 'tx_wecsermons_resourceTypeTca';
 $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = 'EXT:wecsermons/class.tx_wecsermons_resourceTypeTca.php:tx_wecsermons_resourceTypeTca';
-$TYPO3_CONF_VARS['EXTCONF']['tx_wecapi_list']['preProcessContentRow'][] = 'tx_wecsermons_xmlView';
+#$TYPO3_CONF_VARS['EXTCONF']['tx_wecapi_list']['preProcessContentRow'][] = 'tx_wecsermons_xmlView';
 $TYPO3_CONF_VARS['EXTCONF']['tx_wecapi_list']['preProcessPageArray'][] = 'tx_wecsermons_xmlView';
 
 t3lib_extMgm::addTypoScript($_EXTKEY,'setup','
