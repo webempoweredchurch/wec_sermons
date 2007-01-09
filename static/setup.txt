@@ -1181,12 +1181,9 @@ plugin.tx_wecapi_list {
 
 }
 
-# Empty default set CSS styles (these go into the document header):
-plugin.tx_wecsermons_pi1._CSS_DEFAULT_STYLE >
-page.includeCSS.tx_wecsermons_pi1 = EXT:wec_sermons/res/tx_wecsermons_styles.css
-plugin.tx_wecsermons_pi1._CSS_DEFAULT_STYLE (
+# Default CSS styles (this will go into the document header as a <link> tag):
+page.includeCSS.tx_wecsermons_pi1 = {$plugin.tx_wecsermons_pi1.file.cssFile}
 
-)
 # Example of how to overrule LOCAL_LANG values for the plugin:
 plugin.tx_wecsermons_pi1._LOCAL_LANG.default  {
 

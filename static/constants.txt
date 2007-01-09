@@ -38,7 +38,7 @@ plugin.tx_wecsermons_pi1 {
 	# cat=plugin.tx_wecsermons_pi1/dims/70; type=text; label= LATEST View - Use Creation Date: Enabling this causes LATEST view to order by creation date, instead of ordering specified in 'orderBy' of each table configuration. (Applied to LATEST view only.)
 	latestView.useCreationDate = 0
 
-	# cat=plugin.tx_wecsermons_pi1/dims/10; type=text; label= iTunes Encoding Bitrate (kb): This bitrate setting is used in calculating the "duration" of a video or audio file for use in itunes
+	# cat=plugin.tx_wecsermons_pi1/dims/10; type=text; label= iTunes Encoding Bitrate (kb) : This bitrate setting is used in calculating the "duration" of a video or audio file for use in itunes
 	bitrate = 128
 
 #------
