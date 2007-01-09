@@ -62,7 +62,7 @@ BACK_TO_LIST - Header text used in the BACK_LINK, returning to the list-view. Us
 
 <em>Subparts:</em>
 CONTENT - <strong>**REQUIRED**</strong> This is a subpart marker that wraps the primary content of a template.
-ITEM - <strong>**REQUIRED**</strong> The repeating content area representing one record within a list.
+ITEM - <strong>**REQUIRED - ONLY IN LIST VIEWS**</strong> The repeating content area representing one record within a list.
 GROUP - This is required only when the "Group By" option of the plug-in is defined. Used to group the list by related records.
 SERMON_SPEAKERS - Listing of speakers related to a sermon
 SERMON_TOPICS - General topics that the sermon is associated with. Aka, category
@@ -726,6 +726,23 @@ Sermon Topic: ###TOPIC_TITLE###
 			<p>Title:<br/>
 			<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--></p>
 		<!--###DISCUSSION_RESOURCES###-->
+
+		<!--###DOWNLOAD_FILE###-->
+			<p><strong>Downloadable File:</strong></p>
+
+			<p>Title:<br/>
+			<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--></p>
+			###RESOURCE_CONTENT###
+		<!--###DOWNLOAD_FILE###-->
+
+		<!--###DOWNLOAD_GRAPHIC###-->
+			<p><strong>Downloadable Graphic:</strong></p>
+
+			<p>Title:<br/>
+			<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--></p>
+			###RESOURCE_CONTENT###
+		<!--###DOWNLOAD_GRAPHIC###-->
+		
 		<hr/>
 		<!--###ITEM###-->
 	<!--###CONTENT###-->
