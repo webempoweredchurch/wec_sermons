@@ -13,6 +13,9 @@ plugin.tx_wecsermons_pi1 {
 	# cat=plugin.tx_wecsermons_pi1/enable/30; type=boolean; label= LIST View - Enable Empty Groups: Enable display of empty "group" results. (Those group results which have no related "detail" records.)
 	listView.emptyGroups = 0
 
+	# cat=plugin.tx_wecsermons_pi1/enable/35; type=text; label= LATEST View - Use Creation Date: Enabling this causes LATEST view to order by creation date, instead of ordering specified in 'orderBy' of each table configuration. (Applied to LATEST view only.)
+	latestView.useCreationDate = 0
+
 	# cat=plugin.tx_wecsermons_pi1/enable/40; type=boolean; label= LATEST View - Enable Empty Groups: Enable display of empty "group" results. (Those group results which have no related "detail" records.)
 	latestView.emptyGroups = 0
 
@@ -34,9 +37,6 @@ plugin.tx_wecsermons_pi1 {
 
 	# cat=plugin.tx_wecsermons_pi1/dims/60; type=text; label= LATEST View - Maxium Detail Results: Maxium detail results returned. (Applied to LATEST view only.)
 	latestView.maxdetailResults = 20
-
-	# cat=plugin.tx_wecsermons_pi1/dims/70; type=text; label= LATEST View - Use Creation Date: Enabling this causes LATEST view to order by creation date, instead of ordering specified in 'orderBy' of each table configuration. (Applied to LATEST view only.)
-	latestView.useCreationDate = 0
 
 	# cat=plugin.tx_wecsermons_pi1/dims/10; type=text; label= iTunes Encoding Bitrate (kb) : This bitrate setting is used in calculating the "duration" of a video or audio file for use in itunes
 	bitrate = 128
