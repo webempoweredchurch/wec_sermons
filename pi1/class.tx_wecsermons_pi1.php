@@ -416,7 +416,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						'WEC Sermon Management System Error!',
 						'Unable to retrieve content for specified template.',
 						sprintf (
-							'Requested Template: ###TEMPLATE_%s_%s%s###',
+							'Requested Template: ###TEMPLATE_%s_%s_%s###',
 							strtoupper( $templateKey ),
 							'SINGLE',
 							$this->internal['layoutCode']
@@ -556,7 +556,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				'WEC Sermon Management System Error!',
 				'Unable to retrieve content for specified template.',
 				sprintf (
-						'Requested Template: ###TEMPLATE_LATEST%s###
+						'Requested Template: ###TEMPLATE_LATEST_%s###
 
 						Template File: %s
 						',
@@ -653,7 +653,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				'WEC Sermon Management System Error!',
 				'Unable to retrieve content for specified template.',
 				sprintf (
-						'Requested Template: ###TEMPLATE_LIST%s###
+						'Requested Template: ###TEMPLATE_LIST_%s###
 
 						Template File: %s
 						',
@@ -1847,7 +1847,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			case 'LATEST':
 				$templateContent = $this->cObj->getSubpart(
 					$this->template['total'],
-					sprintf( '###TEMPLATE_%s%s###',
+					sprintf( '###TEMPLATE_%s_%s###',
 						$view,
 						$this->internal['layoutCode']
 					)
@@ -1857,7 +1857,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			case '':
 				$templateContent = $this->cObj->getSubpart(
 					$this->template['total'],
-					sprintf( '###TEMPLATE_%s%s###',
+					sprintf( '###TEMPLATE_%s_%s###',
 						$keyName,
 						$this->internal['layoutCode']
 					)
@@ -1868,7 +1868,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			default:
 			$templateContent = $this->cObj->getSubpart(
 				$this->template['total'],
-				sprintf( '###TEMPLATE_%s_%s%s###',
+				sprintf( '###TEMPLATE_%s_%s_%s###',
 					$keyName,
 					$view,
 					$this->internal['layoutCode']

@@ -55,7 +55,7 @@ plugin.tx_wecsermons_pi1 {
 #Typo
 #------
 
-	# cat=plugin.tx_wecsermons_pi1/typo/10; type=text; label= List View - Alternating class: string appended to the end of the alternating class, appearing as tx-wecsermons-pi1-{string}
+	# cat=plugin.tx_wecsermons_pi1/typo/10; type=text; label= List View - Alternating class: Addtional class string that is appended to the end of odd numbered rows in LIST and LATEST views
 	listView.alternatingClass = tx-wecsermons-pi1-list-odd
 
 	# cat=plugin.tx_wecsermons_pi1/typo/20; type=text; label= Header for Topics: The text header added before the list of topics, if related to other records

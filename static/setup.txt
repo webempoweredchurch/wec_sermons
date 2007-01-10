@@ -181,7 +181,46 @@ plugin.tx_wecsermons_pi1 {
 
 			wrap = <div class="tx-wecsermons-pi1-jpg">|</div>
 		}
+		
+		downloadfile = TEXT
+		downloadfile {
+			field = title
+			typolink {
+				parameter = uploads/tx_wecsermons/{field:file}
+				parameter {
+					setCurrent.field = file
+					setCurrent.listNum = 0
+					insertData = 1
+				}
+			}
+		}
 
+		downloadgraphic = COA
+		downloadgraphic {
+			10 = IMAGE
+			10 {
+
+				prefixComment = 2 | Graphic Preview:
+				altText.field = title
+				file.import = uploads/tx_wecsermons/
+				file.import.field = file
+				file.width = 150m
+				file.height  = 150m
+				wrap = <div class="tx-wecsermons-pi1-graphic-preview">|</div>
+				stdWrap.typolink {
+					parameter = uploads/tx_wecsermons/{field:file}
+					parameter {
+						setCurrent.field = file
+						setCurrent.listNum = 0
+						insertData = 1
+					}
+				}
+			}
+			
+			20 = TEXT
+			20.field = title
+		}
+		
 		# This is the 'Default' resource type. This rendering will be used if the proper key has not been defined for the resource you are rendering.
 		# To define a new resource key, create a new property within the plugin.tx_wecsermons_pi1.resource_types CASE cObject. You can use the 'default' property as a starting point.
 		default = COA
