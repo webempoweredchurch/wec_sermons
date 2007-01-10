@@ -168,7 +168,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			switch( $code ) {	//	Primary switch for this plugin
 				case 'SINGLE':
 					$this->internal['currentCode'] = 'SINGLE';
-					$content .= $this->singleView( $content, $this->conf['singleView.'] );
+					$content = $this->singleView( $content, $this->conf['singleView.'] );
 					break;
 
 				case 'LIST':
@@ -334,8 +334,20 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 		//	Set the current table internal variable from recordType querystring value
 		$this->internal['currentTable'] = htmlspecialchars( $this->piVars['recordType'] );
+		
+		// Check if search words were posted back to this page. If so, then error as pidSearchView needed to be set.
+		if( $this->piVars['sword'] ) {
 
-		//	Check if table is in allowedTables
+			return $this->throwError(
+				'WEC Sermon Management System Error!',
+				'A search query was directed to this page which is configured with the SINGLE view.',
+				'Please configure the constant "pidSearchView" from the Constant Editor'
+			);
+			
+			
+		}
+
+		//	Check if table is specified and in allowedTables
 		if( ! t3lib_div::inList( $this->conf['allowedTables'], $this->internal['currentTable']  ) ) {
 
 			return $this->throwError(
@@ -475,7 +487,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	function pi_list_searchbox($lConf) {
 
 		//	Retrieve searchbox template
-		$searchBoxTemplate = $this->getNamedTemplateContent( 'searchbox', '' );
+		$searchBoxTemplate = $this->getNamedTemplateContent( 'searchbox' );
 
 		//	Retrieve the marker array
 		$markerArray = $this->getMarkerArray('searchbox');
@@ -1854,23 +1866,11 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				);
 			break;
 
-			case '':
-				$templateContent = $this->cObj->getSubpart(
-					$this->template['total'],
-					sprintf( '###TEMPLATE_%s_%s###',
-						$keyName,
-						$this->internal['layoutCode']
-					)
-				);
-
-			break;
-
 			default:
 			$templateContent = $this->cObj->getSubpart(
 				$this->template['total'],
-				sprintf( '###TEMPLATE_%s_%s_%s###',
+				sprintf( '###TEMPLATE_%s_%s###',
 					$keyName,
-					$view,
 					$this->internal['layoutCode']
 				)
 			);
@@ -1931,7 +1931,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			//	Get the file location and name of our template file
 			$templateFile = $this->getTemplateFile();
 			$this->template['total'] = $this->cObj->fileResource( $this->internal['templateFile'] );
-			$this->template['list'] =  $this->getNamedTemplateContent('', $view);
+			$this->template['list'] =  $this->getNamedTemplateContent(null, $view);
 			$this->template['content'] = $this->getNamedSubpart('CONTENT', $this->template['list'] );
 			$this->template['item'] = $this->getNamedSubpart('ITEM', $this->template['content'] );
 
