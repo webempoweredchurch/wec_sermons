@@ -244,8 +244,10 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		$content = '';
 
 		//	Iterate over the matching sermons.
-		//	Retrieve related resource information and update the data row
-		//	Retrieve the first speaker and update data row
+		//	Retrieve related resource information and update the data row.
+		
+		//  !! Because only one enclosure tag is allowed per item, per RSS 2.0 spec, we process duplicates and only use the last resource
+		//	that is referenced. 
 		while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) ) {
 
 			//	Retreive the array of related resources to this sermon record
@@ -294,9 +296,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				}
 
 			}
-
 			
-
 			//	If result row has speakers related to it, retrieve the fullname of the first speaker and add to result row as 'author'
 			if( $row['speakers_uid'] ) {
 
@@ -312,9 +312,19 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 			}
 
-			//	Collect each modified row into an array for passing to other function
-			$sermons[] = $row;
+			//	Collect each modified row into a container array for passing to tx_wecapi_list::getContent
+			//	Only add to sermons array if enclosure is specified and found, or if enclosureType is not specified at all.
+			if( $lConf['enclosureType'] ) {
+				if( $row['item_link'] ) {
+					$sermons[] = $row;	//	enclosureType specified, and resource's item_link was populated, indicating a resource was found
+				}
+			}
+			else {
+				$sermons[] = $row;	// enclosureType not specified, so we always add to the array
+			}
+				
 		}
+		
 		//	Call wecapi_list to retrieve the front-end content of this row of records.
 		 return tx_wecapi_list::getContent( $this, $sermons, $tableToList );
 
