@@ -36,10 +36,13 @@ plugin.tx_wecsermons_pi1 {
 	stdHeader = COA
 	stdHeader {
 		10 = TEXT
-		10.field = title
-		10.dataWrap = <div class="csc-header csc-header-n{cObj:parentRecordNumber}">|</div>
-		10.fieldRequired = title
+		10.addParams.title.field = description
+		10.stdWrap = 1
+		10.stdWrap.field = title
+		10.stdWrap.dataWrap = <div class="csc-header csc-header-n{cObj:parentRecordNumber}">|</div>
+		10.stdWrap.fieldRequired = title
 		10.prefixComment = 2 | Header:
+
 	}
 
 	# Marker based template file, which defines each view
@@ -86,29 +89,6 @@ plugin.tx_wecsermons_pi1 {
 			wrap = <div class="tx-wecsermons-pi1-mp3">|</div>
 		}
 
-		# Flash video
-		FLV = COA
-		FLV {
-
-			10 = < plugin.tx_wecsermons_pi1.stdHeader
-
-			20 < plugin.tx_wecflashplayer_pi1
-			20 {
-				videobase.value = uploads/tx_wecsermons/
-				videohigh.setCurrent.field = file
-				videohigh.setCurrent.listNum = 0
-				videohigh.current = 1
-				videolow.setCurrent.field = file
-				videolow.setCurrent.listNum = 1
-				videolow.current = 1
-			}
-
-			30 = TEXT
-			30.field = description
-			30.parseFunc < plugin.tx_wecsermons_pi1.general_stdWrap.parseFunc
-
-			wrap = <div class="tx-wecsermons-pi1-flv">|</div>
-		}
 
 		# PDF (Portable Document)
 		PDF = COA
@@ -124,7 +104,7 @@ plugin.tx_wecsermons_pi1 {
 				file.height  = 150m
 				wrap = <div class="tx-wecsermons-pi1-pdf-preview" style="float: left;">|</div>
 				stdWrap.typolink {
-					parameter = uploads/tx_wecsermons/{field:file}
+					parameter = uploads/tx_wecsermons/{current:1}
 					parameter {
 						setCurrent.field = file
 						setCurrent.listNum = 0
@@ -137,8 +117,12 @@ plugin.tx_wecsermons_pi1 {
 			20.prefixComment = 2 | PDF File Link:
 			20.field = title
 			20.typolink {
-				parameter = uploads/tx_wecsermons/{field:file}
-				parameter.insertData = 1
+				parameter = uploads/tx_wecsermons/{current:1}
+				parameter {
+					setCurrent.field = file
+					setCurrent.listNum = 0
+					insertData = 1
+				}
 			}
 			20.wrap = <p class="bodytext">|</p>
 
@@ -186,7 +170,7 @@ plugin.tx_wecsermons_pi1 {
 		downloadfile {
 			field = title
 			typolink {
-				parameter = uploads/tx_wecsermons/{field:file}
+				parameter = uploads/tx_wecsermons/{current:1}
 				parameter {
 					setCurrent.field = file
 					setCurrent.listNum = 0
@@ -197,10 +181,12 @@ plugin.tx_wecsermons_pi1 {
 
 		downloadgraphic = COA
 		downloadgraphic {
+
+			stdWrap.prefixComment = 2 | SMS Downloadable Graphic:
+
 			10 = IMAGE
 			10 {
-
-				prefixComment = 2 | Graphic Preview:
+				stdWrap.prefixComment = 2 | Graphic Preview:
 				altText.field = title
 				file.import = uploads/tx_wecsermons/
 				file.import.field = file
@@ -208,7 +194,7 @@ plugin.tx_wecsermons_pi1 {
 				file.height  = 150m
 				wrap = <div class="tx-wecsermons-pi1-graphic-preview">|</div>
 				stdWrap.typolink {
-					parameter = uploads/tx_wecsermons/{field:file}
+					parameter = uploads/tx_wecsermons/{current:1}
 					parameter {
 						setCurrent.field = file
 						setCurrent.listNum = 0
@@ -219,7 +205,93 @@ plugin.tx_wecsermons_pi1 {
 			
 			20 = TEXT
 			20.field = title
+			20.prefixComment = 2 | Graphic Title:
+			
 		}
+		
+		# MP3 Embedded Audio
+		embedded_mp3 = COA
+		embedded_mp3 {
+			10 = < plugin.tx_wecsermons_pi1.stdHeader
+
+			20 < plugin.tx_wecflashplayer_pi2
+			20 {
+				audiobase.value = uploads/tx_wecsermons/
+				audiofile.setCurrent.field = file
+				audiofile.setCurrent.listNum = 0
+				audiofile.current = 1
+			}
+
+			30 = TEXT
+			30.field = description
+			30.parseFunc < plugin.tx_wecsermons_pi1.general_stdWrap.parseFunc
+
+			wrap = <div class="tx-wecsermons-pi1-mp3">|</div>
+		}
+
+		# Flash video
+		FLV = COA
+		FLV {
+
+			10 = < plugin.tx_wecsermons_pi1.stdHeader
+
+			20 < plugin.tx_wecflashplayer_pi1
+			20 {
+				videobase.value = uploads/tx_wecsermons/
+				videohigh.setCurrent.field = file
+				videohigh.setCurrent.listNum = 0
+				videohigh.current = 1
+				videolow.setCurrent.field = file
+				videolow.setCurrent.listNum = 1
+				videolow.current = 1
+			}
+
+			30 = TEXT
+			30.field = description
+			30.parseFunc < plugin.tx_wecsermons_pi1.general_stdWrap.parseFunc
+
+			wrap = <div class="tx-wecsermons-pi1-flv">|</div>
+		}
+
+		# Embedded media represents a gereral configuration for all embedded media types
+		embedded_media = COA
+		embedded_media {
+		
+			stdWrap.prefixComment = 2 | SMS Embedded Media:
+		
+			//	Default header uses standard header
+			10 < plugin.tx_wecsermons_pi1.stdHeader
+			10.10.addParams.title = 1
+			10.10.addParams.title.field = type_description
+			10.10.addParams.title.stripHtml = 1
+			
+			//	Media embed uses the MULTIMEDIA cObject to render, using the first file in the list of attached resources.
+			20 = MULTIMEDIA
+			20.stdWrap.prefixComment = 2 | Embeded media:
+			20.file = uploads/tx_wecsermons/{current:1}
+			20.file {
+				setCurrent.field = file
+				setCurrent.listNum = 0
+				insertData = 1
+			}
+			20.params (
+				type={field:mime_type}
+			)
+			20.params.insertData = 1
+			
+		}
+		
+		embedded_realmedia < .embedded_media
+		embedded_wma < .embedded_media
+		embedded_swf < .embedded_media
+		embedded_wmv < .embedded_media
+		embedded_wmv {
+			20.file >
+			20.file.field = webaddress1
+		}
+		embedded_mov < .embedded_wmv
+		embedded_mp4 < .embedded_wmv
+		embedded_avi < .embedded_wmv
 		
 		# This is the 'Default' resource type. This rendering will be used if the proper key has not been defined for the resource you are rendering.
 		# To define a new resource key, create a new property within the plugin.tx_wecsermons_pi1.resource_types CASE cObject. You can use the 'default' property as a starting point.
@@ -1164,6 +1236,13 @@ plugin.tx_wecsermons_pi1 {
 		# TOTO: change to name of resource type specified in v.0.5.2 of extension
 		#	EnclosureType specifies which custom resource type will be included as an <enclosure/> for podcasting.
 		enclosureType = MP3
+		
+		tx_wecsermons_sermons < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_sermons
+		tx_wecsermons_resources < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources
+		tx_wecsermons_series < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_series
+		tx_wecsermons_speakers < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_speakers
+		tx_wecsermons_topics < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_topics
+		tx_wecsermons_seasons < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_seasons
 
 	}
 }

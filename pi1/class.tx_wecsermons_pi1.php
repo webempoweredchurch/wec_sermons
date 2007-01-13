@@ -259,7 +259,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 					//	Retrieve a typolink conf that tells us how to render the link to the resource attachment. Must be provided by admin!
 					$this->local_cObj->start($resource);
-					$typolinkConf = $this->conf['singleView.']['tx_wecsermons_resources.']['resource_types.'][$resource['type'].'.']['typolink.'];
+					$typolinkConf = $lConf['tx_wecsermons_resources.']['resource_types.'][$resource['type'].'.']['typolink.'];
 
 					//	Render the relative and absolute paths to the file
 					$relPath =  $this->local_cObj->typolink_URL( $typolinkConf );
