@@ -530,9 +530,9 @@ BACK_LINK - link back to the list view
 					###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->###RESOURCE_FILE###<!--###RESOURCE_LINK###-->
 				<!--###PDF_RESOURCES###-->
 
-				<!--###MP3_RESOURCES###-->
+				<!--###EMBEDDED_MP3###-->
 					<p>MP3: ###RESOURCE_CONTENT###</p>
-				<!--###MP3_RESOURCES###-->
+				<!--###EMBEDDED_MP3###-->
 
 				<!--###SERMON_SPEAKERS###-->
 						###SPEAKER_PHOTO###
@@ -578,9 +578,9 @@ BACK_LINK - link back to the list view
 					###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->###RESOURCE_FILE###<!--###RESOURCE_LINK###-->
 				<!--###PDF_RESOURCES###-->
 
-				<!--###MP3_RESOURCES###-->
+				<!--###EMBEDDED_MP3###-->
 					<p>MP3: <!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--></p>
-				<!--###MP3_RESOURCES###-->
+				<!--###EMBEDDED_MP3###-->
 
 				<!--###SERMON_SPEAKERS###-->
 						###SPEAKER_PHOTO###
@@ -644,6 +644,7 @@ BACK_LINK - link back to the list view
 
 <!-- ###TEMPLATE_SERMON_VERBOSE### begin -->
 	<!--###CONTENT###-->
+
 		<!--###EMBEDDED_AVI###-->
 			###RESOURCE_CONTENT###
 		<!--###EMBEDDED_AVI###-->
@@ -675,6 +676,11 @@ BACK_LINK - link back to the list view
 		<!--###EMBEDDED_REALMEDIA###-->
 			###RESOURCE_CONTENT###
 		<!--###EMBEDDED_REALMEDIA###-->
+		
+		<!--###DOWNLOAD_FILE###-->
+			###RESOURCE_CONTENT###
+		<!--###DOWNLOAD_FILE###-->
+		
 
 		###SERMON_TITLE###
 		###SERMON_OCCURRENCE_DATE###
@@ -690,9 +696,9 @@ BACK_LINK - link back to the list view
 			###SPEAKER_LASTNAME### ###SPEAKER_FIRSTNAME###<br/>
 		<!--###SERMON_SPEAKERS###-->
 
-		<!--###MP3_RESOURCES###-->
+		<!--###EMBEDDED_MP3###-->
 			###RESOURCE_CONTENT###
-		<!--###MP3_RESOURCES###-->
+		<!--###EMBEDDED_MP3###-->
 
 		<!--###PDF_RESOURCES###-->
 			###RESOURCE_TITLE### <!--###RESOURCE_LINK###-->###RESOURCE_FILE###<!--###RESOURCE_LINK###-->
@@ -821,7 +827,6 @@ BACK_LINK - link back to the list view
 		<p>Sermon Title: (with link to single view using &lt;&#33;&#45;&#45;&#35;&#35;&#35;&#83;&#69;&#82;&#77;&#79;&#78;&#95;&#76;&#73;&#78;&#75;&#35;&#35;&#35;&#45;&#45;&gt; wrapping tags)<br/>
 		<!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###--></p>
 
-
 		<!--###SERMON_SERIES### begin-->
 		<div id="tx-wecsermons-pi1-series-example" class="tx-wecsermons-pi1-example">
 		<p><strong>Sermon Series:</strong></p>
@@ -854,23 +859,22 @@ BACK_LINK - link back to the list view
 		</div>
 		<!--###SERMON_TOPICS### end-->
 
-		<!--###MP3_RESOURCES###-->
+		<!--###EMBEDDED_MP3###-->
 		<div id="tx-wecsermons-pi1-mp3-example" class="tx-wecsermons-pi1-example">
 			<p><strong>MP3 Resources:</strong></p>
 			<p>Resource Title:<br/>
 			<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--></p>
 
 		</div>
-		<!--###MP3_RESOURCES###-->
+		<!--###EMBEDDED_MP3###-->
 
-
-		<!--###FLASH_VIDEO_RESOURCES###-->
+		<!--###EMBEDDED_FLV###-->
 		<div id="tx-wecsermons-pi1-flv-example" class="tx-wecsermons-pi1-example">
 			<p><strong>Flash Video Resources:</strong></p>
 			<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--></p>
 
 		</div>
-		<!--###FLASH_VIDEO_RESOURCES###-->
+		<!--###EMBEDDED_FLV###-->
 
 		<!--###PDF_RESOURCES###-->
 		<div id="tx-wecsermons-pi1-pdf-example" class="tx-wecsermons-pi1-example">
@@ -912,7 +916,7 @@ BACK_LINK - link back to the list view
 			<p><strong>Downloadable File:</strong></p>
 
 			<p>Title:<br/>
-			<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--></p>
+		<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--></p>
 			###RESOURCE_CONTENT###
 		<!--###DOWNLOAD_FILE###-->
 
@@ -996,23 +1000,14 @@ BACK_LINK - link back to the list view
 		</div>
 		<!--###SERMON_TOPICS### end-->
 
-		<!--###MP3_RESOURCES###-->
+		<!--###EMBEDDED_MP3###-->
 		<div id="tx-wecsermons-pi1-mp3-example" class="tx-wecsermons-pi1-example">
 			<p><strong>MP3 Resources:</strong></p>
 			<p>Resource Title:<br/>
 			<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--></p>
 
 		</div>
-		<!--###MP3_RESOURCES###-->
-
-
-		<!--###FLASH_VIDEO_RESOURCES###-->
-		<div id="tx-wecsermons-pi1-flv-example" class="tx-wecsermons-pi1-example">
-			<p><strong>Flash Video Resources:</strong></p>
-			<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--></p>
-
-		</div>
-		<!--###FLASH_VIDEO_RESOURCES###-->
+		<!--###EMBEDDED_MP3###-->
 
 		<!--###PDF_RESOURCES###-->
 		<div id="tx-wecsermons-pi1-pdf-example" class="tx-wecsermons-pi1-example">
@@ -1220,29 +1215,29 @@ BACK_LINK - link back to the list view
 
 
 <br />
-<h3>TEMPLATE_MP3_RESOURCES</h3>
+<h3>TEMPLATE_EMBEDDED_MP3</h3>
 <em>This is an example template for styling a MP3 resource item.</em>
 <br />
 
-<!--###TEMPLATE_MP3_RESOURCES### begin-->
+<!--###TEMPLATE_EMBEDDED_MP3### begin-->
 	<!--###CONTENT###-->
 			###RESOURCE_CONTENT###
 	<!--###CONTENT###-->
 	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
-<!--###TEMPLATE_MP3_RESOURCES### end-->
+<!--###TEMPLATE_EMBEDDED_MP3### end-->
 
 
 <br />
-<h3>TEMPLATE_FLASH_VIDEO_RESOURCES</h3>
+<h3>TEMPLATE_EMBEDDED_FLV</h3>
 <em>This is an example template for styling a FLV resource item.</em>
 <br />
 
-<!--###TEMPLATE_FLASH_VIDEO_RESOURCES### begin-->
+<!--###TEMPLATE_EMBEDDED_FLV### begin-->
 	<!--###CONTENT###-->
 			###RESOURCE_CONTENT###
 	<!--###CONTENT###-->
 	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
-<!--###TEMPLATE_FLASH_VIDEO_RESOURCES### end-->
+<!--###TEMPLATE_EMBEDDED_FLV### end-->
 
 
 <br />

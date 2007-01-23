@@ -190,6 +190,7 @@ plugin.tx_wecsermons_pi1 {
 				altText.field = title
 				file.import = uploads/tx_wecsermons/
 				file.import.field = file
+				file.import.field.listNum = 0
 				file.width = 150m
 				file.height  = 150m
 				wrap = <div class="tx-wecsermons-pi1-graphic-preview">|</div>
@@ -230,8 +231,8 @@ plugin.tx_wecsermons_pi1 {
 		}
 
 		# Flash video
-		FLV = COA
-		FLV {
+		embedded_flv = COA
+		embedded_flv {
 
 			10 = < plugin.tx_wecsermons_pi1.stdHeader
 
@@ -1237,12 +1238,8 @@ plugin.tx_wecsermons_pi1 {
 		#	EnclosureType specifies which custom resource type will be included as an <enclosure/> for podcasting.
 		enclosureType = MP3
 		
-		tx_wecsermons_sermons < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_sermons
-		tx_wecsermons_resources < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources
-		tx_wecsermons_series < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_series
-		tx_wecsermons_speakers < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_speakers
-		tx_wecsermons_topics < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_topics
-		tx_wecsermons_seasons < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_seasons
+		tx_wecsermons_resources.resource_types < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources.resource_types
+		
 
 	}
 }

@@ -20,6 +20,7 @@ t3lib_extMgm::addPItoST43($_EXTKEY,'pi1/class.tx_wecsermons_pi1.php','_pi1','lis
 
 	//	Load necessary classes and register respective hooks
 require_once( t3lib_extMgm::extPath($_EXTKEY) . '/class.tx_wecsermons_resourceTypeTca.php' );
+require_once( t3lib_extMgm::extPath($_EXTKEY) . '/class.tx_wecsermons_resource_types.php' );
 require_once( t3lib_extMgm::extPath($_EXTKEY) . '/class.tx_wecsermons_xmlView.php' );
 
 /**
@@ -28,6 +29,8 @@ require_once( t3lib_extMgm::extPath($_EXTKEY) . '/class.tx_wecsermons_xmlView.ph
 
 $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getMainFieldsClass'][] = 'tx_wecsermons_resourceTypeTca';
 $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = 'EXT:wecsermons/class.tx_wecsermons_resourceTypeTca.php:tx_wecsermons_resourceTypeTca';
+$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'][] = 'tx_wecsermons_resource_types';
+
 #$TYPO3_CONF_VARS['EXTCONF']['tx_wecapi_list']['preProcessContentRow'][] = 'tx_wecsermons_xmlView';
 $TYPO3_CONF_VARS['EXTCONF']['tx_wecapi_list']['preProcessPageArray'][] = 'tx_wecsermons_xmlView';
 

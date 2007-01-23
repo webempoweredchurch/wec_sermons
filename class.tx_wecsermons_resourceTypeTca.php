@@ -62,6 +62,10 @@ class tx_wecsermons_resourceTypeTca {
 # Keep this line for future functionality, possibly manipulating pi1's flexform
 #		if( $row['list_type'] = 'wec_sermons_pi1' ) {
 
+#		if( !strcmp( $table, 'tx_wecsermons_resource_types' ) ) {
+#				debug( $row,1);
+		}
+
 		if( $table == 'tx_wecsermons_resources' ) {
 
 			//	Make sure TCA is loaded for our table
@@ -79,7 +83,7 @@ class tx_wecsermons_resourceTypeTca {
 			//	Convert each tx_wecsermons_resource_types record into a 'types' TCA array
 			while( $resourceType = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $resource )  ) {
 
-				$GLOBALS['TCA']['tx_wecsermons_resources']['types'][$resourceType['typoscript_object_name']] = array( 'showitem' => "type;;;;1-1-1, title, " . $this->processAvailableFields( $resourceType['avail_fields'] ) . ($resourceType['type'] == '1' ? 'rendered_record,' : '') . " hidden;;1;;5-5-5" );
+				$GLOBALS['TCA']['tx_wecsermons_resources']['types'][$resourceType['uid']] = array( 'showitem' => "type;;;;1-1-1, title, " . $this->processAvailableFields( $resourceType['avail_fields'] ) . ($resourceType['type'] == '1' ? 'rendered_record,' : '') . " hidden;;1;;5-5-5" );
 			}
 
 #debug( $GLOBALS['TCA']['tx_wecsermons_resources']['types'] ,1);
@@ -136,7 +140,7 @@ class tx_wecsermons_resourceTypeTca {
 			//	TODO: Resize the given image file to 18x16 via ImageMagick
 			$params['items'][] = array(
 				$resourceType['title'],
-				$resourceType['typoscript_object_name'],
+				$resourceType['uid'],
 				$resourceType['icon'] ? '../../' . $GLOBALS['TCA']['tx_wecsermons_resource_types']['columns']['icon']['config']['uploadfolder'] . '/' . $resourceType['icon'] : ''
 			);
 
@@ -189,7 +193,7 @@ class tx_wecsermons_resourceTypeTca {
 	}
 
 	/**
-	 * This method is called by a hook in the TYPO3 Core Engine (TCEmain) when a record is saved. We use it to disable saving of the current record if it has categories assigned that are not allowed for the BE user.
+	 * This method is called by a hook in the TYPO3 Core Engine (TCEmain) when a record is saved. We use it to redirect a save_and_preview event to the proper page
 	 *
 	 * @param	array		$fieldArray: The field names and their values to be processed (passed by reference)
 	 * @param	string		$table: The table TCEmain is currently processing
@@ -216,6 +220,22 @@ class tx_wecsermons_resourceTypeTca {
 			}
 		}
 	}
+
+/*
+	function processDatamap_postProcessFieldArray($status, $table, $id, $fieldArray, $pObj) {
+		
+		if( !strcmp( $table, 'tx_wecsermons_resource_types' ) && !strcmp( $status, 'update' ) && $fieldArray['typoscript_object_name'] ) {
+			
+			
+			
+debug( $status,1);
+debug( $table,1);
+debug( $id,1);
+debug( $fieldArray,1);
+
+		}
+	}
+*/	
 
 }
 
