@@ -64,7 +64,7 @@ class tx_wecsermons_resourceTypeTca {
 
 #		if( !strcmp( $table, 'tx_wecsermons_resource_types' ) ) {
 #				debug( $row,1);
-		}
+#		}
 
 		if( $table == 'tx_wecsermons_resources' ) {
 
