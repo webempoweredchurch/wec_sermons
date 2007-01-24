@@ -18,7 +18,7 @@ CREATE TABLE tx_wecsermons_resources (
 	title tinytext NOT NULL,
 	subtitle tinytext NOT NULL,
 	graphic blob NOT NULL,
-	type blob NOT NULL,
+	type int(11) NOT NULL,
 	file blob NOT NULL,
 	webaddress1 tinytext NOT NULL,
 	webaddress2 tinytext NOT NULL,

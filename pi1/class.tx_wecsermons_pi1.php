@@ -2024,9 +2024,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		//	Build query to select resource attributes along with resource type name
 		$WHERE = $sermonUid ? 'AND tx_wecsermons_sermons.uid = ' . $sermonUid . ' ' :'';
 		$WHERE = $resourceUid ? 'AND tx_wecsermons_resources.uid = ' . $resourceUid . ' ' : $WHERE;
+		$WHERE .= $this->cObj->enableFields('tx_wecsermons_sermons');
 		$WHERE .= $this->cObj->enableFields('tx_wecsermons_resources');
-		$WHERE .= ' AND NOT (tx_wecsermons_resources.hidden = 1 OR tx_wecsermons_resource_types.hidden = 1) ';
-		$WHERE .= ' AND NOT (tx_wecsermons_resources.deleted = 1 OR tx_wecsermons_resource_types.deleted = 1) ';
+		$WHERE .= $this->cObj->enableFields('tx_wecsermons_resource_types');
 		
 		$query = 'select distinct
 		tx_wecsermons_resources.uid,
