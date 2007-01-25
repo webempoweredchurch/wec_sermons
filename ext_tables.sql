@@ -18,7 +18,7 @@ CREATE TABLE tx_wecsermons_resources (
 	title tinytext NOT NULL,
 	subtitle tinytext NOT NULL,
 	graphic blob NOT NULL,
-	type int(11) NOT NULL,
+	type int(11) DEFAULT '0' NOT NULL,
 	file blob NOT NULL,
 	webaddress1 tinytext NOT NULL,
 	webaddress2 tinytext NOT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE tx_wecsermons_resource_types (
 	querystring_param blob NOT NULL,
 	mime_type tinytext NOT NULL,
 	typoscript_object_name tinytext NOT NULL,
-	avail_fields blob NOT NULL,
+	avail_fields tinytext NOT NULL,
 	rendering_page int(11) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),

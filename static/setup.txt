@@ -69,34 +69,13 @@ plugin.tx_wecsermons_pi1 {
 		# Use the field 'typoscript_object_name' on a tx_wecsermons_resources record
 		key.field = typoscript_object_name
 
-		# MP3 Audio
-		MP3 = COA
-		MP3 {
-			10 = < plugin.tx_wecsermons_pi1.stdHeader
-
-			20 < plugin.tx_wecflashplayer_pi2
-			20 {
-				audiobase.value = uploads/tx_wecsermons/
-				audiofile.setCurrent.field = file
-				audiofile.setCurrent.listNum = 0
-				audiofile.current = 1
-			}
-
-			30 = TEXT
-			30.field = description
-			30.parseFunc < plugin.tx_wecsermons_pi1.general_stdWrap.parseFunc
-
-			wrap = <div class="tx-wecsermons-pi1-mp3">|</div>
-		}
-
-
-		# PDF (Portable Document)
-		PDF = COA
-		PDF {
+		# pdf (Portable Document)
+		pdf = COA
+		pdf {
 			10 = IMAGE
 			10 {
 
-				prefixComment = 2 | PDF Preview:
+				prefixComment = 2 | pdf Preview:
 				altText.field = title
 				file.import = uploads/tx_wecsermons/
 				file.import.field = file
@@ -114,7 +93,7 @@ plugin.tx_wecsermons_pi1 {
 			}
 
 			20 = TEXT
-			20.prefixComment = 2 | PDF File Link:
+			20.prefixComment = 2 | pdf File Link:
 			20.field = title
 			20.typolink {
 				parameter = uploads/tx_wecsermons/{current:1}
@@ -148,22 +127,6 @@ plugin.tx_wecsermons_pi1 {
 		poll < plugin.tx_jkpoll_pi1
 		poll {
 			type = 1
-		}
-
-		JPG = COA
-		JPG {
-			10 = IMAGE
-			10.import = uploads/tx_wecsermons/
-			10.import.field = graphic
-			10.width = 150px
-
-			# Caption
-			20 = TEXT
-			20.field = title
-			20.required = 1
-			20.fontTag = <div class="tx-wecsermons-pi1-jpg-caption">|</div>
-
-			wrap = <div class="tx-wecsermons-pi1-jpg">|</div>
 		}
 		
 		downloadfile = TEXT
@@ -210,7 +173,7 @@ plugin.tx_wecsermons_pi1 {
 			
 		}
 		
-		# MP3 Embedded Audio
+		# embedded_mp3 Embedded Audio
 		embedded_mp3 = COA
 		embedded_mp3 {
 			10 = < plugin.tx_wecsermons_pi1.stdHeader
@@ -222,12 +185,13 @@ plugin.tx_wecsermons_pi1 {
 				audiofile.setCurrent.listNum = 0
 				audiofile.current = 1
 			}
+			stdWrap.innerWrap = <div class="tx-wecsermons-pi1-mp3">|</div>
+			stdWrap.innerWrap {
+				addParams.title = 1
+				addParams.title.field = description
+				addParams.title.stripHtml = 1
+			}
 
-			30 = TEXT
-			30.field = description
-			30.parseFunc < plugin.tx_wecsermons_pi1.general_stdWrap.parseFunc
-
-			wrap = <div class="tx-wecsermons-pi1-mp3">|</div>
 		}
 
 		# Flash video
@@ -432,13 +396,29 @@ plugin.tx_wecsermons_pi1 {
 			# See the TSRef for details on the typolink data type: http://typo3.org/documentation/document-library/references/doc_core_tsref/current/view/5/8/
 			resource_types {
 
-				# Type PDF
-				PDF.typolink < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources.typolink
+				pdf.typolink < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources.typolink
 
-				MP3.typolink < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources.typolink
+				embedded_mp3.typolink < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources.typolink
+				
+				embedded_mp4.typolink = 1
+				embedded_mp4.typolink {
+					parameter.field = webaddress1
+					extTarget = _blank
+				}
+
+				embedded_avi.typolink < .embedded_mp4
+				embedded_swf.typolink < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources.typolink
+				embedded_mov.typolink < .embedded_mp4
+				embedded_wma.typolink < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources.typolink
+				embedded_wmv.typolink < .embedded_mp4
+				embedded_realmedia.typolink < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources.typolink
+				embedded_flv.typolink < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources.typolink
+				downloadfile.typolink < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources.typolink
+				downloadgraphic.typolink < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources.typolink
 			
-				News.typolink < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources.typolink
-				News.singlePid = 
+				poll.typolink = 0
+				news.typolink = 0
+				discussion.typolink = 0
 
 				# Default resource type, links to the first file in the list
 				default {
@@ -855,12 +835,23 @@ plugin.tx_wecsermons_pi1 {
 			# See the TSRef for details on the typolink data type: http://typo3.org/documentation/document-library/references/doc_core_tsref/current/view/5/8/
 			resource_types {
 
-				PDF.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
+				pdf.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
 
-				DOC.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
+				embedded_mp3.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
+				embedded_mp4.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
+				embedded_avi.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
+				embedded_swf.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
+				embedded_mov.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
+				embedded_wma.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
+				embedded_wmv.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
+				embedded_realmedia.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
+				embedded_flv.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
 
-				MP3.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
-
+				downloadfile.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
+				downloadgraphic.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
+			
+				poll.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
+				news.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
 				discussion.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
 
 				# Default resource type.
@@ -1236,7 +1227,7 @@ plugin.tx_wecsermons_pi1 {
 		# TODO: allow multiple resource types here
 		# TOTO: change to name of resource type specified in v.0.5.2 of extension
 		#	EnclosureType specifies which custom resource type will be included as an <enclosure/> for podcasting.
-		enclosureType = MP3
+		enclosureType =  embedded_mp3
 		
 		tx_wecsermons_resources.resource_types < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources.resource_types
 		
@@ -1296,8 +1287,6 @@ plugin.tx_wecapi_list {
 
 }
 
-# Default CSS styles (this will go into the document header as a <link> tag):
-page.includeCSS.tx_wecsermons_pi1 = {$plugin.tx_wecsermons_pi1.file.cssFile}
 
 # Example of how to overrule LOCAL_LANG values for the plugin:
 plugin.tx_wecsermons_pi1._LOCAL_LANG.default  {

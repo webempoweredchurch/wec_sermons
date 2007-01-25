@@ -252,11 +252,11 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			foreach( $resources as $resource ) {
 
 				//	If the resource is the type allowed as an enclosure in this view, then calculate the url and size, adding to result row
-				if( !strcmp( $resource['type'], $lConf['enclosureType'] ) ) {
+				if( !strcmp( $resource['typoscript_object_name'], $lConf['enclosureType'] ) ) {
 
 					//	Retrieve a typolink conf that tells us how to render the link to the resource attachment. Must be provided by admin!
 					$this->local_cObj->start($resource);
-					$typolinkConf = $lConf['tx_wecsermons_resources.']['resource_types.'][$resource['type'].'.']['typolink.'];
+					$typolinkConf = $lConf['tx_wecsermons_resources.']['resource_types.'][$resource['typoscript_object_name'].'.']['typolink.'];
 
 					//	Render the relative and absolute paths to the file
 					$relPath =  $this->local_cObj->typolink_URL( $typolinkConf );
@@ -310,13 +310,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			}
 
 			//	Collect each modified row into a container array for passing to tx_wecapi_list::getContent
-			//	Only add to sermons array if enclosure is specified and found, or if enclosureType is not specified at all.
-			if( $lConf['enclosureType'] ) {
-				if( $row['item_link'] ) {
-					$sermons[] = $row;	//	enclosureType specified, and resource's item_link was populated, indicating a resource was found
-				}
-			}
-			else {
+			//	Only add to sermons array if enclosure is specified and item's link has been set, or if enclosureType is not specified at all.
+			if( ($lConf['enclosureType'] && $row['item_link']) || !$lConf['enclosureType'] ) {
 				$sermons[] = $row;	// enclosureType not specified, so we always add to the array
 			}
 				
@@ -390,7 +385,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				$this->internal['currentRow']['template_name'] :
 				'TEMPLATE_' . trim( $this->internal['currentRow']['marker_name'], '#' );
 
-			if( $this->internal['currentRow']['type'] == '0' )
+			if( !strcmp( '0', $this->internal['currentRow']['type'] ) )
 				$templateName = $this->conf['defaultTemplate'];
 
 			$this->loadTemplate();
@@ -1079,10 +1074,6 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 					if( $row[$fieldName] ) {
 
-			 			$wrap = array (
-			 				'wrap' => '###|###'
-			 			);
-
 						$resourceMarkerArray = $this->getMarkerArray('tx_wecsermons_resources');
 
 						//	Retrieve related resources to this sermon
@@ -1096,7 +1087,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 							$marker = $this->getMarkerName( $this->internal['currentRow']['marker_name'] );
 
 							//	If this resource is the default resource type, we use the subpart marker name from typoscript config
-							if( $this->internal['currentRow']['type'] == '0' ) {
+							if( !strcmp( '0', $this->internal['currentRow']['type'] ) ) {
 
 								$marker = $this->getMarkerName( $this->conf['defaultMarker'] );
 
@@ -1192,22 +1183,22 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				case '###RESOURCE_LINK###':
 
 					//	Change 'type' field to readable format if set to default, for use in TypoScript
-					if( $row['type'] == '0' )
+					if( !strcmp( '0', $row['type'] ) )
 						$row['type'] = 'default';
 
 					//	If 'typolink' segment is defined, render a link as defined by 'typolink', otherwise render a link to the resources' single view
-					if( $lConf['tx_wecsermons_resources.']['resource_types.'][$row['type'].'.']['typolink'] ) {
+					if( $lConf['tx_wecsermons_resources.']['resource_types.'][$row['typoscript_object_name'].'.']['typolink'] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_resources' );
 
-						$wrappedSubpartArray[$key] = $this->local_cObj->typolinkWrap( $lConf['tx_wecsermons_resources.']['resource_types.'][$row['type'].'.']['typolink.'] );
+						$wrappedSubpartArray[$key] = $this->local_cObj->typolinkWrap( $lConf['tx_wecsermons_resources.']['resource_types.'][$row['typoscript_object_name'].'.']['typolink.'] );
 
 					}
 					else {	//	Render a link to single view
 						
 						//	If this resource is a plugin/extension, 
 						//	and a record to render is specified,
-						//	and the PID to display this record is specified, then render the link to the single view of that record
-						if( $row['type_type'] > 0 && $row['rendered_record'] && $lConf['tx_wecsermons_resources.']['resource_types.'][$row['type'].'.']['singlePid']) {
+						//	and the rendering page is specified, then render the link to the single view of that record
+						if( $row['type_type'] > 0 && $row['rendered_record'] && $row['rendering_page'] ) {
 							
 							//	Parse the table_uid string from record into the value for the querystring_param
 							list(,$queryStringVal) = array_values( $this->splitTableAndUID($row['rendered_record'] ) );
@@ -1219,7 +1210,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 								'|', 
 								$this->pi_linkToPage( 
 									'|', 
-									$lConf['tx_wecsermons_resources.']['resource_types.'][$row['type'].'.']['singlePid'], 
+									$row['rendering_page'], 
 									'',  
 									array( $queryString[0] => array( $queryString[1] => $queryStringVal) ) 
 								 ) 
@@ -2048,7 +2039,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		tx_wecsermons_resource_types.template_name,
 		tx_wecsermons_resource_types.mime_type,
 		tx_wecsermons_resource_types.querystring_param,
-		tx_wecsermons_resource_types.typoscript_object_name
+		tx_wecsermons_resource_types.typoscript_object_name,
+		tx_wecsermons_resource_types.rendering_page
 
 		from tx_wecsermons_resources
 				join tx_wecsermons_sermons_resources_uid_mm on tx_wecsermons_resources.uid=tx_wecsermons_sermons_resources_uid_mm.uid_foreign

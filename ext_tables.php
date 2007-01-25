@@ -177,7 +177,7 @@ $TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY.'_pi1']='pi_fle
 t3lib_extMgm::addPlugin(Array('LLL:EXT:wec_sermons/locallang_db.php:tt_content.list_type_pi1', $_EXTKEY.'_pi1'),'list_type');
 
 t3lib_extMgm::addStaticFile($_EXTKEY,'static/','WEC SMS');
-t3lib_extMgm::addStaticFile($_EXTKEY,'static/podcast','WEC SMS Podcast Feed');
+t3lib_extMgm::addStaticFile($_EXTKEY,'static/style','WEC SMS Default CSS Styles');
 t3lib_extMgm::addPiFlexFormValue($_EXTKEY .'_pi1', 'FILE:EXT:wec_sermons/flexform_ds_pi1.xml');
 
 t3lib_extMgm::addLLrefForTCAdescr('tx_wecsermons_sermons','EXT:wec_sermons/csh/locallang_csh_sermons.xml');
