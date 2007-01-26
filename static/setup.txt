@@ -81,7 +81,7 @@ plugin.tx_wecsermons_pi1 {
 				file.import.field = file
 				file.width = 150m
 				file.height  = 150m
-				wrap = <div class="tx-wecsermons-pi1-pdf-preview" style="float: left;">|</div>
+				wrap = <div class="tx-wecsermons-pi1-pdf-preview">|</div>
 				stdWrap.typolink {
 					parameter = uploads/tx_wecsermons/{current:1}
 					parameter {
@@ -289,7 +289,7 @@ plugin.tx_wecsermons_pi1 {
 		back = TEXT
 		back {
 			value = Return
-			parseFunc < plugin.tx_wecsermons_pi1.general_stdWrap.parseFunc
+			wrap = 
 		}
 
 		# Specify which layout will be used, also can be set in the front-end plugin
@@ -331,16 +331,17 @@ plugin.tx_wecsermons_pi1 {
 					extTarget = _blank
 				}
 				field = scripture
+				wrap = <p class="tx-wecsermons-pi1-single-scripture"><h2>Scripture:</h2>|</p>
 			}
 
 			graphic = IMAGE
 			graphic {
-			wrap = |
+			wrap = <div class="tx-wecsermons-pi1-sermon-graphic">|</div>
 				file {
 					import = uploads/tx_wecsermons/
 					import.field = graphic
-					width = 128m
-					height = 128m
+					width = 256m
+					height = 256m
 				}
 				imageLinkWrap = 1
 				imageLinkWrap {
@@ -353,29 +354,38 @@ plugin.tx_wecsermons_pi1 {
 			topics = TEXT
 			topics {
 				innerWrap = {$plugin.tx_wecsermons_pi1.topicsHeader}
-				innerWrap.wrap = |<br/>
+				innerWrap.wrap = <h2>|</h2>
 				innerWrap.required = 1
 
-				wrap = <div class="tx-wecsermons-pi1-sermon-topics">|</div>
-			}
-
-			speakers = TEXT
-			speakers {
-				innerWrap = {$plugin.tx_wecsermons_pi1.speakersHeader}
-				innerWrap.wrap = |<br/>
-				innerWrap.required = 1
-
-				wrap = <div class="tx-wecsermons-pi1-sermon-speakers">|</div>
-
+				wrap (
+					<dl class="tx-wecsermons-pi1-single-topics">
+						|
+					</dl>
+				)
 			}
 
 			series = TEXT
 			series {
 				innerWrap = {$plugin.tx_wecsermons_pi1.seriesHeader}
-				innerWrap.wrap = |<br/>
+				innerWrap.wrap = <h2>|</h2>
 				innerWrap.required = 1
 
-				wrap = <div class="tx-wecsermons-pi1-sermon-series">|</div>
+				wrap = <div class="tx-wecsermons-pi1-single-series">|</div>
+			}
+
+			speakers = TEXT
+			speakers {
+				innerWrap = {$plugin.tx_wecsermons_pi1.speakersHeader}
+				innerWrap.wrap = <tr><td><h2>|</h2></tr></td>
+				innerWrap.required = 1
+
+				wrap (
+					<table class="tx-wecsermons-pi1-single-speakers">
+						<tr>
+							|
+						</tr>
+					</table>
+				)
 			}
 
 		}
@@ -475,18 +485,18 @@ plugin.tx_wecsermons_pi1 {
 
 			title = TEXT
 			title {
-				wrap = |
+				wrap = <h2>|</h2>
 				field = title
 			}
 
 			graphic = IMAGE
 			graphic {
-			wrap = |
+			wrap = <div class="tx-wecsermons-pi1-series-graphic">|</div>
 				file {
 					import = uploads/tx_wecsermons/
 					import.field = graphic
-					width = 128m
-					height = 128m
+					width = 256m
+					height = 256m
 				}
 				imageLinkWrap = 1
 				imageLinkWrap {
@@ -512,15 +522,16 @@ plugin.tx_wecsermons_pi1 {
 					extTarget = _blank
 				}		
 				field = scripture
+				wrap = <p class="tx-wecsermons-pi1-single-scripture"><h2>Scripture:</h2>|</p>
 			}
 
 			topics = TEXT
 			topics {
 				innerWrap = {$plugin.tx_wecsermons_pi1.topicsHeader}
-				innerWrap.wrap = |<br/>
+				innerWrap.wrap = <h2>|</h2>
 				innerWrap.required = 1
 
-				wrap = <div class="tx-wecsermons-pi1-sermon-topics">|</div>
+				wrap = <div class="tx-wecsermons-pi1-series-topics">|</div>
 			}
 
 			startdate = TEXT
@@ -546,10 +557,10 @@ plugin.tx_wecsermons_pi1 {
 			season = TEXT
 			season {
 				innerWrap = {$plugin.tx_wecsermons_pi1.seasonHeader}
-				innerWrap.wrap = |<br/>
+				innerWrap.wrap = <h2>|</h2>
 				innerWrap.required = 1
 
-				wrap = <div class="tx-wecsermons-pi1-sermon-season">|</div>
+				wrap = <div class="tx-wecsermons-pi1-series-seasons">|</div>
 			}
 
 		}
@@ -626,7 +637,16 @@ plugin.tx_wecsermons_pi1 {
 			title = TEXT
 			title {
 				wrap = |
-				field = title
+				stdWrap = 1
+				stdWrap.wrap = <span>|</span>
+				stdWrap.field = title
+				addParams.title = 1
+				addParams.title.field = description
+				addParams.title.trim = 1
+				addParams.title.stripHtml = 1
+				addParams.title.crop = 75|...|1
+
+
 			}
 
 			description = TEXT
@@ -641,7 +661,14 @@ plugin.tx_wecsermons_pi1 {
 			title = TEXT
 			title {
 				wrap = |
-				field = title
+				stdWrap = 1
+				stdWrap.wrap = <span>|</span>
+				stdWrap.field = title
+				addParams.title = 1
+				addParams.title.field = description
+				addParams.title.trim = 1
+				addParams.title.stripHtml = 1
+				addParams.title.crop = 75|...|1
 			}
 
 			description = TEXT
@@ -753,7 +780,7 @@ plugin.tx_wecsermons_pi1 {
 
 			description = TEXT
 			description {
-				crop = 75| &nbsp;...|1
+				crop = 150| &nbsp;...|1
 				stripHtml = 1
 				trim = 1
 				wrap = <p class='bodytext'>|</p>
@@ -762,6 +789,7 @@ plugin.tx_wecsermons_pi1 {
 
 			scripture = TEXT
 			scripture {
+			
 				typolink {
 					parameter = http://www.biblegateway.com/passage/?search={current:1}&version=31;&interface=print
 					parameter.setCurrent.field = scripture
@@ -770,11 +798,12 @@ plugin.tx_wecsermons_pi1 {
 					extTarget = _blank
 				}
 				field = scripture
+				wrap = <p class="tx-wecsermons-pi1-list-scripture"><h2>Scripture:</h2>|</p>
 			}
 
 			graphic = IMAGE
 			graphic {
-			wrap = |
+			wrap = <div class="tx-wecsermons-pi1-sermon-graphic">|</div>
 				file {
 					import = uploads/tx_wecsermons/
 					import.field = graphic
@@ -792,29 +821,37 @@ plugin.tx_wecsermons_pi1 {
 			topics = TEXT
 			topics {
 				innerWrap = {$plugin.tx_wecsermons_pi1.topicsHeader}
-				innerWrap.wrap = |<br/>
+				innerWrap.wrap = <h2>|</h2>
 				innerWrap.required = 1
 
-				wrap = <div class="tx-wecsermons-pi1-topics">|</div>
+				wrap (
+					<dl class="tx-wecsermons-pi1-list-topics">
+						|
+					</dl>
+				)
 			}
 
 			series = TEXT
 			series {
 				innerWrap = {$plugin.tx_wecsermons_pi1.seriesHeader}
-				innerWrap.wrap = |<br/>
+				innerWrap.wrap = <h2>|</h2>
 				innerWrap.required = 1
 
-				wrap = <div class="tx-wecsermons-pi1-series">|</div>
+				wrap = <div class="tx-wecsermons-pi1-list-series">|</div>
 			}
 
 			speakers = TEXT
 			speakers {
 				innerWrap = {$plugin.tx_wecsermons_pi1.speakersHeader}
-				innerWrap.wrap = |<br/>
+				innerWrap.wrap = <h2>|</h2>
 				innerWrap.required = 1
 
-				wrap = <div class="tx-wecsermons-pi1-speakers">|</div>
-
+				wrap (
+					<div class="tx-wecsermons-pi1-list-speakers">
+						<h2>Speakers:</h2>
+						|
+					</div>
+				)
 			}
 
 		}
@@ -1103,7 +1140,7 @@ plugin.tx_wecsermons_pi1 {
 
 			title = TEXT
 			title {
-				wrap = |
+				wrap = <dt>|</dt>
 				field = title
 			}
 
@@ -1113,7 +1150,7 @@ plugin.tx_wecsermons_pi1 {
 				field = description
 				stripHtml = 1
 				trim = 1
-				wrap = <p class="bodytext">|</p>
+				wrap = <dd>|</dd>
 			}
 
 		}
@@ -1245,7 +1282,7 @@ podcast {
 		admPanel = 0
 	}
 
-	typeNum = 200
+	typeNum = 222
 	10 = HTML
 	10.value (
 <?xml version="1.0"?>
@@ -1257,7 +1294,7 @@ podcast {
 }
 
 vodcast < podcast
-vodcast.typeNum = 201
+vodcast.typeNum = 223
 
 plugin.tx_wecapi_list {
 

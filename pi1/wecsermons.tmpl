@@ -89,43 +89,43 @@ BACK_LINK - link back to the list view
 
 <!-- ###TEMPLATE_LIST_BRIEF### begin -->
 	<!-- ###CONTENT### begin -->
-		<!-- ###ITEM### begin -->
 
-			<div style="border-bottom: 1px dotted black;" class="###ALTERNATING_CLASS###" id="tx-wecsermons-pi1-list1">
-				<!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###-->
-				Presented On: ###SERMON_OCCURRENCE_DATE###<br/>
-				###SERMON_DESCRIPTION###
-				###SERMON_SCRIPTURE###
-				###SERMON_GRAPHIC###
+		<ul class="tx-wecsermons-pi1-list-brief" >
+			<!-- ###ITEM### begin -->
+
+			<li class="###ALTERNATING_CLASS###">
+
 				<!--###SERMON_SPEAKERS###-->
-						###SPEAKER_PHOTO###
-						<div class="tx-wecsermons-speakers-caption">
-						<!--###SPEAKER_LINK###-->###SPEAKER_LASTNAME###, ###SPEAKER_FIRSTNAME### <!--###SPEAKER_LINK###-->
-						</div>
+					<p>
+						###SPEAKER_PHOTO###<br/>
+						
+							<!--###SPEAKER_LINK###-->###SPEAKER_FULLNAME### <!--###SPEAKER_LINK###-->
+						
+					</p>
 				<!--###SERMON_SPEAKERS###-->
 
-
-				<!--###SERMON_TOPICS###-->
-						<!--###TOPIC_LINK###-->###TOPIC_TITLE###<!--###TOPIC_LINK###-->
-						###TOPIC_DESCRIPTION###
-				<!--###SERMON_TOPICS###-->
+				<h2><!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###--></h2>
+				<p>###SERMON_OCCURRENCE_DATE###</p>
 
 				<!--###SERMON_SERIES###-->
 						<!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###-->
-						###SERIES_STARTDATE###
-						###SERIES_ENDDATE###
-						<!--###SERIES_SEASON###-->###SEASON_TITLE###<!--###SERIES_SEASON###-->
 				<!--###SERMON_SERIES###-->
 
-				<!--###DEFAULT_RESOURCES###-->
-					Title: <!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--><br/>
-					File: ###RESOURCE_FILE###<br/>
-					Graphic: ###RESOURCE_GRAPHIC###<br/>
-				<!--###DEFAULT_RESOURCES###-->
+				###SERMON_GRAPHIC###
+				###SERMON_DESCRIPTION###
+				###SERMON_SCRIPTURE###
+				
 
+				<!--###SERMON_TOPICS###-->
+					<p>
+						<!--###TOPIC_LINK###-->###TOPIC_TITLE###<!--###TOPIC_LINK###-->
+						###TOPIC_DESCRIPTION###
+					</p>
+				<!--###SERMON_TOPICS###-->
 
-			</div>
-		<!-- ###ITEM### end -->
+			</li>
+			<!-- ###ITEM### end -->
+		</ul>
 	<!-- ###CONTENT### end -->
 			###BROWSE_LINKS###
 <!-- ###TEMPLATE_LIST_BRIEF### end -->
@@ -137,43 +137,43 @@ BACK_LINK - link back to the list view
 
 <!-- ###TEMPLATE_LATEST_BRIEF### begin -->
 	<!-- ###CONTENT### begin -->
-		<!-- ###ITEM### begin -->
 
-			<di  id="tx-wecsermons-pi1-list1">
-				<!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###-->
-				Presented On: ###SERMON_OCCURRENCE_DATE###<br/>
-				###SERMON_DESCRIPTION###
-				###SERMON_SCRIPTURE###
-				###SERMON_GRAPHIC###
+		<ul class="tx-wecsermons-pi1-latest-brief" >
+			<!-- ###ITEM### begin -->
+
+			<li class="###ALTERNATING_CLASS###">
+
 				<!--###SERMON_SPEAKERS###-->
-						###SPEAKER_PHOTO###
-						<div class="tx-wecsermons-speakers-caption">
-						<!--###SPEAKER_LINK###-->###SPEAKER_LASTNAME###, ###SPEAKER_FIRSTNAME### <!--###SPEAKER_LINK###-->
-						</div>
+					<p>
+						###SPEAKER_PHOTO###<br/>
+						
+							<!--###SPEAKER_LINK###-->###SPEAKER_FULLNAME### <!--###SPEAKER_LINK###-->
+						
+					</p>
 				<!--###SERMON_SPEAKERS###-->
 
-
-				<!--###SERMON_TOPICS###-->
-						###TOPIC_TITLE###
-						###TOPIC_DESCRIPTION###
-				<!--###SERMON_TOPICS###-->
+				<h2><!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###--></h2>
+				<p>###SERMON_OCCURRENCE_DATE###</p>
 
 				<!--###SERMON_SERIES###-->
 						<!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###-->
-						###SERIES_STARTDATE###
-						###SERIES_ENDDATE###
-						<!--###SERIES_SEASON###-->###SEASON_TITLE###<!--###SERIES_SEASON###-->
 				<!--###SERMON_SERIES###-->
 
-				<!--###DEFAULT_RESOURCES###-->
-					Title: <!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--><br/>
-					File: ###RESOURCE_FILE###<br/>
-					Graphic: ###RESOURCE_GRAPHIC###<br/>
-				<!--###DEFAULT_RESOURCES###-->
+				###SERMON_GRAPHIC###
+				###SERMON_DESCRIPTION###
+				###SERMON_SCRIPTURE###
+				
 
+				<!--###SERMON_TOPICS###-->
+					<p>
+						<!--###TOPIC_LINK###-->###TOPIC_TITLE###<!--###TOPIC_LINK###-->
+						###TOPIC_DESCRIPTION###
+					</p>
+				<!--###SERMON_TOPICS###-->
 
-			</div>
-		<!-- ###ITEM### end -->
+			</li>
+			<!-- ###ITEM### end -->
+		</ul>
 	<!-- ###CONTENT### end -->
 			###BROWSE_LINKS###
 <!-- ###TEMPLATE_LATEST_BRIEF### end -->
@@ -186,40 +186,92 @@ BACK_LINK - link back to the list view
 
 <!-- ###TEMPLATE_SERMON_BRIEF### begin -->
 	<!--###CONTENT###-->
-		###SERMON_TITLE###
-		###SERMON_OCCURRENCE_DATE###
-		###SERMON_DESCRIPTION###
-		###SERMON_SCRIPTURE###
-		###SERMON_GRAPHIC###
+		<div class="tx-wecsermons-pi1-sermon-brief" >
+			###SERMON_GRAPHIC###
+
+			<h2>###SERMON_TITLE###</h2>
+			<p>###SERMON_OCCURRENCE_DATE###</p>
+			###SERMON_SCRIPTURE###
+	
+			<!--###SERMON_SERIES###-->
+					<!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###-->
+			<!--###SERMON_SERIES###-->
+			
+			<!--###SERMON_SPEAKERS###-->
+				<td>
+					###SPEAKER_PHOTO###<br/>
+					
+						<!--###SPEAKER_LINK###-->###SPEAKER_FULLNAME### <!--###SPEAKER_LINK###-->
+					
+				</td>
+			<!--###SERMON_SPEAKERS###-->
+	
+			###SERMON_DESCRIPTION###
+			
+	
+			<!--###SERMON_TOPICS###-->
+				<p>
+					<!--###TOPIC_LINK###-->###TOPIC_TITLE###<!--###TOPIC_LINK###-->
+					###TOPIC_DESCRIPTION###
+				</p>
+			<!--###SERMON_TOPICS###-->
+				
+			<div class="tx-wecsermons-pi-resources">
+				<h2>Resources:</h2>
+	
+				<!--###DEFAULT_RESOURCES###-->
+					###RESOURCE_CONTENT###
+				<!--###DEFAULT_RESOURCES###-->
+	
+				<!--###PDF_RESOURCES###-->
+					###RESOURCE_CONTENT###
+				<!--###PDF_RESOURCES###-->
+
+				<!--###EMBEDDED_AVI###-->
+					###RESOURCE_CONTENT###
+				<!--###EMBEDDED_AVI###-->
 		
-		<!--###SERMON_SERIES###-->
-			<!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###-->
-		<!--###SERMON_SERIES###-->
+				<!--###EMBEDDED_MP3###-->
+					###RESOURCE_CONTENT###
+				<!--###EMBEDDED_MP3###-->
 		
-		<!--###SERMON_SPEAKERS###-->
-			###SPEAKER_LASTNAME### ###SPEAKER_FIRSTNAME###<br/>
-		<!--###SERMON_SPEAKERS###-->
+				<!--###EMBEDDED_MP4###-->
+					###RESOURCE_CONTENT###
+				<!--###EMBEDDED_MP4###-->
 		
-		<!--###SERMON_TOPICS###-->
-			Sermon Topic: ###TOPIC_TITLE###
-		<!--###SERMON_TOPICS###-->
+				<!--###EMBEDDED_SWF###-->
+					###RESOURCE_CONTENT###
+				<!--###EMBEDDED_SWF###-->
 		
-		<div class="tx-wecsermons-pi1-default">
-			<!--###DEFAULT_RESOURCES###-->
-				###RESOURCE_GRAPHIC###
-				###RESOURCE_TITLE###
-				<!--###RESOURCE_LINK###-->###RESOURCE_FILE###<!--###RESOURCE_LINK###-->
+				<!--###EMBEDDED_MOV###-->
+					###RESOURCE_CONTENT###
+				<!--###EMBEDDED_MOV###-->
 		
-			<!--###DEFAULT_RESOURCES###-->
-		</div>
+				<!--###EMBEDDED_WMA###-->
+					###RESOURCE_CONTENT###
+				<!--###EMBEDDED_WMA###-->
 		
-		<!--###PDF_RESOURCES###-->
-			###RESOURCE_CONTENT###
-		<!--###PDF_RESOURCES###-->
+				<!--###EMBEDDED_WMV###-->
+					###RESOURCE_CONTENT###
+				<!--###EMBEDDED_WMV###-->
 		
+				<!--###EMBEDDED_REALMEDIA###-->
+					###RESOURCE_CONTENT###
+				<!--###EMBEDDED_REALMEDIA###-->
+				
+				<!--###DOWNLOAD_FILE###-->
+					###RESOURCE_CONTENT###
+				<!--###DOWNLOAD_FILE###-->
+				
+		 		<!--###POLL_RESOURCES###-->
+			 		<!--###RESOURCE_LINK###-->Take the Poll ...<!--###RESOURCE_LINK###-->
+		 		<!--###POLL_RESOURCES###-->
+	
+			</div>
 		
+	</div>		
 	<!--###CONTENT###-->
-	<!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###-->
+	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_SERMON_BRIEF### end -->
 
 <br />
@@ -229,21 +281,25 @@ BACK_LINK - link back to the list view
 
 <!-- ###TEMPLATE_SERIES_BRIEF### begin -->
 	<!--###CONTENT###-->
-		###SERIES_TITLE###
-		###SERIES_DESCRIPTION###
-		###SERIES_SCRIPTURE###
-		###SERIES_STARTDATE###
-		###SERIES_ENDDATE###
-		###SERIES_GRAPHIC###
-		
-		<!--###SERIES_SEASON###-->
-			###SEASON_TITLE###
-		<!--###SERIES_SEASON###-->
-		
-		<!--###SERIES_TOPICS###-->
-			###TOPIC_TITLE###
-		<!--###SERIES_TOPICS###-->
-	
+		<div class="tx-wecsermons-pi1-series-brief" >
+			###SERIES_GRAPHIC###
+			###SERIES_TITLE###
+			###SERIES_STARTDATE### -- ###SERIES_ENDDATE###
+			###SERIES_DESCRIPTION###
+			###SERIES_SCRIPTURE###
+			
+			<!--###SERIES_SEASON###-->
+				<p>
+					<!--###SEASON_LINK###-->###SEASON_TITLE###<!--###SEASON_LINK###-->
+				</p>
+			<!--###SERIES_SEASON###-->
+			
+			<!--###SERIES_TOPICS###-->
+				<p>
+					<!--###TOPIC_LINK###-->###TOPIC_TITLE###<!--###TOPIC_LINK###-->
+				</p>
+			<!--###SERIES_TOPICS###-->
+		</div>
 	<!--###CONTENT###-->
 <!-- ###TEMPLATE_SERIES_BRIEF### end -->
 
@@ -262,7 +318,7 @@ BACK_LINK - link back to the list view
 						###SPEAKER_URL###
 	<!-- ###CONTENT### end -->
 	</div>
-	<div><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></div>
+	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_SPEAKER_BRIEF### end -->
 
 
@@ -278,7 +334,7 @@ BACK_LINK - link back to the list view
 						###TOPIC_DESCRIPTION###
 	<!-- ###CONTENT### end -->
 	</div>
-	<div><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></div>
+	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_TOPIC_BRIEF### end -->
 
 
@@ -294,7 +350,7 @@ BACK_LINK - link back to the list view
 						###SEASON_DESCRIPTION###
 	<!-- ###CONTENT### end -->
 	</div>
-	<div><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></div>
+	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_SEASON_BRIEF### end -->
 
 <!--###TEMPLATE_SEARCHBOX_BRIEF### begin-->
@@ -417,7 +473,7 @@ BACK_LINK - link back to the list view
 			</div>
 		</div>
 	<!--###CONTENT###-->
-	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
+	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_SERMON_SERIES### end -->
 
 <h3>TEMPLATE_TOPIC_SERIES</h3>
@@ -429,7 +485,7 @@ BACK_LINK - link back to the list view
 		###TOPIC_TITLE###<br/>
 		###TOPIC_DESCRIPTION###
 	<!--###CONTENT###-->
-	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
+	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_TOPIC_SERIES### end -->
 
 
@@ -444,7 +500,7 @@ BACK_LINK - link back to the list view
 	###SPEAKER_EMAIL###
 	###SPEAKER_URL###<br/>
 	<!--###CONTENT###-->
-	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
+	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_SPEAKER_SERIES### end -->
 
 <h3>TEMPLATE_SERIES_SERIES</h3>
@@ -458,7 +514,7 @@ BACK_LINK - link back to the list view
 		<p style="text-align: center;" ###SERIES_GRAPHIC###</p>
 		<p>###SERIES_DESCRIPTION###</p>
 	<!--###CONTENT###-->
-	<!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###-->
+	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_SERIES_SERIES### end -->
 
 
@@ -477,7 +533,7 @@ BACK_LINK - link back to the list view
 						###SPEAKER_URL###
 	<!-- ###CONTENT### end -->
 	</div>
-	<div><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></div>
+	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_SPEAKER_SERIES### end -->
 
 
@@ -493,7 +549,7 @@ BACK_LINK - link back to the list view
 						###SEASON_DESCRIPTION###
 	<!-- ###CONTENT### end -->
 	</div>
-	<div><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></div>
+	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_SEASON_SERIES### end -->
 
 <!--###TEMPLATE_SEARCHBOX_SERIES### begin-->
@@ -632,7 +688,7 @@ BACK_LINK - link back to the list view
 		<!--###SERIES_TOPICS###-->
 
 	<!--###CONTENT###-->
-<!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###-->
+	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_SERIES_VERBOSE### end -->
 
 
@@ -682,7 +738,7 @@ BACK_LINK - link back to the list view
 		<!--###DOWNLOAD_FILE###-->
 		
  		<!--###POLL_RESOURCES###-->
- 		<!--###RESOURCE_LINK###-->Test Link<!--###RESOURCE_LINK###-->
+	 		<!--###RESOURCE_LINK###-->Test Link<!--###RESOURCE_LINK###-->
  		<!--###POLL_RESOURCES###-->
 		
 
@@ -723,7 +779,7 @@ BACK_LINK - link back to the list view
 
 
 	<!--###CONTENT###-->
-	<!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###-->
+	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_SERMON_VERBOSE### end -->
 
 
@@ -742,7 +798,7 @@ BACK_LINK - link back to the list view
 						###SPEAKER_URL###
 	<!-- ###CONTENT### end -->
 	</div>
-	<div><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></div>
+	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_SPEAKER_VERBOSE### end -->
 
 
@@ -758,7 +814,7 @@ BACK_LINK - link back to the list view
 						###TOPIC_DESCRIPTION###
 	<!-- ###CONTENT### end -->
 	</div>
-	<div><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></div>
+	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_TOPIC_VERBOSE### end -->
 
 
@@ -774,7 +830,7 @@ BACK_LINK - link back to the list view
 						###SEASON_DESCRIPTION###
 	<!-- ###CONTENT### end -->
 	</div>
-	<div><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></div>
+	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_SEASON_VERBOSE### end -->
 
 <!--###TEMPLATE_SEARCHBOX_VERBOSE### begin-->
@@ -1083,7 +1139,7 @@ BACK_LINK - link back to the list view
 			<!--###SERIES_TOPICS### end-->
 
 	<!--###CONTENT### end-->
-	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
+	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_SERIES_CUSTOMIZED### end -->
 
 
@@ -1108,7 +1164,7 @@ BACK_LINK - link back to the list view
 		<p>Sermon Graphic:<br/>
 		###SERMON_GRAPHIC###</p>
 	<!--###CONTENT### end-->
-	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
+	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_SERMON_CUSTOMIZED### end -->
 
 <br />
@@ -1135,7 +1191,7 @@ BACK_LINK - link back to the list view
 			<p>Speaker E-mail:<br/>
 			###SPEAKER_EMAIL###</p>
 	<!--###CONTENT### end-->
-	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
+	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_SPEAKER_CUSTOMIZED### end -->
 
 <br />
@@ -1150,7 +1206,7 @@ BACK_LINK - link back to the list view
 			<p>Description:<br/>
 			###TOPIC_DESCRIPTION###</p>
 	<!--###CONTENT### end-->
-	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
+	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_TOPIC_CUSTOMIZED### end -->
 
 <br />
@@ -1165,7 +1221,7 @@ BACK_LINK - link back to the list view
 			<p>Description:<br/>
 			###SEASON_DESCRIPTION###</p>
 	<!--###CONTENT### end-->
-	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
+	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_SEASON_CUSTOMIZED### end -->
 
 <!--###TEMPLATE_SEARCHBOX_CUSTOMIZED### begin-->
@@ -1196,7 +1252,7 @@ BACK_LINK - link back to the list view
 			###RESOURCE_CONTENT###
 		</div>
 	<!--###CONTENT###-->
-	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
+	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_NEWS_RESOURCES### end -->
 
 <br />
@@ -1208,7 +1264,7 @@ BACK_LINK - link back to the list view
 			<!--###CONTENT###-->
 				###RESOURCE_CONTENT###
 			<!--###CONTENT###-->
-	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
+	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!--###TEMPLATE_PDF_RESOURCES### end-->
 
 
@@ -1221,7 +1277,7 @@ BACK_LINK - link back to the list view
 	<!--###CONTENT###-->
 			###RESOURCE_CONTENT###
 	<!--###CONTENT###-->
-	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
+	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!--###TEMPLATE_EMBEDDED_MP3### end-->
 
 
@@ -1234,7 +1290,7 @@ BACK_LINK - link back to the list view
 	<!--###CONTENT###-->
 			###RESOURCE_CONTENT###
 	<!--###CONTENT###-->
-	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
+	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!--###TEMPLATE_EMBEDDED_FLV### end-->
 
 
@@ -1247,7 +1303,7 @@ BACK_LINK - link back to the list view
 	<!--###CONTENT###-->
 			###RESOURCE_CONTENT###
 	<!--###CONTENT###-->
-	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
+	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!--###TEMPLATE_POLL_RESOURCES### end-->
 
 <br />
@@ -1259,7 +1315,7 @@ BACK_LINK - link back to the list view
 	<!--###CONTENT###-->
 			###RESOURCE_CONTENT###
 	<!--###CONTENT###-->
-	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
+	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!--###TEMPLATE_DISCUSSION_RESOURCES### end-->
 
 <br />
@@ -1271,7 +1327,7 @@ BACK_LINK - link back to the list view
 	<!--###CONTENT###-->
 			###RESOURCE_CONTENT###
 	<!--###CONTENT###-->
-	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
+	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!--###TEMPLATE_EMBEDDED_MEDIA### end-->
 
 <br />
@@ -1286,7 +1342,7 @@ BACK_LINK - link back to the list view
 				<!--###RESOURCE_LINK###--> ###RESOURCE_FILE###<!--###RESOURCE_LINK###-->
 			</div>
 	<!--###CONTENT###-->
-	<p><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
+	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!--###TEMPLATE_DEFAULT_RESOURCES### end-->
 
 

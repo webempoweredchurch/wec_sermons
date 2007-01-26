@@ -536,8 +536,6 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 */
 	function latestView($content,$lConf)	{
 
-		$orderBy = '';
-
 		// If a single element should be displayed, jump to single view
 		if ($this->piVars['showUid'])	{
 
@@ -545,18 +543,30 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 		}
 
-		//	If listing sermon records, check if order was specified in the FE Plugin and load from there. Otherwise load from typoscript, or 'title' as default.
-		 $orderBy = !strcmp( $this->piVars['recordType'], 'tx_wecsermons_sermons' ) ?
-		 	$this->getConfigVal( $this, 'sermons_order_by', 'slistView', 'orderBy', $lConf[$this->piVars['recordType'].'.'], 'title' ) :
-		 	$lConf[$this->piVars['recordType'].'.']['orderBy'];
+		//	Intialize query params if not set
+		if (!isset($this->piVars['pointer']))	$this->piVars['pointer']=0;
+		if( !isset( $this->piVars['recordType'] ) ) $this->piVars['recordType'] = $this->getConfigVal( $this, 'detail_table', 'slistView', 'detailTable', $this->conf, 'tx_wecsermons_sermons' );
+		
 
+		if( $lConf['useCreationDate'] ) {
+			$this->internal['orderBy'] = 'crdate';
+		}
+		else {
+
+			//	If listing sermon records, check if order was specified in the FE Plugin and load from there. Otherwise load from typoscript, or 'title' as default.
+			$this->internal['orderBy'] = !strcmp( $this->piVars['recordType'], 'tx_wecsermons_sermons' ) ?
+				$this->getConfigVal( $this, 'sermons_order_by', 'slistView', 'orderBy', $lConf[$this->piVars['recordType'].'.'], 'occurrence_date' ) :
+				$lConf[$this->piVars['recordType'].'.']['orderBy'];
+			
+		}
+
+		// Initialize some query parameters, and internal variables
 		$this->internal['maxPages']=t3lib_div::intInRange($lConf['maxPages'],0,1000,5);		// The maximum number of "pages" in the browse-box: "Page 1", "Page 2", etc.
 		$this->internal['dontLinkActivePage']=$lConf['dontLinkActivePage'];
 		$this->internal['showFirstLast']=$lConf['showFirstLast'];
 		$this->internal['pagefloat']=$lConf['pagefloat'];
 		$this->internal['showRange']=$lConf['showRange'];
 		$this->internal['orderByList']=$lConf[$this->piVars['recordType'].'.']['orderByList'];
-		$this->internal['orderBy'] = $lConf['useCreationDate'] ? 'crdate' : $orderBy;
 
 		//	Hardcode descending = 1 for latest view
 		$this->internal['descFlag']='1';
@@ -622,10 +632,6 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		$this->internal['showRange']=$lConf['showRange'];
 
 		$this->internal['orderByList']=$lConf[$this->piVars['recordType'].'.']['orderByList'];
-
-		//	TODO: Find proper way to set this from piVar sort, and check if still used at all.
-#			list($this->internal['orderBy'],$this->internal['descFlag']) = explode(':',$this->piVars['sort']);
-		$this->internal['orderBy'] = $lConf[$this->piVars['recordType'].'.']['orderBy'];
 
 		//	If listing sermon records, check if order was specified in the FE Plugin and load from there. Otherwise load from typoscript, or 'title' as default.
 		if( $this->piVars['recordType'] == 'tx_wecsermons_sermons' )

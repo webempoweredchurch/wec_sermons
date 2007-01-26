@@ -62,13 +62,13 @@ plugin.tx_wecsermons_pi1 {
 	listView.alternatingClass = tx-wecsermons-pi1-list-odd
 
 	# cat=plugin.tx_wecsermons_pi1/typo/20; type=text; label= Header for Topics: The text header added before the list of topics, if related to other records
-	topicsHeader =
+	topicsHeader = Topics:
 
 	# cat=plugin.tx_wecsermons_pi1/typo/30; type=text; label= Header for Season: The text header added before the season, if related to other records
-	seasonHeader =
+	seasonHeader = Seasons:
 
 	# cat=plugin.tx_wecsermons_pi1/typo/40; type=text; label= Header for Series: The text header added before the list of series, if related to other records
-	seriesHeader =
+	seriesHeader = Series:
 
 	# cat=plugin.tx_wecsermons_pi1/typo/50; type=text; label= Header for Series Start Date: The text header added before the start date of a series
 	seriesStartDateHeader =
@@ -77,7 +77,7 @@ plugin.tx_wecsermons_pi1 {
 	seriesEndDateHeader =
 
 	# cat=plugin.tx_wecsermons_pi1/typo/70; type=text; label= Header for Speaker: The text header added before the list of speakers, if related to other records
-	speakersHeader =
+	speakersHeader = Speakers:
 
 #------
 #Links

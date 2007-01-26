@@ -209,12 +209,12 @@ class tx_wecsermons_resourceTypeTca {
 		) {
 
 				// direct preview
-			if (isset($GLOBALS['_POST']['_savedokview_x']) && !$fieldArray['type'] && !$GLOBALS['BE_USER']->workspace)	{
-					// if "savedokview" has been pressed and current article has "type" 0 (= normal news article) and the beUser works in the LIVE workspace open current record in single view
+			if (isset($GLOBALS['_POST']['_savedokview_x']) && !$GLOBALS['BE_USER']->workspace)	{
+					// if "savedokview" has been pressed and the beUser works in the LIVE workspace open current record in single view
 				$pagesTSC = t3lib_BEfunc::getPagesTSconfig($GLOBALS['_POST']['popViewId']); // get page TSconfig
-				if ($pagesTSC['tx_wecsermons.']['singlePid']) {
+				if ($pagesTSC['tx_wecsermons_pi1.']['singlePid']) {
 					$GLOBALS['_POST']['popViewId_addParams'] = ($fieldArray['sys_language_uid']>0?'&L='.$fieldArray['sys_language_uid']:'').'&no_cache=1&tx_wecsermons_pi1%5BrecordType%5D='.$table.'&tx_wecsermons_pi1%5BshowUid%5D='.$id;
-					$GLOBALS['_POST']['popViewId'] = $pagesTSC['tx_wecsermons.']['singlePid'];
+					$GLOBALS['_POST']['popViewId'] = $pagesTSC['tx_wecsermons_pi1.']['singlePid'];
 				}
 
 			}

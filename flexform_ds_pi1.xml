@@ -255,6 +255,7 @@
 					</items>
 					<maxitems>1</maxitems>
 					<size>1</size>
+					<default>occurrence_date</default>
 					<selectedListStyle>width:120px</selectedListStyle>
 					<itemListStyle>width:120px</itemListStyle>
 				</config>
