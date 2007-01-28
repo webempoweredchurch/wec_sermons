@@ -185,10 +185,11 @@ plugin.tx_wecsermons_pi1 {
 				audiofile.setCurrent.listNum = 0
 				audiofile.current = 1
 			}
+			
 			stdWrap.innerWrap = <div class="tx-wecsermons-pi1-mp3">|</div>
 			stdWrap.innerWrap {
 				addParams.title = 1
-				addParams.title.field = description
+				addParams.title.field = type_description
 				addParams.title.stripHtml = 1
 			}
 

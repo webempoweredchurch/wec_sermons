@@ -88,45 +88,27 @@ BACK_LINK - link back to the list view
 <br />
 
 <!-- ###TEMPLATE_LIST_BRIEF### begin -->
+			<table>
 	<!-- ###CONTENT### begin -->
-
-		<ul class="tx-wecsermons-pi1-list-brief" >
 			<!-- ###ITEM### begin -->
-
-			<li class="###ALTERNATING_CLASS###">
-
-				<!--###SERMON_SPEAKERS###-->
-					<p>
-						###SPEAKER_PHOTO###<br/>
-						
-							<!--###SPEAKER_LINK###-->###SPEAKER_FULLNAME### <!--###SPEAKER_LINK###-->
-						
-					</p>
-				<!--###SERMON_SPEAKERS###-->
-
-				<h2><!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###--></h2>
-				<p>###SERMON_OCCURRENCE_DATE###</p>
-
-				<!--###SERMON_SERIES###-->
-						<!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###-->
-				<!--###SERMON_SERIES###-->
-
-				###SERMON_GRAPHIC###
-				###SERMON_DESCRIPTION###
-				###SERMON_SCRIPTURE###
-				
-
-				<!--###SERMON_TOPICS###-->
-					<p>
-						<!--###TOPIC_LINK###-->###TOPIC_TITLE###<!--###TOPIC_LINK###-->
-						###TOPIC_DESCRIPTION###
-					</p>
-				<!--###SERMON_TOPICS###-->
-
-			</li>
+				<tr>
+					<td class="###ALTERNATING_CLASS###">
+						###SERMON_OCCURRENCE_DATE###<br/>
+						<!--###EMBEDDED_MP3### begin-->
+							###RESOURCE_CONTENT###
+						<!--###EMBEDDED_MP3### end-->
+					</td>
+					<td>
+						<p>
+							<!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###--><br/>
+							by <!--###SERMON_SPEAKERS###--><!--###SPEAKER_LINK###-->###SPEAKER_FULLNAME### <!--###SPEAKER_LINK###--><br/><!--###SERMON_SPEAKERS###-->
+							
+							Part of the <!--###SERMON_SERIES###--><!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###--><!--###SERMON_SERIES###--> series.<br/>
+					</td>
+				</tr>
 			<!-- ###ITEM### end -->
-		</ul>
 	<!-- ###CONTENT### end -->
+			</table>
 			###BROWSE_LINKS###
 <!-- ###TEMPLATE_LIST_BRIEF### end -->
 
@@ -137,43 +119,23 @@ BACK_LINK - link back to the list view
 
 <!-- ###TEMPLATE_LATEST_BRIEF### begin -->
 	<!-- ###CONTENT### begin -->
-
-		<ul class="tx-wecsermons-pi1-latest-brief" >
 			<!-- ###ITEM### begin -->
-
-			<li class="###ALTERNATING_CLASS###">
-
-				<!--###SERMON_SPEAKERS###-->
-					<p>
-						###SPEAKER_PHOTO###<br/>
-						
-							<!--###SPEAKER_LINK###-->###SPEAKER_FULLNAME### <!--###SPEAKER_LINK###-->
-						
-					</p>
-				<!--###SERMON_SPEAKERS###-->
-
-				<h2><!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###--></h2>
-				<p>###SERMON_OCCURRENCE_DATE###</p>
-
-				<!--###SERMON_SERIES###-->
-						<!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###-->
-				<!--###SERMON_SERIES###-->
-
-				###SERMON_GRAPHIC###
-				###SERMON_DESCRIPTION###
-				###SERMON_SCRIPTURE###
-				
-
-				<!--###SERMON_TOPICS###-->
-					<p>
-						<!--###TOPIC_LINK###-->###TOPIC_TITLE###<!--###TOPIC_LINK###-->
-						###TOPIC_DESCRIPTION###
-					</p>
-				<!--###SERMON_TOPICS###-->
-
-			</li>
+				<tr>
+					<td class="###ALTERNATING_CLASS###">
+						###SERMON_OCCURRENCE_DATE###<br/>
+						<!--###EMBEDDED_MP3### begin-->
+							###RESOURCE_CONTENT###
+						<!--###EMBEDDED_MP3### end-->
+					</td>
+					<td>
+						<p>
+							<!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###--><br/>
+							by <!--###SERMON_SPEAKERS###--><!--###SPEAKER_LINK###-->###SPEAKER_FULLNAME### <!--###SPEAKER_LINK###--><br/><!--###SERMON_SPEAKERS###-->
+							
+							Part of the <!--###SERMON_SERIES###--><!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###--><!--###SERMON_SERIES###--> series.<br/>
+					</td>
+				</tr>
 			<!-- ###ITEM### end -->
-		</ul>
 	<!-- ###CONTENT### end -->
 			###BROWSE_LINKS###
 <!-- ###TEMPLATE_LATEST_BRIEF### end -->
@@ -187,89 +149,29 @@ BACK_LINK - link back to the list view
 <!-- ###TEMPLATE_SERMON_BRIEF### begin -->
 	<!--###CONTENT###-->
 		<div class="tx-wecsermons-pi1-sermon-brief" >
-			###SERMON_GRAPHIC###
 
 			<h2>###SERMON_TITLE###</h2>
 			<p>###SERMON_OCCURRENCE_DATE###</p>
-			###SERMON_SCRIPTURE###
 	
-			<!--###SERMON_SERIES###-->
-					<!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###-->
-			<!--###SERMON_SERIES###-->
-			
 			<!--###SERMON_SPEAKERS###-->
 				<td>
-					###SPEAKER_PHOTO###<br/>
-					
 						<!--###SPEAKER_LINK###-->###SPEAKER_FULLNAME### <!--###SPEAKER_LINK###-->
-					
 				</td>
 			<!--###SERMON_SPEAKERS###-->
 	
+			###SERMON_SCRIPTURE###
 			###SERMON_DESCRIPTION###
+		</div>		
 			
-	
-			<!--###SERMON_TOPICS###-->
-				<p>
-					<!--###TOPIC_LINK###-->###TOPIC_TITLE###<!--###TOPIC_LINK###-->
-					###TOPIC_DESCRIPTION###
-				</p>
-			<!--###SERMON_TOPICS###-->
-				
-			<div class="tx-wecsermons-pi-resources">
-				<h2>Resources:</h2>
-	
-				<!--###DEFAULT_RESOURCES###-->
-					###RESOURCE_CONTENT###
-				<!--###DEFAULT_RESOURCES###-->
-	
-				<!--###PDF_RESOURCES###-->
-					###RESOURCE_CONTENT###
-				<!--###PDF_RESOURCES###-->
 
-				<!--###EMBEDDED_AVI###-->
-					###RESOURCE_CONTENT###
-				<!--###EMBEDDED_AVI###-->
-		
-				<!--###EMBEDDED_MP3###-->
-					###RESOURCE_CONTENT###
-				<!--###EMBEDDED_MP3###-->
-		
-				<!--###EMBEDDED_MP4###-->
-					###RESOURCE_CONTENT###
-				<!--###EMBEDDED_MP4###-->
-		
-				<!--###EMBEDDED_SWF###-->
-					###RESOURCE_CONTENT###
-				<!--###EMBEDDED_SWF###-->
-		
-				<!--###EMBEDDED_MOV###-->
-					###RESOURCE_CONTENT###
-				<!--###EMBEDDED_MOV###-->
-		
-				<!--###EMBEDDED_WMA###-->
-					###RESOURCE_CONTENT###
-				<!--###EMBEDDED_WMA###-->
-		
-				<!--###EMBEDDED_WMV###-->
-					###RESOURCE_CONTENT###
-				<!--###EMBEDDED_WMV###-->
-		
-				<!--###EMBEDDED_REALMEDIA###-->
-					###RESOURCE_CONTENT###
-				<!--###EMBEDDED_REALMEDIA###-->
-				
-				<!--###DOWNLOAD_FILE###-->
-					###RESOURCE_CONTENT###
-				<!--###DOWNLOAD_FILE###-->
-				
-		 		<!--###POLL_RESOURCES###-->
-			 		<!--###RESOURCE_LINK###-->Take the Poll ...<!--###RESOURCE_LINK###-->
-		 		<!--###POLL_RESOURCES###-->
+		<div class="tx-wecsermons-pi-resources">
+			<h2>Sermon Multimedia:</h2>
 	
-			</div>
-		
-	</div>		
+			<!--###EMBEDDED_MP3###-->
+				###RESOURCE_CONTENT###
+			<!--###EMBEDDED_MP3###-->
+		</div>
+	
 	<!--###CONTENT###-->
 	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_SERMON_BRIEF### end -->
@@ -310,12 +212,12 @@ BACK_LINK - link back to the list view
 <br />
 
 <!-- ###TEMPLATE_SPEAKER_BRIEF### begin -->
-	<div class="tx-wecsermons-speaker-singleView">
+	<div class="tx-wecsermons-pi1-speaker-brief">
 	<!-- ###CONTENT### begin -->
-						###SPEAKER_PHOTO###
-						###SPEAKER_EMAIL###
-						###SPEAKER_LASTNAME### ###SPEAKER_FIRSTNAME###
+						###SPEAKER_FULLNAME###<br/>
+						###SPEAKER_PHOTO###<br/>
 						###SPEAKER_URL###
+						###SPEAKER_EMAIL###
 	<!-- ###CONTENT### end -->
 	</div>
 	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
@@ -573,44 +475,42 @@ BACK_LINK - link back to the list view
 
 <!-- ###TEMPLATE_LIST_VERBOSE### begin -->
 	<!-- ###CONTENT### begin -->
-		<!-- ###ITEM### begin -->
+		<ul class="tx-wecsermons-pi1-list-brief" >
+			<!-- ###ITEM### begin -->
 
-			<div style="border-bottom: 1px dotted black;" class="###ALTERNATING_CLASS###">
-				<!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###-->
-				###SERMON_OCCURRENCE_DATE###
-				###SERMON_DESCRIPTION###
-				###SERMON_SCRIPTURE###
-				###SERMON_GRAPHIC###
-
-				<!--###PDF_RESOURCES###-->
-					###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->###RESOURCE_FILE###<!--###RESOURCE_LINK###-->
-				<!--###PDF_RESOURCES###-->
-
-				<!--###EMBEDDED_MP3###-->
-					<p>MP3: ###RESOURCE_CONTENT###</p>
-				<!--###EMBEDDED_MP3###-->
+			<li class="###ALTERNATING_CLASS###">
 
 				<!--###SERMON_SPEAKERS###-->
-						###SPEAKER_PHOTO###
-						<div class="tx-wecsermons-speakers-caption">
-						<!--###SPEAKER_LINK###-->###SPEAKER_LASTNAME###, ###SPEAKER_FIRSTNAME### <!--###SPEAKER_LINK###-->
-						</div>
+					<p>
+						###SPEAKER_PHOTO###<br/>
+						
+							<!--###SPEAKER_LINK###-->###SPEAKER_FULLNAME### <!--###SPEAKER_LINK###-->
+						
+					</p>
 				<!--###SERMON_SPEAKERS###-->
 
-				<!--###SERMON_TOPICS###-->
-						###TOPIC_TITLE###
-						###TOPIC_DESCRIPTION###
-				<!--###SERMON_TOPICS###-->
+				<h2><!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###--></h2>
+				<p>###SERMON_OCCURRENCE_DATE###</p>
 
 				<!--###SERMON_SERIES###-->
 						<!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###-->
-						###SERIES_STARTDATE###
-						###SERIES_ENDDATE###
-						<!--###SERIES_SEASON###-->###SEASON_TITLE###<!--###SERIES_SEASON###-->
 				<!--###SERMON_SERIES###-->
+
+				###SERMON_GRAPHIC###
+				###SERMON_DESCRIPTION###
+				###SERMON_SCRIPTURE###
 				
-			</div>
-		<!-- ###ITEM### end -->
+
+				<!--###SERMON_TOPICS###-->
+					<p>
+						<!--###TOPIC_LINK###-->###TOPIC_TITLE###<!--###TOPIC_LINK###-->
+						###TOPIC_DESCRIPTION###
+					</p>
+				<!--###SERMON_TOPICS###-->
+
+			</li>
+			<!-- ###ITEM### end -->
+		</ul>
 	<!-- ###CONTENT### end -->
 			###BROWSE_LINKS###
 <!-- ###TEMPLATE_LIST_VERBOSE### end -->
@@ -621,45 +521,42 @@ BACK_LINK - link back to the list view
 
 <!-- ###TEMPLATE_LATEST_VERBOSE### begin -->
 	<!-- ###CONTENT### begin -->
-		<!-- ###ITEM### begin -->
+		<ul class="tx-wecsermons-pi1-latest-brief" >
+			<!-- ###ITEM### begin -->
 
-			<div style="border-bottom: 1px dotted black;" class="###ALTERNATING_CLASS###">
-				<!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###-->
-				###SERMON_OCCURRENCE_DATE###
-				###SERMON_DESCRIPTION###
-				###SERMON_SCRIPTURE###
-				###SERMON_GRAPHIC###
-
-				<!--###PDF_RESOURCES###-->
-					###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->###RESOURCE_FILE###<!--###RESOURCE_LINK###-->
-				<!--###PDF_RESOURCES###-->
-
-				<!--###EMBEDDED_MP3###-->
-					<p>MP3: <!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--></p>
-				<!--###EMBEDDED_MP3###-->
+			<li class="###ALTERNATING_CLASS###">
 
 				<!--###SERMON_SPEAKERS###-->
-						###SPEAKER_PHOTO###
-						<div class="tx-wecsermons-speakers-caption">
-						<!--###SPEAKER_LINK###-->###SPEAKER_LASTNAME###, ###SPEAKER_FIRSTNAME### <!--###SPEAKER_LINK###-->
-						</div>
+					<p>
+						###SPEAKER_PHOTO###<br/>
+						
+							<!--###SPEAKER_LINK###-->###SPEAKER_FULLNAME### <!--###SPEAKER_LINK###-->
+						
+					</p>
 				<!--###SERMON_SPEAKERS###-->
 
-
-				<!--###SERMON_TOPICS###-->
-						###TOPIC_TITLE###
-						###TOPIC_DESCRIPTION###
-				<!--###SERMON_TOPICS###-->
+				<h2><!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###--></h2>
+				<p>###SERMON_OCCURRENCE_DATE###</p>
 
 				<!--###SERMON_SERIES###-->
 						<!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###-->
-						###SERIES_STARTDATE###
-						###SERIES_ENDDATE###
-						<!--###SERIES_SEASON###-->###SEASON_TITLE###<!--###SERIES_SEASON###-->
 				<!--###SERMON_SERIES###-->
 
-			</div>
-		<!-- ###ITEM### end -->
+				###SERMON_GRAPHIC###
+				###SERMON_DESCRIPTION###
+				###SERMON_SCRIPTURE###
+				
+
+				<!--###SERMON_TOPICS###-->
+					<p>
+						<!--###TOPIC_LINK###-->###TOPIC_TITLE###<!--###TOPIC_LINK###-->
+						###TOPIC_DESCRIPTION###
+					</p>
+				<!--###SERMON_TOPICS###-->
+
+			</li>
+			<!-- ###ITEM### end -->
+		</ul>
 	<!-- ###CONTENT### end -->
 			###BROWSE_LINKS###
 <!-- ###TEMPLATE_LATEST_VERBOSE### end -->
@@ -700,83 +597,90 @@ BACK_LINK - link back to the list view
 
 <!-- ###TEMPLATE_SERMON_VERBOSE### begin -->
 	<!--###CONTENT###-->
+		<div class="tx-wecsermons-pi1-sermon-brief" >
+			###SERMON_GRAPHIC###
 
-		<!--###EMBEDDED_AVI###-->
-			###RESOURCE_CONTENT###
-		<!--###EMBEDDED_AVI###-->
+			<h2>###SERMON_TITLE###</h2>
+			<p>###SERMON_OCCURRENCE_DATE###</p>
+			###SERMON_SCRIPTURE###
+	
+			<!--###SERMON_SERIES###-->
+					<!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###-->
+			<!--###SERMON_SERIES###-->
+			
+			<!--###SERMON_SPEAKERS###-->
+				<td>
+					###SPEAKER_PHOTO###<br/>
+					
+						<!--###SPEAKER_LINK###-->###SPEAKER_FULLNAME### <!--###SPEAKER_LINK###-->
+					
+				</td>
+			<!--###SERMON_SPEAKERS###-->
+	
+			###SERMON_DESCRIPTION###
+			
+	
+			<!--###SERMON_TOPICS###-->
+				<p>
+					<!--###TOPIC_LINK###-->###TOPIC_TITLE###<!--###TOPIC_LINK###-->
+					###TOPIC_DESCRIPTION###
+				</p>
+			<!--###SERMON_TOPICS###-->
+				
+			<div class="tx-wecsermons-pi-resources">
+				<h2>Resources:</h2>
+	
+				<!--###DEFAULT_RESOURCES###-->
+					###RESOURCE_CONTENT###
+				<!--###DEFAULT_RESOURCES###-->
+	
+				<!--###PDF_RESOURCES###-->
+					###RESOURCE_CONTENT###
+				<!--###PDF_RESOURCES###-->
 
-		<!--###EMBEDDED_MP3###-->
-			###RESOURCE_CONTENT###
-		<!--###EMBEDDED_MP3###-->
-
-		<!--###EMBEDDED_MP4###-->
-			###RESOURCE_CONTENT###
-		<!--###EMBEDDED_MP4###-->
-
-		<!--###EMBEDDED_SWF###-->
-			###RESOURCE_CONTENT###
-		<!--###EMBEDDED_SWF###-->
-
-		<!--###EMBEDDED_MOV###-->
-			###RESOURCE_CONTENT###
-		<!--###EMBEDDED_MOV###-->
-
-		<!--###EMBEDDED_WMA###-->
-			###RESOURCE_CONTENT###
-		<!--###EMBEDDED_WMA###-->
-
-		<!--###EMBEDDED_WMV###-->
-			###RESOURCE_CONTENT###
-		<!--###EMBEDDED_WMV###-->
-
-		<!--###EMBEDDED_REALMEDIA###-->
-			###RESOURCE_CONTENT###
-		<!--###EMBEDDED_REALMEDIA###-->
+				<!--###EMBEDDED_AVI###-->
+					###RESOURCE_CONTENT###
+				<!--###EMBEDDED_AVI###-->
 		
-		<!--###DOWNLOAD_FILE###-->
-			###RESOURCE_CONTENT###
-		<!--###DOWNLOAD_FILE###-->
+				<!--###EMBEDDED_MP3###-->
+					###RESOURCE_CONTENT###
+				<!--###EMBEDDED_MP3###-->
 		
- 		<!--###POLL_RESOURCES###-->
-	 		<!--###RESOURCE_LINK###-->Test Link<!--###RESOURCE_LINK###-->
- 		<!--###POLL_RESOURCES###-->
+				<!--###EMBEDDED_MP4###-->
+					###RESOURCE_CONTENT###
+				<!--###EMBEDDED_MP4###-->
 		
-
-		###SERMON_TITLE###
-		###SERMON_OCCURRENCE_DATE###
-		###SERMON_DESCRIPTION###
-		###SERMON_SCRIPTURE###
-		###SERMON_GRAPHIC###
-
-		<p> Sermon Series:
-		<!--###SERMON_SERIES###-->
-			<!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###-->
-		<!--###SERMON_SERIES###-->
-		</p>
-
-		<!--###SERMON_SPEAKERS###-->
-			###SPEAKER_LASTNAME### ###SPEAKER_FIRSTNAME###<br/>
-		<!--###SERMON_SPEAKERS###-->
-
-		<!--###DEFAULT_RESOURCES###-->
-			Default:
-			Title: ###RESOURCE_TITLE###<br/>
-			File: ###RESOURCE_FILE###<br/>
-			Graphic: ###RESOURCE_GRAPHIC###<br/>
-
-			###RESOURCE_CONTENT###
-		<!--###DEFAULT_RESOURCES###-->
-
-		<p>Sermon Topics:
-		<!--###SERMON_TOPICS###-->
-				<!--###TOPIC_LINK###-->###TOPIC_TITLE###<!--###TOPIC_LINK###--><br/>
-		<!--###SERMON_TOPICS###-->
-		</p>
-
-		<!--###NEWS_RESOURCES###-->
-				###RESOURCE_CONTENT###
-		<!--###NEWS_RESOURCES###-->
-
+				<!--###EMBEDDED_SWF###-->
+					###RESOURCE_CONTENT###
+				<!--###EMBEDDED_SWF###-->
+		
+				<!--###EMBEDDED_MOV###-->
+					###RESOURCE_CONTENT###
+				<!--###EMBEDDED_MOV###-->
+		
+				<!--###EMBEDDED_WMA###-->
+					###RESOURCE_CONTENT###
+				<!--###EMBEDDED_WMA###-->
+		
+				<!--###EMBEDDED_WMV###-->
+					###RESOURCE_CONTENT###
+				<!--###EMBEDDED_WMV###-->
+		
+				<!--###EMBEDDED_REALMEDIA###-->
+					###RESOURCE_CONTENT###
+				<!--###EMBEDDED_REALMEDIA###-->
+				
+				<!--###DOWNLOAD_FILE###-->
+					###RESOURCE_CONTENT###
+				<!--###DOWNLOAD_FILE###-->
+				
+		 		<!--###POLL_RESOURCES###-->
+			 		<!--###RESOURCE_LINK###-->Take the Poll ...<!--###RESOURCE_LINK###-->
+		 		<!--###POLL_RESOURCES###-->
+	
+			</div>
+		
+	</div>		
 
 	<!--###CONTENT###-->
 	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
