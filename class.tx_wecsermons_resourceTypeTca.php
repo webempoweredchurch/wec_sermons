@@ -164,7 +164,7 @@ class tx_wecsermons_resourceTypeTca {
 	 		switch( $field ) {
 
 	 			case 'description':
-	 				$processedFields .= ' description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts];3-3-3';
+	 				$processedFields .= ' description;;;richtext;3-3-3';
 	 				break;
 	 				
 	 			case 'itunes_metadata':
