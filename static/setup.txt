@@ -849,7 +849,6 @@ plugin.tx_wecsermons_pi1 {
 
 				wrap (
 					<div class="tx-wecsermons-pi1-list-speakers">
-						<h2>Speakers:</h2>
 						|
 					</div>
 				)
@@ -1220,10 +1219,6 @@ plugin.tx_wecsermons_pi1 {
 		# Allowed data columns to search in
 		searchFieldList = title,description,scripture,keywords
 
-		orderByList = occurrence_date,title
-		orderBy = occurrence_date
-		descFlag = 0
-
 		#	List of table names we can search into from the search box (Future use)
 		#searchTables = tx_wecsermons_sermons,tx_wecsermons_series,tx_wecsermons_speakers,tx_wecsermons_seasons,tx_wecsermons_resources,tx_wecsermons_topics
 
@@ -1231,20 +1226,6 @@ plugin.tx_wecsermons_pi1 {
 
 			tx_wecsermons_sermons.searchFieldList = title,description,scripture,keywords
 
-		}
-
-		# Error generated if piVars['sword'] is not set
-		searchError = searchView() was called, but no sword value was found!
-		searchError.wrap = <h1>|</h1>
-
-		searchBoxOptions  = TEXT
-		searchBoxOptions {
-				wrap =
-		}
-
-		searchButtonName = TEXT
-		searchButtonName {
-			typolink =
 		}
 	}
 

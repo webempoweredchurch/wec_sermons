@@ -1957,7 +1957,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		//	If template loaded from plugin, prepend upload path, otherwise use templateFile from TypoScript configuration
 		$templateFile = $templateFile ? 'uploads/tx_wecsermons/'.$templateFile : $this->conf['templateFile'];
 
-		//	Store the name of the template file, for retrieval later
+		//	Store the name of the template file, for retrieval later if needed
 		$this->internal['templateFile'] = $templateFile;
 
 		return $templateFile;
