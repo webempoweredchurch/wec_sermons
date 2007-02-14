@@ -88,27 +88,27 @@ BACK_LINK - link back to the list view
 <br />
 
 <!-- ###TEMPLATE_LIST_BRIEF### begin -->
-			<table>
+		<ul class="tx-wecsermons-pi1-list-brief" >
 	<!-- ###CONTENT### begin -->
 			<!-- ###ITEM### begin -->
-				<tr>
-					<td class="###ALTERNATING_CLASS###">
-						###SERMON_OCCURRENCE_DATE###<br/>
-						<!--###EMBEDDED_MP3### begin-->
-							###RESOURCE_CONTENT###
-						<!--###EMBEDDED_MP3### end-->
-					</td>
-					<td>
-						<p>
-							<!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###--><br/>
-							by <!--###SERMON_SPEAKERS###--><!--###SPEAKER_LINK###-->###SPEAKER_FULLNAME### <!--###SPEAKER_LINK###--><br/><!--###SERMON_SPEAKERS###-->
-							
-							Part of the <!--###SERMON_SERIES###--><!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###--><!--###SERMON_SERIES###--> series.<br/>
-					</td>
-				</tr>
+
+			<li class="###ALTERNATING_CLASS###">
+
+				<h2><!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###--></h2>
+				<p>###SERMON_OCCURRENCE_DATE###</p>
+
+				<!--###SERMON_SERIES###-->
+						<!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###-->
+				<!--###SERMON_SERIES###-->
+
+				###SERMON_GRAPHIC###
+				###SERMON_DESCRIPTION###
+				###SERMON_SCRIPTURE###
+
+			</li>
 			<!-- ###ITEM### end -->
 	<!-- ###CONTENT### end -->
-			</table>
+		</ul>
 			###BROWSE_LINKS###
 <!-- ###TEMPLATE_LIST_BRIEF### end -->
 
@@ -118,25 +118,27 @@ BACK_LINK - link back to the list view
 <br />
 
 <!-- ###TEMPLATE_LATEST_BRIEF### begin -->
+		<ul class="tx-wecsermons-pi1-list-brief" >
 	<!-- ###CONTENT### begin -->
 			<!-- ###ITEM### begin -->
-				<tr>
-					<td class="###ALTERNATING_CLASS###">
-						###SERMON_OCCURRENCE_DATE###<br/>
-						<!--###EMBEDDED_MP3### begin-->
-							###RESOURCE_CONTENT###
-						<!--###EMBEDDED_MP3### end-->
-					</td>
-					<td>
-						<p>
-							<!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###--><br/>
-							by <!--###SERMON_SPEAKERS###--><!--###SPEAKER_LINK###-->###SPEAKER_FULLNAME### <!--###SPEAKER_LINK###--><br/><!--###SERMON_SPEAKERS###-->
-							
-							Part of the <!--###SERMON_SERIES###--><!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###--><!--###SERMON_SERIES###--> series.<br/>
-					</td>
-				</tr>
+
+			<li class="###ALTERNATING_CLASS###">
+
+				<h2><!--###SERMON_LINK###-->###SERMON_TITLE###<!--###SERMON_LINK###--></h2>
+				<p>###SERMON_OCCURRENCE_DATE###</p>
+
+				<!--###SERMON_SERIES###-->
+						<!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###-->
+				<!--###SERMON_SERIES###-->
+
+				###SERMON_GRAPHIC###
+				###SERMON_DESCRIPTION###
+				###SERMON_SCRIPTURE###
+
+			</li>
 			<!-- ###ITEM### end -->
 	<!-- ###CONTENT### end -->
+		</ul>
 			###BROWSE_LINKS###
 <!-- ###TEMPLATE_LATEST_BRIEF### end -->
 
@@ -474,8 +476,8 @@ BACK_LINK - link back to the list view
 
 
 <!-- ###TEMPLATE_LIST_VERBOSE### begin -->
+		<ul class="tx-wecsermons-pi1-list-verbose" >
 	<!-- ###CONTENT### begin -->
-		<ul class="tx-wecsermons-pi1-list-brief" >
 			<!-- ###ITEM### begin -->
 
 			<li class="###ALTERNATING_CLASS###">
@@ -502,16 +504,28 @@ BACK_LINK - link back to the list view
 				
 
 				<!--###SERMON_TOPICS###-->
-					<p>
-						<!--###TOPIC_LINK###-->###TOPIC_TITLE###<!--###TOPIC_LINK###-->
-						###TOPIC_DESCRIPTION###
-					</p>
+				<dl>
+					<dt><!--###TOPIC_LINK###-->###TOPIC_TITLE###<!--###TOPIC_LINK###--></dt>
+					<dd>###TOPIC_DESCRIPTION###</dd>
+				</dl>
 				<!--###SERMON_TOPICS###-->
+				
+				<div class="tx-wecsermons-pi1-list-verbose-resources">
+					
+				<!--###PDF_RESOURCES###-->
+					###RESOURCE_CONTENT###
+				<!--###PDF_RESOURCES###-->
+
+				<!--###EMBEDDED_MP3###-->
+					###RESOURCE_CONTENT###
+				<!--###EMBEDDED_MP3###-->
+
+				</div>
 
 			</li>
 			<!-- ###ITEM### end -->
-		</ul>
 	<!-- ###CONTENT### end -->
+		</ul>
 			###BROWSE_LINKS###
 <!-- ###TEMPLATE_LIST_VERBOSE### end -->
 
@@ -520,8 +534,8 @@ BACK_LINK - link back to the list view
 <br />
 
 <!-- ###TEMPLATE_LATEST_VERBOSE### begin -->
+		<ul class="tx-wecsermons-pi1-list-verbose" >
 	<!-- ###CONTENT### begin -->
-		<ul class="tx-wecsermons-pi1-latest-brief" >
 			<!-- ###ITEM### begin -->
 
 			<li class="###ALTERNATING_CLASS###">
@@ -548,16 +562,28 @@ BACK_LINK - link back to the list view
 				
 
 				<!--###SERMON_TOPICS###-->
-					<p>
-						<!--###TOPIC_LINK###-->###TOPIC_TITLE###<!--###TOPIC_LINK###-->
-						###TOPIC_DESCRIPTION###
-					</p>
+				<dl>
+					<dt><!--###TOPIC_LINK###-->###TOPIC_TITLE###<!--###TOPIC_LINK###--></dt>
+					<dd>###TOPIC_DESCRIPTION###</dd>
+				</dl>
 				<!--###SERMON_TOPICS###-->
+				
+				<div class="tx-wecsermons-pi1-list-verbose-resources">
+					
+				<!--###PDF_RESOURCES###-->
+					###RESOURCE_CONTENT###
+				<!--###PDF_RESOURCES###-->
+
+				<!--###EMBEDDED_MP3###-->
+					###RESOURCE_CONTENT###
+				<!--###EMBEDDED_MP3###-->
+
+				</div>
 
 			</li>
 			<!-- ###ITEM### end -->
-		</ul>
 	<!-- ###CONTENT### end -->
+		</ul>
 			###BROWSE_LINKS###
 <!-- ###TEMPLATE_LATEST_VERBOSE### end -->
 

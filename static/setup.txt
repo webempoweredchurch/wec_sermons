@@ -826,9 +826,9 @@ plugin.tx_wecsermons_pi1 {
 				innerWrap.required = 1
 
 				wrap (
-					<dl class="tx-wecsermons-pi1-list-topics">
+					<div class="tx-wecsermons-pi1-list-topics">
 						|
-					</dl>
+					</div>
 				)
 			}
 
@@ -1140,7 +1140,7 @@ plugin.tx_wecsermons_pi1 {
 
 			title = TEXT
 			title {
-				wrap = <dt>|</dt>
+				wrap = |
 				field = title
 			}
 
@@ -1150,7 +1150,7 @@ plugin.tx_wecsermons_pi1 {
 				field = description
 				stripHtml = 1
 				trim = 1
-				wrap = <dd>|</dd>
+				wrap = |
 			}
 
 		}

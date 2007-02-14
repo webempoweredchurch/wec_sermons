@@ -1060,6 +1060,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 							//	Recursive call to $this->pi_list_row() to populate each topic marker
 							$topicContent .= $this->pi_list_row( $lConf, $topicMarkerArray, $topicTemplate, $this->internal['currentRow'] );
+						
 							$count++;
 						}
 
