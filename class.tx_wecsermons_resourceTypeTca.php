@@ -36,14 +36,15 @@
  *
  *
  *
- *   50: class tx_wecsermons_resourceTypeTca
- *   60:     function getMainFields_preProcess($table,$row,&$pObj)
- *  117:     function resourceType_items( &$params, &$pObj )
- *  153:     function processAvailableFields( $availFields )
- *  185:     function processDatamap_preProcessIncomingFieldArray()
- *  198:     function processDatamap_preProcessFieldArray(&$fieldArray, $table, $id, &$pObj)
+ *   51: class tx_wecsermons_resourceTypeTca
+ *   61:     function getMainFields_preProcess($table,$row,&$pObj)
+ *  122:     function resourceType_items( &$params, &$pObj )
+ *  158:     function processAvailableFields( $availFields )
+ *  193:     function processDatamap_preProcessIncomingFieldArray()
+ *  206:     function processDatamap_preProcessFieldArray(&$fieldArray, $table, $id, &$pObj)
+ *  226:     function processDatamap_postProcessFieldArray($status, $table, $id, $fieldArray, $pObj)
  *
- * TOTAL FUNCTIONS: 5
+ * TOTAL FUNCTIONS: 6
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -166,7 +167,7 @@ class tx_wecsermons_resourceTypeTca {
 	 			case 'description':
 	 				$processedFields .= ' description;;;richtext;3-3-3';
 	 				break;
-	 				
+
 	 			case 'itunes_metadata':
 	 				$processedFields .= ' subtitle;;;;4-4-4, summary,';
 	 				break;
@@ -223,11 +224,11 @@ class tx_wecsermons_resourceTypeTca {
 
 /*
 	function processDatamap_postProcessFieldArray($status, $table, $id, $fieldArray, $pObj) {
-		
+
 		if( !strcmp( $table, 'tx_wecsermons_resource_types' ) && !strcmp( $status, 'update' ) && $fieldArray['typoscript_object_name'] ) {
-			
-			
-			
+
+
+
 debug( $status,1);
 debug( $table,1);
 debug( $id,1);
@@ -235,7 +236,7 @@ debug( $fieldArray,1);
 
 		}
 	}
-*/	
+*/
 
 }
 

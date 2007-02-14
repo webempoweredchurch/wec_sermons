@@ -33,35 +33,35 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
  *   78: class tx_wecsermons_pi1 extends tslib_pibase
  *   91:     function init($conf)
  *  112:     function main($content,$conf)
- *  223:     function xmlView ($content, $lConf)
- *  311:     function singleView($content,$lConf)
- *  439:     function searchView($content,$lConf)
- *  454:     function pi_list_searchbox($lConf)
- *  502:     function latestView($content,$lConf)
- *  566:     function listView($content,$lConf)
- *  664:     function pi_list_makelist($lConf, $template)
- *  862:     function pi_list_row($lConf, $markerArray = array(), $rowTemplate, $row ='', $c = 2)
- * 1548:     function getMarkerArray( $tableName = '' )
- * 1659:     function formatStr( $str )
- * 1673:     function getTemplateKey($tableName)
- * 1716:     function getUrlToList ( $absolute )
- * 1733:     function getUrlToSingle ( $absolute, $tableName, $uid )
- * 1752:     function getFeAdminList( $tableName = '' )
- * 1772:     function getNamedTemplateContent($keyName = 'sermon', $view = 'single')
- * 1826:     function getNamedSubpart( $subpartName, $content )
- * 1843:     function getMarkerName( $markerName )
- * 1856:     function loadTemplate( $view = 'LIST')
- * 1882:     function getTemplateFile()
- * 1909:     function getGroupResult($groupTable, $detailTable, $foreignColumn, $lConf )
- * 1949:     function getResources( $sermonUid = '', $resourceUid = '')
- * 2004:     function emptyResourceSubparts( &$subpartArray )
- * 2029:     function throwError( $type, $message, $detail = '' )
- * 2053:     function getTutorial ( $tutorial )
- * 2130:     function uniqueCsv()
- * 2145:     function unique_array()
- * 2163:     function get_foreign_column( $currentTable, $relatedTable )
- * 2189:     function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default = '' )
- * 2208:     function splitTableAndUID($record)
+ *  222:     function xmlView ($content, $lConf)
+ *  334:     function singleView($content,$lConf)
+ *  474:     function searchView($content,$lConf)
+ *  489:     function pi_list_searchbox($lConf)
+ *  537:     function latestView($content,$lConf)
+ *  611:     function listView($content,$lConf)
+ *  705:     function pi_list_makelist($lConf, $template)
+ *  903:     function pi_list_row($lConf, $markerArray = array(), $rowTemplate, $row ='', $c = 2)
+ * 1622:     function getMarkerArray( $tableName = '' )
+ * 1733:     function formatStr( $str )
+ * 1747:     function getTemplateKey($tableName)
+ * 1790:     function getUrlToList ( $absolute )
+ * 1808:     function getUrlToSingle ( $absolute, $tableName, $uid, $sermonUid = '' )
+ * 1836:     function getFeAdminList( $tableName = '' )
+ * 1856:     function getNamedTemplateContent($keyName = 'sermon', $view = 'single')
+ * 1898:     function getNamedSubpart( $subpartName, $content )
+ * 1915:     function getMarkerName( $markerName )
+ * 1928:     function loadTemplate( $view = 'LIST')
+ * 1954:     function getTemplateFile()
+ * 1981:     function getGroupResult($groupTable, $detailTable, $foreignColumn, $lConf )
+ * 2021:     function getResources( $sermonUid = '', $resourceUid = '')
+ * 2084:     function emptyResourceSubparts( &$subpartArray )
+ * 2109:     function throwError( $type, $message, $detail = '' )
+ * 2133:     function getTutorial ( $tutorial )
+ * 2210:     function uniqueCsv()
+ * 2225:     function unique_array()
+ * 2243:     function get_foreign_column( $currentTable, $relatedTable )
+ * 2269:     function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default = '' )
+ * 2288:     function splitTableAndUID($record)
  *
  * TOTAL FUNCTIONS: 31
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -242,9 +242,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 		//	Iterate over the matching sermons.
 		//	Retrieve related resource information and update the data row.
-		
+
 		//  !! Because only one enclosure tag is allowed per item, per RSS 2.0 spec, we process duplicates and only use the last resource
-		//	that is referenced. 
+		//	that is referenced.
 		while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) ) {
 
 			//	Retreive the array of related resources to this sermon record
@@ -270,11 +270,11 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					$row['mime_type'] = $resource['mime_type'];
 					$row['summary'] = $resource['summary'];
 					$row['subtitle'] = $resource['subtitle'];
-					
+
 					//	Calculate the approximate duration of the file, based on specifed bitrate
 					$duration = 0;
 					$sec = 0;
-							
+
 					if( t3lib_div::testInt($this->conf['bitrate']) ) {
 						$duration = (float) (($fileInfo['size'] * 8) / 1024) / $this->conf['bitrate'];
 						$sec = $duration % 60;
@@ -289,11 +289,11 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						$row['item_link'] = $this->getUrlToSingle( 1, 'tx_wecsermons_resources', $resource['uid'], $row['uid'] );
 					else
 						$row['item_link'] = $this->getUrlToSingle( 1, $tableToList, $row['uid'] );
-					
+
 				}
 
 			}
-			
+
 			//	If result row has speakers related to it, retrieve the fullname of the first speaker and add to result row as 'author'
 			if( $row['speakers_uid'] ) {
 
@@ -314,9 +314,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			if( ($lConf['enclosureType'] && $row['item_link']) || !$lConf['enclosureType'] ) {
 				$sermons[] = $row;	// enclosureType not specified, so we always add to the array
 			}
-				
+
 		}
-		
+
 		//	Call wecapi_list to retrieve the front-end content of this row of records.
 		 return tx_wecapi_list::getContent( $this, $sermons, $tableToList );
 
@@ -336,7 +336,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 		//	Set the current table internal variable from recordType querystring value
 		$this->internal['currentTable'] = htmlspecialchars( $this->piVars['recordType'] );
-		
+
 		// Check if search words were posted back to this page. If so, then error as pidSearchView needed to be set.
 		if( $this->piVars['sword'] ) {
 
@@ -345,8 +345,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				'A search query was directed to this page which is configured with the SINGLE view.',
 				'Please configure the constant "pidSearchView" from the Constant Editor'
 			);
-			
-			
+
+
 		}
 
 		//	Check if table is specified and in allowedTables
@@ -546,7 +546,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		//	Intialize query params if not set
 		if (!isset($this->piVars['pointer']))	$this->piVars['pointer']=0;
 		if( !isset( $this->piVars['recordType'] ) ) $this->piVars['recordType'] = $this->getConfigVal( $this, 'detail_table', 'slistView', 'detailTable', $this->conf, 'tx_wecsermons_sermons' );
-		
+
 
 		if( $lConf['useCreationDate'] ) {
 			$this->internal['orderBy'] = 'crdate';
@@ -557,7 +557,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$this->internal['orderBy'] = !strcmp( $this->piVars['recordType'], 'tx_wecsermons_sermons' ) ?
 				$this->getConfigVal( $this, 'sermons_order_by', 'slistView', 'orderBy', $lConf[$this->piVars['recordType'].'.'], 'occurrence_date' ) :
 				$lConf[$this->piVars['recordType'].'.']['orderBy'];
-			
+
 		}
 
 		// Initialize some query parameters, and internal variables
@@ -863,7 +863,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			//	If start or end date was set, then add this to the query WHERE clause.
 			$startDate = $this->getConfigVal( $this, 'startDate', 'slistView', 'startDate', $lConf );
 			$endDate = $this->getConfigVal( $this, 'endDate', 'slistView', 'endDate', $lConf );
-			
+
 			$where = '';
 			$where .= $startDate ? ' AND occurrence_date >= ' .  strtotime($startDate) : '';	//	$GLOBALS['TYPO3_DB']->fullQuoteStr( $startDate, $tableToList ) : '';
 			$where .= $endDate ? ' AND occurrence_date <= ' .  strtotime($endDate) : '';
@@ -1060,7 +1060,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 							//	Recursive call to $this->pi_list_row() to populate each topic marker
 							$topicContent .= $this->pi_list_row( $lConf, $topicMarkerArray, $topicTemplate, $this->internal['currentRow'] );
-						
+
 							$count++;
 						}
 
@@ -1107,12 +1107,12 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 							$resourceTemplate = $this->cObj->getSubpart( $rowTemplate, $marker );
 
 							if( $resourceTemplate )
-								//	Aggregate rendered row into subpart. This allows multiple resources of the same type to all be output, 
+								//	Aggregate rendered row into subpart. This allows multiple resources of the same type to all be output,
 								//	rather than the last one processed.
 								$subpartArray[$marker] .= $this->pi_list_row( $lConf, $resourceMarkerArray, $resourceTemplate, $this->internal['currentRow'] );
 
 						}
-						
+
 					}
 
 				break;
@@ -1182,7 +1182,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						t3lib_div::_GETset( t3lib_div::array_merge( $_GET, array( $queryString[0] => array( $queryString[1] => $queryStringVal) ) ) );
 
 					}
-					
+
 					$markerArray[$key] = $this->local_cObj->cObjGetSingle( $this->conf['resource_types'], $this->conf['resource_types.'] );
 
 				break;
@@ -1201,26 +1201,26 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 					}
 					else {	//	Render a link to single view
-						
-						//	If this resource is a plugin/extension, 
+
+						//	If this resource is a plugin/extension,
 						//	and a record to render is specified,
 						//	and the rendering page is specified, then render the link to the single view of that record
 						if( $row['type_type'] > 0 && $row['rendered_record'] && $row['rendering_page'] ) {
-							
+
 							//	Parse the table_uid string from record into the value for the querystring_param
 							list(,$queryStringVal) = array_values( $this->splitTableAndUID($row['rendered_record'] ) );
-	
+
 							//	Break apart our querystring_param from it's stored form of 'plugin[param]'
 							$queryString = split( "\[|\]", $this->internal['currentRow']['querystring_param'] );
-	
-							$wrappedSubpartArray[$key] = explode( 
-								'|', 
-								$this->pi_linkToPage( 
-									'|', 
-									$row['rendering_page'], 
-									'',  
-									array( $queryString[0] => array( $queryString[1] => $queryStringVal) ) 
-								 ) 
+
+							$wrappedSubpartArray[$key] = explode(
+								'|',
+								$this->pi_linkToPage(
+									'|',
+									$row['rendering_page'],
+									'',
+									array( $queryString[0] => array( $queryString[1] => $queryStringVal) )
+								 )
 							);
 
 						}
@@ -1802,19 +1802,20 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 * @param	boolean		$absolute:	Boolean value indicating whether to return an absolute path.
 	 * @param	string		$tableName: The table name to retrieve the record from. Should be the full table name, prepended with 'tx_wecsermons_'
 	 * @param	int		$uid: An integer value that is the UID of the record we wish to get the URL for.
+	 * @param	[type]		$sermonUid: ...
 	 * @return	string		Return value is the absolute or relative path to the requested SMS record.
 	 */
 	function getUrlToSingle ( $absolute, $tableName, $uid, $sermonUid = '' ) {
 
-		
+
 		$piVar = $sermonUid ?
-		
+
 		array (
 			'recordType' => $tableName,
 			'showUid' => $uid,
 			'sermonUid' => $sermonUid,
 		)
-		
+
 		: array (
 			'recordType' => $tableName,
 			'showUid' => $uid,
@@ -2025,7 +2026,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		$WHERE .= $this->cObj->enableFields('tx_wecsermons_sermons');
 		$WHERE .= $this->cObj->enableFields('tx_wecsermons_resources');
 		$WHERE .= $this->cObj->enableFields('tx_wecsermons_resource_types');
-		
+
 		$query = 'select distinct
 		tx_wecsermons_resources.uid,
 		tx_wecsermons_resources.type,
