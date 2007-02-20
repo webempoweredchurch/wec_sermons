@@ -325,8 +325,6 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	/**
 	 * singleView: Generates the SINGLE view of a sermon record.
 	 *
-	 * 	?? Assumes that $this->internal['currentTable'] and $this->internal['currentRow'] are already populated
-	 *
 	 * @param	string		$content: Any previous content that this function will append itself to.
 	 * @param	array		$lConf: Locally scoped configuration array from TypoScript for a single view
 	 * @return	string		Complete single view content
@@ -1983,6 +1981,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		$pointer = intval($pointer);
 		$results_at_a_time = t3lib_div::intInRange($lConf['maxGroupResults'],1,1000);
 		$orderBy = '';
+		$res = '';
 
 		// Order by data:
 		if ($this->internal['orderBy'])	{
@@ -1997,17 +1996,24 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			}
 		}
 
-		$select = "SELECT " . $groupTable . ".*";
-		$from = " FROM " . $groupTable;
-		$join = " LEFT JOIN ". $detailTable . " on " . $groupTable . ".uid = ".$detailTable.".".$foreignColumn;
-		$groupBy = " GROUP BY ".$groupTable.".uid";
-		$having = ' HAVING 1=1' . $this->cObj->enableFields($groupTable);
-		$having .= $lConf['emptyGroups'] ? '' : " AND count(".$detailTable.".uid) > 0";
-		$limit = " LIMIT ".($pointer*$results_at_a_time).",".$results_at_a_time;
-
-		$query = 	$select . $from . $join . $groupBy . $having . $orderBy . $limit;
-
-		return $GLOBALS['TYPO3_DB']->sql_query( $query );
+		//	If display of empty groups is enabled, then simply query the group table for any visible records
+		if( $lConf['emptyGroups'] ) {
+			
+			$res =	$this->pi_exec_query( $groupTable );
+		}
+		else {	//	Otherwise filter out those groupTable records which do not have associated records
+			
+			$select = "SELECT distinct " . $groupTable . ".*";
+			$from = " FROM " . $groupTable . ',' . $detailTable;
+			$where = sprintf(' WHERE find_in_set(%s.uid,%s.%s) ', $groupTable,$detailTable,$foreignColumn ) . $this->cObj->enableFields($groupTable) . $this->cObj->enableFields( $detailTable );
+			$limit = " LIMIT ".($pointer*$results_at_a_time).",".$results_at_a_time;
+	
+			$query = 	$select . $from . $where . $orderBy . $limit;
+	
+			$res = $GLOBALS['TYPO3_DB']->sql_query( $query );
+		
+		}
+		return $res;
 	}
 
 	/**
