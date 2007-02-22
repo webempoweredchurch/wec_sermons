@@ -282,9 +282,9 @@ plugin.tx_wecsermons_pi1 {
 
 	}
 
-	# *****************
+	# *************************
 	# Single view configuration
-	# *****************
+	# *************************
 	singleView {
 
 		back = TEXT
@@ -432,10 +432,8 @@ plugin.tx_wecsermons_pi1 {
 				discussion.typolink = 0
 
 				# Default resource type, links to the first file in the list
-				default {
-					typolink < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources.typolink
+				default.typolink < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources.typolink
 
-				}
 			}
 
 			title = TEXT

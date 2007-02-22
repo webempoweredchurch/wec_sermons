@@ -383,7 +383,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				$this->internal['currentRow']['template_name'] :
 				'TEMPLATE_' . trim( $this->internal['currentRow']['marker_name'], '#' );
 
-			if( !strcmp( '0', $this->internal['currentRow']['type'] ) )
+			if( !strcmp( '0', $this->internal['currentRow']['type'] ) || !strcmp( 'default', $this->internal['currentRow']['type'] ) )
 				$templateName = $this->conf['defaultTemplate'];
 
 			$this->loadTemplate();
@@ -1186,15 +1186,16 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				break;
 
 				case '###RESOURCE_LINK###':
+					$this->local_cObj->start( $row, 'tx_wecsermons_resources' );
 
-					//	Change 'type' field to readable format if set to default, for use in TypoScript
+					//	Make sure 'type' field is in readable format if set to default, for use in TypoScript
 					if( !strcmp( '0', $row['type'] ) )
 						$row['type'] = 'default';
-
-					//	If 'typolink' segment is defined, render a link as defined by 'typolink', otherwise render a link to the resources' single view
-					if( $lConf['tx_wecsermons_resources.']['resource_types.'][$row['typoscript_object_name'].'.']['typolink'] ) {
-						$this->local_cObj->start( $row, 'tx_wecsermons_resources' );
-
+					
+					if( !strcmp( 'default', $row['type'] ) && $lConf['tx_wecsermons_resources.']['resource_types.'][$row['type'].'.']['typolink'] ) {
+						$wrappedSubpartArray[$key] = $this->local_cObj->typolinkWrap( $lConf['tx_wecsermons_resources.']['resource_types.'][$row['type'].'.']['typolink.'] );
+					}
+					else if( $lConf['tx_wecsermons_resources.']['resource_types.'][$row['typoscript_object_name'].'.']['typolink'] ) { //	If 'typolink' segment is defined, render a link as defined by 'typolink', otherwise render a link to the resources' single view
 						$wrappedSubpartArray[$key] = $this->local_cObj->typolinkWrap( $lConf['tx_wecsermons_resources.']['resource_types.'][$row['typoscript_object_name'].'.']['typolink.'] );
 
 					}
@@ -1550,7 +1551,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						break;
 					}
 */
-					$markerArray['###BROWSE_LINKS###'] = $this->pi_list_browseresults($lConf['showResultCount'], '', $lConf['browseBox_linkWraps.'] );
+					$markerArray['###BROWSE_LINKS###'] = is_array( $lConf['browseBox_linkWraps.'] ) ? $this->pi_list_browseresults($lConf['showResultCount'], '', $lConf['browseBox_linkWraps.'] ) : '';
 
 				break;
 
@@ -1634,7 +1635,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					'###SERMON_TOPICS###' => 'topics_uid',
 					'###SERMON_SERIES###' => 'series_uid',
 					'###SERMON_SPEAKERS###' => 'speakers_uid',
-					'###SERMON_RESOURCES###' => 'resources_uid',		//	Only included to kick off the processing of resources. Resource markers are defined in the resource_type records or resource record if of type 'plugin'
+					'###SERMON_RESOURCES###' => 'resources_uid',		//	Only included to kick off the processing of resources. Resource markers are defined in the resource_type records or resource record
 	 			);
 
 	 		break;
@@ -2031,7 +2032,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		$WHERE = $resourceUid ? 'AND tx_wecsermons_resources.uid = ' . $resourceUid . ' ' : $WHERE;
 		$WHERE .= $this->cObj->enableFields('tx_wecsermons_sermons');
 		$WHERE .= $this->cObj->enableFields('tx_wecsermons_resources');
-		$WHERE .= $this->cObj->enableFields('tx_wecsermons_resource_types');
+		$WHERE .= " AND( tx_wecsermons_resources.type = '0' OR (" . ltrim( $this->cObj->enableFields('tx_wecsermons_resource_types'), ' AND') . '))';
 
 		$query = 'select distinct
 		tx_wecsermons_resources.uid,
