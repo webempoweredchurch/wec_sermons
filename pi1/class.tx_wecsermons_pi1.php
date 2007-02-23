@@ -428,9 +428,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						'WEC Sermon Management System Error!',
 						'Unable to retrieve content for specified template.',
 						sprintf (
-							'Requested Template: ###TEMPLATE_%s_%s_%s###',
+							'Requested Template: ###TEMPLATE_%s_%s###',
 							strtoupper( $templateKey ),
-							'SINGLE',
 							$this->internal['layoutCode']
 						)
 					 );
@@ -1115,6 +1114,12 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 				break;
 
+				case '###RESOURCE_ICON###':
+					if( $row[$fieldName] ) {
+						$this->local_cObj->start( $row, 'tx_wecsermons_resources' );
+						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_resources.']['icon'], $lConf['tx_wecsermons_resources.']['icon.'] );
+					}
+
 				case '###RESOURCE_TITLE###':
 					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_resources' );
@@ -1690,6 +1695,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					'###RESOURCE_CONTENT###' => '',
 					'###ALTERNATING_CLASS###' => '',
 					'###RESOURCE_LINK###' => '',
+					'###RESOURCE_ICON###' => '',
 				);
 	 		break;
 

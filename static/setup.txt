@@ -947,6 +947,17 @@ plugin.tx_wecsermons_pi1 {
 			file = TEXT
 			file.field = file
 			file.listNum = 0
+			
+			icon = IMAGE
+			icon {
+			
+				file {
+					import = uploads/tx_wecsermons/
+					import.field = icon
+					width = 16m
+					height = 16m
+				}
+			}
 
 		}
 
@@ -985,7 +996,6 @@ plugin.tx_wecsermons_pi1 {
 					JSwindow.expand = 20,20
 				}
 			}
-
 
 			description = TEXT
 			description {
