@@ -32,16 +32,16 @@ plugin.tx_wecsermons_pi1 {
 	# cat=plugin.tx_wecsermons_pi1/dims/20; type=text; label= LIST View - Max Pages Shown: How many pages are shown in the record browser between the <prev> and <next> links. (Applied to lists.)
 	listView.maxPages = 5
 
-	# cat=plugin.tx_wecsermons_pi1/dims/30; type=text; label= LIST View - Maxium Group Results: Maxium group results returned. (Applied to LIST view only.)
+	# cat=plugin.tx_wecsermons_pi1/dims/30; type=text; label= LIST View - Maxium Group Results: Maxium group results returned. (Applied to LIST view Series Layout only.)
 	listView.maxGroupResults = 5
 
-	# cat=plugin.tx_wecsermons_pi1/dims/40; type=text; label= LIST View - Maxium Detail Results: Maxium detail results returned per page. (Applied to LIST view only.)
+	# cat=plugin.tx_wecsermons_pi1/dims/40; type=text; label= LIST View - Maxium Detail Results: Maxium detail results returned per page. (Applied to LIST view only. Will not apply to Series Layout.)
 	listView.maxdetailResults = 20
 
-	# cat=plugin.tx_wecsermons_pi1/dims/50; type=text; label= LATEST View - Maxium Group Results: Maxium group results returned. (Applied to LATEST view only.)
+	# cat=plugin.tx_wecsermons_pi1/dims/50; type=text; label= LATEST View - Maxium Group Results: Maxium group results returned. (Applied to LATEST view Series Layout only.)
 	latestView.maxGroupResults = 5
 
-	# cat=plugin.tx_wecsermons_pi1/dims/60; type=text; label= LATEST View - Maxium Detail Results: Maxium detail results returned. (Applied to LATEST view only.)
+	# cat=plugin.tx_wecsermons_pi1/dims/60; type=text; label= LATEST View - Maxium Detail Results: Maxium detail results returned. (Applied to LATEST view only. Will not apply to Series Layout)
 	latestView.maxdetailResults = 20
 
 	# cat=plugin.tx_wecsermons_pi1/dims/10; type=text; label= iTunes Encoding Bitrate (kb) : This bitrate setting is used in calculating the "duration" of a video or audio file for use in itunes

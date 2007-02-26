@@ -89,6 +89,7 @@ BACK_LINK - link back to the list view
 <br />
 
 <!-- ###TEMPLATE_LIST_BRIEF### begin -->
+			###BROWSE_LINKS###
 		<ul class="tx-wecsermons-pi1-list-brief" >
 	<!-- ###CONTENT### begin -->
 			<!-- ###ITEM### begin -->
@@ -106,7 +107,7 @@ BACK_LINK - link back to the list view
 				###SERMON_DESCRIPTION###
 				###SERMON_SCRIPTURE###
 
-				<ul class="tx-wecsermons-pi1-list-brief-resources">
+				<ul class="tx-wecsermons-pi1-resources">
 					
 					<!--###DEFAULT_RESOURCES###-->
 					<li>
@@ -128,6 +129,8 @@ BACK_LINK - link back to the list view
 <br />
 
 <!-- ###TEMPLATE_LATEST_BRIEF### begin -->
+
+			###BROWSE_LINKS###
 		<ul class="tx-wecsermons-pi1-list-brief" >
 	<!-- ###CONTENT### begin -->
 			<!-- ###ITEM### begin -->
@@ -144,6 +147,15 @@ BACK_LINK - link back to the list view
 				###SERMON_GRAPHIC###
 				###SERMON_DESCRIPTION###
 				###SERMON_SCRIPTURE###
+
+				<ul class="tx-wecsermons-pi1-resources">
+					
+					<!--###DEFAULT_RESOURCES###-->
+					<li>
+							<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
+					</li>
+					<!--###DEFAULT_RESOURCES###-->
+				</ul>
 
 			</li>
 			<!-- ###ITEM### end -->
@@ -179,7 +191,7 @@ BACK_LINK - link back to the list view
 		<div class="tx-wecsermons-pi-resources">
 			<h2>Sermon Multimedia:</h2>
 	
-				<ul class="tx-wecsermons-pi1-list-brief-resources">
+				<ul class="tx-wecsermons-pi1-sermon-brief-resources">
 					<!--###DEFAULT_RESOURCES###-->
 					<li>
 							<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
@@ -224,6 +236,7 @@ BACK_LINK - link back to the list view
 					<!--###TOPIC_LINK###-->###TOPIC_TITLE###<!--###TOPIC_LINK###-->
 				</p>
 			<!--###SERIES_TOPICS###-->
+
 		</div>
 	<!--###CONTENT###-->
 <!-- ###TEMPLATE_SERIES_BRIEF### end -->
@@ -278,8 +291,13 @@ BACK_LINK - link back to the list view
 	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_SEASON_BRIEF### end -->
 
+<br />
+<h3>TEMPLATE_SEARCHBOX_BRIEF</h3>
+<em>Template for styling the search box in a brief layout.</em>
+<br />
+
 <!--###TEMPLATE_SEARCHBOX_BRIEF### begin-->
-<div class="tx-wecsermons-pi1-searchbox">
+<div class="tx-wecsermons-pi1-searchbox-brief">
   <form action="###FORM_ACTION###" method="post">
 	 ###SEARCHBOX_OPTIONS###
     <input type="text" name="tx_wecsermons_pi1[sword]" value="" class="tx-wecsermons-pi1-searchbox-sword" />
@@ -305,6 +323,7 @@ BACK_LINK - link back to the list view
 <!-- ###TEMPLATE_LIST_SERIES### begin-->
 <TABLE width="489" cellpadding="3" cellspacing="1" id="tx-wecsermons-pi1-list2">
   <TBODY>
+    <tr><td colspan="2">###BROWSE_LINKS###</td></tr>
     <!-- ###CONTENT### begin
     	This begins the main content wrapper
     -->
@@ -343,6 +362,7 @@ BACK_LINK - link back to the list view
 <!-- ###TEMPLATE_LATEST_SERIES### begin-->
 <TABLE width="489" cellpadding="3" cellspacing="1" id="tx-wecsermons-pi1-latest2">
   <TBODY>
+    <tr><td colspan="2">###BROWSE_LINKS###</td></tr>
     <!-- ###CONTENT### begin
     	This begins the main content wrapper
     -->
@@ -497,6 +517,7 @@ BACK_LINK - link back to the list view
 
 
 <!-- ###TEMPLATE_LIST_VERBOSE### begin -->
+			###BROWSE_LINKS###
 		<ul class="tx-wecsermons-pi1-list-verbose" >
 	<!-- ###CONTENT### begin -->
 			<!-- ###ITEM### begin -->
@@ -531,17 +552,29 @@ BACK_LINK - link back to the list view
 				</dl>
 				<!--###SERMON_TOPICS###-->
 				
-				<div class="tx-wecsermons-pi1-list-verbose-resources">
+				<ul class="tx-wecsermons-pi1-resources">
+					
+				<!--###DEFAULT_RESOURCES###-->
+					<li>
+						<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
+					</li>
+				<!--###DEFAULT_RESOURCES###-->
 					
 				<!--###PDF_RESOURCES###-->
+					<li>
 					###RESOURCE_CONTENT###
+					</li>
 				<!--###PDF_RESOURCES###-->
 
 				<!--###EMBEDDED_MP3###-->
+					<li>
 					###RESOURCE_CONTENT###
+					</li>
 				<!--###EMBEDDED_MP3###-->
 
-				</div>
+					
+				</ul>
+
 
 			</li>
 			<!-- ###ITEM### end -->
@@ -555,6 +588,7 @@ BACK_LINK - link back to the list view
 <br />
 
 <!-- ###TEMPLATE_LATEST_VERBOSE### begin -->
+			###BROWSE_LINKS###
 		<ul class="tx-wecsermons-pi1-list-verbose" >
 	<!-- ###CONTENT### begin -->
 			<!-- ###ITEM### begin -->
@@ -589,17 +623,28 @@ BACK_LINK - link back to the list view
 				</dl>
 				<!--###SERMON_TOPICS###-->
 				
-				<div class="tx-wecsermons-pi1-list-verbose-resources">
+				<ul class="tx-wecsermons-pi1-resources">
+					
+				<!--###DEFAULT_RESOURCES###-->
+					<li>
+						<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
+					</li>
+				<!--###DEFAULT_RESOURCES###-->
 					
 				<!--###PDF_RESOURCES###-->
+					<li>
 					###RESOURCE_CONTENT###
+					</li>
 				<!--###PDF_RESOURCES###-->
 
 				<!--###EMBEDDED_MP3###-->
+					<li>
 					###RESOURCE_CONTENT###
+					</li>
 				<!--###EMBEDDED_MP3###-->
 
-				</div>
+					
+				</ul>
 
 			</li>
 			<!-- ###ITEM### end -->
@@ -644,7 +689,7 @@ BACK_LINK - link back to the list view
 
 <!-- ###TEMPLATE_SERMON_VERBOSE### begin -->
 	<!--###CONTENT###-->
-		<div class="tx-wecsermons-pi1-sermon-brief" >
+		<div class="tx-wecsermons-pi1-sermon-verbose" >
 			###SERMON_GRAPHIC###
 
 			<h2>###SERMON_TITLE###</h2>
@@ -674,58 +719,82 @@ BACK_LINK - link back to the list view
 				</p>
 			<!--###SERMON_TOPICS###-->
 				
-			<div class="tx-wecsermons-pi-resources">
-				<h2>Resources:</h2>
+				<ul class="tx-wecsermons-pi1-resources">
+					<h2>Sermon Multimedia:</h2>
 	
 				<!--###DEFAULT_RESOURCES###-->
-					###RESOURCE_CONTENT###
+					<li>
+						<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
+					</li>
 				<!--###DEFAULT_RESOURCES###-->
 	
 				<!--###PDF_RESOURCES###-->
-					###RESOURCE_CONTENT###
+					<li>
+						###RESOURCE_CONTENT###
+					</li>
 				<!--###PDF_RESOURCES###-->
 
 				<!--###EMBEDDED_AVI###-->
-					###RESOURCE_CONTENT###
+					<li>
+						###RESOURCE_CONTENT###
+					</li>
 				<!--###EMBEDDED_AVI###-->
 		
 				<!--###EMBEDDED_MP3###-->
-					###RESOURCE_CONTENT###
+					<li>
+						###RESOURCE_CONTENT###
+					</li>
 				<!--###EMBEDDED_MP3###-->
 		
 				<!--###EMBEDDED_MP4###-->
-					###RESOURCE_CONTENT###
+					<li>
+						###RESOURCE_CONTENT###
+					</li>
 				<!--###EMBEDDED_MP4###-->
 		
 				<!--###EMBEDDED_SWF###-->
-					###RESOURCE_CONTENT###
+					<li>
+						###RESOURCE_CONTENT###
+					</li>
 				<!--###EMBEDDED_SWF###-->
 		
 				<!--###EMBEDDED_MOV###-->
-					###RESOURCE_CONTENT###
+					<li>
+						###RESOURCE_CONTENT###
+					</li>
 				<!--###EMBEDDED_MOV###-->
 		
 				<!--###EMBEDDED_WMA###-->
-					###RESOURCE_CONTENT###
+					<li>
+						###RESOURCE_CONTENT###
+					</li>
 				<!--###EMBEDDED_WMA###-->
 		
 				<!--###EMBEDDED_WMV###-->
-					###RESOURCE_CONTENT###
+					<li>
+						###RESOURCE_CONTENT###
+					</li>
 				<!--###EMBEDDED_WMV###-->
 		
 				<!--###EMBEDDED_REALMEDIA###-->
-					###RESOURCE_CONTENT###
+					<li>
+						###RESOURCE_CONTENT###
+					</li>
 				<!--###EMBEDDED_REALMEDIA###-->
 				
 				<!--###DOWNLOAD_FILE###-->
-					###RESOURCE_CONTENT###
+					<li>
+						###RESOURCE_CONTENT###
+					</li>
 				<!--###DOWNLOAD_FILE###-->
 				
 		 		<!--###POLL_RESOURCES###-->
-			 		<!--###RESOURCE_LINK###-->Take the Poll ...<!--###RESOURCE_LINK###-->
+					<li>
+				 		<!--###RESOURCE_LINK###-->Take the Poll ...<!--###RESOURCE_LINK###-->
+					</li>
 		 		<!--###POLL_RESOURCES###-->
 	
-			</div>
+			</ul>
 		
 	</div>		
 

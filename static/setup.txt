@@ -36,7 +36,10 @@ plugin.tx_wecsermons_pi1 {
 	stdHeader = COA
 	stdHeader {
 		10 = TEXT
+		10.value = 1
+		10.addParams.title = 1
 		10.addParams.title.field = description
+		10.addParams.title.stripHtml = 1
 		10.stdWrap = 1
 		10.stdWrap.field = title
 		10.stdWrap.dataWrap = <div class="csc-header csc-header-n{cObj:parentRecordNumber}">|</div>
@@ -264,7 +267,7 @@ plugin.tx_wecsermons_pi1 {
 		default = COA
 		default {
 
-			10 = < plugin.tx_wecsermons_pi1.stdHeader
+			10 < plugin.tx_wecsermons_pi1.stdHeader
 
 			20 = TEXT
 			20.field = file
@@ -477,6 +480,16 @@ plugin.tx_wecsermons_pi1 {
 			webaddress3 = TEXT
 			webaddress3.typolink.parameter.field = webaddress3
 
+			icon = IMAGE
+			icon {
+			
+				file {
+					import = uploads/tx_wecsermons/
+					import.field = icon
+					width = 16m
+					height = 16m
+				}
+			}
 
 		}
 

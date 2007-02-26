@@ -774,7 +774,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$groupTemplate = $this->template['group'];
 			$groupContent = '';
 			$detailContent = '';
-
+			
+			$groupResCount = $this->getGroupResult( $groupTable, $detailTable, $foreign_column, $lConf, 1 );
+debug( $groupResCount, 1);
 			$res = $this->getGroupResult( $groupTable, $detailTable, $foreign_column, $lConf );
 
 			//	Retreive marker array and template for the detail table
@@ -786,9 +788,10 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$detailCount = 0;
 
 			//	Iterate every record in groupTable
-			while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) ) {
-				$groupCount++;
-
+			while( $detailCount < $this->internal['results_at_a_time'] 
+				&& $groupCount < $lConf['maxGroupResults'] 
+				&& $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) ) {
+					
 				//	Store previous row, table and order by as we switch to retreiving detail
 				$this->internal['previousRow'] = $this->internal['currentRow'];
 				$this->internal['previousTable'] = $this->internal['currentTable'];
@@ -799,7 +802,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				$this->internal['orderByList']=$lConf[$detailTable.'.']['orderByList'];
 				$this->internal['orderBy']=$lConf[$detailTable.'.']['orderBy'];
 				$this->internal['descFlag']=$lConf[$detailTable.'.']['descFlag'];
-				$this->internal['results_at_a_time'] = t3lib_div::intInRange($lConf['maxdetailResults'],1,1000);
+				$this->internal['results_at_a_time'] = t3lib_div::intInRange($lConf['maxGroupResults'],1,1000);
 
 				//	Check if rendering LATEST view, making changes to ordering as appropriate.
 				if( !strcmp( $this->internal['currentCode'], 'LATEST' ) ) {
@@ -811,11 +814,25 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				//	Process the current row
 				$groupContent = $this->pi_list_row( $lConf, $markerArray, $groupTemplate, $this->internal['currentRow'], $groupCount );
 
+				//	Store results_at_a_time and switch to hardcoded value of 1000 for detail. This is because we never want a limited list of detail records
+				//	in a grouped view.
+				$this->internal['prev_results_at_a_time'] = $this->internal['results_at_a_time'];
+				$this->internal['results_at_a_time'] = 1000;
+				
+				//	We need to temporarily set pointer to 0, as we never want a second page of detail records.
+				$prevPointer = $this->piVars['pointer'];
+				$this->piVars['pointer'] = 0;
+
 				//	Exec query on detail table, for every record related to our group record
 				$detailRes = $this->pi_exec_query( $detailTable, 0, ' AND ' . $foreign_column . ' in (' . $this->internal['previousRow']['uid'] . ')' );
 
+				//	Resore results_at_a_time and pointer values
+				$this->internal['results_at_a_time'] = $this->internal['prev_results_at_a_time'];
+				$this->piVars['pointer'] = $prevPointer;
+				
 				$detailInnerCount = 0;
 
+				//	Iterate over every related detail record to our group record
 				while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $detailRes ) ) {
 					$detailCount++;
 					$detailInnerCount++;
@@ -831,14 +848,15 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				$content .= $this->cObj->substituteMarkerArrayCached( $this->template['content'], array(), $subpartArray );
 				$detailContent = '';
 
-				if( $detailCount >= $this->internal['results_at_a_time'] ) break; // Break loop if we've met or exceeded our total detail count
+				$groupCount++;
 
-				//	Restore row,  table, and order by to internal storage
+				//	Restore row,  table, and orderBy from internal storage
 				$this->internal['currentRow'] = $this->internal['previousRow'];
 				$this->internal['currentTable'] = $this->internal['previousTable'];
 				$this->internal['orderByList'] = $this->internal['previousOrderByList'];
 				$this->internal['orderBy'] = $this->internal['previousOrderBy'];
 				$this->internal['descFlag'] = $this->internal['previousdescFlag'];
+				
 			}
 
 
@@ -1115,11 +1133,13 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				break;
 
 				case '###RESOURCE_ICON###':
+
 					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_resources' );
 						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_resources.']['icon'], $lConf['tx_wecsermons_resources.']['icon.'] );
 					}
-
+				break;
+				
 				case '###RESOURCE_TITLE###':
 					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_resources' );
@@ -1547,7 +1567,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 					//	Disable the counter within the results browser if we are producing a grouped list view.
 					//	TODO: Enable accurate counting of results in the results browser when specifying group
-					if( $this->getConfigVal( $this, 'group_table', 'slistView', 'groupTable', $lConf ) ) $lConf['showResultCount'] = 0;
+					//if( $this->getConfigVal( $this, 'group_table', 'slistView', 'groupTable', $lConf ) ) $lConf['showResultCount'] = 0;
 
 /* Why would we do this?
 					// Remove browsebox if in LATEST view
@@ -1695,7 +1715,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					'###RESOURCE_CONTENT###' => '',
 					'###ALTERNATING_CLASS###' => '',
 					'###RESOURCE_LINK###' => '',
-					'###RESOURCE_ICON###' => '',
+					'###RESOURCE_ICON###' => 'icon',
 				);
 	 		break;
 
@@ -1983,10 +2003,12 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 * @param	array		$lConf: Locally scoped configuration array from TypoScript
 	 * @return	resource		A sql resource returned from sql_query()
 	 */
-	 function getGroupResult($groupTable, $detailTable, $foreignColumn, $lConf ) {
+	 function getGroupResult( $groupTable, $detailTable, $foreignColumn, $lConf, $getCount = 0 ) {
+
 		$pointer = $this->piVars['pointer'];
 		$pointer = intval($pointer);
-		$results_at_a_time = t3lib_div::intInRange($lConf['maxGroupResults'],1,1000);
+
+		$this->internal['results_at_a_time'] = t3lib_div::intInRange($lConf['maxGroupResults'],1,1000);
 		$orderBy = '';
 		$res = '';
 
@@ -2006,17 +2028,21 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		//	If display of empty groups is enabled, then simply query the group table for any visible records
 		if( $lConf['emptyGroups'] ) {
 			
-			$res =	$this->pi_exec_query( $groupTable );
+			if( $getCount ) 
+				list($res) = $this->pi_exec_query( $groupTable,1 );
+			else 
+				$res = $this->pi_exec_query( $groupTable );
 		}
 		else {	//	Otherwise filter out those groupTable records which do not have associated records
 			
-			$select = "SELECT distinct " . $groupTable . ".*";
+			$select = $getCount ? 'SELECT count('.$groupTable.'.uid)' : "SELECT distinct " . $groupTable . ".*";
 			$from = " FROM " . $groupTable . ',' . $detailTable;
 			$where = sprintf(' WHERE find_in_set(%s.uid,%s.%s) ', $groupTable,$detailTable,$foreignColumn ) . $this->cObj->enableFields($groupTable) . $this->cObj->enableFields( $detailTable );
-			$limit = " LIMIT ".($pointer*$results_at_a_time).",".$results_at_a_time;
+			$limit = $getCount ? '' : " LIMIT ".($pointer*$this->internal['results_at_a_time']).",".$this->internal['results_at_a_time'];
 	
 			$query = 	$select . $from . $where . $orderBy . $limit;
 	
+	debug( $query,1);
 			$res = $GLOBALS['TYPO3_DB']->sql_query( $query );
 		
 		}
