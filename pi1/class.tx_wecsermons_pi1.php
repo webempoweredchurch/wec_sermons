@@ -286,9 +286,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 					// Check if we should link to the resource single view or the sermon single view
 					if( $lConf['itemLinkToResource'] )
-						$row['item_link'] = $this->getUrlToSingle( 1, 'tx_wecsermons_resources', $resource['uid'], $row['uid'] );
+						$row['item_link'] = $this->getUrlToSingle( 0, 'tx_wecsermons_resources', $resource['uid'], $row['uid'] );
 					else
-						$row['item_link'] = $this->getUrlToSingle( 1, $tableToList, $row['uid'] );
+						$row['item_link'] = $this->getUrlToSingle( 0, $tableToList, $row['uid'] );
 
 				}
 
@@ -308,6 +308,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				$row['author'] = $speaker ? $speaker['fullname'] : '';
 
 			}
+
 
 			//	Collect each modified row into a container array for passing to tx_wecapi_list::getContent
 			//	Only add to sermons array if enclosure is specified and item's link has been set, or if enclosureType is not specified at all.

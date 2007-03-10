@@ -1312,7 +1312,9 @@ plugin.tx_wecapi_list {
 			field = description
 			if.isTrue.field = description
 		}
-		item_link.field = item_link
+		item_link.value = {$constants.wec.siteURL}{field:item_link}
+		item_link.insertData = 1
+		item_link.data >
 		item_comments.field = comments_link
 		item_pubdate.field = occurrence_date
 		item_guid.field = item_link
