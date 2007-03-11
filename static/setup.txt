@@ -1317,7 +1317,10 @@ plugin.tx_wecapi_list {
 		item_link.data >
 		item_comments.field = comments_link
 		item_pubdate.field = occurrence_date
-		item_guid.field = item_link
+		item_guid {
+			value = {$constants.wec.siteURL}{field:item_link}/{field:tstamp}
+			insertData = 1
+		}
 		item_source >
 		item_enclosure.if.isTrue.field = enclosure_url
 		item_itunes_summary.field = summary

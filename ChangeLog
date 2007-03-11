@@ -1,10 +1,36 @@
+03/10/07 00:44:21 brian [270]
+	* trunk/wec_sermons/pi1/class.tx_wecsermons_pi1.php (modified)
+	* trunk/wec_sermons/static/setup.txt (modified)
+	* Changed the definition of tx_wecapi_list.tag_rendering.item_link,
+	so that it uses the wec siteurl constant and a relative link together
+	to create the absolute URL.
 
-2006-05-18 - Brian Slezak <bslezak@webempoweredchurch.org> 
+03/02/07 21:05:05 jeff [269]
+	* trunk/wec_sermons/pi1/class.tx_wecsermons_pi1.php (modified)
+	Updating plugin with file from 0.9.0 tag.
 
-	* Added the ability for tx_wecsermons_resource_type records to become record types for tx_wecsermons_resources records
+03/02/07 20:36:16 brian [268]
+	* trunk/wec_sermons/icon_tx_wecsermons_resource_types.gif (modified)
+	* trunk/wec_sermons/icon_tx_wecsermons_resources.gif (modified)
+	* trunk/wec_sermons/icon_tx_wecsermons_seasons.gif (modified)
+	* trunk/wec_sermons/icon_tx_wecsermons_series.gif (modified)
+	* trunk/wec_sermons/icon_tx_wecsermons_sermons.gif (modified)
+	* trunk/wec_sermons/icon_tx_wecsermons_speakers.gif (modified)
+	* trunk/wec_sermons/icon_tx_wecsermons_topics.gif (modified)
+	* Updated icons from tag 0.9.0
 
-06-03-06 Web Empowered Church Team, Foundation For Evangelism  <wec_sermons@webempoweredchurch.org>
+03/02/07 17:19:40 brian [267]
+	* trunk/wec_sermons/ext_icon.gif (modified)
+	* trunk/wec_sermons/pi1/ce_wiz.gif (modified)
+	* Updated conflicts
 
-	* Initial release
+03/02/07 17:13:53 brian [266]
+	* trunk/wec_sermons/doc/manual.sxw (modified)
+	* trunk/wec_sermons/ext_emconf.php (modified)
+	* Merged some 0.9.0 tag changes into trunk development
+
+2007-03-02 Web Empowered Church Team, Foundation For Evangelism  <sermons@webempoweredchurch.org>
+
+	* Initial release of 0.9.0
 
 
