@@ -289,6 +289,10 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						$row['item_link'] = $this->getUrlToSingle( 0, 'tx_wecsermons_resources', $resource['uid'], $row['uid'] );
 					else
 						$row['item_link'] = $this->getUrlToSingle( 0, $tableToList, $row['uid'] );
+					
+					//	Replace brackets and ampersands with % urlencoded or html entities
+					$row['item_link'] = preg_replace(array('/\[/', '/\]/', '/&/'), array('%5B', '%5D', '&#38;') , $row['item_link']);
+						
 
 				}
 
