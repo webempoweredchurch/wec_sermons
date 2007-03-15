@@ -1,3 +1,50 @@
+03/14/07 22:27:12 brian [280]
+	* trunk/wec_sermons/class.tx_wecsermons_resourceTypeTca.php (modified)
+	* trunk/wec_sermons/class.tx_wecsermons_xmlView.php (modified)
+	* trunk/wec_sermons/ext_emconf.php (modified)
+	* trunk/wec_sermons/pi1/class.tx_wecsermons_pi1.php (modified)
+	* Updated ext_emconf.php with extension manager.
+
+	* Updated e-mail addresses in class.tx_wecsermons_pi1.php,
+	class.tx_wecsermons_resourceTypeTca.php,
+	class.tx_wecsermons_xmlView.php
+
+	* Updated internal documentation in class.tx_wecsermons_pi1.php
+
+	* Added pagination using the results browser, and search word
+	filtering to grouped views. Matching occurs on detail records only,
+	and not group records. Only those groups with matching detail records
+	are shown.
+
+	* Changed getGroupResult() and getResources() function queries to
+	obey starting point and recursive settings of plug-in.
+
+03/14/07 02:51:28 brian [273]
+	* trunk/wec_sermons/tca.php (modified)
+	* Added rte_transform to all RTE fields to allow cron_rte_cleanenc to
+	run on the fields. Without defining an rte_transform in TCA, this
+	does not work.
+
+03/12/07 22:39:10 brian [272]
+	* trunk/wec_sermons/pi1/class.tx_wecsermons_pi1.php (modified)
+	* Updated XML feed's item_link element to clean []'s and &amp;'s from the
+	output, replacing them with % encoded entities and html encoded
+	entities respectively.
+
+03/11/07 00:57:09 brian [271]
+	* trunk/wec_sermons/ChangeLog (modified)
+	* trunk/wec_sermons/ext_emconf.php (modified)
+	* trunk/wec_sermons/static/setup.txt (modified)
+	*************************
+	Updated revision to 0.9.1
+	*************************
+
+	- Updated ChangeLog
+
+	- changed item_guid field so that it uses the siteURL WEC constant,
+	and appends the field time stamp to the end of the URL to guarantee
+	uniqueness.
+	
 03/10/07 00:44:21 brian [270]
 	* trunk/wec_sermons/pi1/class.tx_wecsermons_pi1.php (modified)
 	* trunk/wec_sermons/static/setup.txt (modified)
