@@ -24,9 +24,9 @@
 /**
  * Class/Functions used to modify TCA on the fly. Functions are called by hooks or userFunc declarations. This allows us to change the TCA based on the existence of tx_wecsermons_resource_types backend records. These records become record types for tx_wecsermons_resources, changing how resources are edited in the backend.
  *
- * @author	Web Empowered Church Team, Foundation For Evangelism <wec_sermons@webempoweredchurch.org>
+ * @author	Web Empowered Church Team, Foundation For Evangelism <sermon@webempoweredchurch.org>
  * @package TYPO3
- * @subpackage tx_wecsermons
+ * @subpackage wec_sermons
  */
 
 #require_once(PATH_t3lib.'class.t3lib_BEfunc.php');

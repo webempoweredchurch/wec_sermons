@@ -34,34 +34,34 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
  *   91:     function init($conf)
  *  112:     function main($content,$conf)
  *  222:     function xmlView ($content, $lConf)
- *  334:     function singleView($content,$lConf)
- *  474:     function searchView($content,$lConf)
- *  489:     function pi_list_searchbox($lConf)
- *  537:     function latestView($content,$lConf)
- *  611:     function listView($content,$lConf)
- *  705:     function pi_list_makelist($lConf, $template)
- *  903:     function pi_list_row($lConf, $markerArray = array(), $rowTemplate, $row ='', $c = 2)
- * 1622:     function getMarkerArray( $tableName = '' )
- * 1733:     function formatStr( $str )
- * 1747:     function getTemplateKey($tableName)
- * 1790:     function getUrlToList ( $absolute )
- * 1808:     function getUrlToSingle ( $absolute, $tableName, $uid, $sermonUid = '' )
- * 1836:     function getFeAdminList( $tableName = '' )
- * 1856:     function getNamedTemplateContent($keyName = 'sermon', $view = 'single')
- * 1898:     function getNamedSubpart( $subpartName, $content )
- * 1915:     function getMarkerName( $markerName )
- * 1928:     function loadTemplate( $view = 'LIST')
- * 1954:     function getTemplateFile()
- * 1981:     function getGroupResult($groupTable, $detailTable, $foreignColumn, $lConf )
- * 2021:     function getResources( $sermonUid = '', $resourceUid = '')
- * 2084:     function emptyResourceSubparts( &$subpartArray )
- * 2109:     function throwError( $type, $message, $detail = '' )
- * 2133:     function getTutorial ( $tutorial )
- * 2210:     function uniqueCsv()
- * 2225:     function unique_array()
- * 2243:     function get_foreign_column( $currentTable, $relatedTable )
- * 2269:     function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default = '' )
- * 2288:     function splitTableAndUID($record)
+ *  336:     function singleView($content,$lConf)
+ *  475:     function searchView($content,$lConf)
+ *  490:     function pi_list_searchbox($lConf)
+ *  538:     function latestView($content,$lConf)
+ *  612:     function listView($content,$lConf)
+ *  706:     function pi_list_makelist($lConf, $template)
+ *  923:     function pi_list_row($lConf, $markerArray = array(), $rowTemplate, $row ='', $c = 2)
+ * 1651:     function getMarkerArray( $tableName = '' )
+ * 1763:     function formatStr( $str )
+ * 1777:     function getTemplateKey($tableName)
+ * 1820:     function getUrlToList ( $absolute )
+ * 1838:     function getUrlToSingle ( $absolute, $tableName, $uid, $sermonUid = '' )
+ * 1866:     function getFeAdminList( $tableName = '' )
+ * 1886:     function getNamedTemplateContent($keyName = 'sermon', $view = 'single')
+ * 1928:     function getNamedSubpart( $subpartName, $content )
+ * 1945:     function getMarkerName( $markerName )
+ * 1958:     function loadTemplate( $view = 'LIST')
+ * 1984:     function getTemplateFile()
+ * 2012:     function getGroupResult( $groupTable, $detailTable, $foreignColumn, $lConf, $getCount = 0 )
+ * 2100:     function getResources( $sermonUid = '', $resourceUid = '')
+ * 2166:     function emptyResourceSubparts( &$subpartArray )
+ * 2191:     function throwError( $type, $message, $detail = '' )
+ * 2215:     function getTutorial ( $tutorial )
+ * 2292:     function uniqueCsv()
+ * 2307:     function unique_array()
+ * 2325:     function get_foreign_column( $currentTable, $relatedTable )
+ * 2351:     function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default = '' )
+ * 2370:     function splitTableAndUID($record)
  *
  * TOTAL FUNCTIONS: 31
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -71,9 +71,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 /**
  * Plugin 'Sermon Repository' for the 'wec_sermons' extension.
  *
- * @author	Web Empowered Church Team, Foundation For Evangelism <wec_sermons@webempoweredchurch.org>
+ * @author	Web Empowered Church Team, Foundation For Evangelism <sermon@webempoweredchurch.org>
  * @package TYPO3
- * @subpackage tx_wecsermons
+ * @subpackage wec_sermons
  */
  class tx_wecsermons_pi1 extends tslib_pibase {
 	var $prefixId = 'tx_wecsermons_pi1';		// Same as class name
@@ -289,10 +289,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						$row['item_link'] = $this->getUrlToSingle( 0, 'tx_wecsermons_resources', $resource['uid'], $row['uid'] );
 					else
 						$row['item_link'] = $this->getUrlToSingle( 0, $tableToList, $row['uid'] );
-					
+
 					//	Replace brackets and ampersands with % urlencoded or html entities
 					$row['item_link'] = preg_replace(array('/\[/', '/\]/', '/&/'), array('%5B', '%5D', '&#38;') , $row['item_link']);
-						
 
 				}
 
@@ -780,6 +779,11 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$groupContent = '';
 			$detailContent = '';
 
+			//	Get the total count, and set the # results per page
+			list($this->internal['res_count']) = $GLOBALS['TYPO3_DB']->sql_fetch_row( $this->getGroupResult( $groupTable, $detailTable, $foreign_column, $lConf, 1 ) );
+			$this->internal['results_at_a_time'] = $this->conf['maxGroupResults'];
+
+			// Retreive resultset
 			$res = $this->getGroupResult( $groupTable, $detailTable, $foreign_column, $lConf );
 
 			//	Retreive marker array and template for the detail table
@@ -791,8 +795,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$detailCount = 0;
 
 			//	Iterate every record in groupTable
-			while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) ) {
-				$groupCount++;
+			while( $groupCount <= $lConf['maxGroupResults']
+				&& $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) ) {
 
 				//	Store previous row, table and order by as we switch to retreiving detail
 				$this->internal['previousRow'] = $this->internal['currentRow'];
@@ -804,7 +808,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				$this->internal['orderByList']=$lConf[$detailTable.'.']['orderByList'];
 				$this->internal['orderBy']=$lConf[$detailTable.'.']['orderBy'];
 				$this->internal['descFlag']=$lConf[$detailTable.'.']['descFlag'];
-				$this->internal['results_at_a_time'] = t3lib_div::intInRange($lConf['maxdetailResults'],1,1000);
+
 
 				//	Check if rendering LATEST view, making changes to ordering as appropriate.
 				if( !strcmp( $this->internal['currentCode'], 'LATEST' ) ) {
@@ -816,12 +820,27 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				//	Process the current row
 				$groupContent = $this->pi_list_row( $lConf, $markerArray, $groupTemplate, $this->internal['currentRow'], $groupCount );
 
+				//	Store results_at_a_time and switch to hardcoded value of 1000 for detail. This is because we never want a limited list of detail records
+				//	in a grouped view.
+				$this->internal['prev_results_at_a_time'] = $this->internal['results_at_a_time'];
+				$this->internal['results_at_a_time'] = 1000;
+
+				//	We need to temporarily set pointer to 0, as we never want a second page of detail records.
+				$prevPointer = $this->piVars['pointer'];
+				$this->piVars['pointer'] = 0;
+
 				//	Exec query on detail table, for every record related to our group record
 				$detailRes = $this->pi_exec_query( $detailTable, 0, ' AND ' . $foreign_column . ' in (' . $this->internal['previousRow']['uid'] . ')' );
 
+				//	Resore results_at_a_time and pointer values
+				$this->internal['results_at_a_time'] = $this->internal['prev_results_at_a_time'];
+				$this->piVars['pointer'] = $prevPointer;
+
 				$detailInnerCount = 0;
 
+				//	Iterate over every related detail record to our group record
 				while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $detailRes ) ) {
+
 					$detailCount++;
 					$detailInnerCount++;
 
@@ -836,17 +855,16 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				$content .= $this->cObj->substituteMarkerArrayCached( $this->template['content'], array(), $subpartArray );
 				$detailContent = '';
 
-				if( $detailCount >= $this->internal['results_at_a_time'] ) break; // Break loop if we've met or exceeded our total detail count
+				$groupCount++;
 
-				//	Restore row,  table, and order by to internal storage
+				//	Restore row,  table, and orderBy from internal storage
 				$this->internal['currentRow'] = $this->internal['previousRow'];
 				$this->internal['currentTable'] = $this->internal['previousTable'];
 				$this->internal['orderByList'] = $this->internal['previousOrderByList'];
 				$this->internal['orderBy'] = $this->internal['previousOrderBy'];
 				$this->internal['descFlag'] = $this->internal['previousdescFlag'];
+
 			}
-
-
 
 		}	//	End if group
 		else {	//	No group found, just provide a straight list
@@ -1120,10 +1138,12 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				break;
 
 				case '###RESOURCE_ICON###':
+
 					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_resources' );
 						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_resources.']['icon'], $lConf['tx_wecsermons_resources.']['icon.'] );
 					}
+				break;
 
 				case '###RESOURCE_TITLE###':
 					if( $row[$fieldName] ) {
@@ -1201,7 +1221,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					//	Make sure 'type' field is in readable format if set to default, for use in TypoScript
 					if( !strcmp( '0', $row['type'] ) )
 						$row['type'] = 'default';
-					
+
 					if( !strcmp( 'default', $row['type'] ) && $lConf['tx_wecsermons_resources.']['resource_types.'][$row['type'].'.']['typolink'] ) {
 						$wrappedSubpartArray[$key] = $this->local_cObj->typolinkWrap( $lConf['tx_wecsermons_resources.']['resource_types.'][$row['type'].'.']['typolink.'] );
 					}
@@ -1550,19 +1570,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 				case '###BROWSE_LINKS###':
 
-					//	Disable the counter within the results browser if we are producing a grouped list view.
-					//	TODO: Enable accurate counting of results in the results browser when specifying group
-					if( $this->getConfigVal( $this, 'group_table', 'slistView', 'groupTable', $lConf ) ) $lConf['showResultCount'] = 0;
-
-/* Why would we do this?
-					// Remove browsebox if in LATEST view
-					if( !strcmp( $this->internal['currentCode'], 'LATEST' ) ) {
-						$markerArray['###BROWSE_LINKS###'] = '';
-						break;
-					}
-*/
 					$markerArray['###BROWSE_LINKS###'] = is_array( $lConf['browseBox_linkWraps.'] ) ? $this->pi_list_browseresults($lConf['showResultCount'], '', $lConf['browseBox_linkWraps.'] ) : '';
-
 				break;
 
 				case '###BACK_LINK###':
@@ -1700,7 +1708,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					'###RESOURCE_CONTENT###' => '',
 					'###ALTERNATING_CLASS###' => '',
 					'###RESOURCE_LINK###' => '',
-					'###RESOURCE_ICON###' => '',
+					'###RESOURCE_ICON###' => 'icon',
 				);
 	 		break;
 
@@ -1985,13 +1993,47 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 * @param	string		$groupTable: The table name to group by
 	 * @param	string		$detailTable: The table name to display detail records by
 	 * @param	string		$foreignColumn: The column name by which detail records are related back to group records.
-	 * @param	array		$lConf: Locally scoped configuration array from TypoScript
+	 * @param	array			$lConf: Locally scoped configuration array from TypoScript
+	 * @param	boolean		$getCount: A boolean value enabling the return of the row count, rather than the rows themselves.
 	 * @return	resource		A sql resource returned from sql_query()
 	 */
-	 function getGroupResult($groupTable, $detailTable, $foreignColumn, $lConf ) {
+	 function getGroupResult( $groupTable, $detailTable, $foreignColumn, $lConf, $getCount = 0 ) {
+
 		$pointer = $this->piVars['pointer'];
 		$pointer = intval($pointer);
-		$results_at_a_time = t3lib_div::intInRange($lConf['maxGroupResults'],1,1000);
+		$groupUids = '';
+
+		//	Check if search word was used to filter list.
+		if( $this->piVars['sword'] ) {
+
+			$pidList = $this->pi_getPidList($this->conf['pidList'],$this->conf['recursive']);
+			$searchFieldList = $lConf[$detailTable.'.']['searchFieldList'];
+
+
+			//	Retrieve result set of series filtered by matching sermons
+			$query = 'select '.$groupTable.'.uid,'.$groupTable.'.title'.chr(10)
+				.'from '.$groupTable.', '.$detailTable .chr(10);
+
+			$WHERE = sprintf(' WHERE find_in_set(%s.uid,%s.%s) ', $groupTable,$detailTable,$foreignColumn )
+				.$this->cObj->searchWhere($this->piVars['sword'],$searchFieldList,$detailTable).$this->cObj->enableFields($groupTable) . $this->cObj->enableFields( $detailTable ) .' AND '.$groupTable.'.pid IN ('.$pidList.')';
+
+			$query .= $WHERE;
+
+			$res = $GLOBALS['TYPO3_DB']->sql_query( $query );
+
+
+			//	Aggregate series uids to filter by
+			while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) ) {
+				$groupUids .= $row['uid'].',';
+
+			}
+
+
+			$groupUids = rtrim( $groupUids, ',');
+
+		}
+
+		$this->internal['results_at_a_time'] = t3lib_div::intInRange($lConf['maxGroupResults'],1,1000);
 		$orderBy = '';
 		$res = '';
 
@@ -2010,20 +2052,27 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 		//	If display of empty groups is enabled, then simply query the group table for any visible records
 		if( $lConf['emptyGroups'] ) {
-			
-			$res =	$this->pi_exec_query( $groupTable );
+
+			if( $getCount )
+				list($res) = $this->pi_exec_query( $groupTable,1 );
+			else
+				$res = $this->pi_exec_query( $groupTable );
 		}
 		else {	//	Otherwise filter out those groupTable records which do not have associated records
-			
-			$select = "SELECT distinct " . $groupTable . ".*";
+
+			$pidList = $this->pi_getPidList($this->conf['pidList'],$this->conf['recursive']);
+
+			$select = $getCount ? 'SELECT count(distinct '.$groupTable.'.uid)' : "SELECT distinct " . $groupTable . ".*";
 			$from = " FROM " . $groupTable . ',' . $detailTable;
-			$where = sprintf(' WHERE find_in_set(%s.uid,%s.%s) ', $groupTable,$detailTable,$foreignColumn ) . $this->cObj->enableFields($groupTable) . $this->cObj->enableFields( $detailTable );
-			$limit = " LIMIT ".($pointer*$results_at_a_time).",".$results_at_a_time;
-	
+			$where = sprintf(' WHERE find_in_set(%s.uid,%s.%s) ', $groupTable,$detailTable,$foreignColumn ) . $this->cObj->enableFields($groupTable)
+				.$this->cObj->enableFields( $detailTable ) . ' AND '.$groupTable.'.pid IN ('.$pidList.')'
+				. ($groupUids ? ' AND '.$groupTable.'.uid in ('.$groupUids.') ' : '');
+			$limit = $getCount ? '' : " LIMIT ".($pointer*$this->internal['results_at_a_time']).",".$this->internal['results_at_a_time'];
+
 			$query = 	$select . $from . $where . $orderBy . $limit;
-	
+
 			$res = $GLOBALS['TYPO3_DB']->sql_query( $query );
-		
+
 		}
 		return $res;
 	}
@@ -2038,12 +2087,15 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 */
 	function getResources( $sermonUid = '', $resourceUid = '') {
 
+		$pidList = $this->pi_getPidList($this->conf['pidList'],$this->conf['recursive']);
+
 		//	Build query to select resource attributes along with resource type name
 		$WHERE = $sermonUid ? 'AND tx_wecsermons_sermons.uid = ' . $sermonUid . ' ' :'';
 		$WHERE = $resourceUid ? 'AND tx_wecsermons_resources.uid = ' . $resourceUid . ' ' : $WHERE;
 		$WHERE .= $this->cObj->enableFields('tx_wecsermons_sermons');
 		$WHERE .= $this->cObj->enableFields('tx_wecsermons_resources');
 		$WHERE .= " AND( tx_wecsermons_resources.type = '0' OR (" . ltrim( $this->cObj->enableFields('tx_wecsermons_resource_types'), ' AND') . '))';
+		$WHERE .= ' AND tx_wecsermons_resources.pid IN ('.$pidList.')';
 
 		$query = 'select distinct
 		tx_wecsermons_resources.uid,

@@ -39,11 +39,11 @@ require_once(PATH_t3lib.'class.t3lib_div.php');
  */
 
 /**
- * class 'XML View' for the 'WEC Sermon Management System' library. This class is used in implementing hooks to wecapi_list. This allows us to extend the row and page array to include a link to sermon records, and the LIST view respectively.
+ * class 'tx_wecsermons_xmlView' for the 'WEC Sermon Management System' library. This class is used in implementing hooks to wecapi_list. This allows us to extend the row and page array to include a link to sermon records, and the LIST view respectively.
  *
- * @author	Web Empowered Church Team, Foundation For Evangelism <wec_sermons@webempoweredchurch.org>
+ * @author	Web Empowered Church Team, Foundation For Evangelism <sermon@webempoweredchurch.org>
  * @package TYPO3
- * @subpackage tx_wecsermons
+ * @subpackage wec_sermons
  */
  class tx_wecsermons_xmlView {
 
