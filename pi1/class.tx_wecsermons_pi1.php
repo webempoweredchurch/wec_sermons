@@ -2017,6 +2017,14 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$WHERE = sprintf(' WHERE find_in_set(%s.uid,%s.%s) ', $groupTable,$detailTable,$foreignColumn )
 				.$this->cObj->searchWhere($this->piVars['sword'],$searchFieldList,$detailTable).$this->cObj->enableFields($groupTable) . $this->cObj->enableFields( $detailTable ) .' AND '.$groupTable.'.pid IN ('.$pidList.')';
 
+
+			//	If start or end date was set, then add this to the query WHERE clause.
+			$startDate = $this->getConfigVal( $this, 'startDate', 'slistView', 'startDate', $lConf );
+			$endDate = $this->getConfigVal( $this, 'endDate', 'slistView', 'endDate', $lConf );
+
+			$WHERE .= $startDate ? ' AND occurrence_date >= ' .  $startDate : '';	//	$GLOBALS['TYPO3_DB']->fullQuoteStr( $startDate, $tableToList ) : '';
+			$WHERE .= $endDate ? ' AND occurrence_date <= ' .  $endDate : '';
+
 			$query .= $WHERE;
 
 			$res = $GLOBALS['TYPO3_DB']->sql_query( $query );
@@ -2068,6 +2076,14 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				.$this->cObj->enableFields( $detailTable ) . ' AND '.$groupTable.'.pid IN ('.$pidList.')'
 				. ($groupUids ? ' AND '.$groupTable.'.uid in ('.$groupUids.') ' : '');
 			$limit = $getCount ? '' : " LIMIT ".($pointer*$this->internal['results_at_a_time']).",".$this->internal['results_at_a_time'];
+
+
+			//	If start or end date was set, then add this to the query WHERE clause.
+			$startDate = $this->getConfigVal( $this, 'startDate', 'slistView', 'startDate', $lConf );
+			$endDate = $this->getConfigVal( $this, 'endDate', 'slistView', 'endDate', $lConf );
+
+			$where .= $startDate ? ' AND occurrence_date >= ' .  $startDate : '';	//	$GLOBALS['TYPO3_DB']->fullQuoteStr( $startDate, $tableToList ) : '';
+			$where .= $endDate ? ' AND occurrence_date <= ' .  $endDate : '';
 
 			$query = 	$select . $from . $where . $orderBy . $limit;
 
