@@ -274,7 +274,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					}
 					
 					//	Render the relative and absolute paths to the file
-					$relPath = urlencode( $this->local_cObj->typolink_URL( $typolinkConf ) );
+					$relPath = $this->local_cObj->typolink_URL( $typolinkConf );
 					$absPath = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $relPath;
 
 					//	Retrieve file info for the file.
