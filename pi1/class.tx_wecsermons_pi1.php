@@ -258,15 +258,30 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					$this->local_cObj->start($resource);
 					$typolinkConf = $lConf['tx_wecsermons_resources.']['resource_types.'][$resource['typoscript_object_name'].'.']['typolink.'];
 
+					// Instatiate a TypoScript parser for parsing the tx_wecapi_list setup config
+					$ts_parser = t3lib_div::makeInstance('t3lib_TSparser');
+					list(,$wecapi_list) = $ts_parser->getVal('plugin.tx_wecapi_list',$GLOBALS['TSFE']->tmpl->setup);
+
+					// If setCurrent is not set to a value (case where user does not have wec constants installed and wec_sermons is used out of the box), then set it to the environment variable TYPO3_SITE_URL
+					if( !$wecapi_list['tag_rendering.']['item_enclosure.']['setCurrent'] ) {
+						$ts_parser->setVal( 
+							'setCurrent', 
+							$GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_wecapi_list.']['tag_rendering.']['item_enclosure.'],
+							array( 
+								0 => t3lib_div::getIndpEnv('TYPO3_SITE_URL')
+							)
+						);
+					}
+					
 					//	Render the relative and absolute paths to the file
-					$relPath =  $this->local_cObj->typolink_URL( $typolinkConf );
-					$absPath = PATH_site . $relPath;
+					$relPath = urlencode( $this->local_cObj->typolink_URL( $typolinkConf ) );
+					$absPath = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $relPath;
 
 					//	Retrieve file info for the file.
 					$fileInfo = t3lib_basicFileFunctions::getTotalFileInfo( $absPath );
 
 					$row['size'] = $fileInfo['size'];
-					$row['enclosure_url'] =  t3lib_div::getIndpEnv('TYPO3_SITE_URL'). $relPath;
+					$row['enclosure_url'] = $relPath;
 					$row['mime_type'] = $resource['mime_type'];
 					$row['summary'] = $resource['summary'];
 					$row['subtitle'] = $resource['subtitle'];
