@@ -9,6 +9,9 @@ t3lib_extMgm::addUserTSConfig('
 t3lib_extMgm::addUserTSConfig('
 	options.saveDocNew.tx_wecsermons_sermons=1
 ');
+t3lib_extMgm::addUserTSConfig('
+	options.saveDocNew.tx_wecsermons_topics=1
+');
 
   ## Extending TypoScript from static template uid=43 to set up userdefined tag:
 t3lib_extMgm::addTypoScript($_EXTKEY,'editorcfg','
