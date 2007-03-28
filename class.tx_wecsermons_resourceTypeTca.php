@@ -84,10 +84,10 @@ class tx_wecsermons_resourceTypeTca {
 			//	Convert each tx_wecsermons_resource_types record into a 'types' TCA array
 			while( $resourceType = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $resource )  ) {
 
-				$GLOBALS['TCA']['tx_wecsermons_resources']['types'][$resourceType['uid']] = array( 'showitem' => "type;;;;1-1-1, title, " . $this->processAvailableFields( $resourceType['avail_fields'] ) . ($resourceType['type'] == '1' ? 'rendered_record,' : '') . " hidden;;1;;5-5-5" );
+				$GLOBALS['TCA']['tx_wecsermons_resources']['types'][$resourceType['uid']] = array( 'showitem' => "sys_language_uid;;;;1-1-1, hidden;;1, l18n_parent, l18n_diffsource,type;;;;2-2-2, title, " . rtrim( $this->processAvailableFields( $resourceType['avail_fields'] ) . ($resourceType['type'] == '1' ? 'rendered_record,' : ''), ',') );
 			}
 
-#debug( $GLOBALS['TCA']['tx_wecsermons_resources']['types'] ,1);
+debug( $GLOBALS['TCA']['tx_wecsermons_resources']['types'] ,1);
 
 		}
 
@@ -165,7 +165,7 @@ class tx_wecsermons_resourceTypeTca {
 	 		switch( $field ) {
 
 	 			case 'description':
-	 				$processedFields .= ' description;;;richtext;3-3-3';
+	 				$processedFields .= ' description;;;richtext:rte_transform[mode=ts_css];3-3-3';
 	 				break;
 
 	 			case 'itunes_metadata':
