@@ -38,6 +38,8 @@
 						<label index="description.details">The description can be used to briefly describe the resource type.</label>
 						<label index="icon.description">An icon that represents this resource type.</label>
 						<label index="icon.details">The icon is a small image representing the type. </label>
+						<label index="alttitle.description">Text used int the Alt and Title attributes of a resource type icon</label>
+						<label index="alttitle.details">Alt attributes are displayed in place of the icon if the browser can not display the image, while the title attribute is used as a "tooltip" pop-up.</label>
 						<label index="avail_fields.description">Select which fields you would like to make available on resources of this type.</label>
 						<label index="avail_fields.details">Visible Resource fields are those fields you wish resources of this type to possess. The available fields are description, icon, file, and any of three web addresses or urls. When assigning this type to a new SMS Resource record, these fields will be available.</label>
 						<label index="querystring_param.description">The plug-in's parameter that is appended to the query string.</label>

@@ -24,6 +24,8 @@
 			<label index="description.details">The description can be used to briefly describe the resource.</label>
 			<label index="graphic.description">A digitial image associated with a resource.</label>
 			<label index="graphic.details">A graphic can help describe a resource, or be used in a "graphical link" to the resource itself.</label>
+			<label index="alttitle.description">Text used int the Alt and Title attributes of a resource graphic</label>
+			<label index="alttitle.details">Alt attributes are displayed in place of the resource graphic if the browser can not display the image, while the title attribute is used as a "tooltip" pop-up.</label>
 			<label index="file.description">A file associated with a resource.</label>
 			<label index="file.details">A file is typically the ditial asset you wish to provide to the user of the website. This can be anything such as a PDF file, MS Word Document, digital pictures, etc. The only files that can not be made available are .PHP files.</label>
 			<label index="mime_type.description">A valid Mime Type.</label>

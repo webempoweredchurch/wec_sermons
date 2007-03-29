@@ -79,7 +79,7 @@ plugin.tx_wecsermons_pi1 {
 			10 {
 
 				prefixComment = 2 | pdf Preview:
-				altText.field = title
+				altText.field = alttitle
 				file.import = uploads/tx_wecsermons/
 				file.import.field = file
 				file.width = 150m
@@ -153,7 +153,7 @@ plugin.tx_wecsermons_pi1 {
 			10 = IMAGE
 			10 {
 				stdWrap.prefixComment = 2 | Graphic Preview:
-				altText.field = title
+				altText.field = alttitle
 				file.import = uploads/tx_wecsermons/
 				file.import.field = file
 				file.import.field.listNum = 0
@@ -341,6 +341,7 @@ plugin.tx_wecsermons_pi1 {
 			graphic = IMAGE
 			graphic {
 			wrap = <div class="tx-wecsermons-pi1-sermon-graphic">|</div>
+				altText.field = alttitle
 				file {
 					import = uploads/tx_wecsermons/
 					import.field = graphic
@@ -482,7 +483,7 @@ plugin.tx_wecsermons_pi1 {
 
 			icon = IMAGE
 			icon {
-			
+				altText.field = alttitle
 				file {
 					import = uploads/tx_wecsermons/
 					import.field = icon
@@ -504,6 +505,7 @@ plugin.tx_wecsermons_pi1 {
 			graphic = IMAGE
 			graphic {
 			wrap = <div class="tx-wecsermons-pi1-series-graphic">|</div>
+				altText.field = alttitle
 				file {
 					import = uploads/tx_wecsermons/
 					import.field = graphic
@@ -589,7 +591,8 @@ plugin.tx_wecsermons_pi1 {
 
 			photo = IMAGE
 			photo {
-			wrap = |
+				wrap = |
+				altText.field = alttitle
 				file {
 					import = uploads/tx_wecsermons/
 					import.field = photo
@@ -816,6 +819,7 @@ plugin.tx_wecsermons_pi1 {
 			graphic = IMAGE
 			graphic {
 			wrap = <div class="tx-wecsermons-pi1-sermon-graphic">|</div>
+				altText.field = alttitle
 				file {
 					import = uploads/tx_wecsermons/
 					import.field = graphic
@@ -923,6 +927,7 @@ plugin.tx_wecsermons_pi1 {
 
 			graphic = IMAGE
 			graphic {
+				altText.field = alttitle
 				file {
 					import = uploads/tx_wecsermons/
 					import.field = graphic
@@ -963,7 +968,7 @@ plugin.tx_wecsermons_pi1 {
 			
 			icon = IMAGE
 			icon {
-			
+				altText.field = alttitle
 				file {
 					import = uploads/tx_wecsermons/
 					import.field = icon
@@ -996,6 +1001,7 @@ plugin.tx_wecsermons_pi1 {
 			graphic = IMAGE
 			graphic {
 			wrap = |
+				altText.field = alttitle
 				file {
 					import = uploads/tx_wecsermons/
 					import.field = graphic
@@ -1095,7 +1101,8 @@ plugin.tx_wecsermons_pi1 {
 
 			photo = IMAGE
 			photo {
-			wrap = |
+				wrap = |
+				altText.field = alttitle
 				file {
 					import = uploads/tx_wecsermons/
 					import.field = photo

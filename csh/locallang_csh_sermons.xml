@@ -37,6 +37,8 @@
             <label index="_speakers_uid.seeAlso">tx_wecsermons_speakers</label>
             <label index="graphic.description">A digitial image associated with a sermon</label>
             <label index="graphic.details">A graphic can represent an image or idea that this sermon is related to.</label>
+						<label index="alttitle.description">Text used int the Alt and Title attributes of a sermon graphic</label>
+						<label index="alttitle.details">Alt attributes are displayed in place of the sermon graphic if the browser can not display the image, while the title attribute is used as a "tooltip" pop-up.</label>
             <label index="keywords.description">Any keywords associated with a sermon that you may wish to include.</label>
             <label index="keywords.details">Keywords are typically words that you wish to associate with a sermon, and will be included when searching for sermon records. These may be words that were not included in the description of the sermon, but are directly relevant, or used by people when searching.</label>
         </languageKey>

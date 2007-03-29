@@ -23,6 +23,8 @@
             <label index="url.details">The URL is a web address that can be the speakers home page, blog profile page, etc.</label>
              <label index="photo.description">Photograph of the speaker.</label>
             <label index="photo.details">The photograph can be a head shot or any other picture the speaker would like displayed.</label>
+						<label index="alttitle.description">Text used int the Alt and Title attributes of a speaker's photo</label>
+						<label index="alttitle.details">Alt attributes are displayed in place of the photo if the browser can not display the image, while the title attribute is used as a "tooltip" pop-up.</label>
         </languageKey>
     </data>
 </T3locallang>

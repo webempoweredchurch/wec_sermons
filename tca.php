@@ -142,6 +142,14 @@ $TCA["tx_wecsermons_resources"] = Array (
 				"maxitems" => 1,
 			)
 		),
+		"alttitle" => Array (
+			"exclude" => 1,
+			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resources.alttitle",
+			"config" => Array (
+				"type" => "text",
+				"wrap" => "virtual",
+			)
+		),
 		"type" => Array (
 			"exclude" => 1,
 			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resources.type",
@@ -254,11 +262,11 @@ $TCA["tx_wecsermons_resources"] = Array (
 		),
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;1, type;;;;2-2-2, title, description;;;richtext:rte_transform[mode=ts_css];,  graphic;;;;3-3-3, file;;;;4-4-4,webaddress1,subtitle;;;;5-5-5, summary, hidden;;1;;6-6-6"),
+		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;1, type;;;;2-2-2, title, description;;;richtext:rte_transform[mode=ts_css];,  graphic;;2;;3-3-3, file;;;;4-4-4,webaddress1,subtitle;;;;5-5-5, summary, hidden;;1;;6-6-6"),
 	),
 	"palettes" => Array (
 		"1" => Array("showitem" => "starttime,endtime,l18n_parent,l18n _diffsource,fe_group"),
-
+		"2" => Array("showitem" => "alttitle"),
 	)
 );
 
@@ -368,6 +376,14 @@ $TCA["tx_wecsermons_resource_types"] = Array (
 				"maxitems" => 1,
 			)
 		),
+		"alttitle" => Array (
+			"exclude" => 1,
+			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resources.title",
+			"config" => Array (
+				"type" => "text",
+				"size" => "30",
+			)
+		),
 		"marker_name" => Array (
 			"exclude" => 1,
 			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resource_types.marker_name",
@@ -459,11 +475,12 @@ $TCA["tx_wecsermons_resource_types"] = Array (
 		),
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;1, type, title;;;;2-2-2, marker_name, template_name, mime_type, typoscript_object_name, description;;;richtext:rte_transform[mode=ts_css];3-3-3, icon, avail_fields"),
-		"1" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;1, type, title;;;;2-2-2, marker_name, template_name, querystring_param, rendering_page, typoscript_object_name, description;;;richtext:rte_transform[mode=ts_css];3-3-3, icon, avail_fields")
+		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;1, type, title;;;;2-2-2, marker_name, template_name, mime_type, typoscript_object_name, description;;;richtext:rte_transform[mode=ts_css];3-3-3, icon;;2, avail_fields"),
+		"1" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;1, type, title;;;;2-2-2, marker_name, template_name, querystring_param, rendering_page, typoscript_object_name, description;;;richtext:rte_transform[mode=ts_css];3-3-3, icon;;2, avail_fields")
 	),
 	"palettes" => Array (
-		"1" => Array("showitem" => "fe_group")
+		"1" => Array("showitem" => "fe_group"),
+		"2" => Array("showitem" => "alttitle"),
 	)
 );
 
@@ -629,6 +646,14 @@ $TCA["tx_wecsermons_sermons"] = Array (
 				"maxitems" => 1,
 			)
 		),
+		"alttitle" => Array (
+			"exclude" => 1,
+			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.alttitle",
+			"config" => Array (
+				"type" => "text",
+				"wrap" => "virtual",
+			)
+		),
 		"series_uid" => Array (
 			"exclude" => 1,
 			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.series_uid",
@@ -783,10 +808,11 @@ $TCA["tx_wecsermons_sermons"] = Array (
 		),
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;1, title;;;;2-2-2, occurrence_date, scripture, description;;;richtext:rte_transform[mode=ts_css], resources_uid;;;;3-3-3, speakers_uid, series_uid, topics_uid, graphic;;;;4-4-4, keywords"),
+		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;1, title;;;;2-2-2, occurrence_date, scripture, description;;;richtext:rte_transform[mode=ts_css], resources_uid;;;;3-3-3, speakers_uid, series_uid, topics_uid, graphic;;2;;4-4-4, keywords"),
 	),
 	"palettes" => Array (
-		"1" => Array("showitem" => "starttime, endtime, fe_group")
+		"1" => Array("showitem" => "starttime, endtime, fe_group"),
+		"2" => Array("showitem" => "alttitle"),
 	)
 );
 
@@ -938,6 +964,14 @@ $TCA["tx_wecsermons_series"] = Array (
 				"maxitems" => 1,
 			)
 		),
+		"alttitle" => Array (
+			"exclude" => 1,
+			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_series.alttitle",
+			"config" => Array (
+				"type" => "text",
+				"wrap" => "virtual",
+			)
+		),
 		"seasons_uid" => Array (
 			"exclude" => 1,
 			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_series.seasons_uid",
@@ -1017,10 +1051,11 @@ $TCA["tx_wecsermons_series"] = Array (
 
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "sys_language_uid, l18n_parent, l18n_diffsource, hidden;;1;;1-1-1, title;;;;2-2-2, startdate;;;;3-3-3, enddate, description;;;richtext:rte_transform[mode=ts_css];4-4-4, scripture;;;;5-5-5, keywords, seasons_uid, topics_uid, graphic")
+		"0" => Array("showitem" => "sys_language_uid, l18n_parent, l18n_diffsource, hidden;;1;;1-1-1, title;;;;2-2-2, startdate;;;;3-3-3, enddate, description;;;richtext:rte_transform[mode=ts_css];4-4-4, scripture;;;;5-5-5, keywords, seasons_uid, topics_uid, graphic;;2")
 	),
 	"palettes" => Array (
-		"1" => Array("showitem" => "starttime,endtime,fe_group")
+		"1" => Array("showitem" => "starttime,endtime,fe_group"),
+		"2" => Array("showitem" => "alttitle"),
 	)
 );
 
@@ -1241,6 +1276,14 @@ $TCA["tx_wecsermons_speakers"] = Array (
 				"maxitems" => 1,
 			)
 		),
+		"alttitle" => Array (
+			"exclude" => 1,
+			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_speakers.alttitle",
+			"config" => Array (
+				"type" => "text",
+				"wrap" => "virtual",
+			)
+		),
 		"url" => Array (
 			"exclude" => 1,
 			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_speakers.url",
@@ -1253,11 +1296,12 @@ $TCA["tx_wecsermons_speakers"] = Array (
 
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;;;2-2-2, fullname;;2;;3-3-3, email;;;;4-4-4, url, photo")
+		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;;;2-2-2, fullname;;2;;3-3-3, email;;;;4-4-4, url, photo;;3")
 	),
 	"palettes" => Array (
 		"1" => Array("showitem" => ""),
-		"2" => Array("showitem" => "firstname, lastname")
+		"2" => Array("showitem" => "firstname, lastname"),
+		"3" => Array("showitem" => "alttitle"),
 	)
 );
 ?>

@@ -1182,6 +1182,13 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					}
 				break;
 
+				case '###RESOURCE_ALTTITLE###':
+					if( $row[$fieldName] ) {
+						$this->local_cObj->start( $row, 'tx_wecsermons_resources' );
+						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_resources.']['alttitle'], $lConf['tx_wecsermons_resources.']['alttitle.'] );
+					}
+				break;
+
 				case '###RESOURCE_WEBADDRESS1###':
 					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_resources' );
@@ -1716,6 +1723,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					'###RESOURCE_TITLE###' => 'title',
 					'###RESOURCE_DESCRIPTION###' => 'description',
 					'###RESOURCE_GRAPHIC###' => 'graphic',
+					'###RESOURCE_ALTTITLE###' => 'alttitle',
 					'###RESOURCE_FILE###' => 'file',
 					'###RESOURCE_WEBADDRESS1###' => 'webaddress1',
 					'###RESOURCE_WEBADDRESS2###' => 'webaddress2',
@@ -2134,6 +2142,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		tx_wecsermons_resources.title,
 		tx_wecsermons_resources.description,
 		tx_wecsermons_resources.graphic,
+		tx_wecsermons_resources.alttitle,
 		tx_wecsermons_resources.file,
 		tx_wecsermons_resources.webaddress1,
 		tx_wecsermons_resources.webaddress2,

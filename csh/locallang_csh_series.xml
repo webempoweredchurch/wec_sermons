@@ -35,6 +35,8 @@
             <label index="topics_uid.details">A topic can be used to make a particular subject stand out within a series, and relate a series to multiple topics.</label>
             <label index="graphic.description">A digitial image associated with a series</label>
             <label index="graphic.details">A graphic can represent an image or idea that this series is related to.</label>
+						<label index="alttitle.description">Text used int the Alt and Title attributes of a series graphic</label>
+						<label index="alttitle.details">Alt attributes are displayed in place of the series graphic if the browser can not display the image, while the title attribute is used as a "tooltip" pop-up.</label>
         </languageKey>
     </data>
 </T3locallang>
