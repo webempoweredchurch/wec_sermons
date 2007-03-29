@@ -87,7 +87,7 @@ class tx_wecsermons_resourceTypeTca {
 				$GLOBALS['TCA']['tx_wecsermons_resources']['types'][$resourceType['uid']] = array( 'showitem' => "sys_language_uid;;;;1-1-1, hidden;;1, l18n_parent, l18n_diffsource,type;;;;2-2-2, title, " . rtrim( $this->processAvailableFields( $resourceType['avail_fields'] ) . ($resourceType['type'] == '1' ? 'rendered_record,' : ''), ',') );
 			}
 
-debug( $GLOBALS['TCA']['tx_wecsermons_resources']['types'] ,1);
+#debug( $GLOBALS['TCA']['tx_wecsermons_resources']['types'] ,1);
 
 		}
 
