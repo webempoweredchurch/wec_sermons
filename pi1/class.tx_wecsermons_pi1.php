@@ -463,6 +463,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$GLOBALS['TSFE']->indexedDocTitle .= ' : ' .$this->internal['currentRow'][$field];
 			$GLOBALS['TSFE']->page['title'] .= ' : ' .$this->internal['currentRow'][$field];
 		}
+		
+#		$GLOBALS['TSFE']->additionalHeaderData
 
 		$this->template['content'] = $this->cObj->getSubpart( $this->template['single'], '###CONTENT###' );
 
@@ -1626,7 +1628,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 					$processObject = &t3lib_div::getUserObj( $classRef, 'tx_' );
 
-					$processObject->processMarker( &$this, $lConf, &$markerArray, &$row, $c, $key );
+					$processObject->processMarker( $this, $lConf, $markerArray, $row, $c, $key );
 				}
 
 			}
@@ -1670,6 +1672,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 				'###SERMON_DESCRIPTION###' => 'description',
 	 				'###SERMON_SCRIPTURE###' => 'scripture',
 					'###SERMON_GRAPHIC###' => 'graphic',
+					'###SERMON_ALTTITLE###' => 'alttitle',
 					'###SERMON_LINK###' => '',
 					'###ALTERNATING_CLASS###' => '',
 					'###SERMON_TOPICS###' => 'topics_uid',
@@ -1688,6 +1691,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					'###SERIES_DESCRIPTION###' => 'description',
 					'###SERIES_SCRIPTURE###' => 'scripture',
 					'###SERIES_GRAPHIC###' => 'graphic',
+					'###SERIES_ALTTITLE###' => 'alttitle',
 					'###SERIES_SEASON###' => 'seasons_uid',
 					'###SERIES_TOPICS###' => 'topics_uid',
 					'###SERIES_LINK###' => '',
@@ -1713,6 +1717,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					'###SPEAKER_EMAIL###' => 'email',
 					'###SPEAKER_URL###' => 'url',
 					'###SPEAKER_PHOTO###' => 'photo',
+					'###SPEAKER_ALTTITLE###' => 'alttitle',
 					'###SPEAKER_LINK###' => '',
 					'###ALTERNATING_CLASS###' => '',
 				);
@@ -2161,9 +2166,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		tx_wecsermons_resource_types.rendering_page
 
 		from tx_wecsermons_resources
-				join tx_wecsermons_sermons_resources_uid_mm on tx_wecsermons_resources.uid=tx_wecsermons_sermons_resources_uid_mm.uid_foreign
-		join tx_wecsermons_sermons on tx_wecsermons_sermons.uid=tx_wecsermons_sermons_resources_uid_mm.uid_local
-		left join tx_wecsermons_resource_types on tx_wecsermons_resources.type=tx_wecsermons_resource_types.uid
+			left join tx_wecsermons_sermons_resources_uid_mm on tx_wecsermons_resources.uid=tx_wecsermons_sermons_resources_uid_mm.uid_foreign
+			left join tx_wecsermons_sermons on tx_wecsermons_sermons.uid=tx_wecsermons_sermons_resources_uid_mm.uid_local
+			left join tx_wecsermons_resource_types on tx_wecsermons_resources.type=tx_wecsermons_resource_types.uid
 	 			where 1=1 ' . $WHERE;
 	 	$query .= ' ORDER BY tx_wecsermons_sermons_resources_uid_mm.sorting';
 

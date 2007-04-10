@@ -378,7 +378,7 @@ $TCA["tx_wecsermons_resource_types"] = Array (
 		),
 		"alttitle" => Array (
 			"exclude" => 1,
-			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resources.title",
+			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resources_types.alttitle",
 			"config" => Array (
 				"type" => "text",
 				"size" => "30",
