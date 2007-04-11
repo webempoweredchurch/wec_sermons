@@ -34,34 +34,34 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
  *   91:     function init($conf)
  *  112:     function main($content,$conf)
  *  222:     function xmlView ($content, $lConf)
- *  336:     function singleView($content,$lConf)
- *  475:     function searchView($content,$lConf)
- *  490:     function pi_list_searchbox($lConf)
- *  538:     function latestView($content,$lConf)
- *  612:     function listView($content,$lConf)
- *  706:     function pi_list_makelist($lConf, $template)
- *  923:     function pi_list_row($lConf, $markerArray = array(), $rowTemplate, $row ='', $c = 2)
- * 1651:     function getMarkerArray( $tableName = '' )
- * 1763:     function formatStr( $str )
- * 1777:     function getTemplateKey($tableName)
- * 1820:     function getUrlToList ( $absolute )
- * 1838:     function getUrlToSingle ( $absolute, $tableName, $uid, $sermonUid = '' )
- * 1866:     function getFeAdminList( $tableName = '' )
- * 1886:     function getNamedTemplateContent($keyName = 'sermon', $view = 'single')
- * 1928:     function getNamedSubpart( $subpartName, $content )
- * 1945:     function getMarkerName( $markerName )
- * 1958:     function loadTemplate( $view = 'LIST')
- * 1984:     function getTemplateFile()
- * 2012:     function getGroupResult( $groupTable, $detailTable, $foreignColumn, $lConf, $getCount = 0 )
- * 2100:     function getResources( $sermonUid = '', $resourceUid = '')
- * 2166:     function emptyResourceSubparts( &$subpartArray )
- * 2191:     function throwError( $type, $message, $detail = '' )
- * 2215:     function getTutorial ( $tutorial )
- * 2292:     function uniqueCsv()
- * 2307:     function unique_array()
- * 2325:     function get_foreign_column( $currentTable, $relatedTable )
- * 2351:     function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default = '' )
- * 2370:     function splitTableAndUID($record)
+ *  351:     function singleView($content,$lConf)
+ *  492:     function searchView($content,$lConf)
+ *  507:     function pi_list_searchbox($lConf)
+ *  555:     function latestView($content,$lConf)
+ *  629:     function listView($content,$lConf)
+ *  723:     function pi_list_makelist($lConf, $template)
+ *  940:     function pi_list_row($lConf, $markerArray = array(), $rowTemplate, $row ='', $c = 2)
+ * 1663:     function getMarkerArray( $tableName = '' )
+ * 1779:     function formatStr( $str )
+ * 1793:     function getTemplateKey($tableName)
+ * 1836:     function getUrlToList ( $absolute )
+ * 1854:     function getUrlToSingle ( $absolute, $tableName, $uid, $sermonUid = '' )
+ * 1882:     function getFeAdminList( $tableName = '' )
+ * 1902:     function getNamedTemplateContent($keyName = 'sermon', $view = 'single')
+ * 1944:     function getNamedSubpart( $subpartName, $content )
+ * 1961:     function getMarkerName( $markerName )
+ * 1974:     function loadTemplate( $view = 'LIST')
+ * 2000:     function getTemplateFile()
+ * 2028:     function getGroupResult( $groupTable, $detailTable, $foreignColumn, $lConf, $getCount = 0 )
+ * 2132:     function getResources( $sermonUid = '', $resourceUid = '')
+ * 2199:     function emptyResourceSubparts( &$subpartArray )
+ * 2224:     function throwError( $type, $message, $detail = '' )
+ * 2248:     function getTutorial ( $tutorial )
+ * 2325:     function uniqueCsv()
+ * 2340:     function unique_array()
+ * 2358:     function get_foreign_column( $currentTable, $relatedTable )
+ * 2384:     function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default = '' )
+ * 2403:     function splitTableAndUID($record)
  *
  * TOTAL FUNCTIONS: 31
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -264,15 +264,15 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 					// If setCurrent is not set to a value (case where user does not have wec constants installed and wec_sermons is used out of the box), then set it to the environment variable TYPO3_SITE_URL
 					if( !$wecapi_list['tag_rendering.']['item_enclosure.']['setCurrent'] ) {
-						$ts_parser->setVal( 
-							'setCurrent', 
+						$ts_parser->setVal(
+							'setCurrent',
 							$GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_wecapi_list.']['tag_rendering.']['item_enclosure.'],
-							array( 
+							array(
 								0 => t3lib_div::getIndpEnv('TYPO3_SITE_URL')
 							)
 						);
 					}
-					
+
 					//	Render the relative and absolute paths to the file
 					$relPath = $this->local_cObj->typolink_URL( $typolinkConf );
 					$absPath = t3lib_div::getFileAbsFileName($relPath);
@@ -463,7 +463,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$GLOBALS['TSFE']->indexedDocTitle .= ' : ' .$this->internal['currentRow'][$field];
 			$GLOBALS['TSFE']->page['title'] .= ' : ' .$this->internal['currentRow'][$field];
 		}
-		
+
 #		$GLOBALS['TSFE']->additionalHeaderData
 
 		$this->template['content'] = $this->cObj->getSubpart( $this->template['single'], '###CONTENT###' );
@@ -2021,7 +2021,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 * @param	string		$groupTable: The table name to group by
 	 * @param	string		$detailTable: The table name to display detail records by
 	 * @param	string		$foreignColumn: The column name by which detail records are related back to group records.
-	 * @param	array			$lConf: Locally scoped configuration array from TypoScript
+	 * @param	array		$lConf: Locally scoped configuration array from TypoScript
 	 * @param	boolean		$getCount: A boolean value enabling the return of the row count, rather than the rows themselves.
 	 * @return	resource		A sql resource returned from sql_query()
 	 */
