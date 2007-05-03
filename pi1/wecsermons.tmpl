@@ -41,6 +41,7 @@ SERIES_ENDDATE - Last occurrence of the series
 SERIES_GRAPHIC - A graphic shown with the series
 SERIES_ALTTITLE - Alt or title text used with the graphic
 
+
 --TOPIC
 TOPIC_TITLE - Title of the topic
 TOPIC_DESCRIPTION - Description or HTML detail of the topic
@@ -75,6 +76,7 @@ SERMON_SERIES - The sermon series a sermon is related to
 SERIES_SEASON - Season a series is related to
 SERIES_TOPICS - General topic that the series is associated with. Aka, category
 SERIES_SEASON - The season associated with this series
+SERIES_SERMONS - The sermons that are associated with this series
 DEFAULT_RESOURCES -	The subpart name of the 'default' resource type
 
 <em>Wrapped Subparts:</em>
@@ -113,14 +115,14 @@ BACK_LINK - link back to the list view
 				###SERMON_SCRIPTURE###
 
 				<ul class="tx-wecsermons-pi1-resources">
-					
+
 					<!--###DEFAULT_RESOURCES###-->
 					<li>
 							<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
 					</li>
 					<!--###DEFAULT_RESOURCES###-->
 				</ul>
-				
+
 			</li>
 			<!-- ###ITEM### end -->
 	<!-- ###CONTENT### end -->
@@ -154,7 +156,7 @@ BACK_LINK - link back to the list view
 				###SERMON_SCRIPTURE###
 
 				<ul class="tx-wecsermons-pi1-resources">
-					
+
 					<!--###DEFAULT_RESOURCES###-->
 					<li>
 							<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
@@ -181,21 +183,21 @@ BACK_LINK - link back to the list view
 
 			<h2>###SERMON_TITLE###</h2>
 			<p>###SERMON_OCCURRENCE_DATE###</p>
-	
+
 			<!--###SERMON_SPEAKERS###-->
 				<td>
 						<!--###SPEAKER_LINK###-->###SPEAKER_FULLNAME### <!--###SPEAKER_LINK###-->
 				</td>
 			<!--###SERMON_SPEAKERS###-->
-	
+
 			###SERMON_SCRIPTURE###
 			###SERMON_DESCRIPTION###
-		</div>		
-			
+		</div>
+
 
 		<div class="tx-wecsermons-pi-resources">
 			<h2>Sermon Multimedia:</h2>
-	
+
 				<ul class="tx-wecsermons-pi1-sermon-brief-resources">
 					<!--###DEFAULT_RESOURCES###-->
 					<li>
@@ -211,7 +213,7 @@ BACK_LINK - link back to the list view
 
 				</ul>
 		</div>
-	
+
 	<!--###CONTENT###-->
 	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
 <!-- ###TEMPLATE_SERMON_BRIEF### end -->
@@ -229,13 +231,13 @@ BACK_LINK - link back to the list view
 			###SERIES_STARTDATE### -- ###SERIES_ENDDATE###
 			###SERIES_DESCRIPTION###
 			###SERIES_SCRIPTURE###
-			
+
 			<!--###SERIES_SEASON###-->
 				<p>
 					<!--###SEASON_LINK###-->###SEASON_TITLE###<!--###SEASON_LINK###-->
 				</p>
 			<!--###SERIES_SEASON###-->
-			
+
 			<!--###SERIES_TOPICS###-->
 				<p>
 					<!--###TOPIC_LINK###-->###TOPIC_TITLE###<!--###TOPIC_LINK###-->
@@ -534,9 +536,9 @@ BACK_LINK - link back to the list view
 				<!--###SERMON_SPEAKERS###-->
 					<p>
 						###SPEAKER_PHOTO###<br/>
-						
+
 							<!--###SPEAKER_LINK###-->###SPEAKER_FULLNAME### <!--###SPEAKER_LINK###-->
-						
+
 					</p>
 				<!--###SERMON_SPEAKERS###-->
 
@@ -550,7 +552,7 @@ BACK_LINK - link back to the list view
 				###SERMON_GRAPHIC###
 				###SERMON_DESCRIPTION###
 				###SERMON_SCRIPTURE###
-				
+
 
 				<!--###SERMON_TOPICS###-->
 				<dl>
@@ -558,15 +560,15 @@ BACK_LINK - link back to the list view
 					<dd>###TOPIC_DESCRIPTION###</dd>
 				</dl>
 				<!--###SERMON_TOPICS###-->
-				
+
 				<ul class="tx-wecsermons-pi1-resources">
-					
+
 				<!--###DEFAULT_RESOURCES###-->
 					<li>
 						<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
 					</li>
 				<!--###DEFAULT_RESOURCES###-->
-					
+
 				<!--###PDF_RESOURCES###-->
 					<li>
 					###RESOURCE_CONTENT###
@@ -579,7 +581,7 @@ BACK_LINK - link back to the list view
 					</li>
 				<!--###EMBEDDED_MP3###-->
 
-					
+
 				</ul>
 
 
@@ -605,9 +607,9 @@ BACK_LINK - link back to the list view
 				<!--###SERMON_SPEAKERS###-->
 					<p>
 						###SPEAKER_PHOTO###<br/>
-						
+
 							<!--###SPEAKER_LINK###-->###SPEAKER_FULLNAME### <!--###SPEAKER_LINK###-->
-						
+
 					</p>
 				<!--###SERMON_SPEAKERS###-->
 
@@ -621,7 +623,7 @@ BACK_LINK - link back to the list view
 				###SERMON_GRAPHIC###
 				###SERMON_DESCRIPTION###
 				###SERMON_SCRIPTURE###
-				
+
 
 				<!--###SERMON_TOPICS###-->
 				<dl>
@@ -629,15 +631,15 @@ BACK_LINK - link back to the list view
 					<dd>###TOPIC_DESCRIPTION###</dd>
 				</dl>
 				<!--###SERMON_TOPICS###-->
-				
+
 				<ul class="tx-wecsermons-pi1-resources">
-					
+
 				<!--###DEFAULT_RESOURCES###-->
 					<li>
 						<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
 					</li>
 				<!--###DEFAULT_RESOURCES###-->
-					
+
 				<!--###PDF_RESOURCES###-->
 					<li>
 					###RESOURCE_CONTENT###
@@ -650,7 +652,7 @@ BACK_LINK - link back to the list view
 					</li>
 				<!--###EMBEDDED_MP3###-->
 
-					
+
 				</ul>
 
 			</li>
@@ -702,39 +704,39 @@ BACK_LINK - link back to the list view
 			<h2>###SERMON_TITLE###</h2>
 			<p>###SERMON_OCCURRENCE_DATE###</p>
 			###SERMON_SCRIPTURE###
-	
+
 			<!--###SERMON_SERIES###-->
 					<!--###SERIES_LINK###-->###SERIES_TITLE###<!--###SERIES_LINK###-->
 			<!--###SERMON_SERIES###-->
-			
+
 			<!--###SERMON_SPEAKERS###-->
 				<td>
 					###SPEAKER_PHOTO###<br/>
-					
+
 						<!--###SPEAKER_LINK###-->###SPEAKER_FULLNAME### <!--###SPEAKER_LINK###-->
-					
+
 				</td>
 			<!--###SERMON_SPEAKERS###-->
-	
+
 			###SERMON_DESCRIPTION###
-			
-	
+
+
 			<!--###SERMON_TOPICS###-->
 				<p>
 					<!--###TOPIC_LINK###-->###TOPIC_TITLE###<!--###TOPIC_LINK###-->
 					###TOPIC_DESCRIPTION###
 				</p>
 			<!--###SERMON_TOPICS###-->
-				
+
 				<ul class="tx-wecsermons-pi1-resources">
 					<h2>Sermon Multimedia:</h2>
-	
+
 				<!--###DEFAULT_RESOURCES###-->
 					<li>
 						<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###-->
 					</li>
 				<!--###DEFAULT_RESOURCES###-->
-	
+
 				<!--###PDF_RESOURCES###-->
 					<li>
 						###RESOURCE_CONTENT###
@@ -746,64 +748,64 @@ BACK_LINK - link back to the list view
 						###RESOURCE_CONTENT###
 					</li>
 				<!--###EMBEDDED_AVI###-->
-		
+
 				<!--###EMBEDDED_MP3###-->
 					<li>
 						###RESOURCE_CONTENT###
 					</li>
 				<!--###EMBEDDED_MP3###-->
-		
+
 				<!--###EMBEDDED_MP4###-->
 					<li>
 						###RESOURCE_CONTENT###
 					</li>
 				<!--###EMBEDDED_MP4###-->
-		
+
 				<!--###EMBEDDED_SWF###-->
 					<li>
 						###RESOURCE_CONTENT###
 					</li>
 				<!--###EMBEDDED_SWF###-->
-		
+
 				<!--###EMBEDDED_MOV###-->
 					<li>
 						###RESOURCE_CONTENT###
 					</li>
 				<!--###EMBEDDED_MOV###-->
-		
+
 				<!--###EMBEDDED_WMA###-->
 					<li>
 						###RESOURCE_CONTENT###
 					</li>
 				<!--###EMBEDDED_WMA###-->
-		
+
 				<!--###EMBEDDED_WMV###-->
 					<li>
 						###RESOURCE_CONTENT###
 					</li>
 				<!--###EMBEDDED_WMV###-->
-		
+
 				<!--###EMBEDDED_REALMEDIA###-->
 					<li>
 						###RESOURCE_CONTENT###
 					</li>
 				<!--###EMBEDDED_REALMEDIA###-->
-				
+
 				<!--###DOWNLOAD_FILE###-->
 					<li>
 						###RESOURCE_CONTENT###
 					</li>
 				<!--###DOWNLOAD_FILE###-->
-				
+
 		 		<!--###POLL_RESOURCES###-->
 					<li>
 				 		<!--###RESOURCE_LINK###-->Take the Poll ...<!--###RESOURCE_LINK###-->
 					</li>
 		 		<!--###POLL_RESOURCES###-->
-	
+
 			</ul>
-		
-	</div>		
+
+	</div>
 
 	<!--###CONTENT###-->
 	<p class="tx-wecsermons-pi1-backlink"><!--###BACK_LINK###-->###BACK_TO_LIST###<!--###BACK_LINK###--></p>
@@ -1009,7 +1011,7 @@ BACK_LINK - link back to the list view
 			<!--###RESOURCE_LINK###-->###RESOURCE_TITLE###<!--###RESOURCE_LINK###--></p>
 			###RESOURCE_CONTENT###
 		<!--###DOWNLOAD_GRAPHIC###-->
-		
+
 		<hr/>
 		<!--###ITEM###-->
 	<!--###CONTENT###-->

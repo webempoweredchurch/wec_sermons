@@ -35,33 +35,33 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
  *  112:     function main($content,$conf)
  *  222:     function xmlView ($content, $lConf)
  *  351:     function singleView($content,$lConf)
- *  492:     function searchView($content,$lConf)
- *  507:     function pi_list_searchbox($lConf)
- *  555:     function latestView($content,$lConf)
- *  629:     function listView($content,$lConf)
- *  723:     function pi_list_makelist($lConf, $template)
- *  940:     function pi_list_row($lConf, $markerArray = array(), $rowTemplate, $row ='', $c = 2)
- * 1663:     function getMarkerArray( $tableName = '' )
- * 1779:     function formatStr( $str )
- * 1793:     function getTemplateKey($tableName)
- * 1836:     function getUrlToList ( $absolute )
- * 1854:     function getUrlToSingle ( $absolute, $tableName, $uid, $sermonUid = '' )
- * 1882:     function getFeAdminList( $tableName = '' )
- * 1902:     function getNamedTemplateContent($keyName = 'sermon', $view = 'single')
- * 1944:     function getNamedSubpart( $subpartName, $content )
- * 1961:     function getMarkerName( $markerName )
- * 1974:     function loadTemplate( $view = 'LIST')
- * 2000:     function getTemplateFile()
- * 2028:     function getGroupResult( $groupTable, $detailTable, $foreignColumn, $lConf, $getCount = 0 )
- * 2132:     function getResources( $sermonUid = '', $resourceUid = '')
- * 2199:     function emptyResourceSubparts( &$subpartArray )
- * 2224:     function throwError( $type, $message, $detail = '' )
- * 2248:     function getTutorial ( $tutorial )
- * 2325:     function uniqueCsv()
- * 2340:     function unique_array()
- * 2358:     function get_foreign_column( $currentTable, $relatedTable )
- * 2384:     function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default = '' )
- * 2403:     function splitTableAndUID($record)
+ *  531:     function searchView($content,$lConf)
+ *  546:     function pi_list_searchbox($lConf)
+ *  594:     function latestView($content,$lConf)
+ *  668:     function listView($content,$lConf)
+ *  762:     function pi_list_makelist($lConf, $template)
+ *  979:     function pi_list_row($lConf, $markerArray = array(), $rowTemplate, $row ='', $c = 2)
+ * 1702:     function getMarkerArray( $tableName = '' )
+ * 1818:     function formatStr( $str )
+ * 1832:     function getTemplateKey($tableName)
+ * 1875:     function getUrlToList ( $absolute )
+ * 1893:     function getUrlToSingle ( $absolute, $tableName, $uid, $sermonUid = '' )
+ * 1921:     function getFeAdminList( $tableName = '' )
+ * 1941:     function getNamedTemplateContent($keyName = 'sermon', $view = 'single')
+ * 1983:     function getNamedSubpart( $subpartName, $content )
+ * 2000:     function getMarkerName( $markerName )
+ * 2013:     function loadTemplate( $view = 'LIST')
+ * 2039:     function getTemplateFile()
+ * 2067:     function getGroupResult( $groupTable, $detailTable, $foreignColumn, $lConf, $getCount = 0 )
+ * 2171:     function getResources( $sermonUid = '', $resourceUid = '')
+ * 2238:     function emptyResourceSubparts( &$subpartArray )
+ * 2263:     function throwError( $type, $message, $detail = '' )
+ * 2287:     function getTutorial ( $tutorial )
+ * 2364:     function uniqueCsv()
+ * 2379:     function unique_array()
+ * 2397:     function get_foreign_column( $currentTable, $relatedTable )
+ * 2423:     function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default = '' )
+ * 2442:     function splitTableAndUID($record)
  *
  * TOTAL FUNCTIONS: 31
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -438,8 +438,10 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$templateKey = $this->getTemplateKey( $this->internal['currentTable'] );
 			$this->template['single'] = $this->getNamedTemplateContent( $templateKey );
 
+			//	TODO: Pre-process template for markers
+
 			//	TODO: allow specification of what record to draw from TypoScript
-			$this->internal['currentRow'] = $this->pi_getRecord($this->piVars['recordType'],$this->piVars['showUid']);
+			$this->internal['currentRow'] = $row = $this->pi_getRecord($this->piVars['recordType'],$this->piVars['showUid']);
 			//	Report an error if we couldn't pull up the template.
 			if(! $this->template['single'] ) {
 
@@ -460,19 +462,56 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 		$field = $GLOBALS['TCA'][$this->internal['currentTable']]['ctrl']['label'];
 		if ($field)  {
-			$GLOBALS['TSFE']->indexedDocTitle .= ' : ' .$this->internal['currentRow'][$field];
-			$GLOBALS['TSFE']->page['title'] .= ' : ' .$this->internal['currentRow'][$field];
+			$GLOBALS['TSFE']->indexedDocTitle .= ' : ' .$row[$field];
+			$GLOBALS['TSFE']->page['title'] .= ' : ' .$row[$field];
 		}
 
 #		$GLOBALS['TSFE']->additionalHeaderData
 
 		$this->template['content'] = $this->cObj->getSubpart( $this->template['single'], '###CONTENT###' );
+		$this->template['item'] = $this->cObj->getSubpart( $this->template['single'], '###SERIES_SERMONS###' );
 
 		//	Retrieve the markerArray for the right table
 		$markerArray = $this->getMarkerArray( $this->internal['currentTable'] );
 
 		//	Process row
 		$content .= $this->cObj->substituteSubpart( $this->template['single'], '###CONTENT###', $this->pi_list_row($lConf, $markerArray, $this->template['content'], $this->internal['currentRow'] ) );
+
+
+		//	Branch for state where series is being displayed, and there is an SERIES_SERMONS subpart available, indicating related sermons should be shown
+		if( $this->template['item'] && $this->internal['currentTable'] == 'tx_wecsermons_series' ) {
+
+			//	Find all sermons related to this series
+			$WHERE = $this->cObj->enableFields('tx_wecsermons_sermons');
+			$query = 'SELECT * FROM tx_wecsermons_sermons WHERE find_in_set('.$row['uid'].',tx_wecsermons_sermons.series_uid)' . $WHERE;
+			$orderBy = '';
+
+			//	Build order by clause for query
+			if( $this->conf['listView.']['tx_wecsermons_sermons.']['orderBy'] ) {
+				$fieldArray  = explode( ',',$this->conf['listView.']['tx_wecsermons_sermons.']['orderBy'] );
+				$orderString = '';
+				foreach( $fieldArray as $field ) {
+					$orderString .= 'tx_wecsermons_sermons.'.$field.",";
+				}
+				$orderString = rtrim( $orderString, "," );
+				$orderBy = ' ORDER BY '.$orderString.( $this->conf['listView.']['tx_wecsermons_sermons.']['descFlag'] ? ' DESC' : '' );
+			}
+
+			$query .= $orderBy;
+			$sermonContent = '';
+			$sermonRes = $GLOBALS['TYPO3_DB']->sql_query( $query );
+			$sermonMarkers = $this->getMarkerArray( 'tx_wecsermons_sermons');
+
+			//	Iterate every sermon record, aggregate content
+			while( $sermon = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $sermonRes ) ) {
+				$sermonContent .= $this->pi_list_row($this->conf['listView.'], $sermonMarkers, $this->template['item'], $sermon );
+
+			}
+
+			//	Insert sermon content into content stream
+			$content = $this->cObj->substituteSubpart( $content, '###SERIES_SERMONS###', $sermonContent );
+
+		}
 
 		//	Parse for additional markers. Browse results, etc.
 		$markerArray = $this->getMarkerArray();

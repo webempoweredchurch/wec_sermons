@@ -57,14 +57,14 @@ plugin.tx_wecsermons_pi1 {
 	#	The subpart marker used to define resources of type 'default'
 	defaultMarker = ###DEFAULT_RESOURCES###
 	defaultTemplate = ###TEMPLATE_DEFAULT_RESOURCES###
-	
+
 	# Bitrate is used to calculate the duration of an audio file
 	bitrate = {$plugin.tx_wecsermons_pi1.bitrate}
-		
+
 	# ***************************
 	# Resource Types CASE cObject
 	# ***************************
-	
+
 	# Resource types are identified by thier typoscript_object_name field, and render content for the ###RESOURCE_CONTENT### template marker
 	resource_types = CASE
 	resource_types {
@@ -131,7 +131,7 @@ plugin.tx_wecsermons_pi1 {
 		poll {
 			type = 1
 		}
-		
+
 		downloadfile = TEXT
 		downloadfile {
 			field = title
@@ -169,13 +169,13 @@ plugin.tx_wecsermons_pi1 {
 					}
 				}
 			}
-			
+
 			20 = TEXT
 			20.field = title
 			20.prefixComment = 2 | Graphic Title:
-			
+
 		}
-		
+
 		# embedded_mp3 Embedded Audio
 		embedded_mp3 = COA
 		embedded_mp3 {
@@ -188,7 +188,7 @@ plugin.tx_wecsermons_pi1 {
 				audiofile.setCurrent.listNum = 0
 				audiofile.current = 1
 			}
-			
+
 			stdWrap.innerWrap = <div class="tx-wecsermons-pi1-mp3">|</div>
 			stdWrap.innerWrap {
 				addParams.title = 1
@@ -225,15 +225,15 @@ plugin.tx_wecsermons_pi1 {
 		# Embedded media represents a gereral configuration for all embedded media types
 		embedded_media = COA
 		embedded_media {
-		
+
 			stdWrap.prefixComment = 2 | SMS Embedded Media:
-		
+
 			//	Default header uses standard header
 			10 < plugin.tx_wecsermons_pi1.stdHeader
 			10.10.addParams.title = 1
 			10.10.addParams.title.field = type_description
 			10.10.addParams.title.stripHtml = 1
-			
+
 			//	Media embed uses the MULTIMEDIA cObject to render, using the first file in the list of attached resources.
 			20 = MULTIMEDIA
 			20.stdWrap.prefixComment = 2 | Embeded media:
@@ -247,9 +247,9 @@ plugin.tx_wecsermons_pi1 {
 				type={field:mime_type}
 			)
 			20.params.insertData = 1
-			
+
 		}
-		
+
 		embedded_realmedia < .embedded_media
 		embedded_wma < .embedded_media
 		embedded_swf < .embedded_media
@@ -261,7 +261,7 @@ plugin.tx_wecsermons_pi1 {
 		embedded_mov < .embedded_wmv
 		embedded_mp4 < .embedded_wmv
 		embedded_avi < .embedded_wmv
-		
+
 		# This is the 'Default' resource type. This rendering will be used if the proper key has not been defined for the resource you are rendering.
 		# To define a new resource key, create a new property within the plugin.tx_wecsermons_pi1.resource_types CASE cObject. You can use the 'default' property as a starting point.
 		default = COA
@@ -293,7 +293,7 @@ plugin.tx_wecsermons_pi1 {
 		back = TEXT
 		back {
 			value = Return
-			wrap = 
+			wrap =
 		}
 
 		# Specify which layout will be used, also can be set in the front-end plugin
@@ -301,7 +301,7 @@ plugin.tx_wecsermons_pi1 {
 
 		# General formatting of a date in list view.
 		# You may override the global date formatting by specifying a format at this level
-		general_dateWrap.strftime = 
+		general_dateWrap.strftime =
 
 		tx_wecsermons_sermons {
 
@@ -414,7 +414,7 @@ plugin.tx_wecsermons_pi1 {
 				pdf.typolink < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources.typolink
 
 				embedded_mp3.typolink < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources.typolink
-				
+
 				embedded_mp4.typolink = 1
 				embedded_mp4.typolink {
 					parameter.field = webaddress1
@@ -430,7 +430,7 @@ plugin.tx_wecsermons_pi1 {
 				embedded_flv.typolink < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources.typolink
 				downloadfile.typolink < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources.typolink
 				downloadgraphic.typolink < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources.typolink
-			
+
 				poll.typolink = 0
 				news.typolink = 0
 				discussion.typolink = 0
@@ -534,7 +534,7 @@ plugin.tx_wecsermons_pi1 {
 					parameter.setCurrent.rawUrlEncode = 1
 					parameter.insertData = 1
 					extTarget = _blank
-				}		
+				}
 				field = scripture
 				wrap = <p class="tx-wecsermons-pi1-single-scripture"><h2>Scripture:</h2>|</p>
 			}
@@ -718,27 +718,27 @@ plugin.tx_wecsermons_pi1 {
 
 		# Whether the active page is a clickable link or text only
 		dontLinkActivePage =
-	
+
 		# A boolean switch if the two links named "<< First" and "LAST >>" will be shown and point to the first or last page.
 		showFirstLast =
-	
+
 		# Defines where the current page is shown in the list of pages in the Pagebrowser. If this var is an integer it will be interpreted as position in the list of pages. If its value is the keyword "center" the current page will be shown in the middle of the pagelist.
 		pagefloat =
-	
+
 		# A boolean swith that displays the pagelinks in ranges f.e.: 1-5 6-10 11-15... instead of 1 2 3...
 		showRange =
-	
+
 	 	# An integer switch that determines how the results browser will be rendered
 		#
 		# 1: (default) the text "Displaying results..." and the result-browser will be rendered.
 		# 2: only the text "Displaying results..." will be shown
 		showResultCount = 1
-	
+
 		# *******************
 		# Browse Box Link Wraps
 		# *******************
 		browseBox_linkWraps {
-	
+
 			disabledLinkWrap = <td nowrap="nowrap"><p>|</p></td>
 			inactiveLinkWrap = <td nowrap="nowrap"><p>|</p></td>
 			activeLinkWrap = <td class="tx-wecsermons-pi1-browsebox-SCell" nowrap="nowrap"><p>|</p></td>
@@ -751,7 +751,7 @@ plugin.tx_wecsermons_pi1 {
 				<div class="tx-wecsermons-pi1-browsebox">|</div>
 			)
 		}
-		
+
 		# How many results to show on each page
 		maxdetailResults = {$plugin.tx_wecsermons_pi1.listView.maxdetailResults}
 		maxGroupResults = {$plugin.tx_wecsermons_pi1.listView.maxGroupResults}
@@ -765,7 +765,7 @@ plugin.tx_wecsermons_pi1 {
 
 		# General formatting of a date in list view.
 		# You may override the global date formatting by specifying a format at this level
-		general_dateWrap.strftime = 
+		general_dateWrap.strftime =
 
 		tx_wecsermons_sermons {
 
@@ -804,7 +804,7 @@ plugin.tx_wecsermons_pi1 {
 
 			scripture = TEXT
 			scripture {
-			
+
 				typolink {
 					parameter = http://www.biblegateway.com/passage/?search={current:1}&version=31;&interface=print
 					parameter.setCurrent.field = scripture
@@ -901,7 +901,7 @@ plugin.tx_wecsermons_pi1 {
 
 				downloadfile.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
 				downloadgraphic.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
-			
+
 				poll.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
 				news.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
 				discussion.typolink < plugin.tx_wecsermons_pi1.listView.tx_wecsermons_resources.typolink
@@ -965,7 +965,7 @@ plugin.tx_wecsermons_pi1 {
 			file = TEXT
 			file.field = file
 			file.listNum = 0
-			
+
 			icon = IMAGE
 			icon {
 				altText.field = alttitle
@@ -1267,7 +1267,7 @@ plugin.tx_wecsermons_pi1 {
 		descFlag = 1
 		orderByList = occurrence_date,title,crdate
 		orderBy = occurrence_date
-		
+
 		# By setting this to 1, the XML feed will link to the single view of a resource rather than a single view of a sermon
 		itemLinkToResource = {$plugin.tx_wecsermons_pi1.xmlView.itemLinkToResource}
 
@@ -1275,9 +1275,9 @@ plugin.tx_wecsermons_pi1 {
 		# TOTO: change to name of resource type specified in v.0.5.2 of extension
 		#	EnclosureType specifies which custom resource type will be included as an <enclosure/> for podcasting.
 		enclosureType =  embedded_mp3
-		
+
 		tx_wecsermons_resources.resource_types < plugin.tx_wecsermons_pi1.singleView.tx_wecsermons_resources.resource_types
-		
+
 
 	}
 }
