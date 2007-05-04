@@ -1157,43 +1157,40 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					$marker = '';
 					$markerArray[$key] = '';
 
-					if( $row[$fieldName] ) {
+					$this->emptyResourceSubparts( $subpartArray, $rowTemplate );
 
-						$this->emptyResourceSubparts( $subpartArray, $rowTemplate );
-
-						$resourceMarkerArray = $this->getMarkerArray( 'tx_wecsermons_resources', $rowTemplate );
+					$resourceMarkerArray = $this->getMarkerArray( 'tx_wecsermons_resources', $rowTemplate );
 
 
-						//	Retrieve related resources to this sermon
-						$resources = $this->getResources( $row['uid'] );
+					//	Retrieve related resources to this sermon
+					$resources = $this->getResources( $row['uid'] );
 
-						foreach( $resources as $resource ) {
-							$this->internal['currentRow'] = $resource;
-							$this->local_cObj->start( $this->internal['currentRow'] );
+					foreach( $resources as $resource ) {
+						$this->internal['currentRow'] = $resource;
+						$this->local_cObj->start( $this->internal['currentRow'] );
 
-							//	Use the marker name from the resource_type record
-							$marker = $this->getMarkerName( $this->internal['currentRow']['marker_name'] );
+						//	Use the marker name from the resource_type record
+						$marker = $this->getMarkerName( $this->internal['currentRow']['marker_name'] );
 
-							//	If this resource is the default resource type, we use the subpart marker name from typoscript config
-							if( !strcmp( '0', $this->internal['currentRow']['type'] ) ) {
+						//	If this resource is the default resource type, we use the subpart marker name from typoscript config
+						if( !strcmp( '0', $this->internal['currentRow']['type'] ) ) {
 
-								$marker = $this->getMarkerName( $this->conf['defaultMarker'] );
+							$marker = $this->getMarkerName( $this->conf['defaultMarker'] );
 
-								//	Change the 'type' to 'default' to the typoscript setting is more user friendly.
-								$this->internal['currentRow']['type'] = 'default';
-
-							}
-
-							//	Retrieve the template subpart used to render this resource
-							$resourceTemplate = $this->cObj->getSubpart( $rowTemplate, $marker );
-							if( $resourceTemplate )
-								//	Aggregate rendered row into subpart. This allows multiple resources of the same type to all be output,
-								//	rather than the last one processed.
-								$subpartArray[$marker] .= $this->pi_list_row( $lConf, $resourceMarkerArray, $resourceTemplate, $this->internal['currentRow'] );
+							//	Change the 'type' to 'default' to the typoscript setting is more user friendly.
+							$this->internal['currentRow']['type'] = 'default';
 
 						}
 
+						//	Retrieve the template subpart used to render this resource
+						$resourceTemplate = $this->cObj->getSubpart( $rowTemplate, $marker );
+						if( $resourceTemplate )
+							//	Aggregate rendered row into subpart. This allows multiple resources of the same type to all be output,
+							//	rather than the last one processed.
+							$subpartArray[$marker] .= $this->pi_list_row( $lConf, $resourceMarkerArray, $resourceTemplate, $this->internal['currentRow'] );
+
 					}
+
 
 				break;
 
