@@ -425,7 +425,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$this->internal['previousRow'] = $this->internal['currentRow'];
 
 			$this->internal['currentRow'] = $this->pi_getRecord($this->internal['currentTable'],$this->piVars['sermonUid']);
-			$this->template['single'] = $this->pi_list_row( $lConf, $this->getMarkerArray('tx_wecsermons_sermons'), $this->template['single'], $this->internal['currentRow'] );
+			$this->template['single'] = $this->pi_list_row( $lConf, $this->getMarkerArray('tx_wecsermons_sermons',$this->template['single']), $this->template['single'], $this->internal['currentRow'] );
 
 			//	Restore the previous table and row
 			$this->internal['currentTable'] = $this->internal['previousTable'];
@@ -472,11 +472,10 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		$this->template['item'] = $this->cObj->getSubpart( $this->template['single'], '###SERIES_SERMONS###' );
 
 		//	Retrieve the markerArray for the right table
-		$markerArray = $this->getMarkerArray( $this->internal['currentTable'] );
+		$markerArray = $this->getMarkerArray( $this->internal['currentTable'], $this->template['content'] );
 
 		//	Process row
 		$content .= $this->cObj->substituteSubpart( $this->template['single'], '###CONTENT###', $this->pi_list_row($lConf, $markerArray, $this->template['content'], $this->internal['currentRow'] ) );
-
 
 		//	Branch for state where series is being displayed, and there is an SERIES_SERMONS subpart available, indicating related sermons should be shown
 		if( $this->template['item'] && $this->internal['currentTable'] == 'tx_wecsermons_series' ) {
@@ -500,8 +499,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$query .= $orderBy;
 			$sermonContent = '';
 			$sermonRes = $GLOBALS['TYPO3_DB']->sql_query( $query );
-			$sermonMarkers = $this->getMarkerArray( 'tx_wecsermons_sermons');
 
+			$sermonMarkers = $this->getMarkerArray( 'tx_wecsermons_sermons', $this->template['item']);
+		
 			//	Iterate every sermon record, aggregate content
 			while( $sermon = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $sermonRes ) ) {
 				$sermonContent .= $this->pi_list_row($this->conf['listView.'], $sermonMarkers, $this->template['item'], $sermon );
@@ -830,8 +830,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 			}
 
-			$markerArray = $this->getMarkerArray( $groupTable );
 			$groupTemplate = $this->template['group'];
+			$markerArray = $this->getMarkerArray( $groupTable, $groupTemplate );
+		
 			$groupContent = '';
 			$detailContent = '';
 
@@ -843,8 +844,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$res = $this->getGroupResult( $groupTable, $detailTable, $foreign_column, $lConf );
 
 			//	Retreive marker array and template for the detail table
-			$detailMarkArray = $this->getMarkerArray( $detailTable );
 			$detailTemplate = $this->template['item'] = $this->getNamedSubpart( 'ITEM', $template );
+			$detailMarkArray = $this->getMarkerArray( $detailTable, $detailTemplate);
 
 			//	Counter for number of group records, and detail records shown on a 'page'
 			$groupCount = 0;
@@ -925,13 +926,14 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		}	//	End if group
 		else {	//	No group found, just provide a straight list
 
-			//	Get the related table entries to the group, using 'tx_wecsermons_sermons' if none specified
+			//	Get tables to list, using 'tx_wecsermons_sermons' if none specified
 			$tableToList = $this->getConfigVal( $this, 'detail_table', 'slistView', 'detailTable', $this->conf, 'tx_wecsermons_sermons' );
 
 			//	Load the correct marker array and load the item template
-			$markerArray = $this->getMarkerArray( $tableToList );
 			$itemTemplate = $this->cObj->getSubpart( $template, '###ITEM###' );
-			$this->internal['currentTable'] = $this->internal['groupTable'] = 'tx_wecsermons_series';
+			$markerArray = $this->getMarkerArray( $tableToList, $itemTemplate );
+
+			$this->internal['currentTable'] = $tableToList;
 			$this->internal['results_at_a_time'] = t3lib_div::intInRange($lConf['maxdetailResults'],1,1000);
 
 			//	TODO: Modify the date selection to include other tables and date fields
@@ -955,6 +957,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			while( $this->internal['currentRow'] = $this->internal['previousRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) ) {
 
 				$content .= $this->pi_list_row( $lConf, $markerArray, $itemTemplate, $this->internal['currentRow'], $count );
+
 				$count++;
 			}
 
@@ -977,6 +980,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 * @return	string		A completed template subpart, populated with data from the row
 	 */
 	function pi_list_row($lConf, $markerArray = array(), $rowTemplate, $row ='', $c = 2)	{
+
 		$wrappedSubpartArray = array();
 		$subpartArray = array();
 
@@ -1057,7 +1061,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					if( $row[$fieldName] ) {
 
 						$seriesTemplate = $this->cObj->getSubpart( $rowTemplate, $key );
-						$seriesMarkerArray = $this->getMarkerArray('tx_wecsermons_series');
+						$seriesMarkerArray = $this->getMarkerArray('tx_wecsermons_series',$seriesTemplate);
+
 						$seriesContent = '';
 
 						$seriesRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -1089,7 +1094,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 						//	Get the speakers subpart
 						$speakerTemplate = $this->cObj->getSubpart( $rowTemplate, $key );
-						$speakerMarkerArray = $this->getMarkerArray('tx_wecsermons_speakers');
+						$speakerMarkerArray = $this->getMarkerArray('tx_wecsermons_speakers',$speakerTemplate);
 						$speakerContent = '';
 
 						//	Retrieve all speaker records that are related to this sermon
@@ -1122,7 +1127,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 						//	Load the topics subpart
 						$topicTemplate = $this->cObj->getSubpart( $rowTemplate, $key );
-						$topicMarkerArray = $this->getMarkerArray('tx_wecsermons_topics');
+						$topicMarkerArray = $this->getMarkerArray('tx_wecsermons_topics',$topicTemplate);
 						$topicContent = '';
 
 						$topicRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -1152,12 +1157,12 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					$marker = '';
 					$markerArray[$key] = '';
 
-					//	Find all the possible markers and set to empty string.
-					$this->emptyResourceSubparts( $subpartArray );
-
 					if( $row[$fieldName] ) {
 
-						$resourceMarkerArray = $this->getMarkerArray('tx_wecsermons_resources');
+						$this->emptyResourceSubparts( $subpartArray, $rowTemplate );
+
+						$resourceMarkerArray = $this->getMarkerArray( 'tx_wecsermons_resources', $rowTemplate );
+
 
 						//	Retrieve related resources to this sermon
 						$resources = $this->getResources( $row['uid'] );
@@ -1181,7 +1186,6 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 							//	Retrieve the template subpart used to render this resource
 							$resourceTemplate = $this->cObj->getSubpart( $rowTemplate, $marker );
-
 							if( $resourceTemplate )
 								//	Aggregate rendered row into subpart. This allows multiple resources of the same type to all be output,
 								//	rather than the last one processed.
@@ -1358,6 +1362,13 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					}
 				break;
 
+				case '###SERIES_ALTTITLE###':
+					if( $row[$fieldName] ) {
+						$this->local_cObj->start( $row, 'tx_wecsermons_series' );
+						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_series.']['alttitle'], $lConf['tx_wecsermons_series.']['alttitle.']);
+					}
+				break;
+
 				case '###SERIES_SCRIPTURE###':
 					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_series' );
@@ -1402,7 +1413,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 						//	Load the season subpart
 						$seasonTemplate = $this->cObj->getSubpart( $rowTemplate, $key );
-						$seasonMarkerArray = $this->getMarkerArray('tx_wecsermons_seasons');
+						$seasonMarkerArray = $this->getMarkerArray('tx_wecsermons_seasons',$seasonTemplate);
 						$seasonContent = '';
 
 						$seasonRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -1437,7 +1448,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 						//	Get the series_topics subpart
 						$topicTemplate = $this->cObj->getSubpart( $rowTemplate, $key );
-						$topicMarkerArray = $this->getMarkerArray('tx_wecsermons_topics');
+						$topicMarkerArray = $this->getMarkerArray('tx_wecsermons_topics',$topicTemplate);
 						$topicContent = '';
 
 						$topicRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -1699,113 +1710,141 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 * @param	string		Table name to retrieve markers for
 	 * @return	array		Array filled with markers as keys, with empty values
 	 */
-	 function getMarkerArray( $tableName = '' ) {
+	 function getMarkerArray( $tableName = '', $templateContent = '') {
 
-	 		$markerArray = array();
-
-	 	switch ( $tableName ) {
-	 		case 'tx_wecsermons_sermons':
-	 			$markerArray = array (
-	 				'###SERMON_TITLE###' => 'title',
-	 				'###SERMON_OCCURRENCE_DATE###' => 'occurrence_date',
-	 				'###SERMON_DESCRIPTION###' => 'description',
-	 				'###SERMON_SCRIPTURE###' => 'scripture',
-					'###SERMON_GRAPHIC###' => 'graphic',
-					'###SERMON_ALTTITLE###' => 'alttitle',
-					'###SERMON_LINK###' => '',
-					'###ALTERNATING_CLASS###' => '',
-					'###SERMON_TOPICS###' => 'topics_uid',
-					'###SERMON_SERIES###' => 'series_uid',
-					'###SERMON_SPEAKERS###' => 'speakers_uid',
-					'###SERMON_RESOURCES###' => 'resources_uid',		//	Only included to kick off the processing of resources. Resource markers are defined in the resource_type records or resource record
-	 			);
-
-	 		break;
-
-	 		case 'tx_wecsermons_series':
-	 			$markerArray = array (
-					'###SERIES_TITLE###' => 'title',
-					'###SERIES_STARTDATE###' => 'startdate',
-					'###SERIES_ENDDATE###' => 'enddate',
-					'###SERIES_DESCRIPTION###' => 'description',
-					'###SERIES_SCRIPTURE###' => 'scripture',
-					'###SERIES_GRAPHIC###' => 'graphic',
-					'###SERIES_ALTTITLE###' => 'alttitle',
-					'###SERIES_SEASON###' => 'seasons_uid',
-					'###SERIES_TOPICS###' => 'topics_uid',
-					'###SERIES_LINK###' => '',
-					'###ALTERNATING_CLASS###' => '',
-
-				);
-	 		break;
-
-	 		case 'tx_wecsermons_topics':
-	 			$markerArray = array (
-					'###TOPIC_TITLE###' => 'title',
-					'###TOPIC_DESCRIPTION###' => 'description',
-					'###ALTERNATING_CLASS###' => '',
-					'###TOPIC_LINK###' => '',
-				);
-	 		break;
-
-	 		case 'tx_wecsermons_speakers':
-	 			$markerArray = array (
-	 				'###SPEAKER_FULLNAME###' => 'fullname',
-					'###SPEAKER_FIRSTNAME###' => 'firstname',
-					'###SPEAKER_LASTNAME###' => 'lastname',
-					'###SPEAKER_EMAIL###' => 'email',
-					'###SPEAKER_URL###' => 'url',
-					'###SPEAKER_PHOTO###' => 'photo',
-					'###SPEAKER_ALTTITLE###' => 'alttitle',
-					'###SPEAKER_LINK###' => '',
-					'###ALTERNATING_CLASS###' => '',
-				);
-	 		break;
-
-	 		case 'tx_wecsermons_resources':
-	 			$markerArray = array (
-					'###RESOURCE_TITLE###' => 'title',
-					'###RESOURCE_DESCRIPTION###' => 'description',
-					'###RESOURCE_GRAPHIC###' => 'graphic',
-					'###RESOURCE_ALTTITLE###' => 'alttitle',
-					'###RESOURCE_FILE###' => 'file',
-					'###RESOURCE_WEBADDRESS1###' => 'webaddress1',
-					'###RESOURCE_WEBADDRESS2###' => 'webaddress2',
-					'###RESOURCE_WEBADDRESS3###' => 'webaddress3',
-					'###RESOURCE_CONTENT###' => '',
-					'###ALTERNATING_CLASS###' => '',
-					'###RESOURCE_LINK###' => '',
-					'###RESOURCE_ICON###' => 'icon',
-				);
-	 		break;
-
-	 		case 'tx_wecsermons_seasons':
-	 			$markerArray = array (
-					'###SEASON_TITLE###' => 'title',
-					'###SEASON_DESCRIPTION###' => 'description',
-					'###SEASON_LINK###' => '',
-					'###ALTERNATING_CLASS###' => '',
-				);
-	 		break;
-
-	 		case 'searchbox':
-	 			$markerArray = array(
-	 				'###FORM_ACTION###' => '',
-	 				'###SEARCHBOX_OPTIONS###' => '',
-	 				'###SEARCH_BUTTON_NAME###' => '',
-	 			);
-	 		break;
-
-	 		default:
-	 			$markerArray = array (
-	 				'###BROWSE_LINKS###' => '',
-	 				'###BACK_TO_LIST###' => '',
-	 				'###BACK_LINK###' => '',
-	 			);
-	 		break;
-
+	 	$markerArray = array();
+	 	$markers = array();
+	 	$subpartMarkers = array();
+	 	
+	 	//	If we were passed a template, then scan the template for markers and return a truncated array of markers
+	 	//	truncated marker array will only process those things we need to
+	 	if( $templateContent ) {
+	 		
+	 		//	Find every marker in the template
+	 		preg_match_all('!(\###[A-Z0-9_-|]*\###)!is', $templateContent, $markers);
+	 		
+	 		//	Truncate the array, removing duplicates
+	 		$markerArray = array_unique($markers[1]);
+	 		
+	 		//	Flip the keys and values for compare against our internal arrays
+	 		$markerArray = array_flip($markerArray);
+			
+			//	Retreive our internal arrary, which we use in later processing
+			$SMSmarkers = $this->getMarkerArray($tableName);
+			
+			//	Pull out unused markers from internal array
+			$markerArray = array_intersect_key($SMSmarkers, $markerArray);
+			
+			//	If table is sermons table, add SERMON_RESOURCES marker back for processing
+			if( !strcmp( $tableName,'tx_wecsermons_sermons') ) 
+	 		 	$markerArray['###SERMON_RESOURCES###'] = 'resources_uid';
+ 	
 	 	}
-
+		else {
+		 	switch ( $tableName ) {
+		 		case 'tx_wecsermons_sermons':
+		 			$markerArray = array (
+		 				'###SERMON_TITLE###' => 'title',
+		 				'###SERMON_OCCURRENCE_DATE###' => 'occurrence_date',
+		 				'###SERMON_DESCRIPTION###' => 'description',
+		 				'###SERMON_SCRIPTURE###' => 'scripture',
+						'###SERMON_GRAPHIC###' => 'graphic',
+						'###SERMON_ALTTITLE###' => 'alttitle',
+						'###SERMON_LINK###' => '',
+						'###ALTERNATING_CLASS###' => '',
+						'###SERMON_TOPICS###' => 'topics_uid',
+						'###SERMON_SERIES###' => 'series_uid',
+						'###SERMON_SPEAKERS###' => 'speakers_uid',
+						'###SERMON_RESOURCES###' => 'resources_uid',		//	Included to kick off the processing of resources. Resource markers are defined in the resource_type records or resource record
+		 			);
+	
+		 		break;
+	
+		 		case 'tx_wecsermons_series':
+		 			$markerArray = array (
+						'###SERIES_TITLE###' => 'title',
+						'###SERIES_STARTDATE###' => 'startdate',
+						'###SERIES_ENDDATE###' => 'enddate',
+						'###SERIES_DESCRIPTION###' => 'description',
+						'###SERIES_SCRIPTURE###' => 'scripture',
+						'###SERIES_GRAPHIC###' => 'graphic',
+						'###SERIES_ALTTITLE###' => 'alttitle',
+						'###SERIES_SEASON###' => 'seasons_uid',
+						'###SERIES_TOPICS###' => 'topics_uid',
+						'###SERIES_LINK###' => '',
+						'###ALTERNATING_CLASS###' => '',
+	
+					);
+		 		break;
+	
+		 		case 'tx_wecsermons_topics':
+		 			$markerArray = array (
+						'###TOPIC_TITLE###' => 'title',
+						'###TOPIC_DESCRIPTION###' => 'description',
+						'###ALTERNATING_CLASS###' => '',
+						'###TOPIC_LINK###' => '',
+					);
+		 		break;
+	
+		 		case 'tx_wecsermons_speakers':
+		 			$markerArray = array (
+		 				'###SPEAKER_FULLNAME###' => 'fullname',
+						'###SPEAKER_FIRSTNAME###' => 'firstname',
+						'###SPEAKER_LASTNAME###' => 'lastname',
+						'###SPEAKER_EMAIL###' => 'email',
+						'###SPEAKER_URL###' => 'url',
+						'###SPEAKER_PHOTO###' => 'photo',
+						'###SPEAKER_ALTTITLE###' => 'alttitle',
+						'###SPEAKER_LINK###' => '',
+						'###ALTERNATING_CLASS###' => '',
+					);
+		 		break;
+	
+		 		case 'tx_wecsermons_resources':
+		 			$markerArray = array (
+						'###RESOURCE_TITLE###' => 'title',
+						'###RESOURCE_DESCRIPTION###' => 'description',
+						'###RESOURCE_GRAPHIC###' => 'graphic',
+						'###RESOURCE_ALTTITLE###' => 'alttitle',
+						'###RESOURCE_FILE###' => 'file',
+						'###RESOURCE_WEBADDRESS1###' => 'webaddress1',
+						'###RESOURCE_WEBADDRESS2###' => 'webaddress2',
+						'###RESOURCE_WEBADDRESS3###' => 'webaddress3',
+						'###RESOURCE_CONTENT###' => '',
+						'###ALTERNATING_CLASS###' => '',
+						'###RESOURCE_LINK###' => '',
+						'###RESOURCE_ICON###' => 'icon',
+					);
+		 		break;
+	
+		 		case 'tx_wecsermons_seasons':
+		 			$markerArray = array (
+						'###SEASON_TITLE###' => 'title',
+						'###SEASON_DESCRIPTION###' => 'description',
+						'###SEASON_LINK###' => '',
+						'###ALTERNATING_CLASS###' => '',
+					);
+		 		break;
+	
+		 		case 'searchbox':
+		 			$markerArray = array(
+		 				'###FORM_ACTION###' => '',
+		 				'###SEARCHBOX_OPTIONS###' => '',
+		 				'###SEARCH_BUTTON_NAME###' => '',
+		 			);
+		 		break;
+	
+		 		default:
+		 			$markerArray = array (
+		 				'###BROWSE_LINKS###' => '',
+		 				'###BACK_TO_LIST###' => '',
+		 				'###BACK_LINK###' => '',
+		 			);
+		 		break;
+	
+		 	}
+		}
+		
 	 	return $markerArray;
 	}
 
@@ -2235,7 +2274,18 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 * @param	array		$subpartArray:	 The subpartArray to be initalized
 	 * @return	void
 	 */
-	function emptyResourceSubparts( &$subpartArray ) {
+	function emptyResourceSubparts( &$subpartArray, $templateContent = '' ) {
+
+		$subparts = array();
+		
+		//	Find every subpart marker in the template
+ 		preg_match_all('!\<\!--[a-zA-Z0-9 ]*(###[A-Z0-9_-|]*\###)[a-zA-Z0-9 ]*-->!is', $templateContent, $subparts);
+
+ 		//	Truncate the array, removing duplicates
+ 		$usedSubparts = array_unique($subparts[1]);
+ 		
+ 		//	Flip the keys and values for compare against our internal arrays
+ 		$usedSubparts = array_flip($usedSubparts);
 
 		//	Find the marker names for every defined resource type
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -2250,6 +2300,16 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 		//	Set the default resource type marker subpart to an empty string
 		$subpartArray[$this->getMarkerName( $this->conf['defaultMarker'] )] = '';
+
+
+		//	Pull out unused markers from subpart array
+		$subpartArray = array_intersect_key( $subpartArray, $usedSubparts);
+debug( $templateContent,1);	
+debug( $subpartArray);	
+		return $subpartArray; 	
+	 	
+
+
 	}
 
 	/**
