@@ -1728,13 +1728,13 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 		
 	 		//	Flip the keys and values for compare against our internal arrays
 	 		$markerArray = array_flip($markerArray);
-			
+
 			//	Retreive our internal arrary, which we use in later processing
 			$SMSmarkers = $this->getMarkerArray($tableName);
 			
 			//	Pull out unused markers from internal array
-			$markerArray = array_intersect_key($SMSmarkers, $markerArray);
-			
+			$markerArray = $this->array_intersect_key($SMSmarkers, $markerArray);
+
 			//	If table is sermons table, add SERMON_RESOURCES marker back for processing
 			if( !strcmp( $tableName,'tx_wecsermons_sermons') ) 
 	 		 	$markerArray['###SERMON_RESOURCES###'] = 'resources_uid';
@@ -2303,9 +2303,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 
 		//	Pull out unused markers from subpart array
-		$subpartArray = array_intersect_key( $subpartArray, $usedSubparts);
-debug( $templateContent,1);	
-debug( $subpartArray);	
+		$subpartArray = $this->array_intersect_key( $subpartArray, $usedSubparts);
+	
 		return $subpartArray; 	
 	 	
 
@@ -2506,6 +2505,20 @@ debug( $subpartArray);
 
 		return array("table" => $table, "uid" => $uid);
 	}
+	
+  function array_intersect_key()
+  {
+      $arrs = func_get_args();
+      $result = array_shift($arrs);
+      foreach ($arrs as $array) {
+          foreach ($result as $key => $v) {
+              if (!array_key_exists($key, $array)) {
+                  unset($result[$key]);
+              }
+          }
+      }
+      return $result;
+ }
 
 }	// End class tx_wecsermons_pi1
 
