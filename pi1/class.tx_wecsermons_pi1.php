@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2006 Web Empowered Church Team, Foundation For Evangelism (sermon@webempoweredchurch.org)
+*  (c) 2007 Web Empowered Church Team, Foundation For Evangelism (sermon@webempoweredchurch.org)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -466,6 +466,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$GLOBALS['TSFE']->page['title'] .= ' : ' .$row[$field];
 		}
 
+		// TODO: Find a way to dynamically change description and keyword meta tags on page template
+
 #		$GLOBALS['TSFE']->additionalHeaderData
 
 		$this->template['content'] = $this->cObj->getSubpart( $this->template['single'], '###CONTENT###' );
@@ -501,7 +503,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$sermonRes = $GLOBALS['TYPO3_DB']->sql_query( $query );
 
 			$sermonMarkers = $this->getMarkerArray( 'tx_wecsermons_sermons', $this->template['item']);
-		
+
 			//	Iterate every sermon record, aggregate content
 			while( $sermon = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $sermonRes ) ) {
 				$sermonContent .= $this->pi_list_row($this->conf['listView.'], $sermonMarkers, $this->template['item'], $sermon );
@@ -832,7 +834,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 			$groupTemplate = $this->template['group'];
 			$markerArray = $this->getMarkerArray( $groupTable, $groupTemplate );
-		
+
 			$groupContent = '';
 			$detailContent = '';
 
@@ -997,8 +999,13 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_sermons' );
 						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_sermons.']['title'], $lConf['tx_wecsermons_sermons.']['title.'] );
+					}
+				break;
 
-
+				case '###SERMON_SUBTITLE###':
+					if( $row[$fieldName] ) {
+						$this->local_cObj->start( $row, 'tx_wecsermons_sermons' );
+						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_sermons.']['subtitle'], $lConf['tx_wecsermons_sermons.']['subtitle.'] );
 					}
 				break;
 
@@ -1342,6 +1349,13 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_series' );
 						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_series.']['title'], $lConf['tx_wecsermons_series.']['title.'] );
+					}
+				break;
+
+				case '###SERIES_SUBTITLE###':
+					if( $row[$fieldName] ) {
+						$this->local_cObj->start( $row, 'tx_wecsermons_series' );
+						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_series.']['subtitle'], $lConf['tx_wecsermons_series.']['subtitle.'] );
 					}
 				break;
 
@@ -1712,36 +1726,37 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 	$markerArray = array();
 	 	$markers = array();
 	 	$subpartMarkers = array();
-	 	
+
 	 	//	If we were passed a template, then scan the template for markers and return a truncated array of markers
 	 	//	truncated marker array will only process those things we need to
 	 	if( $templateContent ) {
-	 		
+
 	 		//	Find every marker in the template
 	 		preg_match_all('!(\###[A-Z0-9_-|]*\###)!is', $templateContent, $markers);
-	 		
+
 	 		//	Truncate the array, removing duplicates
 	 		$markerArray = array_unique($markers[1]);
-	 		
+
 	 		//	Flip the keys and values for compare against our internal arrays
 	 		$markerArray = array_flip($markerArray);
 
 			//	Retreive our internal arrary, which we use in later processing
 			$SMSmarkers = $this->getMarkerArray($tableName);
-			
+
 			//	Pull out unused markers from internal array
 			$markerArray = $this->array_intersect_key($SMSmarkers, $markerArray);
 
 			//	If table is sermons table, add SERMON_RESOURCES marker back for processing
-			if( !strcmp( $tableName,'tx_wecsermons_sermons') ) 
+			if( !strcmp( $tableName,'tx_wecsermons_sermons') )
 	 		 	$markerArray['###SERMON_RESOURCES###'] = 'resources_uid';
- 	
+
 	 	}
 		else {
 		 	switch ( $tableName ) {
 		 		case 'tx_wecsermons_sermons':
 		 			$markerArray = array (
 		 				'###SERMON_TITLE###' => 'title',
+		 				'###SERMON_SUBTITLE###' => 'subtitle',
 		 				'###SERMON_OCCURRENCE_DATE###' => 'occurrence_date',
 		 				'###SERMON_DESCRIPTION###' => 'description',
 		 				'###SERMON_SCRIPTURE###' => 'scripture',
@@ -1754,12 +1769,13 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						'###SERMON_SPEAKERS###' => 'speakers_uid',
 						'###SERMON_RESOURCES###' => 'resources_uid',		//	Included to kick off the processing of resources. Resource markers are defined in the resource_type records or resource record
 		 			);
-	
+
 		 		break;
-	
+
 		 		case 'tx_wecsermons_series':
 		 			$markerArray = array (
 						'###SERIES_TITLE###' => 'title',
+						'###SERIES_SUBTITLE###' => 'subtitle',
 						'###SERIES_STARTDATE###' => 'startdate',
 						'###SERIES_ENDDATE###' => 'enddate',
 						'###SERIES_DESCRIPTION###' => 'description',
@@ -1770,10 +1786,10 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						'###SERIES_TOPICS###' => 'topics_uid',
 						'###SERIES_LINK###' => '',
 						'###ALTERNATING_CLASS###' => '',
-	
+
 					);
 		 		break;
-	
+
 		 		case 'tx_wecsermons_topics':
 		 			$markerArray = array (
 						'###TOPIC_TITLE###' => 'title',
@@ -1782,7 +1798,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						'###TOPIC_LINK###' => '',
 					);
 		 		break;
-	
+
 		 		case 'tx_wecsermons_speakers':
 		 			$markerArray = array (
 		 				'###SPEAKER_FULLNAME###' => 'fullname',
@@ -1796,7 +1812,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						'###ALTERNATING_CLASS###' => '',
 					);
 		 		break;
-	
+
 		 		case 'tx_wecsermons_resources':
 		 			$markerArray = array (
 						'###RESOURCE_TITLE###' => 'title',
@@ -1813,7 +1829,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						'###RESOURCE_ICON###' => 'icon',
 					);
 		 		break;
-	
+
 		 		case 'tx_wecsermons_seasons':
 		 			$markerArray = array (
 						'###SEASON_TITLE###' => 'title',
@@ -1822,7 +1838,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						'###ALTERNATING_CLASS###' => '',
 					);
 		 		break;
-	
+
 		 		case 'searchbox':
 		 			$markerArray = array(
 		 				'###FORM_ACTION###' => '',
@@ -1830,7 +1846,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		 				'###SEARCH_BUTTON_NAME###' => '',
 		 			);
 		 		break;
-	
+
 		 		default:
 		 			$markerArray = array (
 		 				'###BROWSE_LINKS###' => '',
@@ -1838,10 +1854,10 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		 				'###BACK_LINK###' => '',
 		 			);
 		 		break;
-	
+
 		 	}
 		}
-		
+
 	 	return $markerArray;
 	}
 
@@ -2274,13 +2290,13 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	function emptyResourceSubparts( &$subpartArray, $templateContent = '' ) {
 
 		$subparts = array();
-		
+
 		//	Find every subpart marker in the template
  		preg_match_all('!\<\!--[a-zA-Z0-9 ]*(###[A-Z0-9_-|]*\###)[a-zA-Z0-9 ]*-->!is', $templateContent, $subparts);
 
  		//	Truncate the array, removing duplicates
  		$usedSubparts = array_unique($subparts[1]);
- 		
+
  		//	Flip the keys and values for compare against our internal arrays
  		$usedSubparts = array_flip($usedSubparts);
 
@@ -2301,9 +2317,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 		//	Pull out unused markers from subpart array
 		$subpartArray = $this->array_intersect_key( $subpartArray, $usedSubparts);
-	
-		return $subpartArray; 	
-	 	
+
+		return $subpartArray;
+
 
 
 	}
@@ -2502,7 +2518,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 		return array("table" => $table, "uid" => $uid);
 	}
-	
+
   function array_intersect_key()
   {
       $arrs = func_get_args();

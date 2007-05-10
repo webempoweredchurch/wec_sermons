@@ -14,8 +14,10 @@
             <label index="sys_language_uid.description">The language of this series.</label>
             <label index="sys_language_uid.details">This should be the default language unless this series represents a translation of another language.</label>
             <label index="_sys_language_uid.seeAlso">tt_content:sys_language_uid,pages:sys_language_uid,pages_language_overlay:sys_language_uid</label>
-             <label index="title.description">The title of the series.</label>
+            <label index="title.description">The title of the series.</label>
             <label index="title.details">The title should reflect the naming of the series.</label>
+            <label index="subtitle.description">The subtitle of the series.</label>
+            <label index="subtitle.details">The subtitle can be used to provide a very brief summary of the series.</label>
             <label index="startdate.description">The date this series was begun.</label>
             <label index="startdate.details">The start date of a series should be the date that the first sermon in this series was presented on.</label>
             <label index="_startdate.seeAlso">tx_wecsermons_series:enddate</label>

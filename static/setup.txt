@@ -312,6 +312,13 @@ plugin.tx_wecsermons_pi1 {
 				field = title
 			}
 
+			# Wrap for the subtitle column
+			subtitle = TEXT
+			subtitle {
+				wrap = |
+				field = subtitle
+			}
+
 			# Specific date wrap for the occurrence_date column in tx_wecsermons_sermons table
 			occurrence_date = TEXT
 			occurrence_date {
@@ -500,6 +507,12 @@ plugin.tx_wecsermons_pi1 {
 			title {
 				wrap = <h2>|</h2>
 				field = title
+			}
+
+			subtitle = TEXT
+			subtitle {
+				wrap = |
+				field = subtitle
 			}
 
 			graphic = IMAGE
@@ -782,8 +795,14 @@ plugin.tx_wecsermons_pi1 {
 			title = TEXT
 			title {
 				wrap = |
-#				parseFunc < tt_content.text.20.parseFunc
 				field = title
+			}
+
+			# Wrap for the title column
+			subtitle = TEXT
+			subtitle {
+				wrap = |
+				field = subtitle
 			}
 
 			# Specific date wrap for the occurrence_date column in tx_wecsermons_sermons table
@@ -996,6 +1015,12 @@ plugin.tx_wecsermons_pi1 {
 			title {
 				wrap = |
 				field = title
+			}
+
+			subtitle = TEXT
+			subtitle {
+				wrap = |
+				field = subtitle
 			}
 
 			graphic = IMAGE

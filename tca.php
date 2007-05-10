@@ -583,6 +583,15 @@ $TCA["tx_wecsermons_sermons"] = Array (
 				"eval" => "required",
 			)
 		),
+		"subtitle" => Array (
+			"exclude" => 1,
+			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.subtitle",
+			"config" => Array (
+				"type" => "text",
+				"cols" => "30",
+				"rows" => "2",
+			)
+		),
 		"occurrence_date" => Array (
 			"exclude" => 1,
 			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.occurrence_date",
@@ -808,11 +817,12 @@ $TCA["tx_wecsermons_sermons"] = Array (
 		),
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;1, title;;;;2-2-2, occurrence_date, scripture, description;;;richtext:rte_transform[mode=ts_css], resources_uid;;;;3-3-3, speakers_uid, series_uid, topics_uid, graphic;;2;;4-4-4, keywords"),
+		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;1, title;;3;;2-2-2, occurrence_date, scripture, description;;;richtext:rte_transform[mode=ts_css], resources_uid;;;;3-3-3, speakers_uid, series_uid, topics_uid, graphic;;2;;4-4-4, keywords"),
 	),
 	"palettes" => Array (
 		"1" => Array("showitem" => "starttime, endtime, fe_group"),
 		"2" => Array("showitem" => "alttitle"),
+		"3" => Array("showitem" => "subtitle"),
 	)
 );
 
@@ -895,6 +905,15 @@ $TCA["tx_wecsermons_series"] = Array (
 				"type" => "input",
 				"size" => "30",
 				"eval" => "required",
+			)
+		),
+		"subtitle" => Array (
+			"exclude" => 1,
+			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_series.subtitle",
+			"config" => Array (
+				"type" => "text",
+				"cols" => "30",
+				"rows" => "2",
 			)
 		),
 		"description" => Array (
@@ -1051,11 +1070,12 @@ $TCA["tx_wecsermons_series"] = Array (
 
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "sys_language_uid, l18n_parent, l18n_diffsource, hidden;;1;;1-1-1, title;;;;2-2-2, startdate;;;;3-3-3, enddate, description;;;richtext:rte_transform[mode=ts_css];4-4-4, scripture;;;;5-5-5, keywords, seasons_uid, topics_uid, graphic;;2")
+		"0" => Array("showitem" => "sys_language_uid, l18n_parent, l18n_diffsource, hidden;;1;;1-1-1, title;;3;;2-2-2, startdate;;;;3-3-3, enddate, description;;;richtext:rte_transform[mode=ts_css];4-4-4, scripture;;;;5-5-5, keywords, seasons_uid, topics_uid, graphic;;2")
 	),
 	"palettes" => Array (
 		"1" => Array("showitem" => "starttime,endtime,fe_group"),
 		"2" => Array("showitem" => "alttitle"),
+		"3" => Array("showitem" => "subtitle"),
 	)
 );
 
