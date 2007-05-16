@@ -466,9 +466,10 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$GLOBALS['TSFE']->page['title'] .= ' : ' .$row[$field];
 		}
 
-		// TODO: Find a way to dynamically change description and keyword meta tags on page template
+		// If description is present, and option is enabled - append descrption to meta description tag.
+		if( $row['description'] && $lConf['enableMetaDescription'] )
+			$GLOBALS['TSFE']->pSetup['meta.']['description'] = strip_tags($row['description']) . ' - ' . $GLOBALS['TSFE']->pSetup['meta.']['description'];
 
-#		$GLOBALS['TSFE']->additionalHeaderData
 
 		$this->template['content'] = $this->cObj->getSubpart( $this->template['single'], '###CONTENT###' );
 		$this->template['item'] = $this->cObj->getSubpart( $this->template['single'], '###SERIES_SERMONS###' );

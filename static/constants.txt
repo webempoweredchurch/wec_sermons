@@ -25,6 +25,9 @@ plugin.tx_wecsermons_pi1 {
 	# cat=plugin.tx_wecsermons_pi1/enable/60; type=boolean; label= XML View - Order Items by Creation Date: Enable ordering of items by their creation date instead of other field. (xmlView Only)
 	xmlView.useCreationDate = 0
 
+	# cat=plugin.tx_wecsermons_pi1/enable/70; type=boolean; label= SINGLE View - Enable Meta Description: Enable/disable the page meta description tag, appending the record description to the tag's content.
+	singleView.enableMetaDescription = 0
+
 #------
 #Dims
 #------

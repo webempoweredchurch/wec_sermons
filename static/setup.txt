@@ -22,7 +22,7 @@ plugin.tx_wecsermons_pi1 {
 
 	# Whether the extension caches content or not
 	allowCaching = {$plugin.tx_wecsermons_pi1.allowCaching}
-
+	
 	# Rendering of text items. re-use the RTE parseFunc configuration for RTE content
 	general_stdWrap {
 		parseFunc = < lib.parseFunc_RTE
@@ -302,6 +302,9 @@ plugin.tx_wecsermons_pi1 {
 		# General formatting of a date in list view.
 		# You may override the global date formatting by specifying a format at this level
 		general_dateWrap.strftime =
+
+		# Enable the process that will append the records description to the page's meta descrption tag
+		enableMetaDescription = {$plugin.tx_wecsermons_pi1.enableMetaDescription}
 
 		tx_wecsermons_sermons {
 
