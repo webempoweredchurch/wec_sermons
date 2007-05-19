@@ -1059,6 +1059,41 @@ $TCA["tx_wecsermons_series"] = Array (
 				),
 			)
 		),
+		"resources_uid" => Array (
+			"exclude" => 1,
+			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_series.resource_uid",
+			"config" => Array (
+				"type" => "group",
+				"internal_type" => "db",
+				"allowed" => "tx_wecsermons_resources",
+				"size" => 4,
+				"minitems" => 0,
+				"maxitems" => 100,
+				"MM" => "tx_wecsermons_sermons_resources_uid_mm",
+				'wizards' => Array(
+					'_VALIGN' => 'top',
+					'add' => Array(
+						'type' => 'script',
+						'title' => 'LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.add',
+						'icon' => 'add.gif',
+						'params' => Array(
+							'table'=>'tx_wecsermons_resources',
+							'pid' => '###CURRENT_PID###',
+							'setValue' => 'append'
+						),
+						'script' => 'wizard_add.php',
+					),
+					'edit' => Array(
+						'type' => 'popup',
+						'title' => 'LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.edit',
+						'script' => 'wizard_edit.php',
+						'popup_onlyOpenIfSelected' => 1,
+						'icon' => 'edit2.gif',
+						'JSopenParams' => 'height=450,width=580,status=0,menubar=0,scrollbars=1',
+					)
+				),
+			)
+		),
 		"keywords" => Array (
 			"exclude" => 1,
 			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.keywords",
@@ -1070,7 +1105,7 @@ $TCA["tx_wecsermons_series"] = Array (
 
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "sys_language_uid, l18n_parent, l18n_diffsource, hidden;;1;;1-1-1, title;;3;;2-2-2, startdate;;;;3-3-3, enddate, description;;;richtext:rte_transform[mode=ts_css];4-4-4, scripture;;;;5-5-5, keywords, seasons_uid, topics_uid, graphic;;2")
+		"0" => Array("showitem" => "sys_language_uid, l18n_parent, l18n_diffsource, hidden;;1;;1-1-1, title;;3;;2-2-2, startdate;;;;3-3-3, enddate, description;;;richtext:rte_transform[mode=ts_css];4-4-4, scripture;;;;5-5-5, resources_uid, keywords, seasons_uid, topics_uid, graphic;;2")
 	),
 	"palettes" => Array (
 		"1" => Array("showitem" => "starttime,endtime,fe_group"),

@@ -78,6 +78,7 @@ $LOCAL_LANG = Array (
 		'tx_wecsermons_series.seasons_uid' => 'Season',
 		'tx_wecsermons_series.topics_uid' => 'Related Topic',
 		'tx_wecsermons_series.keywords' => 'Keywords',
+		'tx_wecsermons_series.resource_uid' => 'Resources',
 		'tx_wecsermons_topics' => 'SMS Topics',
 		'tx_wecsermons_topics.description' => 'Description',
 		'tx_wecsermons_topics.title' => 'Title',

@@ -35,6 +35,8 @@
             <label index="seasons_uid.details">A season is flexible, and can be implemented as needed. It is used to categorize or group sermon series. You may use this to represent liturgical seasons.</label>
             <label index="topics_uid.description">A topic this series is associated with.</label>
             <label index="topics_uid.details">A topic can be used to make a particular subject stand out within a series, and relate a series to multiple topics.</label>
+            <label index="resources_uid.description">Resources represent digital assets you wish to attach to a series and make them available to users of the website.</label>
+            <label index="resources_uid.details">Resources are flexible records that can store many types of digital assets. Many are provided out of the box, but site administrators can configure these through Resource Type records, TypoScript, and marker based templates.</label>
             <label index="graphic.description">A digitial image associated with a series</label>
             <label index="graphic.details">A graphic can represent an image or idea that this series is related to.</label>
 						<label index="alttitle.description">Text used int the Alt and Title attributes of a series graphic</label>

@@ -477,9 +477,10 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		//	Retrieve the markerArray for the right table
 		$markerArray = $this->getMarkerArray( $this->internal['currentTable'], $this->template['content'] );
 
+
 		//	Process row
 		$content .= $this->cObj->substituteSubpart( $this->template['single'], '###CONTENT###', $this->pi_list_row($lConf, $markerArray, $this->template['content'], $this->internal['currentRow'] ) );
-
+/*
 		//	Branch for state where series is being displayed, and there is an SERIES_SERMONS subpart available, indicating related sermons should be shown
 		if( $this->template['item'] && $this->internal['currentTable'] == 'tx_wecsermons_series' ) {
 
@@ -505,6 +506,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 			$sermonMarkers = $this->getMarkerArray( 'tx_wecsermons_sermons', $this->template['item']);
 
+
 			//	Iterate every sermon record, aggregate content
 			while( $sermon = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $sermonRes ) ) {
 				$sermonContent .= $this->pi_list_row($this->conf['listView.'], $sermonMarkers, $this->template['item'], $sermon );
@@ -515,7 +517,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$content = $this->cObj->substituteSubpart( $content, '###SERIES_SERMONS###', $sermonContent );
 
 		}
-
+*/
 		//	Parse for additional markers. Browse results, etc.
 		$markerArray = $this->getMarkerArray();
 
@@ -588,7 +590,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	}
 
 	/**
-	 * listView: Generates the LIST view of the SMS
+	 * latestView: Generates the LATEST view of the SMS
 	 *
 	 * @param	string		$content: Any previous content that this function will append itself to.
 	 * @param	array		$lConf: Locally scoped configuration array from TypoScript for list view
@@ -651,7 +653,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 		}
 
+
 		$content = $this->cObj->substituteSubpart( $this->template['list'], '###CONTENT###', $this->pi_list_makelist($lConf, $this->template['content'] ) );
+
 
 		//	Parse for additional markers. Browse results, etc.
 		$markerArray = $this->getMarkerArray();
@@ -1169,7 +1173,13 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 					$resourceMarkerArray = $this->getMarkerArray( 'tx_wecsermons_resources', $rowTemplate );
 
+					$previousRow = $this->internal['previousRow'];
+					$this->internal['previousRow'] = $row;
+					$previousTable = $this->internal['previousTable'];
+					$this->internal['previousTable'] = 'tx_wecsermons_sermons';
 
+					$this->internal['currentTable'] = 'tx_wecsermons_resources';
+					
 					//	Retrieve related resources to this sermon
 					$resources = $this->getResources( $row['uid'] );
 
@@ -1198,6 +1208,12 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 							$subpartArray[$marker] .= $this->pi_list_row( $lConf, $resourceMarkerArray, $resourceTemplate, $this->internal['currentRow'] );
 
 					}
+					
+					$this->internal['previousRow'] = $previousRow;
+					$this->internal['previousTable'] = $previousTable;
+
+					$this->internal['currentTable'] = 'tx_wecsermons_sermons';
+					$this->internal['currentRow'] = $row;
 
 
 				break;
@@ -1324,7 +1340,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 								 )
 							);
 
-						}
+						}					
 						else {
 						$wrappedSubpartArray[$key] = explode(
 							'|',
@@ -1481,6 +1497,57 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 							$subpartArray[$key] = $this->cObj->stdWrap( $topicContent, $lConf['tx_wecsermons_series.']['topics.'] );
 
 					}
+
+				break;
+				
+				case '###SERIES_SERMONS###':
+
+					$subpartArray[$key] = '';
+
+					$sermonSeriesTemplate = $this->cObj->getSubpart( $rowTemplate, $key );
+
+					//	Find all sermons related to this series
+					$WHERE = $this->cObj->enableFields('tx_wecsermons_sermons');
+					$query = 'SELECT * FROM tx_wecsermons_sermons WHERE find_in_set('.$row['uid'].',tx_wecsermons_sermons.series_uid)' . $WHERE;
+					$orderBy = '';
+		
+					//	Store previous row and table in local storage as we switch to retreiving detail
+					$previousRow = $this->internal['previousRow'];
+					$this->internal['previousRow'] = $row;
+					$previousTable = $this->internal['previousTable'];
+					$this->internal['previousTable'] = 'tx_wecsermons_series';
+					$this->internal['currentTable'] = 'tx_wecsermons_sermons';
+					
+					//	Build order by clause for query
+					if( $this->conf['listView.']['tx_wecsermons_sermons.']['orderBy'] ) {
+						$fieldArray  = explode( ',',$this->conf['listView.']['tx_wecsermons_sermons.']['orderBy'] );
+						$orderString = '';
+						foreach( $fieldArray as $field ) {
+							$orderString .= 'tx_wecsermons_sermons.'.$field.",";
+						}
+						$orderString = rtrim( $orderString, "," );
+						$orderBy = ' ORDER BY '.$orderString.( $this->conf['listView.']['tx_wecsermons_sermons.']['descFlag'] ? ' DESC' : '' );
+					}
+		
+					$query .= $orderBy;
+					$sermonContent = '';
+					$sermonRes = $GLOBALS['TYPO3_DB']->sql_query( $query );
+		
+					$sermonMarkers = $this->getMarkerArray( 'tx_wecsermons_sermons', $sermonSeriesTemplate);
+		
+					//	Iterate every sermon record, aggregate content
+					while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $sermonRes ) ) {
+						$sermonContent .= $this->pi_list_row($this->conf['listView.'], $sermonMarkers, $sermonSeriesTemplate, $this->internal['currentRow'] );
+					}
+				
+					//	Restore row and table from local storage	
+					$this->internal['previousRow'] = $previousRow;
+					$this->internal['previousTable'] = $previousTable;
+					$this->internal['currentTable'] = 'tx_wecsermons_series';
+					$this->internal['currentRow'] = $row;
+					
+					//	Set subpart array with subpart content
+					$subpartArray[$key] = $sermonContent;
 
 				break;
 
@@ -1785,6 +1852,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						'###SERIES_ALTTITLE###' => 'alttitle',
 						'###SERIES_SEASON###' => 'seasons_uid',
 						'###SERIES_TOPICS###' => 'topics_uid',
+						'###SERIES_SERMONS###' => '',
 						'###SERIES_LINK###' => '',
 						'###ALTERNATING_CLASS###' => '',
 

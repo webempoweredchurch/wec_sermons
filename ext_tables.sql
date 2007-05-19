@@ -85,6 +85,22 @@ CREATE TABLE tx_wecsermons_sermons_resources_uid_mm (
 
 
 
+
+#
+# Table structure for table 'tx_wecsermons_series_resources_uid_mm'
+#
+#
+CREATE TABLE tx_wecsermons_series_resources_uid_mm (
+  uid_local int(11) DEFAULT '0' NOT NULL,
+  uid_foreign int(11) DEFAULT '0' NOT NULL,
+  tablenames varchar(30) DEFAULT '' NOT NULL,
+  sorting int(11) DEFAULT '0' NOT NULL,
+  KEY uid_local (uid_local),
+  KEY uid_foreign (uid_foreign)
+);
+
+
+
 #
 # Table structure for table 'tx_wecsermons_sermons'
 #
@@ -149,6 +165,7 @@ CREATE TABLE tx_wecsermons_series (
 	seasons_uid blob NOT NULL,
 	topics_uid blob NOT NULL,
 	keywords tinytext NOT NULL,
+	resources_uid int(11) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
