@@ -30,40 +30,42 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
  *
  *
  *
- *   78: class tx_wecsermons_pi1 extends tslib_pibase
- *   91:     function init($conf)
- *  112:     function main($content,$conf)
- *  222:     function xmlView ($content, $lConf)
- *  351:     function singleView($content,$lConf)
- *  531:     function searchView($content,$lConf)
- *  546:     function pi_list_searchbox($lConf)
- *  594:     function latestView($content,$lConf)
- *  668:     function listView($content,$lConf)
- *  762:     function pi_list_makelist($lConf, $template)
- *  979:     function pi_list_row($lConf, $markerArray = array(), $rowTemplate, $row ='', $c = 2)
- * 1702:     function getMarkerArray( $tableName = '' )
- * 1818:     function formatStr( $str )
- * 1832:     function getTemplateKey($tableName)
- * 1875:     function getUrlToList ( $absolute )
- * 1893:     function getUrlToSingle ( $absolute, $tableName, $uid, $sermonUid = '' )
- * 1921:     function getFeAdminList( $tableName = '' )
- * 1941:     function getNamedTemplateContent($keyName = 'sermon', $view = 'single')
- * 1983:     function getNamedSubpart( $subpartName, $content )
- * 2000:     function getMarkerName( $markerName )
- * 2013:     function loadTemplate( $view = 'LIST')
- * 2039:     function getTemplateFile()
- * 2067:     function getGroupResult( $groupTable, $detailTable, $foreignColumn, $lConf, $getCount = 0 )
- * 2171:     function getResources( $sermonUid = '', $resourceUid = '')
- * 2238:     function emptyResourceSubparts( &$subpartArray )
- * 2263:     function throwError( $type, $message, $detail = '' )
- * 2287:     function getTutorial ( $tutorial )
- * 2364:     function uniqueCsv()
- * 2379:     function unique_array()
- * 2397:     function get_foreign_column( $currentTable, $relatedTable )
- * 2423:     function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default = '' )
- * 2442:     function splitTableAndUID($record)
+ *   80: class tx_wecsermons_pi1 extends tslib_pibase
+ *   93:     function init($conf)
+ *  114:     function main($content,$conf)
+ *  224:     function xmlView ($content, $lConf)
+ *  353:     function singleView($content,$lConf)
+ *  499:     function searchView($content,$lConf)
+ *  514:     function pi_list_searchbox($lConf)
+ *  562:     function latestView($content,$lConf)
+ *  638:     function listView($content,$lConf)
+ *  732:     function pi_list_makelist($lConf, $template)
+ *  952:     function pi_list_row($lConf, $markerArray = array(), $rowTemplate, $row ='', $c = 2)
+ * 1808:     function getMarkerArray( $tableName = '', $templateContent = '')
+ * 1960:     function formatStr( $str )
+ * 1974:     function getTemplateKey($tableName)
+ * 2017:     function getUrlToList ( $absolute )
+ * 2035:     function getUrlToSingle ( $absolute, $tableName, $uid, $sermonUid = '' )
+ * 2063:     function getFeAdminList( $tableName = '' )
+ * 2083:     function getNamedTemplateContent($keyName = 'sermon', $view = 'single')
+ * 2125:     function getNamedSubpart( $subpartName, $content )
+ * 2142:     function getMarkerName( $markerName )
+ * 2155:     function loadTemplate( $view = 'LIST')
+ * 2181:     function getTemplateFile()
+ * 2209:     function getGroupResult( $groupTable, $detailTable, $foreignColumn, $lConf, $getCount = 0 )
+ * 2313:     function getSermonResources( $sermonUid = '', $resourceUid = '')
+ * 2382:     function getSeriesResources( $seriesUid = '', $resourceUid = '')
+ * 2450:     function emptyResourceSubparts( &$subpartArray, $templateContent = '' )
+ * 2495:     function throwError( $type, $message, $detail = '' )
+ * 2519:     function getTutorial ( $tutorial )
+ * 2596:     function uniqueCsv()
+ * 2611:     function unique_array()
+ * 2629:     function get_foreign_column( $currentTable, $relatedTable )
+ * 2655:     function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default = '' )
+ * 2674:     function splitTableAndUID($record)
+ * 2687:     function array_intersect_key()
  *
- * TOTAL FUNCTIONS: 31
+ * TOTAL FUNCTIONS: 33
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -248,7 +250,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) ) {
 
 			//	Retreive the array of related resources to this sermon record
-			$resources = $this->getResources( $row['uid'] );
+			$resources = $this->getSermonResources( $row['uid'] );
 			foreach( $resources as $resource ) {
 
 				//	If the resource is the type allowed as an enclosure in this view, then calculate the url and size, adding to result row
@@ -392,7 +394,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		if( $this->internal['currentTable'] == 'tx_wecsermons_resources' ) {	// If current table is resources
 
 			//	TODO: allow specification of what record to draw from TypoScript
-			$resource = $this->getResources( '' , $this->piVars['showUid'] );
+			$resource = $this->getSermonResources( '' , $this->piVars['showUid'] );
 
 			$this->internal['currentRow'] = $resource[0];
 
@@ -432,7 +434,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$this->internal['currentRow'] = $this->internal['previousRow'];
 
 		}
-		else {
+		else {	// Process record types other than
 
 			//	Retrieve the template key, which is the translation between the real table name and the template naming.
 			$templateKey = $this->getTemplateKey( $this->internal['currentTable'] );
@@ -470,54 +472,15 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		if( $row['description'] && $lConf['enableMetaDescription'] )
 			$GLOBALS['TSFE']->pSetup['meta.']['description'] = strip_tags($row['description']) . ' - ' . $GLOBALS['TSFE']->pSetup['meta.']['description'];
 
-
 		$this->template['content'] = $this->cObj->getSubpart( $this->template['single'], '###CONTENT###' );
 		$this->template['item'] = $this->cObj->getSubpart( $this->template['single'], '###SERIES_SERMONS###' );
 
 		//	Retrieve the markerArray for the right table
 		$markerArray = $this->getMarkerArray( $this->internal['currentTable'], $this->template['content'] );
 
-
 		//	Process row
 		$content .= $this->cObj->substituteSubpart( $this->template['single'], '###CONTENT###', $this->pi_list_row($lConf, $markerArray, $this->template['content'], $this->internal['currentRow'] ) );
-/*
-		//	Branch for state where series is being displayed, and there is an SERIES_SERMONS subpart available, indicating related sermons should be shown
-		if( $this->template['item'] && $this->internal['currentTable'] == 'tx_wecsermons_series' ) {
 
-			//	Find all sermons related to this series
-			$WHERE = $this->cObj->enableFields('tx_wecsermons_sermons');
-			$query = 'SELECT * FROM tx_wecsermons_sermons WHERE find_in_set('.$row['uid'].',tx_wecsermons_sermons.series_uid)' . $WHERE;
-			$orderBy = '';
-
-			//	Build order by clause for query
-			if( $this->conf['listView.']['tx_wecsermons_sermons.']['orderBy'] ) {
-				$fieldArray  = explode( ',',$this->conf['listView.']['tx_wecsermons_sermons.']['orderBy'] );
-				$orderString = '';
-				foreach( $fieldArray as $field ) {
-					$orderString .= 'tx_wecsermons_sermons.'.$field.",";
-				}
-				$orderString = rtrim( $orderString, "," );
-				$orderBy = ' ORDER BY '.$orderString.( $this->conf['listView.']['tx_wecsermons_sermons.']['descFlag'] ? ' DESC' : '' );
-			}
-
-			$query .= $orderBy;
-			$sermonContent = '';
-			$sermonRes = $GLOBALS['TYPO3_DB']->sql_query( $query );
-
-			$sermonMarkers = $this->getMarkerArray( 'tx_wecsermons_sermons', $this->template['item']);
-
-
-			//	Iterate every sermon record, aggregate content
-			while( $sermon = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $sermonRes ) ) {
-				$sermonContent .= $this->pi_list_row($this->conf['listView.'], $sermonMarkers, $this->template['item'], $sermon );
-
-			}
-
-			//	Insert sermon content into content stream
-			$content = $this->cObj->substituteSubpart( $content, '###SERIES_SERMONS###', $sermonContent );
-
-		}
-*/
 		//	Parse for additional markers. Browse results, etc.
 		$markerArray = $this->getMarkerArray();
 
@@ -1171,7 +1134,6 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 					$this->emptyResourceSubparts( $subpartArray, $rowTemplate );
 
-					$resourceMarkerArray = $this->getMarkerArray( 'tx_wecsermons_resources', $rowTemplate );
 
 					$previousRow = $this->internal['previousRow'];
 					$this->internal['previousRow'] = $row;
@@ -1179,9 +1141,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					$this->internal['previousTable'] = 'tx_wecsermons_sermons';
 
 					$this->internal['currentTable'] = 'tx_wecsermons_resources';
-					
+
 					//	Retrieve related resources to this sermon
-					$resources = $this->getResources( $row['uid'] );
+					$resources = $this->getSermonResources( $row['uid'] );
 
 					foreach( $resources as $resource ) {
 						$this->internal['currentRow'] = $resource;
@@ -1202,13 +1164,16 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 						//	Retrieve the template subpart used to render this resource
 						$resourceTemplate = $this->cObj->getSubpart( $rowTemplate, $marker );
+						$resourceMarkerArray = $this->getMarkerArray( 'tx_wecsermons_resources', $resourceTemplate );
+
 						if( $resourceTemplate )
+
 							//	Aggregate rendered row into subpart. This allows multiple resources of the same type to all be output,
 							//	rather than the last one processed.
 							$subpartArray[$marker] .= $this->pi_list_row( $lConf, $resourceMarkerArray, $resourceTemplate, $this->internal['currentRow'] );
 
 					}
-					
+
 					$this->internal['previousRow'] = $previousRow;
 					$this->internal['previousTable'] = $previousTable;
 
@@ -1340,7 +1305,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 								 )
 							);
 
-						}					
+						}
 						else {
 						$wrappedSubpartArray[$key] = explode(
 							'|',
@@ -1499,25 +1464,23 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					}
 
 				break;
-				
+
 				case '###SERIES_SERMONS###':
 
 					$subpartArray[$key] = '';
-
-					$sermonSeriesTemplate = $this->cObj->getSubpart( $rowTemplate, $key );
 
 					//	Find all sermons related to this series
 					$WHERE = $this->cObj->enableFields('tx_wecsermons_sermons');
 					$query = 'SELECT * FROM tx_wecsermons_sermons WHERE find_in_set('.$row['uid'].',tx_wecsermons_sermons.series_uid)' . $WHERE;
 					$orderBy = '';
-		
+
 					//	Store previous row and table in local storage as we switch to retreiving detail
 					$previousRow = $this->internal['previousRow'];
 					$this->internal['previousRow'] = $row;
 					$previousTable = $this->internal['previousTable'];
 					$this->internal['previousTable'] = 'tx_wecsermons_series';
 					$this->internal['currentTable'] = 'tx_wecsermons_sermons';
-					
+
 					//	Build order by clause for query
 					if( $this->conf['listView.']['tx_wecsermons_sermons.']['orderBy'] ) {
 						$fieldArray  = explode( ',',$this->conf['listView.']['tx_wecsermons_sermons.']['orderBy'] );
@@ -1528,26 +1491,79 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						$orderString = rtrim( $orderString, "," );
 						$orderBy = ' ORDER BY '.$orderString.( $this->conf['listView.']['tx_wecsermons_sermons.']['descFlag'] ? ' DESC' : '' );
 					}
-		
+
 					$query .= $orderBy;
 					$sermonContent = '';
 					$sermonRes = $GLOBALS['TYPO3_DB']->sql_query( $query );
-		
+
+					$sermonSeriesTemplate = $this->cObj->getSubpart( $rowTemplate, $key );
 					$sermonMarkers = $this->getMarkerArray( 'tx_wecsermons_sermons', $sermonSeriesTemplate);
-		
+
 					//	Iterate every sermon record, aggregate content
 					while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $sermonRes ) ) {
 						$sermonContent .= $this->pi_list_row($this->conf['listView.'], $sermonMarkers, $sermonSeriesTemplate, $this->internal['currentRow'] );
 					}
-				
-					//	Restore row and table from local storage	
+
+					//	Restore row and table from local storage
 					$this->internal['previousRow'] = $previousRow;
 					$this->internal['previousTable'] = $previousTable;
 					$this->internal['currentTable'] = 'tx_wecsermons_series';
 					$this->internal['currentRow'] = $row;
-					
+
 					//	Set subpart array with subpart content
 					$subpartArray[$key] = $sermonContent;
+
+				break;
+				case '###SERIES_RESOURCES###':
+
+
+					$markerArray[$key] = '';
+
+					$this->emptyResourceSubparts( $subpartArray, $rowTemplate );
+
+					$previousRow = $this->internal['previousRow'];
+					$this->internal['previousRow'] = $row;
+					$previousTable = $this->internal['previousTable'];
+					$this->internal['previousTable'] = 'tx_wecsermons_sermons';
+
+					$this->internal['currentTable'] = 'tx_wecsermons_resources';
+
+					//	Retrieve related resources to this sermon
+					$resources = $this->getSeriesResources( $row['uid'] );
+
+					foreach( $resources as $resource ) {
+						$this->internal['currentRow'] = $resource;
+						$this->local_cObj->start( $this->internal['currentRow'] );
+
+						//	Use the marker name from the resource_type record
+						$marker = $this->getMarkerName( $this->internal['currentRow']['marker_name'] );
+
+						//	If this resource is the default resource type, we use the subpart marker name from typoscript config
+						if( !strcmp( '0', $this->internal['currentRow']['type'] ) ) {
+
+							$marker = $this->getMarkerName( $this->conf['defaultMarker'] );
+
+							//	Change the 'type' to 'default' to the friendlier typoscript property name.
+							$this->internal['currentRow']['type'] = 'default';
+
+						}
+
+						//	Retrieve the template subpart used to render this resource
+						$resourceTemplate = $this->cObj->getSubpart( $rowTemplate, $marker );
+						$resourceMarkerArray = $this->getMarkerArray( 'tx_wecsermons_resources', $resourceTemplate );
+
+						if( $resourceTemplate )
+							//	Aggregate rendered row into subpart. This allows multiple resources of the same type to all be output,
+							//	rather than the last one processed.
+							$subpartArray[$marker] .= $this->pi_list_row( $lConf, $resourceMarkerArray, $resourceTemplate, $this->internal['currentRow'] );
+
+					}
+
+					$this->internal['previousRow'] = $previousRow;
+					$this->internal['previousTable'] = $previousTable;
+
+					$this->internal['currentTable'] = 'tx_wecsermons_series';
+					$this->internal['currentRow'] = $row;
 
 				break;
 
@@ -1765,7 +1781,6 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 		}	// End Foreach
 
-
 		$lContent = $this->cObj->substituteMarkerArrayCached($rowTemplate, $markerArray, $subpartArray, $wrappedSubpartArray );
 
 		//	Only add edit UI if there is a row of data we're processing
@@ -1782,12 +1797,13 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	}
 
 	/**
-	 * getMarkerArray: Returns the markerArray for a specific table
+	 * getMarkerArray: Returns the markerArray for a specific table. If template content is provided as well, then the template is scraped and unused markers are filtered out of the array
 	 *
 	 * 	Default returned array is for general page markers. Browse_links, back_link, etc.
 	 *
-	 * @param	string		Table name to retrieve markers for
-	 * @return	array		Array filled with markers as keys, with empty values
+	 * @param		string		$tableName: Table name to retrieve markers for
+	 * @param		string		$templateContent: A content stream which we will scan for markers
+	 * @return	array			Array filled with markers as keys, with empty values
 	 */
 	 function getMarkerArray( $tableName = '', $templateContent = '') {
 
@@ -1818,6 +1834,10 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			if( !strcmp( $tableName,'tx_wecsermons_sermons') )
 	 		 	$markerArray['###SERMON_RESOURCES###'] = 'resources_uid';
 
+			//	If table is series table, add SERIES_RESOURCES marker back for processing
+			if( !strcmp( $tableName,'tx_wecsermons_series') )
+	 		 	$markerArray['###SERIES_RESOURCES###'] = 'resources_uid';
+
 	 	}
 		else {
 		 	switch ( $tableName ) {
@@ -1835,7 +1855,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						'###SERMON_TOPICS###' => 'topics_uid',
 						'###SERMON_SERIES###' => 'series_uid',
 						'###SERMON_SPEAKERS###' => 'speakers_uid',
-						'###SERMON_RESOURCES###' => 'resources_uid',		//	Included to kick off the processing of resources. Resource markers are defined in the resource_type records or resource record
+						'###SERMON_RESOURCES###' => 'resources_uid', // Only included to kick off the processing of resources. Resource markers are defined in the resource_type records or resource record
 		 			);
 
 		 		break;
@@ -1853,6 +1873,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						'###SERIES_SEASON###' => 'seasons_uid',
 						'###SERIES_TOPICS###' => 'topics_uid',
 						'###SERIES_SERMONS###' => '',
+						'###SERIES_RESOURCES###' => 'resources_uid',  // Only included to kick off the processing of resources. Resource markers are defined in the resource_type records or resource record
 						'###SERIES_LINK###' => '',
 						'###ALTERNATING_CLASS###' => '',
 
@@ -2007,8 +2028,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 *
 	 * @param	boolean		$absolute:	Boolean value indicating whether to return an absolute path.
 	 * @param	string		$tableName: The table name to retrieve the record from. Should be the full table name, prepended with 'tx_wecsermons_'
-	 * @param	int		$uid: An integer value that is the UID of the record we wish to get the URL for.
-	 * @param	[type]		$sermonUid: ...
+	 * @param	int				$uid: An integer value that is the UID of the record we wish to get the URL for.
+	 * @param	int				$sermonUid: The uid of the related sermon record, if we are generating a link to a record related to a sermon.
 	 * @return	string		Return value is the absolute or relative path to the requested SMS record.
 	 */
 	function getUrlToSingle ( $absolute, $tableName, $uid, $sermonUid = '' ) {
@@ -2099,7 +2120,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 *
 	 * @param	string		$subpartName: The name of the subpart
 	 * @param	string		$content: The content stream where the subpart is stored
-	 * @return	string		Returns a string value containing on the subpart requested.
+	 * @return	string	Returns a string value containing on the subpart requested.
 	 */
 	function getNamedSubpart( $subpartName, $content ) {
 		// Make sure template is loaded into instance of our class
@@ -2178,11 +2199,11 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 * 'orderBy' will determine the ordering of record set.
 	 * 'maxGroupResults' will determine how many groups are returned
 	 *
-	 * @param	string		$groupTable: The table name to group by
-	 * @param	string		$detailTable: The table name to display detail records by
-	 * @param	string		$foreignColumn: The column name by which detail records are related back to group records.
-	 * @param	array		$lConf: Locally scoped configuration array from TypoScript
-	 * @param	boolean		$getCount: A boolean value enabling the return of the row count, rather than the rows themselves.
+	 * @param	string				$groupTable: The table name to group by
+	 * @param	string				$detailTable: The table name to display detail records by
+	 * @param	string				$foreignColumn: The column name by which detail records are related back to group records.
+	 * @param	array					$lConf: Locally scoped configuration array from TypoScript
+	 * @param	boolean				$getCount: A boolean value enabling the return of the row count, rather than the rows themselves.
 	 * @return	resource		A sql resource returned from sql_query()
 	 */
 	 function getGroupResult( $groupTable, $detailTable, $foreignColumn, $lConf, $getCount = 0 ) {
@@ -2282,14 +2303,14 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	}
 
 	/**
-	 * getResources: Returns all the resources associated with a particular sermon uid, or a specific resource uid.
+	 * getSermonResources: Returns all the resources associated with a particular sermon uid, or a specific resource uid.
 	 * The function runs a SQL query to find all related resources for a particular sermon record, joining together multiple tables. The array returned is populated with fields from multiple tables.
 	 *
 	 * @param	string		$sermonUid
 	 * @param	string		$resourceUid:	The UID of a resource. If specified, only this one resource
 	 * @return	array		An array of associative arrays. Each associative array represents all properties of one resource, and all properties of its type.
 	 */
-	function getResources( $sermonUid = '', $resourceUid = '') {
+	function getSermonResources( $sermonUid = '', $resourceUid = '') {
 
 		$pidList = $this->pi_getPidList($this->conf['pidList'],$this->conf['recursive']);
 
@@ -2342,7 +2363,76 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		while( $record = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) )
 			$resources[] = $record;
 
-		//	Store the resources array so we don't have to hit the database again if we need to access this function.
+		//	Store the resources array in internal storage for access later if needed
+		$this->internal['resources'] = $resources;
+
+		return $resources;
+
+	}
+
+
+	/**
+	 * getSeriesResources: Returns all the resources associated with a particular series uid, or a specific resource uid.
+	 * The function runs a SQL query to find all related resources for a particular series record, joining together multiple tables. The array returned is populated with fields from multiple tables.
+	 *
+	 * @param	string		$seriesUid
+	 * @param	string		$resourceUid:	The UID of a resource. If specified, only this one resource
+	 * @return	array		An array of associative arrays. Each associative array represents all properties of one resource, and all properties of its type.
+	 */
+	function getSeriesResources( $seriesUid = '', $resourceUid = '') {
+
+		$pidList = $this->pi_getPidList($this->conf['pidList'],$this->conf['recursive']);
+
+		//	Build query to select resource attributes along with resource type name
+		$WHERE = $seriesUid ? 'AND tx_wecsermons_series.uid = ' . $seriesUid . ' ' :'';
+		$WHERE = $resourceUid ? 'AND tx_wecsermons_resources.uid = ' . $resourceUid . ' ' : $WHERE;
+		$WHERE .= $this->cObj->enableFields('tx_wecsermons_series');
+		$WHERE .= $this->cObj->enableFields('tx_wecsermons_resources');
+		$WHERE .= " AND( tx_wecsermons_resources.type = '0' OR (" . ltrim( $this->cObj->enableFields('tx_wecsermons_resource_types'), ' AND') . '))';
+		$WHERE .= ' AND tx_wecsermons_resources.pid IN ('.$pidList.')';
+
+		$query = 'select distinct
+		tx_wecsermons_resources.uid,
+		tx_wecsermons_resources.type,
+		tx_wecsermons_resources.title,
+		tx_wecsermons_resources.description,
+		tx_wecsermons_resources.graphic,
+		tx_wecsermons_resources.alttitle,
+		tx_wecsermons_resources.file,
+		tx_wecsermons_resources.webaddress1,
+		tx_wecsermons_resources.webaddress2,
+		tx_wecsermons_resources.webaddress3,
+		tx_wecsermons_resources.rendered_record,
+		tx_wecsermons_resources.subtitle,
+		tx_wecsermons_resources.summary,
+		tx_wecsermons_resource_types.type type_type,
+		tx_wecsermons_resource_types.description type_description,
+		tx_wecsermons_resource_types.icon,
+		tx_wecsermons_resource_types.marker_name,
+		tx_wecsermons_resource_types.template_name,
+		tx_wecsermons_resource_types.mime_type,
+		tx_wecsermons_resource_types.querystring_param,
+		tx_wecsermons_resource_types.typoscript_object_name,
+		tx_wecsermons_resource_types.rendering_page
+
+		from tx_wecsermons_resources
+			left join tx_wecsermons_series_resources_uid_mm on tx_wecsermons_resources.uid=tx_wecsermons_series_resources_uid_mm.uid_foreign
+			left join tx_wecsermons_series on tx_wecsermons_series.uid=tx_wecsermons_series_resources_uid_mm.uid_local
+			left join tx_wecsermons_resource_types on tx_wecsermons_resources.type=tx_wecsermons_resource_types.uid
+	 			where 1=1 ' . $WHERE;
+	 	$query .= ' ORDER BY tx_wecsermons_series_resources_uid_mm.sorting';
+
+#		$GLOBALS['TYPO3_DB']->debugOutput = TRUE;
+		$res = $GLOBALS['TYPO3_DB']->sql_query( $query );
+
+		$resources = array();
+
+		//	TODO: What if none found?
+		//	For each related resource, determine the type and render it
+		while( $record = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) )
+			$resources[] = $record;
+
+		//	Store the resources array in internal storage for access later if needed
 		$this->internal['resources'] = $resources;
 
 		return $resources;
@@ -2354,6 +2444,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 * This initializes the marker array with empty strings before use.
 	 *
 	 * @param	array		$subpartArray:	 The subpartArray to be initalized
+	 * @param	string	$templateContent: A content stream which we will scan for markers
 	 * @return	void
 	 */
 	function emptyResourceSubparts( &$subpartArray, $templateContent = '' ) {
@@ -2515,7 +2606,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	/**
 	 * unique_array: Given any number of single dimensional arrays, this function combines the arrays, returning an array without duplicate values.
 	 *
-	 * @return	string		An array, without duplicate values.
+	 * @return	string	An array, without duplicate values.
 	 */
 	function unique_array() {
 		$max = func_num_args();
@@ -2533,7 +2624,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 *
 	 * @param	string		$currentTable: Table name to search through
 	 * @param	string		$relatedTable: Related table to search for
-	 * @return	string		The column name that relates currentTable to relatedTable. Returns null if no relation is found.
+	 * @return	string	The column name that relates currentTable to relatedTable. Returns null if no relation is found.
 	 */
 	function get_foreign_column( $currentTable, $relatedTable ) {
 
@@ -2557,8 +2648,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 * @param	string		$ffField: Field name of the flexform value
 	 * @param	string		$ffSheet: Sheet name where flexform value is located
 	 * @param	string		$TSfieldname: Property name of typoscript value
-	 * @param	array		$lConf: TypoScript configuration array from local scope
-	 * @param	mixed		$default: The default value to assign if no other values are assigned from TypoScript or Plugin Flexform
+	 * @param	array			$lConf: TypoScript configuration array from local scope
+	 * @param	mixed			$default: The default value to assign if no other values are assigned from TypoScript or Plugin Flexform
 	 * @return	mixed		Configuration value found in any config, or default
 	 */
 	function getConfigVal( &$Obj, $ffField, $ffSheet, $TSfieldname, $lConf, $default = '' ) {
@@ -2588,6 +2679,11 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		return array("table" => $table, "uid" => $uid);
 	}
 
+	/**
+	 * Computes the intersection of arrays using keys for comparison. This is included for compatibility with PHP versions < 5
+	 *
+	 * @return	array		Returns an array containing all the values of first array parameter which have matching keys that are present in all the arguments
+	 */
   function array_intersect_key()
   {
       $arrs = func_get_args();
