@@ -90,7 +90,7 @@ class tx_wecsermons_resourceTypeTca {
 #debug( $GLOBALS['TCA']['tx_wecsermons_resources']['types'] ,1);
 
 		}
-
+		
 	}
 
 //	function pi1LayoutItems( &$params, &$pObj ) {
@@ -220,6 +220,19 @@ class tx_wecsermons_resourceTypeTca {
 
 			}
 		}
+		
+		if( (! strcmp( $table, 'tx_wecsermons_series') || ! strcmp( $table, 'tx_wecsermons_sermons') ) && $fieldArray['current'] ) {
+#$GLOBALS['TYPO3_DB']->debugOutput = 1;
+#debug($fieldArray,'Field Array');			
+			$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+				$table,
+				'',
+				array( 'current' => '0' )
+				
+			);
+			
+		}
+		
 	}
 
 /*

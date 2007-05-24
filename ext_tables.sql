@@ -134,6 +134,7 @@ CREATE TABLE tx_wecsermons_sermons (
 	resources_uid int(11) DEFAULT '0' NOT NULL,
 	speakers_uid blob NOT NULL,
 	islinked tinyint(3) DEFAULT '1' NOT NULL,
+	current tinyint(3) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -169,7 +170,8 @@ CREATE TABLE tx_wecsermons_series (
 	keywords tinytext NOT NULL,
 	resources_uid int(11) DEFAULT '0' NOT NULL,
 	islinked tinyint(3) DEFAULT '1' NOT NULL,
-
+	current tinyint(3) DEFAULT '0' NOT NULL,
+	
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );

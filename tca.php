@@ -1,6 +1,10 @@
 <?php
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
+
+	// get extension configuration
+$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['wec_sermons']);
+
 $TCA["tx_wecsermons_resources"] = Array (
 	"ctrl" => $TCA["tx_wecsermons_resources"]["ctrl"],
 	"interface" => Array (
@@ -173,7 +177,7 @@ $TCA["tx_wecsermons_resources"] = Array (
 				'allowed' => '',	// Must be empty for disallowed to work.
 				'disallowed' => 'php,php3',
 				'max_size' => $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'],
-				'uploadfolder' => 'uploads/tx_wecsermons',
+				'uploadfolder' => $extConf['resourceUploadPath'],
 				'show_thumbs' => '1',
 				'size' => 4,
 				'autoSizeMax' => 4,
@@ -816,12 +820,20 @@ $TCA["tx_wecsermons_sermons"] = Array (
             "default" => "1",
         )
     ),
+    "current" => Array (        
+        "exclude" => 1,        
+        "label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_series.current",        
+        "config" => Array (
+            "type" => "check",
+            "default" => "0",
+        )
+    ),
 	),
 	"types" => Array (
 		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;1, title;;3;;2-2-2, occurrence_date, scripture, description;;;richtext:rte_transform[mode=ts_css], resources_uid;;;;3-3-3, speakers_uid, series_uid, topics_uid, graphic;;2;;4-4-4, keywords"),
 	),
 	"palettes" => Array (
-		"1" => Array("showitem" => "starttime,endtime,fe_group,islinked"),
+		"1" => Array("showitem" => "starttime,endtime,fe_group,islinked,current"),
 		"2" => Array("showitem" => "alttitle"),
 		"3" => Array("showitem" => "subtitle"),
 	)
@@ -1111,12 +1123,20 @@ $TCA["tx_wecsermons_series"] = Array (
             "default" => "1",
         )
     ),
+    "current" => Array (        
+        "exclude" => 1,        
+        "label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_series.current",        
+        "config" => Array (
+            "type" => "check",
+            "default" => "0",
+        )
+    ),
 	),
 	"types" => Array (
 		"0" => Array("showitem" => "sys_language_uid, l18n_parent, l18n_diffsource, hidden;;1;;1-1-1, title;;3;;2-2-2, startdate;;;;3-3-3, enddate, description;;;richtext:rte_transform[mode=ts_css];4-4-4, scripture;;;;5-5-5, resources_uid, keywords, seasons_uid, topics_uid, graphic;;2")
 	),
 	"palettes" => Array (
-		"1" => Array("showitem" => "starttime,endtime,fe_group,islinked"),
+		"1" => Array("showitem" => "starttime,endtime,fe_group,islinked,current"),
 		"2" => Array("showitem" => "alttitle"),
 		"3" => Array("showitem" => "subtitle"),
 	)

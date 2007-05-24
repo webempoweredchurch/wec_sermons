@@ -1,5 +1,6 @@
 <?php
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
+
 $TCA["tx_wecsermons_resources"] = Array (
 	"ctrl" => Array (
 		"title" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_resources",
