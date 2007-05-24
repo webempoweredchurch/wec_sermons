@@ -11,6 +11,12 @@
         <languageKey index="default" type="array">
             <label index=".description">The speaker, or representative of the sermon, if applicable.</label>
             <label index=".details">A speaker</label>
+            <label index="hidden.description">Hides this record from front end display.</label>
+            <label index="hidden.details">This checkbox will hide or unhide a speaker from the users of your site. You can use this to temporarily hide this record from the Front End while editing it in the Back End.</label>
+            <label index="_hidden.seeAlso">tx_wecsermons_speakers:islinked</label>
+            <label index="islinked.description">Enables or disables linking to the single view of this record on the Front End.</label>
+            <label index="islinked.details">This checkbox allows you to have a speaker entered into the SMS and displayed on the Front End, but disallow users to view the speakers detail page by disabling the link to its single view.</label>
+            <label index="islinked.seeAlso">tx_wecsermons_speakers:hidden</label>
              <label index="fullname.description">The full name, or display name, of the speaker</label>
             <label index="fullname.details"></label>
              <label index="lastname.description">Last name of the speaker</label>

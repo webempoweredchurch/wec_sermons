@@ -91,6 +91,7 @@ plugin.tx_wecsermons_pi1 {
 						setCurrent.field = file
 						setCurrent.listNum = 0
 						insertData = 1
+						if.isTrue.field = islinked
 					}
 				}
 			}
@@ -104,6 +105,7 @@ plugin.tx_wecsermons_pi1 {
 					setCurrent.field = file
 					setCurrent.listNum = 0
 					insertData = 1
+					if.isTrue.field = islinked
 				}
 			}
 			20.wrap = <p class="bodytext">|</p>
@@ -141,6 +143,7 @@ plugin.tx_wecsermons_pi1 {
 					setCurrent.field = file
 					setCurrent.listNum = 0
 					insertData = 1
+					if.isTrue.field = islinked
 				}
 			}
 		}
@@ -166,6 +169,7 @@ plugin.tx_wecsermons_pi1 {
 						setCurrent.field = file
 						setCurrent.listNum = 0
 						insertData = 1
+						if.isTrue.field = islinked
 					}
 				}
 			}
@@ -275,10 +279,14 @@ plugin.tx_wecsermons_pi1 {
 			20.typolink = 1
 			20.typolink {
 				parameter = uploads/tx_wecsermons/{current:1}
-				parameter.setCurrent.field = file
-				parameter.setCurrent.listNum = 0
-				parameter.insertData = 1
+				parameter {
+					setCurrent.field = file
+					setCurrent.listNum = 0
+					insertData = 1
+					if.isTrue.field = islinked
+				}
 				extTarget = _blank
+				
 			}
 
 		}
@@ -339,9 +347,11 @@ plugin.tx_wecsermons_pi1 {
 			scripture {
 				typolink {
 					parameter = http://www.biblegateway.com/passage/?search={current:1}&version=31;&interface=print
-					parameter.setCurrent.field = scripture
-					parameter.setCurrent.rawUrlEncode = 1
-					parameter.insertData = 1
+					parameter {
+						setCurrent.field = scripture
+						setCurrent.rawUrlEncode = 1
+						insertData = 1
+					}
 					extTarget = _blank
 				}
 				field = scripture
@@ -411,9 +421,12 @@ plugin.tx_wecsermons_pi1 {
 			typolink = 1
 			typolink {
 				parameter = uploads/tx_wecsermons/{current:1}
-				parameter.setCurrent.field = file
-				parameter.setCurrent.listNum = 0
-				parameter.insertData = 1
+				parameter {
+					setCurrent.field = file
+					setCurrent.listNum = 0
+					insertData = 1
+					if.isTrue.field = islinked
+				}
 				extTarget = _blank
 			}
 
@@ -428,6 +441,7 @@ plugin.tx_wecsermons_pi1 {
 				embedded_mp4.typolink = 1
 				embedded_mp4.typolink {
 					parameter.field = webaddress1
+					parameter.if.isTrue.field = islinked
 					extTarget = _blank
 				}
 
@@ -602,6 +616,7 @@ plugin.tx_wecsermons_pi1 {
 			typolink = 0
 			typolink {
 				parameter.field = url
+				parameter.if.isTrue.field = islinked
 				extTarget = _blank
 			}
 
@@ -899,9 +914,12 @@ plugin.tx_wecsermons_pi1 {
 			typolink = 0
 			typolink {
 				parameter = uploads/tx_wecsermons/{current:1}
-				parameter.setCurrent.field = file
-				parameter.setCurrent.listNum = 0
-				parameter.insertData = 1
+				parameter {
+					setCurrent.field = file
+					setCurrent.listNum = 0
+					insertData = 1
+					if.isTrue.field = islinked
+				}
 				extTarget = _blank
 			}
 
@@ -1113,6 +1131,7 @@ plugin.tx_wecsermons_pi1 {
 			typolink = 0
 			typolink {
 				parameter.field = url
+				parameter.if.isTrue.field = islinked
 				extTarget = _blank
 			}
 

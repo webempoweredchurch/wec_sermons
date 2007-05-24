@@ -1015,19 +1015,24 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 
 				case '###SERMON_LINK###':
-					$wrappedSubpartArray[$key] = explode(
-						'|',
-						$this->pi_list_linkSingle(
+					
+					if( $row['islinked'] )
+						$wrappedSubpartArray[$key] = explode(
 							'|',
-							$row['uid'],
-							$this->conf['allowCaching'],
-							array(
-								'recordType' => 'tx_wecsermons_sermons',
-							),
-							FALSE,
-							$this->conf['pidSingleView'] ? $this->conf['pidSingleView']:0
-							)
-					);
+							$this->pi_list_linkSingle(
+								'|',
+								$row['uid'],
+								$this->conf['allowCaching'],
+								array(
+									'recordType' => 'tx_wecsermons_sermons',
+								),
+								FALSE,
+								$this->conf['pidSingleView'] ? $this->conf['pidSingleView']:0
+								)
+						);
+					else	// If islinked is false, simply return an empty array
+						$wrappedSubpartArray[$key] = array( 0 => '', 1 => '');
+
 				break;
 
 				case '###SERMON_SERIES###':
@@ -1269,59 +1274,65 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				break;
 
 				case '###RESOURCE_LINK###':
-					$this->local_cObj->start( $row, 'tx_wecsermons_resources' );
 
-					//	Make sure 'type' field is in readable format if set to default, for use in TypoScript
-					if( !strcmp( '0', $row['type'] ) )
-						$row['type'] = 'default';
-
-					if( !strcmp( 'default', $row['type'] ) && $lConf['tx_wecsermons_resources.']['resource_types.'][$row['type'].'.']['typolink'] ) {
-						$wrappedSubpartArray[$key] = $this->local_cObj->typolinkWrap( $lConf['tx_wecsermons_resources.']['resource_types.'][$row['type'].'.']['typolink.'] );
-					}
-					else if( $lConf['tx_wecsermons_resources.']['resource_types.'][$row['typoscript_object_name'].'.']['typolink'] ) { //	If 'typolink' segment is defined, render a link as defined by 'typolink', otherwise render a link to the resources' single view
-						$wrappedSubpartArray[$key] = $this->local_cObj->typolinkWrap( $lConf['tx_wecsermons_resources.']['resource_types.'][$row['typoscript_object_name'].'.']['typolink.'] );
-
-					}
-					else {	//	Render a link to single view
-
-						//	If this resource is a plugin/extension,
-						//	and a record to render is specified,
-						//	and the rendering page is specified, then render the link to the single view of that record
-						if( $row['type_type'] > 0 && $row['rendered_record'] && $row['rendering_page'] ) {
-
-							//	Parse the table_uid string from record into the value for the querystring_param
-							list(,$queryStringVal) = array_values( $this->splitTableAndUID($row['rendered_record'] ) );
-
-							//	Break apart our querystring_param from it's stored form of 'plugin[param]'
-							$queryString = split( "\[|\]", $this->internal['currentRow']['querystring_param'] );
-
+					if( ! $row['islinked'] ) 
+						$wrappedSubpartArray[$key] = array( 0 => '', 1 => '');
+					else {
+						
+						$this->local_cObj->start( $row, 'tx_wecsermons_resources' );
+	
+						//	Make sure 'type' field is in readable format if set to default, for use in TypoScript
+						if( !strcmp( '0', $row['type'] ) )
+							$row['type'] = 'default';
+	
+						if( !strcmp( 'default', $row['type'] ) && $lConf['tx_wecsermons_resources.']['resource_types.'][$row['type'].'.']['typolink'] ) {
+							$wrappedSubpartArray[$key] = $this->local_cObj->typolinkWrap( $lConf['tx_wecsermons_resources.']['resource_types.'][$row['type'].'.']['typolink.'] );
+						}
+						else if( $lConf['tx_wecsermons_resources.']['resource_types.'][$row['typoscript_object_name'].'.']['typolink'] ) { //	If 'typolink' segment is defined, render a link as defined by 'typolink', otherwise render a link to the resources' single view
+							$wrappedSubpartArray[$key] = $this->local_cObj->typolinkWrap( $lConf['tx_wecsermons_resources.']['resource_types.'][$row['typoscript_object_name'].'.']['typolink.'] );
+	
+						}
+						else {	//	Render a link to single view
+	
+							//	If this resource is a plugin/extension,
+							//	and a record to render is specified,
+							//	and the rendering page is specified, then render the link to the single view of that record
+							if( $row['type_type'] > 0 && $row['rendered_record'] && $row['rendering_page'] ) {
+	
+								//	Parse the table_uid string from record into the value for the querystring_param
+								list(,$queryStringVal) = array_values( $this->splitTableAndUID($row['rendered_record'] ) );
+	
+								//	Break apart our querystring_param from it's stored form of 'plugin[param]'
+								$queryString = split( "\[|\]", $this->internal['currentRow']['querystring_param'] );
+	
+								$wrappedSubpartArray[$key] = explode(
+									'|',
+									$this->pi_linkToPage(
+										'|',
+										$row['rendering_page'],
+										'',
+										array( $queryString[0] => array( $queryString[1] => $queryStringVal) )
+									 )
+								);
+	
+							}
+							else {
 							$wrappedSubpartArray[$key] = explode(
 								'|',
-								$this->pi_linkToPage(
+								$this->pi_list_linkSingle(
 									'|',
-									$row['rendering_page'],
-									'',
-									array( $queryString[0] => array( $queryString[1] => $queryStringVal) )
-								 )
+									$row['uid'],
+									$this->conf['allowCaching'],
+									array(
+										'recordType' => 'tx_wecsermons_resources',
+										'sermonUid' => $this->internal['previousRow']['uid'],
+									),
+									FALSE,
+									$this->conf['pidSingleView'] ? $this->conf['pidSingleView']:0
+									)
 							);
-
+	
 						}
-						else {
-						$wrappedSubpartArray[$key] = explode(
-							'|',
-							$this->pi_list_linkSingle(
-								'|',
-								$row['uid'],
-								$this->conf['allowCaching'],
-								array(
-									'recordType' => 'tx_wecsermons_resources',
-									'sermonUid' => $this->internal['previousRow']['uid'],
-								),
-								FALSE,
-								$this->conf['pidSingleView'] ? $this->conf['pidSingleView']:0
-								)
-						);
-
 					}
 				}
 
@@ -1569,19 +1580,23 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 				case '###SERIES_LINK###':
 
-					$wrappedSubpartArray[$key] = explode(
-						'|',
-						$this->pi_list_linkSingle(
+					// If islinked is false, simply return an empty array
+					if( ! $row['islinked'] ) 
+						$wrappedSubpartArray[$key] = array( 0 => '', 1 => '');
+					else	
+						$wrappedSubpartArray[$key] = explode(
 							'|',
-							$row['uid'],
-							$this->conf['allowCaching'],
-							array(
-								'recordType' => 'tx_wecsermons_series',
-							),
-							FALSE,
-							$this->conf['pidSingleView'] ? $this->conf['pidSingleView']:0
-						)
-					);
+							$this->pi_list_linkSingle(
+								'|',
+								$row['uid'],
+								$this->conf['allowCaching'],
+								array(
+									'recordType' => 'tx_wecsermons_series',
+								),
+								FALSE,
+								$this->conf['pidSingleView'] ? $this->conf['pidSingleView']:0
+							)
+						);
 
 				break;
 
@@ -1603,19 +1618,24 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 				case '###TOPIC_LINK###':
 
-					$wrappedSubpartArray[$key] = explode(
-						'|',
-						$this->pi_list_linkSingle(
+					// If islinked is false, simply return an empty array
+					if( ! $row['islinked'] )
+						$wrappedSubpartArray[$key] = array( 0 => '', 1 => '');
+					else	
+						$wrappedSubpartArray[$key] = explode(
 							'|',
-							$row['uid'],
-							$this->conf['allowCaching'],
-							array(
-								'recordType' => 'tx_wecsermons_topics',
-							),
-							FALSE,
-							$this->conf['pidSingleView'] ? $this->conf['pidSingleView']:0
-						)
-					);
+							$this->pi_list_linkSingle(
+								'|',
+								$row['uid'],
+								$this->conf['allowCaching'],
+								array(
+									'recordType' => 'tx_wecsermons_topics',
+								),
+								FALSE,
+								$this->conf['pidSingleView'] ? $this->conf['pidSingleView']:0
+							)
+						);
+
 
 				break;
 
@@ -1639,19 +1659,25 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 				case '###SEASON_LINK###':
 
-					$wrappedSubpartArray[$key] = explode(
-						'|',
-						$this->pi_list_linkSingle(
+					// If islinked is false, simply return an empty array
+					if( ! $row['islinked'] )
+						$wrappedSubpartArray[$key] = array( 0 => '', 1 => '');
+					else	
+						$wrappedSubpartArray[$key] = explode(
 							'|',
-							$row['uid'],
-							$this->conf['allowCaching'],
-							array(
-								'recordType' => 'tx_wecsermons_seasons',
-							),
-							FALSE,
-							$this->conf['pidSingleView'] ? $this->conf['pidSingleView']:0
-						)
-					);
+							$this->pi_list_linkSingle(
+								'|',
+								$row['uid'],
+								$this->conf['allowCaching'],
+								array(
+									'recordType' => 'tx_wecsermons_seasons',
+								),
+								FALSE,
+								$this->conf['pidSingleView'] ? $this->conf['pidSingleView']:0
+							)
+						);
+
+					
 
 				break;
 
@@ -1707,28 +1733,35 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 				case '###SPEAKER_LINK###':
 
-					$this->local_cObj->start( $row, 'tx_wecsermons_speakers' );
-
-					//	If 'typolink' is set, generate a link as defined by the 'typolink' segment, otherwise link to the speakers single view
-					if( $lConf['tx_wecsermons_speakers.']['typolink'] ) {
-
-						//	Generate a link as defined by the 'typolink' segment
-						$wrappedSubpartArray[$key] = $this->local_cObj->typolinkWrap( $lConf['tx_wecsermons_speakers.']['typolink.'] );
-					}
-					else	{ // Generate a link to the Speaker Single view
-						$wrappedSubpartArray[$key] = explode(
-							'|',
-							$this->pi_list_linkSingle(
+					// If islinked is false, simply return an empty array
+					if( $row['islinked'] )
+						$wrappedSubpartArray[$key] = array( 0 => '', 1 => '');
+					
+					else	{
+						
+						$this->local_cObj->start( $row, 'tx_wecsermons_speakers' );
+	
+						//	If 'typolink' is set, generate a link as defined by the 'typolink' segment, otherwise attempt to link to the speakers single view
+						if( $lConf['tx_wecsermons_speakers.']['typolink'] ) {
+	
+							//	Generate a link as defined by the 'typolink' segment
+							$wrappedSubpartArray[$key] = $this->local_cObj->typolinkWrap( $lConf['tx_wecsermons_speakers.']['typolink.'] );
+						}
+						else{ // If the islinked field is set, then generate a link to the Speaker Single view
+							$wrappedSubpartArray[$key] = explode(
 								'|',
-								$row['uid'],
-								$this->conf['allowCaching'],
-								array(
-									'recordType' => 'tx_wecsermons_speakers',
-								),
-								FALSE,
-								$this->conf['pidSingleView'] ? $this->conf['pidSingleView']:0
-								)
-						);
+								$this->pi_list_linkSingle(
+									'|',
+									$row['uid'],
+									$this->conf['allowCaching'],
+									array(
+										'recordType' => 'tx_wecsermons_speakers',
+									),
+									FALSE,
+									$this->conf['pidSingleView'] ? $this->conf['pidSingleView']:0
+									)
+							);
+						}
 					}
 
 				break;
@@ -2336,6 +2369,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		tx_wecsermons_resources.rendered_record,
 		tx_wecsermons_resources.subtitle,
 		tx_wecsermons_resources.summary,
+		tx_wecsermons_resources.islinked,
 		tx_wecsermons_resource_types.type type_type,
 		tx_wecsermons_resource_types.description type_description,
 		tx_wecsermons_resource_types.icon,
@@ -2353,7 +2387,6 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 			where 1=1 ' . $WHERE;
 	 	$query .= ' ORDER BY tx_wecsermons_sermons_resources_uid_mm.sorting';
 
-#		$GLOBALS['TYPO3_DB']->debugOutput = TRUE;
 		$res = $GLOBALS['TYPO3_DB']->sql_query( $query );
 
 		$resources = array();
@@ -2405,6 +2438,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		tx_wecsermons_resources.rendered_record,
 		tx_wecsermons_resources.subtitle,
 		tx_wecsermons_resources.summary,
+		tx_wecsermons_resources.islinked,
 		tx_wecsermons_resource_types.type type_type,
 		tx_wecsermons_resource_types.description type_description,
 		tx_wecsermons_resource_types.icon,
@@ -2422,7 +2456,6 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 			where 1=1 ' . $WHERE;
 	 	$query .= ' ORDER BY tx_wecsermons_series_resources_uid_mm.sorting';
 
-#		$GLOBALS['TYPO3_DB']->debugOutput = TRUE;
 		$res = $GLOBALS['TYPO3_DB']->sql_query( $query );
 
 		$resources = array();

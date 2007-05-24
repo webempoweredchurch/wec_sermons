@@ -11,8 +11,23 @@
 		<languageKey index="default" type="array">
 			<label index=".description">A digital asset you would like to make available along with a sermon.</label>
 			<label index=".details">A sermon resource is typically a digital asset, either uploaded directly into the resource record or accessed from another website via a web address (URL). A resource may also be another plug-in that you associate with a sermon record.</label>
-            <label index="sys_language_uid.description">The language of this resource.</label>
-            <label index="sys_language_uid.details">This should be the default language unless this resource represents a translation of another language.</label>
+      <label index="sys_language_uid.description">The language of this resource.</label>
+      <label index="sys_language_uid.details">This should be the default language unless this resource represents a translation of another language.</label>
+      <label index="hidden.description">Hides this record from Front End display.</label>
+      <label index="hidden.details">This checkbox will hide or unhide a resource from the users of your site. You can use this to temporarily hide this record from the Front End while editing it in the Back End.</label>
+      <label index="_hidden.seeAlso">tx_wecsermons_resources:starttime,tx_wecsermons_resources:endtime,tx_wecsermons_resources:fe_group,tx_wecsermons_resources:islinked</label>
+      <label index="starttime.description">The date this record will be shown on the Front End.</label>
+      <label index="starttime.details">Start is the date that the resource will first be available to your users. This will be 12:00 am, midnight, on the date specified.</label>
+      <label index="_starttime.seeAlso">tx_wecsermons_resources:hidden,tx_wecsermons_resources:endtime,tx_wecsermons_resources:fe_group,tx_wecsermons_resources:islinked</label>
+      <label index="endtime.description">The date this record will no longer be shown on the Front End.</label>
+      <label index="endtime.details">Stop is the date that the resource will no longer be shown on the website. This will be at 12:00 am, midnight, on the date specified.</label>
+      <label index="_endtime.seeAlso">tx_wecsermons_resources:hidden,tx_wecsermons_resources:starttime,tx_wecsermons_resources:fe_group,tx_wecsermons_resources:islinked</label>
+      <label index="fe_group.description">Only members of the user group specified here will see this resource.</label>
+      <label index="fe_group.details">Access specifies what user groups are allowed to see this resource. If a user group is selected, this resource will only be visible by those users who log into the Front End and are members of the specified user group.</label>
+      <label index="_fe_group.seeAlso">tx_wecsermons_resources:hidden,tx_wecsermons_resources:starttime,tx_wecsermons_resources:endtime,tx_wecsermons_resources:islinked</label>
+      <label index="islinked.description">Enables or disables linking to the single view of this record on the Front End.</label>
+      <label index="islinked.details">This checkbox allows you to have a resource entered into the SMS and displayed on the Front End, but disallow users to access the resources by disabling the link to its single view, or disabling the link to the resource itself.</label>
+      <label index="_islinked.seeAlso">tx_wecsermons_resources:hidden,tx_wecsermons_resources:starttime,tx_wecsermons_resources:endtime,tx_wecsermons_resources:fe_group,tx_wecsermons_resources:islinked</label>
 			<label index="title.description">Title of the resource</label>
 			<label index="title.details">The title you wish you name this resource with. </label>
 			<label index="title.description">Title of the resource</label>
