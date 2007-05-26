@@ -172,6 +172,16 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					$content = $this->singleView( $content, $this->conf['singleView.'] );
 					break;
 
+				case 'CURRENT':
+					$this->internal['currentCode'] = 'CURRENT';
+					$content = $this->singleView( $content, $this->conf['singleView.'] );
+					break;
+
+				case 'PREVIOUS':
+					$this->internal['currentCode'] = 'PREVIOUS';
+					$content = $this->singleView( $content, $this->conf['singleView.'] );
+					break;
+
 				case 'LIST':
 					$this->internal['currentCode'] = 'LIST';
 					$content = $this->piVars['showUid'] ? $this->listView( $content, $this->conf['listView.'] ) : $content . $this->listView( $content, $this->conf['listView.'] );
@@ -224,7 +234,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	function xmlView ($content, $lConf) {
 
 		//	Get the related table entries to the group, using 'tx_wecsermons_sermons' if none specified
-		$tableToList = $this->piVars['recordType'] ? $this->piVars['recordType'] : ($this->conf['detailTable'] ? $this->conf['detailTable'] : 'tx_wecsermons_sermons' );
+		$tableToList = $this->piVars['recordType'] ? htmlspecialchars( $this->piVars['recordType'] ) : ($this->conf['detailTable'] ? $this->conf['detailTable'] : 'tx_wecsermons_sermons' );
 
 		//	Retrieve the number we want to limit our items to
 		$this->internal['results_at_a_time'] = $lConf['maxdetailResults'];
@@ -351,10 +361,11 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 * @return	string		Complete single view content
 	 */
 	function singleView($content,$lConf)	{
+
 		$this->pi_loadLL();
 
 		//	Set the current table internal variable from recordType querystring value
-		$this->internal['currentTable'] = htmlspecialchars( $this->piVars['recordType'] );
+		$this->internal['currentTable'] = $this->piVars['recordType'] ? htmlspecialchars( $this->piVars['recordType'] ) : $this->getConfigVal( $this, 'detail_table', 'slistView', 'detailTable', $this->conf, 'tx_wecsermons_sermons' );
 
 		// Check if search words were posted back to this page. If so, then error as pidSearchView needed to be set.
 		if( $this->piVars['sword'] ) {
@@ -380,7 +391,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		}
 
 		//	Check if showUid is an int
-		if( ! t3lib_div::testInt( $this->piVars['showUid'] ) ) {
+		if( ! t3lib_div::testInt( $this->piVars['showUid'] ) && !strcmp( 'SINGLE', $this->internal['currentCode'] ) ) {
 
 			return $this->throwError(
 				'WEC Sermon Management System Error!',
@@ -389,6 +400,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			);
 
 		}
+
 
 		//	Branch between processing resource records and other records
 		if( $this->internal['currentTable'] == 'tx_wecsermons_resources' ) {	// If current table is resources
@@ -434,16 +446,12 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$this->internal['currentRow'] = $this->internal['previousRow'];
 
 		}
-		else {	// Process record types other than
-
+		else {	// Process record types other than resources
+			
 			//	Retrieve the template key, which is the translation between the real table name and the template naming.
 			$templateKey = $this->getTemplateKey( $this->internal['currentTable'] );
 			$this->template['single'] = $this->getNamedTemplateContent( $templateKey );
 
-			//	TODO: Pre-process template for markers
-
-			//	TODO: allow specification of what record to draw from TypoScript
-			$this->internal['currentRow'] = $row = $this->pi_getRecord($this->piVars['recordType'],$this->piVars['showUid']);
 			//	Report an error if we couldn't pull up the template.
 			if(! $this->template['single'] ) {
 
@@ -457,6 +465,79 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						)
 					 );
 			}
+
+			//	Check if the 'CURRENT' view was requested, and retrieve the record marked as current
+			//	TODO: allow specification of what record to draw from TypoScript
+			if( !strcmp( 'CURRENT', $this->internal['currentCode'] ) 
+				&& ( !strcmp( 'tx_wecsermons_sermons', $this->internal['currentTable']) || !strcmp( 'tx_wecsermons_series', $this->internal['currentTable']) ) ) {
+				
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					'*',
+					$this->internal['currentTable'],
+					"current='1'"
+				);
+				
+				$row = $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res );
+
+				//	Report an error if no row was returned.
+				if(! $row['uid'] ) {
+	
+						return $this->throwError(
+							'WEC Sermon Management System Error!',
+							'No record marked "current" was found. Please flag a record as current before using the "CURRENT" display.',
+							sprintf (
+								'Display Requested: %s',
+								$this->internal['currentCode']
+							)
+						 );
+				}			
+			}
+			//	Check if the 'PREVIOUS' view was requested, and retrieve the record previous to record marked as current
+			//	TODO: allow specification of what record to draw from TypoScript
+			if( !strcmp( 'PREVIOUS', $this->internal['currentCode'] ) 
+				&& ( !strcmp( 'tx_wecsermons_sermons', $this->internal['currentTable']) || !strcmp( 'tx_wecsermons_series', $this->internal['currentTable']) ) ) {
+
+				// Retrieve the record marked current
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					'*',
+					$this->internal['currentTable'],
+					"current='1'"
+				);
+				
+				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res );
+
+				// Accumulate our filtering criteria
+				$pidList = $this->pi_getPidList($this->conf['pidList'],$this->conf['recursive']);
+				$WHERE = !strcmp( 'tx_wecsermons_sermons', $this->internal['currentTable']) ? ('occurrence_date > 1 and occurrence_date < ' . $row['occurrence_date']) : ('enddate > 1 and enddate < '. $row['enddate']);
+				$WHERE .= $this->cObj->enableFields($this->internal['currentTable']);
+				$WHERE .= ' AND '.$this->internal['currentTable'].'.pid IN ('.$pidList.')';
+				
+				// Retreive the record previous to the current record, determining by occurrence_date of sermons or enddate of series				
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					'*',
+					$this->internal['currentTable'],
+					$WHERE,
+					'',
+					!strcmp( 'tx_wecsermons_sermons', $this->internal['currentTable']) ? 'occurrence_date desc' : 'enddate desc'
+				);
+
+				$row = $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res );
+
+				//	Report an error if no row was returned.
+				if(! $row['uid'] ) {
+	
+						return $this->throwError(
+							'WEC Sermon Management System Error!',
+							'No record marked "current" was found. Please flag a record as current before using the "CURRENT" display.',
+							sprintf (
+								'Display Requested: %s',
+								$this->internal['currentCode']
+							)
+						 );
+				}			
+			}			
+			else
+				$this->internal['currentRow'] = $row = $this->pi_getRecord($this->internal['currentTable'],$this->piVars['showUid']);
 
 		}
 
@@ -2012,8 +2093,6 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			break;
 
 			case 'tx_wecsermons_resources':
-
-
 				$key = 'Resource';
 			break;
 
