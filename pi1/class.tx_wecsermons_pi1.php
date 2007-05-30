@@ -1335,6 +1335,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				break;
 
 				case '###RESOURCE_CONTENT###':
+						$this->local_cObj->start( $row, 'tx_wecsermons_resources' );
 
 					//	If resource type's type = '1' and querystring parameter is not null, inject the parameter into the querystring. Type = 1 means we're processing an extension/plugin
 					if( $this->internal['currentRow']['type_type']  == '1' && $this->internal['currentRow']['querystring_param']) {
