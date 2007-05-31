@@ -80,13 +80,14 @@ plugin.tx_wecsermons_pi1 {
 
 				prefixComment = 2 | pdf Preview:
 				altText.field = alttitle
-				file.import = uploads/tx_wecsermons/
+				file.import = {register:wec_sermons_resourceUploadPath}/
 				file.import.field = file
+				file.import.insertData = 1
 				file.width = 150m
 				file.height  = 150m
 				wrap = <div class="tx-wecsermons-pi1-pdf-preview">|</div>
 				stdWrap.typolink {
-					parameter = uploads/tx_wecsermons/{current:1}
+					parameter = {register:wec_sermons_resourceUploadPath}/{current:1}
 					parameter {
 						setCurrent.field = file
 						setCurrent.listNum = 0
@@ -100,7 +101,7 @@ plugin.tx_wecsermons_pi1 {
 			20.prefixComment = 2 | pdf File Link:
 			20.field = title
 			20.typolink {
-				parameter = uploads/tx_wecsermons/{current:1}
+				parameter = {register:wec_sermons_resourceUploadPath}/{current:1}
 				parameter {
 					setCurrent.field = file
 					setCurrent.listNum = 0
@@ -138,7 +139,7 @@ plugin.tx_wecsermons_pi1 {
 		downloadfile {
 			field = title
 			typolink {
-				parameter = uploads/tx_wecsermons/{current:1}
+				parameter = {register:wec_sermons_resourceUploadPath}/{current:1}
 				parameter {
 					setCurrent.field = file
 					setCurrent.listNum = 0
@@ -157,14 +158,17 @@ plugin.tx_wecsermons_pi1 {
 			10 {
 				stdWrap.prefixComment = 2 | Graphic Preview:
 				altText.field = alttitle
-				file.import = uploads/tx_wecsermons/
-				file.import.field = file
-				file.import.field.listNum = 0
+				file.import = {register:wec_sermons_resourceUploadPath}/
+				file.import {
+					field = file
+					field.listNum = 0
+					insertData = 1
+				}
 				file.width = 150m
 				file.height  = 150m
 				wrap = <div class="tx-wecsermons-pi1-graphic-preview">|</div>
 				stdWrap.typolink {
-					parameter = uploads/tx_wecsermons/{current:1}
+					parameter = {register:wec_sermons_resourceUploadPath}/{current:1}
 					parameter {
 						setCurrent.field = file
 						setCurrent.listNum = 0
@@ -187,7 +191,8 @@ plugin.tx_wecsermons_pi1 {
 
 			20 < plugin.tx_wecflashplayer_pi2
 			20 {
-				audiobase.value = uploads/tx_wecsermons/
+				audiobase.value = {register:wec_sermons_resourceUploadPath}/
+				audiobase.insertData = 1
 				audiofile.setCurrent.field = file
 				audiofile.setCurrent.listNum = 0
 				audiofile.current = 1
@@ -210,7 +215,8 @@ plugin.tx_wecsermons_pi1 {
 
 			20 < plugin.tx_wecflashplayer_pi1
 			20 {
-				videobase.value = uploads/tx_wecsermons/
+				videobase.value = {register:wec_sermons_resourceUploadPath}/
+				videobase.insertData = 1
 				videohigh.setCurrent.field = file
 				videohigh.setCurrent.listNum = 0
 				videohigh.current = 1
@@ -241,7 +247,7 @@ plugin.tx_wecsermons_pi1 {
 			//	Media embed uses the MULTIMEDIA cObject to render, using the first file in the list of attached resources.
 			20 = MULTIMEDIA
 			20.stdWrap.prefixComment = 2 | Embeded media:
-			20.file = uploads/tx_wecsermons/{current:1}
+			20.file = {register:wec_sermons_resourceUploadPath}/{current:1}
 			20.file {
 				setCurrent.field = file
 				setCurrent.listNum = 0
@@ -278,7 +284,7 @@ plugin.tx_wecsermons_pi1 {
 			20.listNum = 0
 			20.typolink = 1
 			20.typolink {
-				parameter = uploads/tx_wecsermons/{current:1}
+				parameter = {register:wec_sermons_resourceUploadPath}/{current:1}
 				parameter {
 					setCurrent.field = file
 					setCurrent.listNum = 0
@@ -420,7 +426,7 @@ plugin.tx_wecsermons_pi1 {
 			# If typolink = 0, then links to the single view of a resource.
 			typolink = 1
 			typolink {
-				parameter = uploads/tx_wecsermons/{current:1}
+				parameter = {register:wec_sermons_resourceUploadPath}/{current:1}
 				parameter {
 					setCurrent.field = file
 					setCurrent.listNum = 0
@@ -672,7 +678,6 @@ plugin.tx_wecsermons_pi1 {
 				typolink = 1
 				typolink.parameter.field = email
 				wrap = |
-				parseFunc < tt_content.text.20.parseFunc
 				field = email
 
 			}
@@ -913,7 +918,7 @@ plugin.tx_wecsermons_pi1 {
 			# If typolink = 0, then links to the single view of a resource.
 			typolink = 0
 			typolink {
-				parameter = uploads/tx_wecsermons/{current:1}
+				parameter = {register:wec_sermons_resourceUploadPath}/{current:1}
 				parameter {
 					setCurrent.field = file
 					setCurrent.listNum = 0
@@ -1369,6 +1374,7 @@ plugin.tx_wecapi_list {
 		item_link.value = {$constants.wec.siteURL}{field:item_link}
 		item_link.insertData = 1
 		item_link.data >
+		item_link.field >
 		item_comments.field = comments_link
 		item_pubdate.field = occurrence_date
 		item_guid {

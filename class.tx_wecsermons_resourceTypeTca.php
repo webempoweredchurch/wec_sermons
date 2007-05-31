@@ -121,16 +121,18 @@ class tx_wecsermons_resourceTypeTca {
 	 */
 	function resourceType_items( &$params, &$pObj ) {
 
-			//	Make sure TCA is loaded for our table
-			t3lib_div::loadTCA( 'tx_wecsermons_resources' );
-			t3lib_div::loadTCA( 'tx_wecsermons_resource_types' );
+		//	Make sure TCA is loaded for our table
+		t3lib_div::loadTCA( 'tx_wecsermons_resources' );
+		t3lib_div::loadTCA( 'tx_wecsermons_resource_types' );
 
+		$where .= t3lib_BEfunc::BEenableFields('tx_wecsermons_resource_types');
+		$where .= t3lib_BEfunc::deleteClause('tx_wecsermons_resource_types');
 
 		//	Retreive all tx_wecsermons_resource_types records
 		$resource = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'*',
 			'tx_wecsermons_resource_types',
-				' deleted = 0 AND hidden = 0 ',
+				' 1=1'.$where,
 				'',
 				'sorting'
 		);
