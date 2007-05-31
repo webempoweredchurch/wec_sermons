@@ -80,9 +80,11 @@ plugin.tx_wecsermons_pi1 {
 
 				prefixComment = 2 | pdf Preview:
 				altText.field = alttitle
-				file.import = {register:wec_sermons_resourceUploadPath}/
-				file.import.field = file
-				file.import.insertData = 1
+				file.import = uploads/tx_wecsermons/
+				file.import {
+					field = file
+					listNum = 0
+				}
 				file.width = 150m
 				file.height  = 150m
 				wrap = <div class="tx-wecsermons-pi1-pdf-preview">|</div>
@@ -158,11 +160,10 @@ plugin.tx_wecsermons_pi1 {
 			10 {
 				stdWrap.prefixComment = 2 | Graphic Preview:
 				altText.field = alttitle
-				file.import = {register:wec_sermons_resourceUploadPath}/
+				file.import = uploads/tx_wecsermons/
 				file.import {
 					field = file
-					field.listNum = 0
-					insertData = 1
+					listNum = 0
 				}
 				file.width = 150m
 				file.height  = 150m
