@@ -101,6 +101,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		# Using $this->pi_isOnlyFields: this holds a comma-separated list of fieldnames which - if they are among the GETvars - will not disable caching for the page with pagebrowser.
 		$this->pi_isOnlyFields .= ",recordType";
 
+		// Unserialize SMS extension configuration, and write it to a TSFE register for access throughout the plugin
+		$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['wec_sermons']);
+		$GLOBALS["TSFE"]->register['wec_sermons_resourceUploadPath'] = $extConf['resourceUploadPath'];
 	}
 
 	/**
@@ -246,6 +249,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		$this->internal['orderBy'] = $lConf['useCreationDate'] ? 'crdate' : $orderBy;
 		//	TODO: Modify code to allow other records to be shown. Right now we're assuming sermons only.
 
+		$this->conf['pidList'] = $this->pi_getPidList($this->conf['pidList'],$this->conf['recursive']); 
+		
 		// Make listing query, pass query to SQL database:
 		$res = $this->pi_exec_query($tableToList,0);
 
@@ -2453,6 +2458,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		tx_wecsermons_resource_types.type type_type,
 		tx_wecsermons_resource_types.description type_description,
 		tx_wecsermons_resource_types.icon,
+		tx_wecsermons_resource_types.alttitle type_alttitle,
 		tx_wecsermons_resource_types.marker_name,
 		tx_wecsermons_resource_types.template_name,
 		tx_wecsermons_resource_types.mime_type,
@@ -2522,6 +2528,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		tx_wecsermons_resource_types.type type_type,
 		tx_wecsermons_resource_types.description type_description,
 		tx_wecsermons_resource_types.icon,
+		tx_wecsermons_resource_types.alttitle type_alttitle,
 		tx_wecsermons_resource_types.marker_name,
 		tx_wecsermons_resource_types.template_name,
 		tx_wecsermons_resource_types.mime_type,
