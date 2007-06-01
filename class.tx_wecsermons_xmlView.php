@@ -56,7 +56,7 @@ require_once(PATH_t3lib.'class.t3lib_div.php');
 	 * @return	[type]		void
 	 * @see	tx_wecapi_list::getListContent()
 	 */
-	function preProcessContentRow( $pObj, $row, $tableName ) {
+	function preProcessContentRow( &$pObj, &$row, $tableName ) {
 
 			//	Make a callback to get the URL to this record. Parent object of tx_wecapi_list must support getUrlToSingle function call!
 		$row['item_link'] = $pObj->cObj->getUrlToSingle( true, $tableName, $row['uid'] );
@@ -72,7 +72,7 @@ require_once(PATH_t3lib.'class.t3lib_div.php');
 	 * @return	[type]		void
 	 * @see	tx_wecapi_list::getListContent()
 	 */
-	function preProcessPageArray( $pObj, $dataArray, $pageArray ) {
+	function preProcessPageArray( &$pObj, &$dataArray, &$pageArray ) {
 
 			//	Make a callback to get the URL to the list view. Parent object of tx_wecapi_list must support getUrlToList function call!
 		$pageArray['channel_link'] = $pObj->cObj->getUrlToList( true );
