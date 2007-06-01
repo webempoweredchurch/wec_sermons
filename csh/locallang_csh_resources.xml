@@ -30,8 +30,6 @@
       <label index="_islinked.seeAlso">tx_wecsermons_resources:hidden,tx_wecsermons_resources:starttime,tx_wecsermons_resources:endtime,tx_wecsermons_resources:fe_group,tx_wecsermons_resources:islinked</label>
 			<label index="title.description">Title of the resource</label>
 			<label index="title.details">The title you wish you name this resource with. </label>
-			<label index="title.description">Title of the resource</label>
-			<label index="title.details">The title you wish you name this resource with. </label>
 			<label index="type.description">The type of resource.</label>
 			<label index="type.details">Resource type determines what fields are available for a resource. Available fields are description, icon, file, MIME type, and URL. See resource type definition for details on these fields. Resource types can be defined by "Resource Type" records.</label>
 			<label index="_type.seeAlso">tx_wecsermons_resource_types</label>

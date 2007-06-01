@@ -13,6 +13,8 @@ $LOCAL_LANG = Array (
 	'dk' => Array (
 	),
 	'de' => Array (
+		'pi1_title' => 'WEC Predigt Verwaltuns System',
+		'pi1_plus_wiz_description' => 'Das PVS plug-in verwaltet die Anzeige der Predigtdaten auf der Webseite.',
 	),
 	'no' => Array (
 	),
