@@ -267,15 +267,18 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			//	Retreive the array of related resources to this sermon record
 			$resources = $this->getSermonResources( $row['uid'] );
 			foreach( $resources as $resource ) {
-
+				
 				//	If the resource is the type allowed as an enclosure in this view, then calculate the url and size, adding to result row
 				if( !strcmp( $resource['typoscript_object_name'], $lConf['enclosureType'] ) ) {
 
+					// Merge resource and sermon rows together, so that all fields are available via TypOScript.
+					$row = array_merge( $resource, $row );
+					
 					//	Retrieve a typolink conf that tells us how to render the link to the resource attachment. Must be provided by admin!
 					$this->local_cObj->start($resource);
 					$typolinkConf = $lConf['tx_wecsermons_resources.']['resource_types.'][$resource['typoscript_object_name'].'.']['typolink.'];
 
-					// Instatiate a TypoScript parser for parsing the tx_wecapi_list setup config
+					// Instantiate a TypoScript parser for parsing the tx_wecapi_list setup config
 					$ts_parser = t3lib_div::makeInstance('t3lib_TSparser');
 					list(,$wecapi_list) = $ts_parser->getVal('plugin.tx_wecapi_list',$GLOBALS['TSFE']->tmpl->setup);
 

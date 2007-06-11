@@ -22,7 +22,7 @@ plugin.tx_wecsermons_pi1 {
 
 	# Whether the extension caches content or not
 	allowCaching = {$plugin.tx_wecsermons_pi1.allowCaching}
-	
+
 	# Rendering of text items. re-use the RTE parseFunc configuration for RTE content
 	general_stdWrap {
 		parseFunc = < lib.parseFunc_RTE
@@ -293,7 +293,7 @@ plugin.tx_wecsermons_pi1 {
 					if.isTrue.field = islinked
 				}
 				extTarget = _blank
-				
+
 			}
 
 		}
@@ -1362,16 +1362,21 @@ vodcast.typeNum = 223
 plugin.tx_wecapi_list {
 
 	tag_rendering {
+
 		channel_link >
 		channel_link = TEXT
 		channel_link.data = field:channel_link
 		channel_link.wrap = <link>|</link>
 
 		item_title.field = title
+		item_title.trim = 1
 		item_description {
 			field = description
 			if.isTrue.field = description
+			trim = 1
 		}
+
+		item_author.trim = 1
 		item_link.value = {$constants.wec.siteURL}{field:item_link}
 		item_link.insertData = 1
 		item_link.data >
@@ -1382,6 +1387,7 @@ plugin.tx_wecapi_list {
 			value = {$constants.wec.siteURL}{field:item_link}/{field:tstamp}
 			insertData = 1
 		}
+
 		item_source >
 		item_enclosure.if.isTrue.field = enclosure_url
 		item_itunes_summary.field = summary
