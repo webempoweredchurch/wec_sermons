@@ -1316,7 +1316,7 @@ plugin.tx_wecsermons_pi1 {
 	xmlView < .listView
 	xmlView {
 
-		maxdetailResults = 5
+		maxdetailResults = {$plugin.tx_wecsermons_pi1.xmlView.maxdetailResults}
 		descFlag = 1
 		orderByList = occurrence_date,title,crdate
 		orderBy = occurrence_date

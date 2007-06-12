@@ -47,6 +47,9 @@ plugin.tx_wecsermons_pi1 {
 	# cat=plugin.tx_wecsermons_pi1/dims/60; type=text; label= LATEST View - Maxium Detail Results: Maxium detail results returned. (Applied to LATEST view only. Will not apply to Series Layout)
 	latestView.maxdetailResults = 20
 
+	# cat=plugin.tx_wecsermons_pi1/dims/70; type=text; label= SMS XML Feed - Maxium Detail Results: Maxium detail results returned in the xml feed. (Applied to xmlView view only. Will not apply to Series Layout)
+	xmlView.maxdetailResults = 10
+
 	# cat=plugin.tx_wecsermons_pi1/dims/10; type=text; label= iTunes Encoding Bitrate (kb) : This bitrate setting is used in calculating the "duration" of a video or audio file for use in itunes
 	bitrate = 128
 

@@ -239,6 +239,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		//	Get the related table entries to the group, using 'tx_wecsermons_sermons' if none specified
 		$tableToList = $this->piVars['recordType'] ? htmlspecialchars( $this->piVars['recordType'] ) : ($this->conf['detailTable'] ? $this->conf['detailTable'] : 'tx_wecsermons_sermons' );
 
+		//	TODO: Create a custom query that looks only for sermons with resources of specified enclosure type
+
 		//	Retrieve the number we want to limit our items to
 		$this->internal['results_at_a_time'] = $lConf['maxdetailResults'];
 		$this->internal['orderByList']=$lConf[$tableToList.'.']['orderByList'];
