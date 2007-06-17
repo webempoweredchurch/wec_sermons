@@ -916,18 +916,6 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			while( $groupCount <= $lConf['maxGroupResults']
 				&& $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res ) ) {
 
-				//	Store previous row, table and order by as we switch to retreiving detail
-				$this->internal['previousRow'] = $this->internal['currentRow'];
-				$this->internal['previousTable'] = $this->internal['currentTable'];
-				$this->internal['currentTable'] = $detailTable;
-				$this->internal['previousOrderByList'] = $this->internal['orderByList'];
-				$this->internal['previousOrderBy'] = $this->internal['orderBy'];
-				$this->internal['previousdescFlag'] = $this->internal['descFlag'];
-				$this->internal['orderByList']=$lConf[$detailTable.'.']['orderByList'];
-				$this->internal['orderBy']=$lConf[$detailTable.'.']['orderBy'];
-				$this->internal['descFlag']=$lConf[$detailTable.'.']['descFlag'];
-
-
 				//	Check if rendering LATEST view, making changes to ordering as appropriate.
 				if( !strcmp( $this->internal['currentCode'], 'LATEST' ) ) {
 					$this->internal['descFlag']='1';
@@ -938,6 +926,18 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				//	Process the current row
 				$groupContent = $this->pi_list_row( $lConf, $markerArray, $groupTemplate, $this->internal['currentRow'], $groupCount );
 
+
+				//	Store previous row, table and order by as we switch to retreiving detail
+				$this->internal['previousRow'] = $this->internal['currentRow'];
+				$this->internal['previousTable'] = $this->internal['currentTable'];
+				$this->internal['currentTable'] = $detailTable;
+				$this->internal['previousOrderByList'] = $this->internal['orderByList'];
+				$this->internal['previousOrderBy'] = $this->internal['orderBy'];
+				$this->internal['previousdescFlag'] = $this->internal['descFlag'];
+				$this->internal['orderByList']=$lConf[$detailTable.'.']['orderByList'];
+				$this->internal['orderBy']=$lConf[$detailTable.'.']['orderBy'];
+				$this->internal['descFlag']=$lConf[$detailTable.'.']['descFlag'];
+				
 				//	Store results_at_a_time and switch to hardcoded value of 1000 for detail. This is because we never want a limited list of detail records
 				//	in a grouped view.
 				$this->internal['prev_results_at_a_time'] = $this->internal['results_at_a_time'];
@@ -948,7 +948,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				$this->piVars['pointer'] = 0;
 
 				//	Exec query on detail table, for every record related to our group record
-				$detailRes = $this->pi_exec_query( $detailTable, 0, ' AND ' . $foreign_column . ' in (' . $this->internal['previousRow']['uid'] . ')' );
+				$detailRes = $this->pi_exec_query( $detailTable, 0, ' AND find_in_set('.$this->internal['previousRow']['uid'].','.$this->internal['currentTable'].'.'.$foreign_column . ')' );
 
 				//	Resore results_at_a_time and pointer values
 				$this->internal['results_at_a_time'] = $this->internal['prev_results_at_a_time'];
