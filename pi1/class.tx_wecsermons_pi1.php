@@ -835,7 +835,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		//	 Gather all our output into $content
 		$content = '';
 		$subpartArray = array();
-		$groupTable = $this->getConfigVal( $this, 'group_table', 'slistView', 'group_table', $lConf );
+		$groupTable = $this->getConfigVal( $this, 'group_table', 'slistView', 'groupTable', $this->conf );
 		$previousTable = '';
 		$previousRow = array();
 
