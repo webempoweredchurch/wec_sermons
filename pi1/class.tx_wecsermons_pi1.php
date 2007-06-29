@@ -96,8 +96,6 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		$this->pi_setPiVarDefaults(); // Set default piVars from TS
 		$this->pi_loadLL();		// Loading the LOCAL_LANG values
 
-		//	TODO: Determine if we need a layout code logic block or not
-		$this->internal['layoutCode'] = $this->getConfigVal( $this, 'layout', 'sDEF', 'layoutCode', $lConf, 1 );	//	Set layoutCode into internal storage
 		# Using $this->pi_isOnlyFields: this holds a comma-separated list of fieldnames which - if they are among the GETvars - will not disable caching for the page with pagebrowser.
 		$this->pi_isOnlyFields .= ",recordType";
 
@@ -374,6 +372,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 		$this->pi_loadLL();
 
+		//	Set the layout
+		$this->internal['layoutCode'] = $this->getConfigVal( $this, 'layout', 'sDEF', 'layoutCode', $lConf, 'BRIEF' );	//	Set layoutCode into internal storage
+
 		//	Set the current table internal variable from recordType querystring value
 		$this->internal['currentTable'] = $this->piVars['recordType'] ? htmlspecialchars( $this->piVars['recordType'] ) : $this->getConfigVal( $this, 'detail_table', 'slistView', 'detailTable', $this->conf, 'tx_wecsermons_sermons' );
 
@@ -589,6 +590,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 */
 	function searchView($content,$lConf)	{
 
+		//	Set the layout
+		$this->internal['layoutCode'] = $this->getConfigVal( $this, 'layout', 'sDEF', 'layoutCode', $lConf, 'BRIEF' );	//	Set layoutCode into internal storage
+
 		return "\n\n".$this->pi_list_searchbox($lConf);
 
 
@@ -651,6 +655,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 * @return	string		Complete list view content
 	 */
 	function latestView($content,$lConf)	{
+
+		//	Set the layout
+		$this->internal['layoutCode'] = $this->getConfigVal( $this, 'layout', 'sDEF', 'layoutCode', $lConf, 'BRIEF' );	//	Set layoutCode into internal storage
 
 		// If a single element should be displayed, jump to single view
 		if ($this->piVars['showUid'])	{
@@ -727,6 +734,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 * @return	string		Complete list view content
 	 */
 	function listView($content,$lConf)	{
+
+		//	Set the layout
+		$this->internal['layoutCode'] = $this->getConfigVal( $this, 'layout', 'sDEF', 'layoutCode', $lConf, 'BRIEF' );	//	Set layoutCode into internal storage
 
 		// If a single element should be displayed, jump to single view
 		if ($this->piVars['showUid'])	{
