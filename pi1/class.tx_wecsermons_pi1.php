@@ -668,7 +668,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 		//	Intialize query params if not set
 		if (!isset($this->piVars['pointer']))	$this->piVars['pointer']=0;
-		if( !isset( $this->piVars['recordType'] ) ) $this->piVars['recordType'] = $this->getConfigVal( $this, 'detail_table', 'slistView', 'detailTable', $this->conf, 'tx_wecsermons_sermons' );
+		$this->internal['currentTable'] = $this->getConfigVal( $this, 'detail_table', 'slistView', 'detailTable', $this->conf, 'tx_wecsermons_sermons' );
 
 
 		if( $lConf['useCreationDate'] ) {
@@ -677,9 +677,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		else {
 
 			//	If listing sermon records, check if order was specified in the FE Plugin and load from there. Otherwise load from typoscript, or 'title' as default.
-			$this->internal['orderBy'] = !strcmp( $this->piVars['recordType'], 'tx_wecsermons_sermons' ) ?
-				$this->getConfigVal( $this, 'sermons_order_by', 'slistView', 'orderBy', $lConf[$this->piVars['recordType'].'.'], 'occurrence_date' ) :
-				$lConf[$this->piVars['recordType'].'.']['orderBy'];
+			$this->internal['orderBy'] = !strcmp( $this->internal['currentTable'], 'tx_wecsermons_sermons' ) ?
+				$this->getConfigVal( $this, 'sermons_order_by', 'slistView', 'orderBy', $lConf[$this->internal['currentTable'].'.'], 'occurrence_date' ) :
+				$lConf[$this->internal['currentTable'].'.']['orderBy'];
 
 		}
 
@@ -689,7 +689,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		$this->internal['showFirstLast']=$lConf['showFirstLast'];
 		$this->internal['pagefloat']=$lConf['pagefloat'];
 		$this->internal['showRange']=$lConf['showRange'];
-		$this->internal['orderByList']=$lConf[$this->piVars['recordType'].'.']['orderByList'];
+		$this->internal['orderByList']=$lConf[$this->internal['currentTable'].'.']['orderByList'];
 
 		//	Hardcode descending = 1 for latest view
 		$this->internal['descFlag']='1';
@@ -749,29 +749,29 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 		//	Intialize query params if not set
 		if (!isset($this->piVars['pointer']))	$this->piVars['pointer']=0;
-		if( !isset( $this->piVars['recordType'] ) ) $this->piVars['recordType'] = $this->getConfigVal( $this, 'detail_table', 'slistView', 'detailTable', $this->conf, 'tx_wecsermons_sermons' );
+		$this->internal['currentTable'] = $this->getConfigVal( $this, 'detail_table', 'slistView', 'detailTable', $this->conf, 'tx_wecsermons_sermons' );
 
 		// Initialize some query parameters, and internal variables
-		$this->internal['descFlag']=$lConf[$this->piVars['recordType'].'.']['descFlag'];
+		$this->internal['descFlag']=$lConf[$this->internal['currentTable'].'.']['descFlag'];
 		$this->internal['maxPages']=t3lib_div::intInRange($lConf['maxPages'],0,1000,5);		// The maximum number of "pages" in the browse-box: "Page 1", "Page 2", etc.
 		$this->internal['dontLinkActivePage']=$lConf['dontLinkActivePage'];
 		$this->internal['showFirstLast']=$lConf['showFirstLast'];
 		$this->internal['pagefloat']=$lConf['pagefloat'];
 		$this->internal['showRange']=$lConf['showRange'];
 
-		$this->internal['orderByList']=$lConf[$this->piVars['recordType'].'.']['orderByList'];
+		$this->internal['orderByList']=$lConf[$this->internal['currentTable'].'.']['orderByList'];
 
 		//	If listing sermon records, check if order was specified in the FE Plugin and load from there. Otherwise load from typoscript, or 'title' as default.
-		if( $this->piVars['recordType'] == 'tx_wecsermons_sermons' )
-			$this->internal['orderBy'] = $this->getConfigVal( $this, 'sermons_order_by', 'slistView', 'orderBy', $lConf[$this->piVars['recordType'].'.'], 'title' );
+		if( !strcmp( $this->internal['currentTable'], 'tx_wecsermons_sermons' ) )
+			$this->internal['orderBy'] = $this->getConfigVal( $this, 'sermons_order_by', 'slistView', 'orderBy', $lConf[$this->internal['currentTable'].'.'], 'title' );
 		else
-			$this->internal['orderBy']=$lConf[$this->piVars['recordType'].'.']['orderBy'];
+			$this->internal['orderBy']=$lConf[$this->internal['currentTable'].'.']['orderBy'];
 
-		//	If request is for lastest view
+		//	If request is for latest view
 		if( !strcmp( $this->internal['currentCode'], 'LATEST' ) ) {
 
 			// Only use orderBy from typoscript config
-			$this->internal['orderBy']=$lConf[$this->piVars['recordType'].'.']['orderBy'];
+			$this->internal['orderBy']=$lConf[$this->internal['currentTable'].'.']['orderBy'];
 
 		}
 
@@ -936,43 +936,45 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				//	Process the current row
 				$groupContent = $this->pi_list_row( $lConf, $markerArray, $groupTemplate, $this->internal['currentRow'], $groupCount );
 
-
-				//	Store previous row, table and order by as we switch to retreiving detail
-				$this->internal['previousRow'] = $this->internal['currentRow'];
-				$this->internal['previousTable'] = $this->internal['currentTable'];
-				$this->internal['currentTable'] = $detailTable;
-				$this->internal['previousOrderByList'] = $this->internal['orderByList'];
-				$this->internal['previousOrderBy'] = $this->internal['orderBy'];
-				$this->internal['previousdescFlag'] = $this->internal['descFlag'];
-				$this->internal['orderByList']=$lConf[$detailTable.'.']['orderByList'];
-				$this->internal['orderBy']=$lConf[$detailTable.'.']['orderBy'];
-				$this->internal['descFlag']=$lConf[$detailTable.'.']['descFlag'];
-				
-				//	Store results_at_a_time and switch to hardcoded value of 1000 for detail. This is because we never want a limited list of detail records
-				//	in a grouped view.
-				$this->internal['prev_results_at_a_time'] = $this->internal['results_at_a_time'];
-				$this->internal['results_at_a_time'] = 1000;
-
-				//	We need to temporarily set pointer to 0, as we never want a second page of detail records.
-				$prevPointer = $this->piVars['pointer'];
-				$this->piVars['pointer'] = 0;
-
-				//	Exec query on detail table, for every record related to our group record
-				$detailRes = $this->pi_exec_query( $detailTable, 0, ' AND find_in_set('.$this->internal['previousRow']['uid'].','.$this->internal['currentTable'].'.'.$foreign_column . ')' );
-
-				//	Resore results_at_a_time and pointer values
-				$this->internal['results_at_a_time'] = $this->internal['prev_results_at_a_time'];
-				$this->piVars['pointer'] = $prevPointer;
-
-				$detailInnerCount = 0;
-
-				//	Iterate over every related detail record to our group record
-				while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $detailRes ) ) {
-
-					$detailCount++;
-					$detailInnerCount++;
-
-					$detailContent .= $this->pi_list_row( $lConf, $detailMarkArray, $detailTemplate, $this->internal['currentRow'], $detailInnerCount );
+				if( $detailTemplate ) {
+	
+					//	Store previous row, table and order by as we switch to retreiving detail
+					$this->internal['previousRow'] = $this->internal['currentRow'];
+					$this->internal['previousTable'] = $this->internal['currentTable'];
+					$this->internal['currentTable'] = $detailTable;
+					$this->internal['previousOrderByList'] = $this->internal['orderByList'];
+					$this->internal['previousOrderBy'] = $this->internal['orderBy'];
+					$this->internal['previousdescFlag'] = $this->internal['descFlag'];
+					$this->internal['orderByList']=$lConf[$detailTable.'.']['orderByList'];
+					$this->internal['orderBy']=$lConf[$detailTable.'.']['orderBy'];
+					$this->internal['descFlag']=$lConf[$detailTable.'.']['descFlag'];
+					
+					//	Store results_at_a_time and switch to hardcoded value of 1000 for detail. This is because we never want a limited list of detail records
+					//	in a grouped view.
+					$this->internal['prev_results_at_a_time'] = $this->internal['results_at_a_time'];
+					$this->internal['results_at_a_time'] = 1000;
+	
+					//	We need to temporarily set pointer to 0, as we never want a second page of detail records.
+					$prevPointer = $this->piVars['pointer'];
+					$this->piVars['pointer'] = 0;
+	
+					//	Exec query on detail table, for every record related to our group record
+					$detailRes = $this->pi_exec_query( $detailTable, 0, ' AND find_in_set('.$this->internal['previousRow']['uid'].','.$this->internal['currentTable'].'.'.$foreign_column . ')' );
+	
+					//	Resore results_at_a_time and pointer values
+					$this->internal['results_at_a_time'] = $this->internal['prev_results_at_a_time'];
+					$this->piVars['pointer'] = $prevPointer;
+	
+					$detailInnerCount = 0;
+	
+					//	Iterate over every related detail record to our group record
+					while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $detailRes ) ) {
+	
+						$detailCount++;
+						$detailInnerCount++;
+	
+						$detailContent .= $this->pi_list_row( $lConf, $detailMarkArray, $detailTemplate, $this->internal['currentRow'], $detailInnerCount );
+					}
 				}
 
 				$subpartArray = array(
