@@ -442,6 +442,23 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					 );
 			}
 
+			//	Report an error if we couldn't load the ###CONTENT### subpart
+			if( ! $this->cObj->getSubpart($this->template['single'], '###CONTENT###' ) ) {
+				
+				return $this->throwError(
+					'WEC Sermon Management System Error!',
+					'Unable to retrieve ###CONTENT### subpart from specified template.',
+					sprintf (
+							'Requested Template: ###TEMPLATE_LIST_%s###
+		
+							Template File: %s
+							',
+							$this->internal['layoutCode'],
+							$this->conf['templateFile']
+						)
+					 );
+			}
+			
 			//	Process sermon & related markers
 
 			//	Store the current table and row while we switch to another table for a moment
@@ -714,7 +731,23 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 		}
 
+		//	Report an error if we couldn't load the ###CONTENT### subpart
+		if( ! $this->cObj->getSubpart($this->template['list'], '###CONTENT###' ) ) {
+			
+			return $this->throwError(
+				'WEC Sermon Management System Error!',
+				'Unable to retrieve ###CONTENT### subpart from specified template.',
+				sprintf (
+						'Requested Template: ###TEMPLATE_LIST_%s###
 
+						Template File: %s
+						',
+						$this->internal['layoutCode'],
+						$this->conf['templateFile']
+					)
+				 );
+		}
+		
 		$content = $this->cObj->substituteSubpart( $this->template['list'], '###CONTENT###', $this->pi_list_makelist($lConf, $this->template['content'] ) );
 
 
@@ -810,6 +843,23 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					)
 				 );
 
+		}
+		
+		//	Report an error if we couldn't load the ###CONTENT### subpart
+		if( ! $this->cObj->getSubpart($this->template['list'], '###CONTENT###' ) ) {
+			
+			return $this->throwError(
+				'WEC Sermon Management System Error!',
+				'Unable to retrieve ###CONTENT### subpart from specified template.',
+				sprintf (
+						'Requested Template: ###TEMPLATE_LIST_%s###
+
+						Template File: %s
+						',
+						$this->internal['layoutCode'],
+						$this->conf['templateFile']
+					)
+				 );
 		}
 
 		$content = $this->cObj->substituteSubpart( $this->template['list'], '###CONTENT###', $this->pi_list_makelist($lConf, $this->template['content'] ) );
