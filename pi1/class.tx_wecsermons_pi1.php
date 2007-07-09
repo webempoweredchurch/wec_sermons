@@ -677,9 +677,10 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		$this->internal['layoutCode'] = $this->getConfigVal( $this, 'layout', 'sDEF', 'layoutCode', $lConf, 'BRIEF' );	//	Set layoutCode into internal storage
 
 		// If a single element should be displayed, jump to single view
-		if ($this->piVars['showUid'])	{
+		if ($this->piVars['showUid'] && $this->conf['enableSmartDisplay'])	{
 
-			return $this->singleView('',$this->conf['singleView.']);
+			$this->conf['singleView.']['layoutCode'] = $this->internal['layoutCode'];
+			return $this->singleView('',$this->conf['singleView.'] );
 
 		}
 
@@ -772,8 +773,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		$this->internal['layoutCode'] = $this->getConfigVal( $this, 'layout', 'sDEF', 'layoutCode', $lConf, 'BRIEF' );	//	Set layoutCode into internal storage
 
 		// If a single element should be displayed, jump to single view
-		if ($this->piVars['showUid'])	{
+		if ($this->piVars['showUid'] && $this->conf['enableSmartDisplay'])	{
 
+			$this->conf['singleView.']['layoutCode'] = $this->internal['layoutCode'];
 			return $this->singleView('',$this->conf['singleView.']);
 
 		}

@@ -10,6 +10,9 @@ plugin.tx_wecsermons_pi1 {
 	# cat=plugin.tx_wecsermons_pi1/enable/20; type=boolean; label= Use Storage Folder: Whether the SMS looks for records in the "General Storage Folder."
 	useStoragePid = 1
 
+	# cat=plugin.tx_wecsermons_pi1/enable/25; type=boolean; label= Enable Smart Display: Smart Display is the ability for the plugin to switch to SINGLE display mode when it detects a request for the details of a record to be shown. When this is enabled, you do not explicitly need a separate page set up to display SINGLE views. In some cases you may wish to disable this feature.
+	enableSmartDisplay = 1
+
 	# cat=plugin.tx_wecsermons_pi1/enable/30; type=boolean; label= LIST View - Enable Empty Groups: Enable display of empty "group" results. (Those group results which have no related "detail" records.)
 	listView.emptyGroups = 0
 

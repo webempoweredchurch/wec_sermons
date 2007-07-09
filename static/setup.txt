@@ -19,6 +19,8 @@ plugin.tx_wecsermons_pi1 {
 	pidSingleView = {$plugin.tx_wecsermons_pi1.pidSingleView}
 	pidListView = {$plugin.tx_wecsermons_pi1.pidListView}
 	pidSearchView = {$plugin.tx_wecsermons_pi1.pidSearchView}
+	
+	enableSmartDisplay = {$plugin.tx_wecsermons_pi1.enableSmartDisplay}
 
 	# Whether the extension caches content or not
 	allowCaching = {$plugin.tx_wecsermons_pi1.allowCaching}
