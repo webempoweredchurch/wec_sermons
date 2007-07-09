@@ -1927,8 +1927,10 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				break;
 
 				case '###BROWSE_LINKS###':
-
-					$markerArray['###BROWSE_LINKS###'] = is_array( $lConf['browseBox_linkWraps.'] ) ? $this->pi_list_browseresults($lConf['showResultCount'], '', $lConf['browseBox_linkWraps.'] ) : '';
+					
+					// Only show the browsebox when we have more than one page to display
+					if( $this->internal['res_count'] > $this->internal['results_at_a_time'] )
+						$markerArray['###BROWSE_LINKS###'] = is_array( $lConf['browseBox_linkWraps.'] ) ? $this->pi_list_browseresults($lConf['showResultCount'], '', $lConf['browseBox_linkWraps.'] ) : '';
 				break;
 
 				case '###BACK_LINK###':
