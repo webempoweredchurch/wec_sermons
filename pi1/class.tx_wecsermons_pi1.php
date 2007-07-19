@@ -1568,43 +1568,44 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 					//	Check for related season and insert season subpart
 					$subpartArray[$key] = '';
-
-					//	Store previous row and table in local storage as we switch to retreiving detail
-					$previousRow = $this->internal['previousRow'];
-					$this->internal['previousRow'] = $row;
-					$previousTable = $this->internal['previousTable'];
-					$this->internal['previousTable'] = 'tx_wecsermons_series';
-					$this->internal['currentTable'] = 'tx_wecsermons_seasons';
-
-					//	Load the season subpart
-					$seasonTemplate = $this->cObj->getSubpart( $rowTemplate, $key );
-					$seasonMarkerArray = $this->getMarkerArray('tx_wecsermons_seasons',$seasonTemplate);
-					$seasonContent = '';
-
-					$seasonRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-						'tx_wecsermons_seasons.*',
-						'tx_wecsermons_seasons',
-						' uid in (' . $row[$fieldName] . ')' . $this->cObj->enableFields( 'tx_wecsermons_seasons' )
-					);
-
-					$count = 0;
-					while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $seasonRes ) ) {
-
-						//	Recursive call to $this->pi_list_row() to populate each speaker marker
-						$seasonContent .= $this->pi_list_row( $lConf, $seasonMarkerArray, $seasonTemplate, $this->internal['currentRow'], $count );
-						$count++;
+					
+					if( $row[$fieldName] ) {
+						//	Store previous row and table in local storage as we switch to retreiving detail
+						$previousRow = $this->internal['previousRow'];
+						$this->internal['previousRow'] = $row;
+						$previousTable = $this->internal['previousTable'];
+						$this->internal['previousTable'] = 'tx_wecsermons_series';
+						$this->internal['currentTable'] = 'tx_wecsermons_seasons';
+	
+						//	Load the season subpart
+						$seasonTemplate = $this->cObj->getSubpart( $rowTemplate, $key );
+						$seasonMarkerArray = $this->getMarkerArray('tx_wecsermons_seasons',$seasonTemplate);
+						$seasonContent = '';
+	
+						$seasonRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+							'tx_wecsermons_seasons.*',
+							'tx_wecsermons_seasons',
+							' uid in (' . $row[$fieldName] . ')' . $this->cObj->enableFields( 'tx_wecsermons_seasons' )
+						);
+	
+						$count = 0;
+						while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $seasonRes ) ) {
+	
+							//	Recursive call to $this->pi_list_row() to populate each speaker marker
+							$seasonContent .= $this->pi_list_row( $lConf, $seasonMarkerArray, $seasonTemplate, $this->internal['currentRow'], $count );
+							$count++;
+						}
+	
+						//	Restore row and table from local storage
+						$this->internal['previousRow'] = $previousRow;
+						$this->internal['previousTable'] = $previousTable;
+						$this->internal['currentTable'] = 'tx_wecsermons_series';
+						$this->internal['currentRow'] = $row;
+	
+						//	Replace marker content with subpart
+						if( $count > 0 )
+							$subpartArray[$key] = $this->cObj->stdWrap( $seasonContent, $lConf['tx_wecsermons_series.']['season.'] );
 					}
-
-					//	Restore row and table from local storage
-					$this->internal['previousRow'] = $previousRow;
-					$this->internal['previousTable'] = $previousTable;
-					$this->internal['currentTable'] = 'tx_wecsermons_series';
-					$this->internal['currentRow'] = $row;
-
-					//	Replace marker content with subpart
-					if( $count > 0 )
-						$subpartArray[$key] = $this->cObj->stdWrap( $seasonContent, $lConf['tx_wecsermons_series.']['season.'] );
-
 
 
 				break;
@@ -1613,43 +1614,45 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 					$subpartArray[$key] = '';
 
-					//	Store previous row and table in local storage as we switch to retreiving detail
-					$previousRow = $this->internal['previousRow'];
-					$this->internal['previousRow'] = $row;
-					$previousTable = $this->internal['previousTable'];
-					$this->internal['previousTable'] = 'tx_wecsermons_series';
-					$this->internal['currentTable'] = 'tx_wecsermons_topics';
-
-					//	Get the series_topics subpart
-					$topicTemplate = $this->cObj->getSubpart( $rowTemplate, $key );
-					$topicMarkerArray = $this->getMarkerArray('tx_wecsermons_topics',$topicTemplate);
-					$topicContent = '';
-
-					$topicRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-						'tx_wecsermons_topics.*',
-						'tx_wecsermons_topics',
-						' uid in (' . $row[$fieldName] . ')' . $this->cObj->enableFields( 'tx_wecsermons_topics' )
-					);
-
-					$count = 0;
-					while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $topicRes ) ) {
-						$this->local_cObj->start( $this->internal['currentRow'] );
-						
-						//	Recursive call to $this->pi_list_row() to populate each speaker marker
-						$topicContent .= $this->pi_list_row( $lConf, $topicMarkerArray, $topicTemplate, $this->internal['currentRow'], $count );
-						$count++;
+					if( $row[$fieldName] ) {
+						//	Store previous row and table in local storage as we switch to retreiving detail
+						$previousRow = $this->internal['previousRow'];
+						$this->internal['previousRow'] = $row;
+						$previousTable = $this->internal['previousTable'];
+						$this->internal['previousTable'] = 'tx_wecsermons_series';
+						$this->internal['currentTable'] = 'tx_wecsermons_topics';
+	
+						//	Get the series_topics subpart
+						$topicTemplate = $this->cObj->getSubpart( $rowTemplate, $key );
+						$topicMarkerArray = $this->getMarkerArray('tx_wecsermons_topics',$topicTemplate);
+						$topicContent = '';
+	
+						$topicRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+							'tx_wecsermons_topics.*',
+							'tx_wecsermons_topics',
+							' uid in (' . $row[$fieldName] . ')' . $this->cObj->enableFields( 'tx_wecsermons_topics' )
+						);
+	
+						$count = 0;
+						while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $topicRes ) ) {
+							$this->local_cObj->start( $this->internal['currentRow'] );
+							
+							//	Recursive call to $this->pi_list_row() to populate each speaker marker
+							$topicContent .= $this->pi_list_row( $lConf, $topicMarkerArray, $topicTemplate, $this->internal['currentRow'], $count );
+							$count++;
+						}
+	
+						//	Restore row and table from local storage
+						$this->internal['previousRow'] = $previousRow;
+						$this->internal['previousTable'] = $previousTable;
+						$this->internal['currentTable'] = 'tx_wecsermons_series';
+						$this->internal['currentRow'] = $row;
+	
+						//	Replace marker content with subpart
+						if( $count > 0 )
+							$subpartArray[$key] = $this->cObj->stdWrap( $topicContent, $lConf['tx_wecsermons_series.']['topics.'] );
 					}
-
-					//	Restore row and table from local storage
-					$this->internal['previousRow'] = $previousRow;
-					$this->internal['previousTable'] = $previousTable;
-					$this->internal['currentTable'] = 'tx_wecsermons_series';
-					$this->internal['currentRow'] = $row;
-
-					//	Replace marker content with subpart
-					if( $count > 0 )
-						$subpartArray[$key] = $this->cObj->stdWrap( $topicContent, $lConf['tx_wecsermons_series.']['topics.'] );
-
+					
 				break;
 
 				case '###SERIES_SERMONS###':
