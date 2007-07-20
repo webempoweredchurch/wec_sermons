@@ -249,8 +249,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		$this->internal['orderBy'] = $lConf['useCreationDate'] ? 'crdate' : $orderBy;
 		//	TODO: Modify code to allow other records to be shown. Right now we're assuming sermons only.
 
-		$this->conf['pidList'] = $this->pi_getPidList($this->conf['pidList'],$this->conf['recursive']); 
-		
+		$this->conf['pidList'] = $this->pi_getPidList($this->conf['pidList'],$this->conf['recursive']);
+
 		// Make listing query, pass query to SQL database:
 		$res = $this->pi_exec_query($tableToList,0);
 
@@ -267,13 +267,13 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			//	Retreive the array of related resources to this sermon record
 			$resources = $this->getSermonResources( $row['uid'] );
 			foreach( $resources as $resource ) {
-				
+
 				//	If the resource is the type allowed as an enclosure in this view, then calculate the url and size, adding to result row
 				if( !strcmp( $resource['typoscript_object_name'], $lConf['enclosureType'] ) ) {
 
 					// Merge resource and sermon rows together, so that all fields are available via TypOScript.
 					$row = array_merge( $resource, $row );
-					
+
 					//	Retrieve a typolink conf that tells us how to render the link to the resource attachment. Must be provided by admin!
 					$this->local_cObj->start($resource);
 					$typolinkConf = $lConf['tx_wecsermons_resources.']['resource_types.'][$resource['typoscript_object_name'].'.']['typolink.'];
@@ -444,13 +444,13 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 			//	Report an error if we couldn't load the ###CONTENT### subpart
 			if( ! $this->cObj->getSubpart($this->template['single'], '###CONTENT###' ) ) {
-				
+
 				return $this->throwError(
 					'WEC Sermon Management System Error!',
 					'Unable to retrieve ###CONTENT### subpart from specified template.',
 					sprintf (
 							'Requested Template: ###TEMPLATE_LIST_%s###
-		
+
 							Template File: %s
 							',
 							$this->internal['layoutCode'],
@@ -458,7 +458,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						)
 					 );
 			}
-			
+
 			//	Process sermon & related markers
 
 			//	Store the current table and row while we switch to another table for a moment
@@ -475,7 +475,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 		}
 		else {	// Process record types other than resources
-			
+
 			//	Retrieve the template key, which is the translation between the real table name and the template naming.
 			$templateKey = $this->getTemplateKey( $this->internal['currentTable'] );
 			$this->template['single'] = $this->getNamedTemplateContent( $templateKey );
@@ -496,20 +496,20 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 			//	Check if the 'CURRENT' view was requested, and retrieve the record marked as current
 			//	TODO: allow specification of what record to draw from TypoScript
-			if( !strcmp( 'CURRENT', $this->internal['currentCode'] ) 
+			if( !strcmp( 'CURRENT', $this->internal['currentCode'] )
 				&& ( !strcmp( 'tx_wecsermons_sermons', $this->internal['currentTable']) || !strcmp( 'tx_wecsermons_series', $this->internal['currentTable']) ) ) {
-				
+
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'*',
 					$this->internal['currentTable'],
 					"current='1'"
 				);
-				
+
 				$row = $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res );
 
 				//	Report an error if no row was returned.
 				if(! $row['uid'] ) {
-	
+
 						return $this->throwError(
 							'WEC Sermon Management System Error!',
 							'No record marked "current" was found. Please flag a record as current before using the "CURRENT" display.',
@@ -518,11 +518,11 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 								$this->internal['currentCode']
 							)
 						 );
-				}			
+				}
 			}
 			//	Check if the 'PREVIOUS' view was requested, and retrieve the record previous to record marked as current
 			//	TODO: allow specification of what record to draw from TypoScript
-			if( !strcmp( 'PREVIOUS', $this->internal['currentCode'] ) 
+			if( !strcmp( 'PREVIOUS', $this->internal['currentCode'] )
 				&& ( !strcmp( 'tx_wecsermons_sermons', $this->internal['currentTable']) || !strcmp( 'tx_wecsermons_series', $this->internal['currentTable']) ) ) {
 
 				// Retrieve the record marked current
@@ -531,7 +531,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					$this->internal['currentTable'],
 					"current='1'"
 				);
-				
+
 				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $res );
 
 				// Accumulate our filtering criteria
@@ -539,8 +539,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				$WHERE = !strcmp( 'tx_wecsermons_sermons', $this->internal['currentTable']) ? ('occurrence_date > 1 and occurrence_date < ' . $row['occurrence_date']) : ('enddate > 1 and enddate < '. $row['enddate']);
 				$WHERE .= $this->cObj->enableFields($this->internal['currentTable']);
 				$WHERE .= ' AND '.$this->internal['currentTable'].'.pid IN ('.$pidList.')';
-				
-				// Retreive the record previous to the current record, determining by occurrence_date of sermons or enddate of series				
+
+				// Retreive the record previous to the current record, determining by occurrence_date of sermons or enddate of series
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'*',
 					$this->internal['currentTable'],
@@ -553,7 +553,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 				//	Report an error if no row was returned.
 				if(! $row['uid'] ) {
-	
+
 						return $this->throwError(
 							'WEC Sermon Management System Error!',
 							'No record marked "current" was found. Please flag a record as current before using the "CURRENT" display.',
@@ -562,8 +562,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 								$this->internal['currentCode']
 							)
 						 );
-				}			
-			}			
+				}
+			}
 			else
 				$this->internal['currentRow'] = $row = $this->pi_getRecord($this->internal['currentTable'],$this->piVars['showUid']);
 
@@ -628,6 +628,23 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		//	Retrieve searchbox template
 		$searchBoxTemplate = $this->getNamedTemplateContent( 'searchbox' );
 
+		//	Report an error if we couldn't pull up the template.
+		if(! $searchBoxTemplate ) {
+
+			return $this->throwError(
+				'WEC Sermon Management System Error!',
+				'Unable to retrieve content for specified template.',
+				sprintf (
+						'Requested Template: ###TEMPLATE_SEARCHBOX_%s###
+
+						Template File: %s
+						',
+						$this->internal['layoutCode'],
+						$this->conf['templateFile']
+					)
+				 );
+
+		}
 		//	Retrieve the marker array
 		$markerArray = $this->getMarkerArray('searchbox');
 
@@ -734,7 +751,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 		//	Report an error if we couldn't load the ###CONTENT### subpart
 		if( ! $this->cObj->getSubpart($this->template['list'], '###CONTENT###' ) ) {
-			
+
 			return $this->throwError(
 				'WEC Sermon Management System Error!',
 				'Unable to retrieve ###CONTENT### subpart from specified template.',
@@ -748,7 +765,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					)
 				 );
 		}
-		
+
 		$content = $this->cObj->substituteSubpart( $this->template['list'], '###CONTENT###', $this->pi_list_makelist($lConf, $this->template['content'] ) );
 
 
@@ -846,10 +863,10 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				 );
 
 		}
-		
+
 		//	Report an error if we couldn't load the ###CONTENT### subpart
 		if( ! $this->cObj->getSubpart($this->template['list'], '###CONTENT###' ) ) {
-			
+
 			return $this->throwError(
 				'WEC Sermon Management System Error!',
 				'Unable to retrieve ###CONTENT### subpart from specified template.',
@@ -989,7 +1006,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				$groupContent = $this->pi_list_row( $lConf, $markerArray, $groupTemplate, $this->internal['currentRow'], $groupCount );
 
 				if( $detailTemplate ) {
-	
+
 					//	Store previous row, table and order by as we switch to retreiving detail
 					$this->internal['previousRow'] = $this->internal['currentRow'];
 					$this->internal['previousTable'] = $this->internal['currentTable'];
@@ -1000,31 +1017,31 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					$this->internal['orderByList']=$lConf[$detailTable.'.']['orderByList'];
 					$this->internal['orderBy']=$lConf[$detailTable.'.']['orderBy'];
 					$this->internal['descFlag']=$lConf[$detailTable.'.']['descFlag'];
-					
+
 					//	Store results_at_a_time and switch to hardcoded value of 1000 for detail. This is because we never want a limited list of detail records
 					//	in a grouped view.
 					$this->internal['prev_results_at_a_time'] = $this->internal['results_at_a_time'];
 					$this->internal['results_at_a_time'] = 1000;
-	
+
 					//	We need to temporarily set pointer to 0, as we never want a second page of detail records.
 					$prevPointer = $this->piVars['pointer'];
 					$this->piVars['pointer'] = 0;
-	
+
 					//	Exec query on detail table, for every record related to our group record
 					$detailRes = $this->pi_exec_query( $detailTable, 0, ' AND find_in_set('.$this->internal['previousRow']['uid'].','.$this->internal['currentTable'].'.'.$foreign_column . ')' );
-	
+
 					//	Resore results_at_a_time and pointer values
 					$this->internal['results_at_a_time'] = $this->internal['prev_results_at_a_time'];
 					$this->piVars['pointer'] = $prevPointer;
-	
+
 					$detailInnerCount = 0;
-	
+
 					//	Iterate over every related detail record to our group record
 					while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $detailRes ) ) {
-	
+
 						$detailCount++;
 						$detailInnerCount++;
-	
+
 						$detailContent .= $this->pi_list_row( $lConf, $detailMarkArray, $detailTemplate, $this->internal['currentRow'], $detailInnerCount );
 					}
 				}
@@ -1061,16 +1078,67 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$this->internal['currentTable'] = $tableToList;
 			$this->internal['results_at_a_time'] = t3lib_div::intInRange($lConf['maxdetailResults'],1,1000);
 
-			//	TODO: Modify the date selection to include other tables and date fields
+			// If listing sermons or series records, process start and date date filters
+			if( !strcmp( $tableToList, 'tx_wecsermons_sermons' ) || !strcmp( $tableToList, 'tx_wecsermons_series' ) ) {
 
-			//	If start or end date was set, then add this to the query WHERE clause.
-			$startDate = $this->getConfigVal( $this, 'startDate', 'slistView', 'startDate', $lConf );
-			$endDate = $this->getConfigVal( $this, 'endDate', 'slistView', 'endDate', $lConf );
+				//	Retrieve start or end date from plugin or typoscript configuration
+				$startDate = $this->getConfigVal( $this, 'startDate', 'slistView', 'startDate', $lConf );
+				$endDate = $this->getConfigVal( $this, 'endDate', 'slistView', 'endDate', $lConf );
 
-			$where = '';
-			$where .= $startDate ? ' AND occurrence_date >= ' .  strtotime($startDate) : '';	//	$GLOBALS['TYPO3_DB']->fullQuoteStr( $startDate, $tableToList ) : '';
-			$where .= $endDate ? ' AND occurrence_date <= ' .  strtotime($endDate) : '';
+				// Check if date() function was specified in startdate, and calculate new date if necessary
+				if( strstr($startDate,'date()') ) {
+					if( strstr($startDate,'-') ) {
 
+						$formula = explode('-',$startDate);
+						if( !strcmp($formula[0],'date()' ) && t3lib_div::testint($formula[1]) )
+							$startDate = time() - $formula[1]*86400; // calculate difference in days
+						else
+							$startDate = $formula[0]*86400 - time(); // calculate difference in days
+					}
+					else if( strstr($startDate,'+') ) {
+
+						$formula = explode('+',$startDate);
+						if( !strcmp($formula[0],'date()' ) && t3lib_div::testint($formula[1]) )
+							$startDate = time() + $formula[1]*86400; // calculate difference in days
+						else
+							$startDate = $formula[0]*86400 + time(); // calculate difference in days
+					}
+				}
+				else { // Otherwise assume startdate is string that needs to be converted to unixtime
+					$startDtate = strtotime($startDtate);
+				}
+
+				// Check if date() function was specified in enddate, and calculate new date if necessary
+				if( strstr($endDate,'date()') ) {
+					if( strstr($endDate,'-') ) {
+
+						$formula = explode('-',$endDate);
+						if( !strcmp($formula[0],'date()' ) && t3lib_div::testint($formula[1]) )
+							$endDate = time() - $formula[1]*86400; // calculate difference in days
+						else
+							$endDate = $formula[0]*86400 - time(); // calculate difference in days
+					}
+					else if( strstr($startDate,'+') ) {
+
+						$formula = explode('+',$endDate);
+						if( !strcmp($formula[0],'date()' ) && t3lib_div::testint($formula[1]) )
+							$endDate = time() + $formula[1]*86400; // calculate difference in days
+						else
+							$endDate = $formula[0]*86400 + time(); // calculate difference in days
+					}
+				}
+				else { // Otherwise assume enddate is string that needs to be converted to unixtime
+					$endDate = strtotime($endDate);
+				}
+
+				// Add filter to where clause
+				$where = '';
+				$where .= ($startDate && !strcmp( $tableToList, 'tx_wecsermons_sermons' )) ? ' AND occurrence_date >= ' .  $startDate : '';
+				$where .= ($endDate && !strcmp( $tableToList, 'tx_wecsermons_sermons' )) ? ' AND occurrence_date <= ' .  $endDate : '';
+				$where .= ($startDate && !strcmp( $tableToList, 'tx_wecsermons_series' )) ? ' AND startdate >= ' .  $startDate : '';
+				$where .= ($endDate && !strcmp( $tableToList, 'tx_wecsermons_series' )) ? ' AND enddate <= ' .  $endDate : '';
+
+		}
 			// Get number of records:
 			$res = $this->pi_exec_query($tableToList,1, $where);
 			list($this->internal['res_count']) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
@@ -1170,7 +1238,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 
 				case '###SERMON_LINK###':
-					
+
 					if( $row['islinked'] )
 						$wrappedSubpartArray[$key] = explode(
 							'|',
@@ -1431,36 +1499,36 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 				case '###RESOURCE_LINK###':
 
-					if( ! $row['islinked'] ) 
+					if( ! $row['islinked'] )
 						$wrappedSubpartArray[$key] = array( 0 => '', 1 => '');
 					else {
-						
+
 						$this->local_cObj->start( $row, 'tx_wecsermons_resources' );
-	
+
 						//	Make sure 'type' field is in readable format if set to default, for use in TypoScript
 						if( !strcmp( '0', $row['type'] ) )
 							$row['type'] = 'default';
-	
+
 						if( !strcmp( 'default', $row['type'] ) && $lConf['tx_wecsermons_resources.']['resource_types.'][$row['type'].'.']['typolink'] ) {
 							$wrappedSubpartArray[$key] = $this->local_cObj->typolinkWrap( $lConf['tx_wecsermons_resources.']['resource_types.'][$row['type'].'.']['typolink.'] );
 						}
 						else if( $lConf['tx_wecsermons_resources.']['resource_types.'][$row['typoscript_object_name'].'.']['typolink'] ) { //	If 'typolink' segment is defined, render a link as defined by 'typolink', otherwise render a link to the resources' single view
 							$wrappedSubpartArray[$key] = $this->local_cObj->typolinkWrap( $lConf['tx_wecsermons_resources.']['resource_types.'][$row['typoscript_object_name'].'.']['typolink.'] );
-	
+
 						}
 						else {	//	Render a link to single view
-	
+
 							//	If this resource is a plugin/extension,
 							//	and a record to render is specified,
 							//	and the rendering page is specified, then render the link to the single view of that record
 							if( $row['type_type'] > 0 && $row['rendered_record'] && $row['rendering_page'] ) {
-	
+
 								//	Parse the table_uid string from record into the value for the querystring_param
 								list(,$queryStringVal) = array_values( $this->splitTableAndUID($row['rendered_record'] ) );
-	
+
 								//	Break apart our querystring_param from it's stored form of 'plugin[param]'
 								$queryString = split( "\[|\]", $this->internal['currentRow']['querystring_param'] );
-	
+
 								$wrappedSubpartArray[$key] = explode(
 									'|',
 									$this->pi_linkToPage(
@@ -1470,7 +1538,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 										array( $queryString[0] => array( $queryString[1] => $queryStringVal) )
 									 )
 								);
-	
+
 							}
 							else {
 							$wrappedSubpartArray[$key] = explode(
@@ -1487,7 +1555,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 									$this->conf['pidSingleView'] ? $this->conf['pidSingleView']:0
 									)
 							);
-	
+
 						}
 					}
 				}
@@ -1568,7 +1636,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 					//	Check for related season and insert season subpart
 					$subpartArray[$key] = '';
-					
+
 					if( $row[$fieldName] ) {
 						//	Store previous row and table in local storage as we switch to retreiving detail
 						$previousRow = $this->internal['previousRow'];
@@ -1576,32 +1644,32 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						$previousTable = $this->internal['previousTable'];
 						$this->internal['previousTable'] = 'tx_wecsermons_series';
 						$this->internal['currentTable'] = 'tx_wecsermons_seasons';
-	
+
 						//	Load the season subpart
 						$seasonTemplate = $this->cObj->getSubpart( $rowTemplate, $key );
 						$seasonMarkerArray = $this->getMarkerArray('tx_wecsermons_seasons',$seasonTemplate);
 						$seasonContent = '';
-	
+
 						$seasonRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 							'tx_wecsermons_seasons.*',
 							'tx_wecsermons_seasons',
 							' uid in (' . $row[$fieldName] . ')' . $this->cObj->enableFields( 'tx_wecsermons_seasons' )
 						);
-	
+
 						$count = 0;
 						while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $seasonRes ) ) {
-	
+
 							//	Recursive call to $this->pi_list_row() to populate each speaker marker
 							$seasonContent .= $this->pi_list_row( $lConf, $seasonMarkerArray, $seasonTemplate, $this->internal['currentRow'], $count );
 							$count++;
 						}
-	
+
 						//	Restore row and table from local storage
 						$this->internal['previousRow'] = $previousRow;
 						$this->internal['previousTable'] = $previousTable;
 						$this->internal['currentTable'] = 'tx_wecsermons_series';
 						$this->internal['currentRow'] = $row;
-	
+
 						//	Replace marker content with subpart
 						if( $count > 0 )
 							$subpartArray[$key] = $this->cObj->stdWrap( $seasonContent, $lConf['tx_wecsermons_series.']['season.'] );
@@ -1621,38 +1689,38 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						$previousTable = $this->internal['previousTable'];
 						$this->internal['previousTable'] = 'tx_wecsermons_series';
 						$this->internal['currentTable'] = 'tx_wecsermons_topics';
-	
+
 						//	Get the series_topics subpart
 						$topicTemplate = $this->cObj->getSubpart( $rowTemplate, $key );
 						$topicMarkerArray = $this->getMarkerArray('tx_wecsermons_topics',$topicTemplate);
 						$topicContent = '';
-	
+
 						$topicRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 							'tx_wecsermons_topics.*',
 							'tx_wecsermons_topics',
 							' uid in (' . $row[$fieldName] . ')' . $this->cObj->enableFields( 'tx_wecsermons_topics' )
 						);
-	
+
 						$count = 0;
 						while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $topicRes ) ) {
 							$this->local_cObj->start( $this->internal['currentRow'] );
-							
+
 							//	Recursive call to $this->pi_list_row() to populate each speaker marker
 							$topicContent .= $this->pi_list_row( $lConf, $topicMarkerArray, $topicTemplate, $this->internal['currentRow'], $count );
 							$count++;
 						}
-	
+
 						//	Restore row and table from local storage
 						$this->internal['previousRow'] = $previousRow;
 						$this->internal['previousTable'] = $previousTable;
 						$this->internal['currentTable'] = 'tx_wecsermons_series';
 						$this->internal['currentRow'] = $row;
-	
+
 						//	Replace marker content with subpart
 						if( $count > 0 )
 							$subpartArray[$key] = $this->cObj->stdWrap( $topicContent, $lConf['tx_wecsermons_series.']['topics.'] );
 					}
-					
+
 				break;
 
 				case '###SERIES_SERMONS###':
@@ -1760,9 +1828,9 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				case '###SERIES_LINK###':
 
 					// If islinked is false, simply return an empty array
-					if( ! $row['islinked'] ) 
+					if( ! $row['islinked'] )
 						$wrappedSubpartArray[$key] = array( 0 => '', 1 => '');
-					else	
+					else
 						$wrappedSubpartArray[$key] = explode(
 							'|',
 							$this->pi_list_linkSingle(
@@ -1800,7 +1868,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					// If islinked is false, simply return an empty array
 					if( ! $row['islinked'] )
 						$wrappedSubpartArray[$key] = array( 0 => '', 1 => '');
-					else	
+					else
 						$wrappedSubpartArray[$key] = explode(
 							'|',
 							$this->pi_list_linkSingle(
@@ -1841,7 +1909,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					// If islinked is false, simply return an empty array
 					if( ! $row['islinked'] )
 						$wrappedSubpartArray[$key] = array( 0 => '', 1 => '');
-					else	
+					else
 						$wrappedSubpartArray[$key] = explode(
 							'|',
 							$this->pi_list_linkSingle(
@@ -1856,7 +1924,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 							)
 						);
 
-					
+
 
 				break;
 
@@ -1915,14 +1983,14 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					// If islinked is false, simply return an empty array
 					if( $row['islinked'] )
 						$wrappedSubpartArray[$key] = array( 0 => '', 1 => '');
-					
+
 					else	{
-						
+
 						$this->local_cObj->start( $row, 'tx_wecsermons_speakers' );
-	
+
 						//	If 'typolink' is set, generate a link as defined by the 'typolink' segment, otherwise attempt to link to the speakers single view
 						if( $lConf['tx_wecsermons_speakers.']['typolink'] ) {
-	
+
 							//	Generate a link as defined by the 'typolink' segment
 							$wrappedSubpartArray[$key] = $this->local_cObj->typolinkWrap( $lConf['tx_wecsermons_speakers.']['typolink.'] );
 						}
@@ -1950,7 +2018,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				break;
 
 				case '###BROWSE_LINKS###':
-					
+
 					// Only show the browsebox when we have more than one page to display
 					if( $this->internal['res_count'] > $this->internal['results_at_a_time'] )
 						$markerArray['###BROWSE_LINKS###'] = is_array( $lConf['browseBox_linkWraps.'] ) ? $this->pi_list_browseresults($lConf['showResultCount'], '', $lConf['browseBox_linkWraps.'] ) : '';
@@ -2438,16 +2506,65 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$WHERE = sprintf(' WHERE find_in_set(%s.uid,%s.%s) ', $groupTable,$detailTable,$foreignColumn )
 				.$this->cObj->searchWhere($this->piVars['sword'],$searchFieldList,$detailTable).$this->cObj->enableFields($groupTable) . $this->cObj->enableFields( $detailTable ) .' AND '.$groupTable.'.pid IN ('.$pidList.')';
 
+			// If detail table is sermon records, then process start and end date filter
+			if( !strcmp( $detailTable, 'tx_wecsermons_sermons' ) ) {
 
-			//	If start or end date was set, then add this to the query WHERE clause.
-			$startDate = $this->getConfigVal( $this, 'startDate', 'slistView', 'startDate', $lConf );
-			$endDate = $this->getConfigVal( $this, 'endDate', 'slistView', 'endDate', $lConf );
+				//	Retrieve start or end date from plugin or typoscript configuration
+				$startDate = $this->getConfigVal( $this, 'startDate', 'slistView', 'startDate', $lConf );
+				$endDate = $this->getConfigVal( $this, 'endDate', 'slistView', 'endDate', $lConf );
 
-			$WHERE .= $startDate ? ' AND occurrence_date >= ' .  $startDate : '';	//	$GLOBALS['TYPO3_DB']->fullQuoteStr( $startDate, $tableToList ) : '';
-			$WHERE .= $endDate ? ' AND occurrence_date <= ' .  $endDate : '';
+				// Check if date() function was specified in startdate, and calculate new date if necessary
+				if( strstr($startDate,'date()') ) {
+					if( strstr($startDate,'-') ) {
+
+						$formula = explode('-',$startDate);
+						if( !strcmp($formula[0],'date()' ) && t3lib_div::testint($formula[1]) )
+							$startDate = time() - $formula[1]*86400; // calculate difference in days
+						else
+							$startDate = $formula[0]*86400 - time(); // calculate difference in days
+					}
+					else if( strstr($startDate,'+') ) {
+
+						$formula = explode('+',$startDate);
+						if( !strcmp($formula[0],'date()' ) && t3lib_div::testint($formula[1]) )
+							$startDate = time() + $formula[1]*86400; // calculate difference in days
+						else
+							$startDate = $formula[0]*86400 + time(); // calculate difference in days
+					}
+				}
+				else { // Otherwise assume startdate is string that needs to be converted to unixtime
+					$startDtate = strtotime($startDtate);
+				}
+
+				// Check if date() function was specified in enddate, and calculate new date if necessary
+				if( strstr($endDate,'date()') ) {
+					if( strstr($endDate,'-') ) {
+
+						$formula = explode('-',$endDate);
+						if( !strcmp($formula[0],'date()' ) && t3lib_div::testint($formula[1]) )
+							$endDate = time() - $formula[1]*86400; // calculate difference in days
+						else
+							$endDate = $formula[0]*86400 - time(); // calculate difference in days
+					}
+					else if( strstr($startDate,'+') ) {
+
+						$formula = explode('+',$endDate);
+						if( !strcmp($formula[0],'date()' ) && t3lib_div::testint($formula[1]) )
+							$endDate = time() + $formula[1]*86400; // calculate difference in days
+						else
+							$endDate = $formula[0]*86400 + time(); // calculate difference in days
+					}
+				}
+				else { // Otherwise assume enddate is string that needs to be converted to unixtime
+					$endDate = strtotime($endDate);
+				}
+
+				$WHERE .= ($startDate && !strcmp( $detailTable, 'tx_wecsermons_sermons' )) ? ' AND occurrence_date >= ' .  $startDate : '';
+				$WHERE .= ($endDate && !strcmp( $detailTable, 'tx_wecsermons_sermons' )) ? ' AND occurrence_date <= ' .  $endDate : '';
+
+			}
 
 			$query .= $WHERE;
-
 			$res = $GLOBALS['TYPO3_DB']->sql_query( $query );
 
 
@@ -2503,8 +2620,59 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$startDate = $this->getConfigVal( $this, 'startDate', 'slistView', 'startDate', $lConf );
 			$endDate = $this->getConfigVal( $this, 'endDate', 'slistView', 'endDate', $lConf );
 
-			$where .= $startDate ? ' AND occurrence_date >= ' .  $startDate : '';	//	$GLOBALS['TYPO3_DB']->fullQuoteStr( $startDate, $tableToList ) : '';
-			$where .= $endDate ? ' AND occurrence_date <= ' .  $endDate : '';
+			// If detail table is sermon records, then process start and end date filter
+			if( !strcmp( $detailTable, 'tx_wecsermons_sermons' ) ) {
+
+				// Check if date() function was specified in startdate, and calculate new date if necessary
+				if( strstr($startDate,'date()') ) {
+					if( strstr($startDate,'-') ) {
+
+						$formula = explode('-',$startDate);
+						if( !strcmp($formula[0],'date()' ) && t3lib_div::testint($formula[1]) )
+							$startDate = time() - $formula[1]*86400; // calculate difference in days
+						else
+							$startDate = $formula[0]*86400 - time(); // calculate difference in days
+					}
+					else if( strstr($startDate,'+') ) {
+
+						$formula = explode('+',$startDate);
+						if( !strcmp($formula[0],'date()' ) && t3lib_div::testint($formula[1]) )
+							$startDate = time() + $formula[1]*86400; // calculate difference in days
+						else
+							$startDate = $formula[0]*86400 + time(); // calculate difference in days
+					}
+				}
+				else { // Otherwise assume startdate is string that needs to be converted to unixtime
+					$startDtate = strtotime($startDtate);
+				}
+
+				// Check if date() function was specified in enddate, and calculate new date if necessary
+				if( strstr($endDate,'date()') ) {
+					if( strstr($endDate,'-') ) {
+
+						$formula = explode('-',$endDate);
+						if( !strcmp($formula[0],'date()' ) && t3lib_div::testint($formula[1]) )
+							$endDate = time() - $formula[1]*86400; // calculate difference in days
+						else
+							$endDate = $formula[0]*86400 - time(); // calculate difference in days
+					}
+					else if( strstr($startDate,'+') ) {
+
+						$formula = explode('+',$endDate);
+						if( !strcmp($formula[0],'date()' ) && t3lib_div::testint($formula[1]) )
+							$endDate = time() + $formula[1]*86400; // calculate difference in days
+						else
+							$endDate = $formula[0]*86400 + time(); // calculate difference in days
+					}
+				}
+				else { // Otherwise assume enddate is string that needs to be converted to unixtime
+					$endDate = strtotime($endDate);
+				}
+
+				$where .= ($startDate && !strcmp( $detailTable, 'tx_wecsermons_sermons' )) ? ' AND occurrence_date >= ' .  $startDate : '';
+				$where .= ($endDate && !strcmp( $detailTable, 'tx_wecsermons_sermons' )) ? ' AND occurrence_date <= ' .  $endDate : '';
+
+			}
 
 			$query = 	$select . $from . $where . $orderBy . $limit;
 
