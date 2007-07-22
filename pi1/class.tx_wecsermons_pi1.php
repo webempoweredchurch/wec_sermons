@@ -2642,8 +2642,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 							$startDate = $formula[0]*86400 + time(); // calculate difference in days
 					}
 				}
-				else { // Otherwise assume startdate is string that needs to be converted to unixtime
-					$startDtate = strtotime($startDtate);
+				else if( strstr($startDate, '/') || strstr($startDate, '-')) { // If startdate is string that needs to be converted to unixtime
+					$startDate = strtotime($startDate);
 				}
 
 				// Check if date() function was specified in enddate, and calculate new date if necessary
@@ -2665,7 +2665,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 							$endDate = $formula[0]*86400 + time(); // calculate difference in days
 					}
 				}
-				else { // Otherwise assume enddate is string that needs to be converted to unixtime
+				else if( strstr($endDate, '/') || strstr($endDate, '-')) { // If enddate is string that needs to be converted to unixtime
 					$endDate = strtotime($endDate);
 				}
 
