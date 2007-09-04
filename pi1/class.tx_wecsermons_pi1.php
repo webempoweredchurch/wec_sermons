@@ -1078,13 +1078,14 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$this->internal['currentTable'] = $tableToList;
 			$this->internal['results_at_a_time'] = t3lib_div::intInRange($lConf['maxdetailResults'],1,1000);
 
-			// If listing sermons or series records, process start and date date filters
-			if( !strcmp( $tableToList, 'tx_wecsermons_sermons' ) || !strcmp( $tableToList, 'tx_wecsermons_series' ) ) {
+			$startDate = $this->getConfigVal( $this, 'startDate', 'slistView', 'startDate', $lConf );
+			$endDate = $this->getConfigVal( $this, 'endDate', 'slistView', 'endDate', $lConf );
 
-				//	Retrieve start or end date from plugin or typoscript configuration
-				$startDate = $this->getConfigVal( $this, 'startDate', 'slistView', 'startDate', $lConf );
-				$endDate = $this->getConfigVal( $this, 'endDate', 'slistView', 'endDate', $lConf );
-
+			// Calculate startdate or end date if specified for sermon or series records
+			if( (!strcmp( $tableToList, 'tx_wecsermons_sermons' ) || !strcmp( $tableToList, 'tx_wecsermons_series' ) ) 
+				&& ($startDate || $endDate )
+			) {
+				
 				// Check if date() function was specified in startdate, and calculate new date if necessary
 				if( strstr($startDate,'date()') ) {
 					if( strstr($startDate,'-') ) {
@@ -1104,8 +1105,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 							$startDate = $formula[0]*86400 + time(); // calculate difference in days
 					}
 				}
-				else { // Otherwise assume startdate is string that needs to be converted to unixtime
-					$startDtate = strtotime($startDtate);
+				else if( strstr($startDate, '/') || strstr($startDate, '-')) { // If startdate is string that needs to be converted to unixtime
+					$startDate = $startDate ? strtotime($startDate) : '';
 				}
 
 				// Check if date() function was specified in enddate, and calculate new date if necessary
@@ -1118,17 +1119,18 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						else
 							$endDate = $formula[0]*86400 - time(); // calculate difference in days
 					}
-					else if( strstr($startDate,'+') ) {
+					else if( strstr($endDate,'+') ) {
 
 						$formula = explode('+',$endDate);
+						
 						if( !strcmp($formula[0],'date()' ) && t3lib_div::testint($formula[1]) )
 							$endDate = time() + $formula[1]*86400; // calculate difference in days
 						else
 							$endDate = $formula[0]*86400 + time(); // calculate difference in days
 					}
 				}
-				else { // Otherwise assume enddate is string that needs to be converted to unixtime
-					$endDate = strtotime($endDate);
+				else if( strstr($endDate, '/') || strstr($endDate, '-')) { // If enddate is string that needs to be converted to unixtime
+					$endDate = $endDate ? strtotime($endDate) : '';
 				}
 
 				// Add filter to where clause
@@ -1137,7 +1139,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				$where .= ($endDate && !strcmp( $tableToList, 'tx_wecsermons_sermons' )) ? ' AND occurrence_date <= ' .  $endDate : '';
 				$where .= ($startDate && !strcmp( $tableToList, 'tx_wecsermons_series' )) ? ' AND startdate >= ' .  $startDate : '';
 				$where .= ($endDate && !strcmp( $tableToList, 'tx_wecsermons_series' )) ? ' AND enddate <= ' .  $endDate : '';
-
+debug($where,'where');
 		}
 			// Get number of records:
 			$res = $this->pi_exec_query($tableToList,1, $where);
@@ -2506,12 +2508,12 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$WHERE = sprintf(' WHERE find_in_set(%s.uid,%s.%s) ', $groupTable,$detailTable,$foreignColumn )
 				.$this->cObj->searchWhere($this->piVars['sword'],$searchFieldList,$detailTable).$this->cObj->enableFields($groupTable) . $this->cObj->enableFields( $detailTable ) .' AND '.$groupTable.'.pid IN ('.$pidList.')';
 
-			// If detail table is sermon records, then process start and end date filter
-			if( !strcmp( $detailTable, 'tx_wecsermons_sermons' ) ) {
+			//	Retrieve start or end date from plugin or typoscript configuration
+			$startDate = $this->getConfigVal( $this, 'startDate', 'slistView', 'startDate', $lConf );
+			$endDate = $this->getConfigVal( $this, 'endDate', 'slistView', 'endDate', $lConf );
 
-				//	Retrieve start or end date from plugin or typoscript configuration
-				$startDate = $this->getConfigVal( $this, 'startDate', 'slistView', 'startDate', $lConf );
-				$endDate = $this->getConfigVal( $this, 'endDate', 'slistView', 'endDate', $lConf );
+			// If detail table is sermon records, then process start and end date filter
+			if( !strcmp( $detailTable, 'tx_wecsermons_sermons' ) && ($startDate || $endDate ) ){
 
 				// Check if date() function was specified in startdate, and calculate new date if necessary
 				if( strstr($startDate,'date()') ) {
@@ -2532,8 +2534,8 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 							$startDate = $formula[0]*86400 + time(); // calculate difference in days
 					}
 				}
-				else { // Otherwise assume startdate is string that needs to be converted to unixtime
-					$startDtate = strtotime($startDtate);
+				else if( strstr($startDate, '/') || strstr($startDate, '-')) { // If startdate is string that needs to be converted to unixtime
+					$startDate = $startDate ? strtotime($startDate) : '';
 				}
 
 				// Check if date() function was specified in enddate, and calculate new date if necessary
@@ -2546,17 +2548,18 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						else
 							$endDate = $formula[0]*86400 - time(); // calculate difference in days
 					}
-					else if( strstr($startDate,'+') ) {
+					else if( strstr($endDate,'+') ) {
 
 						$formula = explode('+',$endDate);
+						
 						if( !strcmp($formula[0],'date()' ) && t3lib_div::testint($formula[1]) )
 							$endDate = time() + $formula[1]*86400; // calculate difference in days
 						else
 							$endDate = $formula[0]*86400 + time(); // calculate difference in days
 					}
 				}
-				else { // Otherwise assume enddate is string that needs to be converted to unixtime
-					$endDate = strtotime($endDate);
+				else if( strstr($endDate, '/') || strstr($endDate, '-')) { // If enddate is string that needs to be converted to unixtime
+					$endDate = $endDate ? strtotime($endDate) : '';
 				}
 
 				$WHERE .= ($startDate && !strcmp( $detailTable, 'tx_wecsermons_sermons' )) ? ' AND occurrence_date >= ' .  $startDate : '';
@@ -2621,7 +2624,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$endDate = $this->getConfigVal( $this, 'endDate', 'slistView', 'endDate', $lConf );
 
 			// If detail table is sermon records, then process start and end date filter
-			if( !strcmp( $detailTable, 'tx_wecsermons_sermons' ) ) {
+			if( !strcmp( $detailTable, 'tx_wecsermons_sermons' ) && ($startDate || $endDate )) {
 
 				// Check if date() function was specified in startdate, and calculate new date if necessary
 				if( strstr($startDate,'date()') ) {
@@ -2643,7 +2646,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					}
 				}
 				else if( strstr($startDate, '/') || strstr($startDate, '-')) { // If startdate is string that needs to be converted to unixtime
-					$startDate = strtotime($startDate);
+					$startDate = $startDate ? strtotime($startDate) : '';
 				}
 
 				// Check if date() function was specified in enddate, and calculate new date if necessary
@@ -2656,9 +2659,10 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						else
 							$endDate = $formula[0]*86400 - time(); // calculate difference in days
 					}
-					else if( strstr($startDate,'+') ) {
+					else if( strstr($endDate,'+') ) {
 
 						$formula = explode('+',$endDate);
+						
 						if( !strcmp($formula[0],'date()' ) && t3lib_div::testint($formula[1]) )
 							$endDate = time() + $formula[1]*86400; // calculate difference in days
 						else
@@ -2666,7 +2670,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					}
 				}
 				else if( strstr($endDate, '/') || strstr($endDate, '-')) { // If enddate is string that needs to be converted to unixtime
-					$endDate = strtotime($endDate);
+					$endDate = $endDate ? strtotime($endDate) : '';
 				}
 
 				$where .= ($startDate && !strcmp( $detailTable, 'tx_wecsermons_sermons' )) ? ' AND occurrence_date >= ' .  $startDate : '';
