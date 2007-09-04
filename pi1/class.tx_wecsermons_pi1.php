@@ -1139,7 +1139,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				$where .= ($endDate && !strcmp( $tableToList, 'tx_wecsermons_sermons' )) ? ' AND occurrence_date <= ' .  $endDate : '';
 				$where .= ($startDate && !strcmp( $tableToList, 'tx_wecsermons_series' )) ? ' AND startdate >= ' .  $startDate : '';
 				$where .= ($endDate && !strcmp( $tableToList, 'tx_wecsermons_series' )) ? ' AND enddate <= ' .  $endDate : '';
-debug($where,'where');
+
 		}
 			// Get number of records:
 			$res = $this->pi_exec_query($tableToList,1, $where);
