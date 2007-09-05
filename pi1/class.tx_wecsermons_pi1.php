@@ -1265,9 +1265,13 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					$subpartArray[$key] = '';
 					if( $row[$fieldName] ) {
 
+						// Store current row and table while we switch context
+						$previousRow = $this->internal['currentRow'];
+						$previousTable = $this->internal['currentTable'];
+						$this->internal['currentTable'] = 'tx_wecsermons_resources';
+	
 						$seriesTemplate = $this->cObj->getSubpart( $rowTemplate, $key );
 						$seriesMarkerArray = $this->getMarkerArray('tx_wecsermons_series',$seriesTemplate);
-
 						$seriesContent = '';
 
 						$seriesRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -1283,7 +1287,14 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 							$seriesContent .= $this->pi_list_row( $lConf, $seriesMarkerArray, $seriesTemplate, $this->internal['currentRow'] );
 							$count++;
 						}
+						
+						//	Make sure we process any sermon tags within the series content section
+						$seriesContent = $this->pi_list_row( $lConf, $this->getMarkerArray('tx_wecsermons_sermons', $seriesContent ), $seriesContent, $previousRow);
 
+						// Restore original row and table
+						$this->internal['currentRow'] = $previousRow;
+						$this->internal['currentTable'] = $previousTable;
+						
 						//	Replace marker content with subpart, wrapping stdWrap
 						if( $count > 0 )
 							$subpartArray[$key] = $this->cObj->stdWrap( $seriesContent, $lConf['tx_wecsermons_sermons.']['series.'] );

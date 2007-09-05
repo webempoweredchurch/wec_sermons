@@ -82,7 +82,7 @@ plugin.tx_wecsermons_pi1 {
 
 				prefixComment = 2 | pdf Preview:
 				altText.field = alttitle
-				file.import = {register:wec_sermons_resourceUploadPath}/{current:1}
+				file.import = uploads/tx_wecsermons/
 				file.import {
 					field = file
 					listNum = 0
@@ -162,7 +162,7 @@ plugin.tx_wecsermons_pi1 {
 			10 {
 				stdWrap.prefixComment = 2 | Graphic Preview:
 				altText.field = alttitle
-				file.import = {register:wec_sermons_resourceUploadPath}/
+				file.import = uploads/tx_wecsermons/
 				file.import {
 					field = file
 					listNum = 0
@@ -372,7 +372,7 @@ plugin.tx_wecsermons_pi1 {
 			wrap = <div class="tx-wecsermons-pi1-sermon-graphic">|</div>
 				altText.field = alttitle
 				file {
-					import = {register:wec_sermons_resourceUploadPath}/
+					import = uploads/tx_wecsermons/
 					import.field = graphic
 					width = 256m
 					height = 256m
@@ -486,7 +486,7 @@ plugin.tx_wecsermons_pi1 {
 			graphic {
 				wrap = <div class="tx-wecsermons-pi1-pi1-resource-graphic">|<div>
 				file {
-					import = {register:wec_sermons_resourceUploadPath}/
+					import = uploads/tx_wecsermons/
 					import.field = graphic
 					width = 32m
 					height = 32m
@@ -518,7 +518,7 @@ plugin.tx_wecsermons_pi1 {
 			icon {
 				altText.field = alttitle
 				file {
-					import = {register:wec_sermons_resourceUploadPath}/
+					import = uploads/tx_wecsermons/
 					import.field = icon
 					width = 16m
 					height = 16m
@@ -546,7 +546,7 @@ plugin.tx_wecsermons_pi1 {
 			wrap = <div class="tx-wecsermons-pi1-series-graphic">|</div>
 				altText.field = alttitle
 				file {
-					import = {register:wec_sermons_resourceUploadPath}/
+					import = uploads/tx_wecsermons/
 					import.field = graphic
 					width = 256m
 					height = 256m
@@ -634,7 +634,7 @@ plugin.tx_wecsermons_pi1 {
 				wrap = |
 				altText.field = alttitle
 				file {
-					import = {register:wec_sermons_resourceUploadPath}/
+					import = uploads/tx_wecsermons/
 					import.field = photo
 					width = 128m
 					height = 128m
@@ -866,7 +866,7 @@ plugin.tx_wecsermons_pi1 {
 			wrap = <div class="tx-wecsermons-pi1-sermon-graphic">|</div>
 				altText.field = alttitle
 				file {
-					import = {register:wec_sermons_resourceUploadPath}/
+					import = uploads/tx_wecsermons/
 					import.field = graphic
 					width = 128m
 					height = 128m
@@ -977,7 +977,7 @@ plugin.tx_wecsermons_pi1 {
 			graphic {
 				altText.field = alttitle
 				file {
-					import = {register:wec_sermons_resourceUploadPath}/
+					import = uploads/tx_wecsermons/
 					import.field = graphic
 					width = 64m
 					height = 64m
@@ -1018,7 +1018,7 @@ plugin.tx_wecsermons_pi1 {
 			icon {
 				altText.field = alttitle
 				file {
-					import = {register:wec_sermons_resourceUploadPath}/
+					import = uploads/tx_wecsermons/
 					import.field = icon
 					width = 16m
 					height = 16m
@@ -1057,7 +1057,7 @@ plugin.tx_wecsermons_pi1 {
 			wrap = |
 				altText.field = alttitle
 				file {
-					import = {register:wec_sermons_resourceUploadPath}/
+					import = uploads/tx_wecsermons/
 					import.field = graphic
 					width = 64m
 					height = 64m
@@ -1159,7 +1159,7 @@ plugin.tx_wecsermons_pi1 {
 				wrap = |
 				altText.field = alttitle
 				file {
-					import = {register:wec_sermons_resourceUploadPath}/
+					import = uploads/tx_wecsermons/
 					import.field = photo
 					width = 64m
 					height = 64m
