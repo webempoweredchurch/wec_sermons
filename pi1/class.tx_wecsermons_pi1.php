@@ -522,7 +522,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			}
 			//	Check if the 'PREVIOUS' view was requested, and retrieve the record previous to record marked as current
 			//	TODO: allow specification of what record to draw from TypoScript
-			if( !strcmp( 'PREVIOUS', $this->internal['currentCode'] )
+			else if( !strcmp( 'PREVIOUS', $this->internal['currentCode'] )
 				&& ( !strcmp( 'tx_wecsermons_sermons', $this->internal['currentTable']) || !strcmp( 'tx_wecsermons_series', $this->internal['currentTable']) ) ) {
 
 				// Retrieve the record marked current
