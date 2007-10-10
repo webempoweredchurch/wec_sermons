@@ -572,7 +572,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		// This appends the title of the record we're viewing to the HTML TITLE tag, for improved searching
 
 		$field = $GLOBALS['TCA'][$this->internal['currentTable']]['ctrl']['label'];
-		if ($field)  {
+		if ( $field && !strpos( $GLOBALS['TSFE']->page['title'], $row[$field] ) )  {
 			$GLOBALS['TSFE']->indexedDocTitle .= ' : ' .$row[$field];
 			$GLOBALS['TSFE']->page['title'] .= ' : ' .$row[$field];
 		}
