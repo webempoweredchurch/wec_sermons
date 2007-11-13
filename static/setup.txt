@@ -1386,7 +1386,7 @@ plugin.tx_wecapi_list {
 		item_comments.field = comments_link
 		item_pubdate.field = occurrence_date
 		item_guid {
-			value = {$constants.wec.siteURL}{field:item_link}/{field:tstamp}
+			value = {$constants.wec.siteURL}{field:item_link}
 			insertData = 1
 		}
 
