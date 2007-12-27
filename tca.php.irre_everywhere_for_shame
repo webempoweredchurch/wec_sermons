@@ -679,68 +679,24 @@ $TCA["tx_wecsermons_sermons"] = Array (
 			"exclude" => 1,
 			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.series_uid",
 			"config" => Array (
-				"type" => "group",
-				"internal_type" => "db",
-				"allowed" => "tx_wecsermons_series",
+				"type" => "inline",
+				"foreign_table" => "tx_wecsermons_series",
+				"appearance" => Array( "expandSingle" => "1", "collapseAll" => "1"),
 				"size" => 4,
 				"minitems" => 0,
-				"maxitems" => 100,
-				'wizards' => Array(
-					'_VALIGN' => 'top',
-					'add' => Array(
-						'type' => 'script',
-						'title' => 'LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.add',
-						'icon' => 'add.gif',
-						'params' => Array(
-							'table'=>'tx_wecsermons_series',
-							'pid' => '###CURRENT_PID###',
-							'setValue' => 'append'
-						),
-						'script' => 'wizard_add.php',
-					),
-					'edit' => Array(
-						'type' => 'popup',
-						'title' => 'LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.edit',
-						'script' => 'wizard_edit.php',
-						'popup_onlyOpenIfSelected' => 1,
-						'icon' => 'edit2.gif',
-						'JSopenParams' => 'height=450,width=580,status=0,menubar=0,scrollbars=1',
-					)
-				),
+				"maxitems" => 100
 			)
 		),
 		"topics_uid" => Array (
 			"exclude" => 1,
 			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.topics_uid",
 			"config" => Array (
-				"type" => "group",
-				"internal_type" => "db",
-				"allowed" => "tx_wecsermons_topics",
+				"type" => "inline",
+				"foreign_table" => "tx_wecsermons_topics",
+				"appearance" => Array( "expandSingle" => "1", "collapseAll" => "1"),
 				"size" => 4,
 				"minitems" => 0,
-				"maxitems" => 10,
-				'wizards' => Array(
-					'_VALIGN' => 'top',
-					'add' => Array(
-						'type' => 'script',
-						'title' => 'LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.add',
-						'icon' => 'add.gif',
-						'params' => Array(
-							'table'=>'tx_wecsermons_topics',
-							'pid' => '###CURRENT_PID###',
-							'setValue' => 'append'
-						),
-						'script' => 'wizard_add.php',
-					),
-					'edit' => Array(
-						'type' => 'popup',
-						'title' => 'LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.edit',
-						'script' => 'wizard_edit.php',
-						'popup_onlyOpenIfSelected' => 1,
-						'icon' => 'edit2.gif',
-						'JSopenParams' => 'height=450,width=580,status=0,menubar=0,scrollbars=1',
-					)
-				),
+				"maxitems" => 10
 			)
 		),
 		"resources_uid" => Array (
@@ -760,34 +716,12 @@ $TCA["tx_wecsermons_sermons"] = Array (
 			"exclude" => 1,
 			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.speakers_uid",
 			"config" => Array (
-				"type" => "group",
-				"internal_type" => "db",
-				"allowed" => "tx_wecsermons_speakers",
+				"type" => "inline",
+				"foreign_table" => "tx_wecsermons_speakers",
+				"appearance" => Array( "expandSingle" => "1", "collapseAll" => "1"),
 				"size" => 4,
 				"minitems" => 0,
-				"maxitems" => 100,
-				'wizards' => Array(
-					'_VALIGN' => 'top',
-					'add' => Array(
-						'type' => 'script',
-						'title' => 'LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.add',
-						'icon' => 'add.gif',
-						'params' => Array(
-							'table'=>'tx_wecsermons_speakers',
-							'pid' => '###CURRENT_PID###',
-							'setValue' => 'append'
-						),
-						'script' => 'wizard_add.php',
-					),
-					'edit' => Array(
-						'type' => 'popup',
-						'title' => 'LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_sermons.edit',
-						'script' => 'wizard_edit.php',
-						'popup_onlyOpenIfSelected' => 1,
-						'icon' => 'edit2.gif',
-						'JSopenParams' => 'height=450,width=580,status=0,menubar=0,scrollbars=1',
-					)
-				),
+				"maxitems" => 100
 			)
 		),
     "islinked" => Array (        

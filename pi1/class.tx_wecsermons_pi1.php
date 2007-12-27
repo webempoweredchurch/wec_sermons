@@ -1226,7 +1226,11 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				case '###SERMON_SCRIPTURE###':
 					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_sermons' );
-						$markerArray[$key] =  $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_sermons.']['scripture'], $lConf['tx_wecsermons_sermons.']['scripture.'] );
+						if ($this->conf['disableBibleGateway'] ) {
+							$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_sermons.']['scripture_nolink'], $lConf['tx_wecsermons_sermons.']['scripture_nolink.'] );
+						} else {
+							$markerArray[$key] =  $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_sermons.']['scripture'], $lConf['tx_wecsermons_sermons.']['scripture.'] );
+						}
 					}
 				break;
 
@@ -1613,7 +1617,11 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				case '###SERIES_SCRIPTURE###':
 					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_series' );
-						$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_series.']['scripture'], $lConf['tx_wecsermons_series.']['scripture.'] );
+						if ($this->conf['disableBibleGateway'] ) {
+							$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_series.']['scripture_nolink'], $lConf['tx_wecsermons_series.']['scripture_nolink.'] );
+						} else {
+							$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_series.']['scripture'], $lConf['tx_wecsermons_series.']['scripture.'] );
+						}
 					}
 				break;
 
