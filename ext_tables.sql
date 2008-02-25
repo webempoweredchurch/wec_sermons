@@ -32,9 +32,6 @@ CREATE TABLE tx_wecsermons_resources (
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
-
-
-
 #
 # Table structure for table 'tx_wecsermons_resource_types'
 #
@@ -43,7 +40,7 @@ CREATE TABLE tx_wecsermons_resource_types (
 	pid int(11) DEFAULT '0' NOT NULL,
 	tstamp int(11) DEFAULT '0' NOT NULL,
 	crdate int(11) DEFAULT '0' NOT NULL,
-  sorting int(10) unsigned DEFAULT '0' NOT NULL,
+	sorting int(10) unsigned DEFAULT '0' NOT NULL,
 	cruser_id int(11) DEFAULT '0' NOT NULL,
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l18n_parent int(11) DEFAULT '0' NOT NULL,
@@ -67,38 +64,39 @@ CREATE TABLE tx_wecsermons_resource_types (
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
-
-
-
-
 #
-# Table structure for table 'tx_wecsermons_sermons_resources_uid_mm'
+# Table structure for table 'tx_wecsermons_sermons_resources_rel'
 #
+CREATE TABLE tx_wecsermons_sermons_resources_rel (
+	uid int(11) NOT NULL auto_increment,
+	pid int(11) DEFAULT '0' NOT NULL,
+	tstamp int(11) DEFAULT '0' NOT NULL,
+	crdate int(11) DEFAULT '0' NOT NULL,
+	cruser_id int(11) DEFAULT '0' NOT NULL,
+	sermonid int(11) DEFAULT '0' NOT NULL,
+	resourceid int(11) DEFAULT '0' NOT NULL,
+	sorting int(10) unsigned DEFAULT '0' NOT NULL,
+
+	PRIMARY KEY (uid),
+	KEY parent (pid)
+);
 #
-CREATE TABLE tx_wecsermons_sermons_resources_uid_mm (
-  uid_local int(11) DEFAULT '0' NOT NULL,
-  uid_foreign int(11) DEFAULT '0' NOT NULL,
-  tablenames varchar(30) DEFAULT '' NOT NULL,
-  sorting int(11) DEFAULT '0' NOT NULL,
-  KEY uid_local (uid_local),
-  KEY uid_foreign (uid_foreign)
+# Table structure for table 'tx_wecsermons_series_resources_rel'
+#
+CREATE TABLE tx_wecsermons_series_resources_rel (
+        uid int(11) NOT NULL auto_increment,
+        pid int(11) DEFAULT '0' NOT NULL,
+        tstamp int(11) DEFAULT '0' NOT NULL,
+        crdate int(11) DEFAULT '0' NOT NULL,
+        cruser_id int(11) DEFAULT '0' NOT NULL,
+        seriesid  int(11) DEFAULT '0' NOT NULL,
+        resourceid int(11) DEFAULT '0' NOT NULL,
+	sorting int(10) unsigned DEFAULT '0' NOT NULL,
+
+        PRIMARY KEY (uid),
+        KEY parent (pid)
 );
 
-
-
-
-#
-# Table structure for table 'tx_wecsermons_series_resources_uid_mm'
-#
-#
-CREATE TABLE tx_wecsermons_series_resources_uid_mm (
-  uid_local int(11) DEFAULT '0' NOT NULL,
-  uid_foreign int(11) DEFAULT '0' NOT NULL,
-  tablenames varchar(30) DEFAULT '' NOT NULL,
-  sorting int(11) DEFAULT '0' NOT NULL,
-  KEY uid_local (uid_local),
-  KEY uid_foreign (uid_foreign)
-);
 
 
 
@@ -110,7 +108,7 @@ CREATE TABLE tx_wecsermons_sermons (
 	pid int(11) DEFAULT '0' NOT NULL,
 	tstamp int(11) DEFAULT '0' NOT NULL,
 	crdate int(11) DEFAULT '0' NOT NULL,
-  sorting int(10) unsigned DEFAULT '0' NOT NULL,
+	sorting int(10) unsigned DEFAULT '0' NOT NULL,
 	cruser_id int(11) DEFAULT '0' NOT NULL,
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l18n_parent int(11) DEFAULT '0' NOT NULL,
@@ -128,17 +126,18 @@ CREATE TABLE tx_wecsermons_sermons (
 	keywords tinytext NOT NULL,
 	graphic blob NOT NULL,
 	alttitle tinytext NOT NULL,
-	series_uid blob NOT NULL,
-	topics_uid blob NOT NULL,
+	series blob NOT NULL,
+	topics blob NOT NULL,
 	record_type int(11) DEFAULT '0' NOT NULL,
-	resources_uid int(11) DEFAULT '0' NOT NULL,
-	speakers_uid blob NOT NULL,
+	resources int(11) DEFAULT '0' NOT NULL,
+	speakers blob NOT NULL,
 	islinked tinyint(3) DEFAULT '1' NOT NULL,
 	current tinyint(3) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
+
 
 
 
@@ -165,16 +164,32 @@ CREATE TABLE tx_wecsermons_series (
 	enddate int(11) DEFAULT '0' NOT NULL,
 	graphic blob NOT NULL,
 	alttitle tinytext NOT NULL,
-	seasons_uid blob NOT NULL,
-	topics_uid blob NOT NULL,
+	seasons blob NOT NULL,
+	topics blob NOT NULL,
 	keywords tinytext NOT NULL,
-	resources_uid int(11) DEFAULT '0' NOT NULL,
+	resources int(11) DEFAULT '0' NOT NULL,
 	islinked tinyint(3) DEFAULT '1' NOT NULL,
 	current tinyint(3) DEFAULT '0' NOT NULL,
 	
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
+#
+# Table structure for table 'tx_wecsermons_sermons_series_rel'
+#
+CREATE TABLE tx_wecsermons_sermons_series_rel (
+        uid int(11) NOT NULL auto_increment,
+        pid int(11) DEFAULT '0' NOT NULL,
+        tstamp int(11) DEFAULT '0' NOT NULL,
+        crdate int(11) DEFAULT '0' NOT NULL,
+        cruser_id int(11) DEFAULT '0' NOT NULL,
+        sermonid  int(11) DEFAULT '0' NOT NULL,
+        seriesid int(11) DEFAULT '0' NOT NULL,
+
+        PRIMARY KEY (uid),
+        KEY parent (pid)
+);
+
 
 
 
@@ -197,6 +212,37 @@ CREATE TABLE tx_wecsermons_topics (
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
+#
+# Table structure for table 'tx_wecsermons_sermons_topics_rel'
+#
+CREATE TABLE tx_wecsermons_sermons_topics_rel (
+        uid int(11) NOT NULL auto_increment,
+        pid int(11) DEFAULT '0' NOT NULL,
+        tstamp int(11) DEFAULT '0' NOT NULL,
+        crdate int(11) DEFAULT '0' NOT NULL,
+        cruser_id int(11) DEFAULT '0' NOT NULL,
+        sermonid  int(11) DEFAULT '0' NOT NULL,
+        topicid int(11) DEFAULT '0' NOT NULL,
+
+        PRIMARY KEY (uid),
+        KEY parent (pid)
+);
+#
+# Table structure for table 'tx_wecsermons_series_topics_rel'
+#
+CREATE TABLE tx_wecsermons_series_topics_rel (
+        uid int(11) NOT NULL auto_increment,
+        pid int(11) DEFAULT '0' NOT NULL,
+        tstamp int(11) DEFAULT '0' NOT NULL,
+        crdate int(11) DEFAULT '0' NOT NULL,
+        cruser_id int(11) DEFAULT '0' NOT NULL,
+        seriesid  int(11) DEFAULT '0' NOT NULL,
+        topicid int(11) DEFAULT '0' NOT NULL,
+
+        PRIMARY KEY (uid),
+        KEY parent (pid)
+);
+
 
 
 
@@ -219,6 +265,24 @@ CREATE TABLE tx_wecsermons_seasons (
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
+#
+# Table structure for table 'tx_wecsermons_series_seasons_rel'
+#
+CREATE TABLE tx_wecsermons_series_seasons_rel (
+        uid int(11) NOT NULL auto_increment,
+        pid int(11) DEFAULT '0' NOT NULL,
+        tstamp int(11) DEFAULT '0' NOT NULL,
+        crdate int(11) DEFAULT '0' NOT NULL,
+        cruser_id int(11) DEFAULT '0' NOT NULL,
+        seriesid  int(11) DEFAULT '0' NOT NULL,
+        seasonid int(11) DEFAULT '0' NOT NULL,
+
+        PRIMARY KEY (uid),
+        KEY parent (pid)
+);
+
+
+
 
 #
 # Table structure for table 'tx_wecsermons_speakers'
@@ -240,6 +304,21 @@ CREATE TABLE tx_wecsermons_speakers (
 	alttitle tinytext NOT NULL,
 	email tinytext NOT NULL,
 	islinked tinyint(3) DEFAULT '1' NOT NULL,
+
+	PRIMARY KEY (uid),
+	KEY parent (pid)
+);
+#
+# Table structure for table 'tx_wecsermons_sermons_speakers_rel'
+#
+CREATE TABLE tx_wecsermons_sermons_speakers_rel (
+	uid int(11) NOT NULL auto_increment,
+	pid int(11) DEFAULT '0' NOT NULL,
+	tstamp int(11) DEFAULT '0' NOT NULL,
+	crdate int(11) DEFAULT '0' NOT NULL,
+	cruser_id int(11) DEFAULT '0' NOT NULL,
+	sermonid  int(11) DEFAULT '0' NOT NULL,
+	speakerid int(11) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)

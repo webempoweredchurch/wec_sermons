@@ -1272,18 +1272,48 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						// Store current row and table while we switch context
 						$previousRow = $this->internal['currentRow'];
 						$previousTable = $this->internal['currentTable'];
-						$this->internal['currentTable'] = 'tx_wecsermons_resources';
+						$this->internal['currentTable'] = 'tx_wecsermons_series';
 	
 						$seriesTemplate = $this->cObj->getSubpart( $rowTemplate, $key );
 						$seriesMarkerArray = $this->getMarkerArray('tx_wecsermons_series',$seriesTemplate);
 						$seriesContent = '';
 
-						$seriesRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-							'tx_wecsermons_series.*',
-							'tx_wecsermons_series',
-							' uid in (' . $row[$fieldName] . ')' . $this->cObj->enableFields( 'tx_wecsermons_series' )
-						);
+						$where = ' AND tx_wecsermons_sermons_series_rel.sermonid = ' . $row[uid] . ' ';
+						$where .= $this->cObj->enableFields('tx_wecsermons_series');
 
+						$query = 'select distinct
+						tx_wecsermons_series.uid,
+						tx_wecsermons_series.pid,
+						tx_wecsermons_series.tstamp,
+						tx_wecsermons_series.crdate,
+						tx_wecsermons_series.cruser_id,
+						tx_wecsermons_series.sys_language_uid,
+						tx_wecsermons_series.deleted,
+						tx_wecsermons_series.hidden,
+						tx_wecsermons_series.starttime,
+						tx_wecsermons_series.endtime,
+						tx_wecsermons_series.fe_group,
+						tx_wecsermons_series.title,
+						tx_wecsermons_series.subtitle,
+						tx_wecsermons_series.description,
+						tx_wecsermons_series.scripture,
+						tx_wecsermons_series.startdate,
+						tx_wecsermons_series.enddate,
+						tx_wecsermons_series.graphic,
+						tx_wecsermons_series.alttitle,
+						tx_wecsermons_series.seasons,
+						tx_wecsermons_series.topics,
+						tx_wecsermons_series.keywords,
+						tx_wecsermons_series.resources,
+						tx_wecsermons_series.islinked,
+						tx_wecsermons_series.current
+
+						from tx_wecsermons_series
+							inner join tx_wecsermons_sermons_series_rel
+								on tx_wecsermons_series.uid = tx_wecsermons_sermons_series_rel.seriesid
+						where 1=1 ' . $where;
+
+						$seriesRes = $GLOBALS['TYPO3_DB']->sql_query ($query);
 
 						$count = 0;
 						while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $seriesRes ) ) {
@@ -1312,17 +1342,44 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					$subpartArray[$key] = '';
 					if( $row[$fieldName] ) {
 
+                                                // Store current row and table while we switch context
+                                                $previousRow = $this->internal['currentRow'];
+                                                $previousTable = $this->internal['currentTable'];
+                                                $this->internal['currentTable'] = 'tx_wecsermons_speakers';
+
 						//	Get the speakers subpart
 						$speakerTemplate = $this->cObj->getSubpart( $rowTemplate, $key );
 						$speakerMarkerArray = $this->getMarkerArray('tx_wecsermons_speakers',$speakerTemplate);
 						$speakerContent = '';
 
-						//	Retrieve all speaker records that are related to this sermon
-						$speakerRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-							'tx_wecsermons_speakers.*',
-							'tx_wecsermons_speakers',
-							' uid in (' . $row[$fieldName] . ')' . $this->cObj->enableFields( 'tx_wecsermons_speakers' )
-						);
+						// our query
+                                                $where = ' AND tx_wecsermons_sermons_speakers_rel.sermonid = ' . $row[uid] . ' ';
+                                                $where .= $this->cObj->enableFields('tx_wecsermons_speakers');
+
+                                                $query = 'select distinct
+                                                tx_wecsermons_speakers.uid,
+                                                tx_wecsermons_speakers.pid,
+                                                tx_wecsermons_speakers.tstamp,
+                                                tx_wecsermons_speakers.crdate,
+                                                tx_wecsermons_speakers.cruser_id,
+                                                tx_wecsermons_speakers.sys_language_uid,
+                                                tx_wecsermons_speakers.deleted,
+                                                tx_wecsermons_speakers.hidden,
+                                                tx_wecsermons_speakers.fullname,
+                                                tx_wecsermons_speakers.firstname,
+                                                tx_wecsermons_speakers.lastname,
+                                                tx_wecsermons_speakers.url,
+                                                tx_wecsermons_speakers.photo,
+                                                tx_wecsermons_speakers.alttitle,
+                                                tx_wecsermons_speakers.email,
+                                                tx_wecsermons_speakers.islinked
+
+                                                from tx_wecsermons_speakers
+                                                        inner join tx_wecsermons_sermons_speakers_rel
+                                                                on tx_wecsermons_speakers.uid = tx_wecsermons_sermons_speakers_rel.speakerid
+                                                where 1=1 ' . $where;
+
+                                                $speakerRes = $GLOBALS['TYPO3_DB']->sql_query ($query);
 
 						$count = 0;
 						while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $speakerRes ) ) {
@@ -1332,11 +1389,17 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 							$count++;
 						}
 
+                                                // Restore original row and table
+                                                $this->internal['currentRow'] = $previousRow;
+                                                $this->internal['currentTable'] = $previousTable;
+
+
 						//	Replace marker content with subpart, wrapping stdWrap
 						if( $count > 0 )
 							$subpartArray[$key] = $this->cObj->stdWrap( $speakerContent, $lConf['tx_wecsermons_sermons.']['speakers.'] );
 
 					}
+
 				break;
 
 				case '###SERMON_TOPICS###':
@@ -1345,16 +1408,40 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 					if( $row[$fieldName] ) {
 
+                                                // Store current row and table while we switch context
+                                                $previousRow = $this->internal['currentRow'];
+                                                $previousTable = $this->internal['currentTable'];
+                                                $this->internal['currentTable'] = 'tx_wecsermons_topics';
+
+
 						//	Load the topics subpart
 						$topicTemplate = $this->cObj->getSubpart( $rowTemplate, $key );
 						$topicMarkerArray = $this->getMarkerArray('tx_wecsermons_topics',$topicTemplate);
 						$topicContent = '';
 
-						$topicRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-							'tx_wecsermons_topics.*',
-							'tx_wecsermons_topics',
-							' uid in (' . $row[$fieldName] . ')' . $this->cObj->enableFields( 'tx_wecsermons_topics' )
-						);
+                                                // our query
+                                                $where = ' AND tx_wecsermons_sermons_topics_rel.sermonid = ' . $row[uid] . ' ';
+                                                $where .= $this->cObj->enableFields('tx_wecsermons_topics');
+
+                                                $query = 'select distinct
+                                                tx_wecsermons_topics.uid,
+                                                tx_wecsermons_topics.pid,
+                                                tx_wecsermons_topics.tstamp,
+                                                tx_wecsermons_topics.crdate,
+                                                tx_wecsermons_topics.cruser_id,
+                                                tx_wecsermons_topics.sys_language_uid,
+                                                tx_wecsermons_topics.deleted,
+                                                tx_wecsermons_topics.hidden,
+                                                tx_wecsermons_topics.description,
+                                                tx_wecsermons_topics.title,
+                                                tx_wecsermons_topics.islinked
+
+                                                from tx_wecsermons_topics
+                                                        inner join tx_wecsermons_sermons_topics_rel
+                                                                on tx_wecsermons_topics.uid = tx_wecsermons_sermons_topics_rel.topicid
+                                                where 1=1 ' . $where;
+
+                                                $topicRes = $GLOBALS['TYPO3_DB']->sql_query ($query);
 
 						$count = 0;
 						while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $topicRes ) ) {
@@ -1364,6 +1451,10 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 							$count++;
 						}
+
+                                                // Restore original row and table
+                                                $this->internal['currentRow'] = $previousRow;
+                                                $this->internal['currentTable'] = $previousTable;
 
 						//	Replace marker content with subpart
 						if( $count > 0 )
@@ -1671,11 +1762,29 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						$seasonMarkerArray = $this->getMarkerArray('tx_wecsermons_seasons',$seasonTemplate);
 						$seasonContent = '';
 
-						$seasonRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-							'tx_wecsermons_seasons.*',
-							'tx_wecsermons_seasons',
-							' uid in (' . $row[$fieldName] . ')' . $this->cObj->enableFields( 'tx_wecsermons_seasons' )
-						);
+                                                // our query
+                                                $where = ' AND tx_wecsermons_series_seasons_rel.seriesid = ' . $row[uid] . ' ';
+                                                $where .= $this->cObj->enableFields('tx_wecsermons_seasons');
+
+                                                $query = 'select distinct
+                                                tx_wecsermons_seasons.uid,
+                                                tx_wecsermons_seasons.pid,
+                                                tx_wecsermons_seasons.tstamp,
+                                                tx_wecsermons_seasons.crdate,
+                                                tx_wecsermons_seasons.cruser_id,
+                                                tx_wecsermons_seasons.sys_language_uid,
+                                                tx_wecsermons_seasons.deleted,
+                                                tx_wecsermons_seasons.hidden,
+                                                tx_wecsermons_seasons.description,
+                                                tx_wecsermons_seasons.title,
+                                                tx_wecsermons_seasons.islinked
+
+                                                from tx_wecsermons_seasons
+                                                        inner join tx_wecsermons_series_seasons_rel
+                                                                on tx_wecsermons_seasons.uid = tx_wecsermons_series_seasons_rel.seasonid
+                                                where 1=1 ' . $where;
+
+                                                $seasonRes = $GLOBALS['TYPO3_DB']->sql_query ($query);
 
 						$count = 0;
 						while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $seasonRes ) ) {
@@ -1716,11 +1825,29 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						$topicMarkerArray = $this->getMarkerArray('tx_wecsermons_topics',$topicTemplate);
 						$topicContent = '';
 
-						$topicRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-							'tx_wecsermons_topics.*',
-							'tx_wecsermons_topics',
-							' uid in (' . $row[$fieldName] . ')' . $this->cObj->enableFields( 'tx_wecsermons_topics' )
-						);
+                                                // our query
+                                                $where = ' AND tx_wecsermons_series_topics_rel.sermonid = ' . $row[uid] . ' ';
+                                                $where .= $this->cObj->enableFields('tx_wecsermons_topics');
+
+                                                $query = 'select distinct
+                                                tx_wecsermons_topics.uid,
+                                                tx_wecsermons_topics.pid,
+                                                tx_wecsermons_topics.tstamp,
+                                                tx_wecsermons_topics.crdate,
+                                                tx_wecsermons_topics.cruser_id,
+                                                tx_wecsermons_topics.sys_language_uid,
+                                                tx_wecsermons_topics.deleted,
+                                                tx_wecsermons_topics.hidden,
+                                                tx_wecsermons_topics.description,
+                                                tx_wecsermons_topics.title,
+                                                tx_wecsermons_topics.islinked
+
+                                                from tx_wecsermons_topics
+                                                        inner join tx_wecsermons_series_topics_rel
+                                                                on tx_wecsermons_topics.uid = tx_wecsermons_series_topics_rel.topicid
+                                                where 1=1 ' . $where;
+
+                                                $topicRes = $GLOBALS['TYPO3_DB']->sql_query ($query);
 
 						$count = 0;
 						while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $topicRes ) ) {
@@ -1750,7 +1877,11 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 					//	Find all sermons related to this series
 					$WHERE = $this->cObj->enableFields('tx_wecsermons_sermons');
-					$query = 'SELECT * FROM tx_wecsermons_sermons WHERE find_in_set('.$row['uid'].',tx_wecsermons_sermons.series_uid)' . $WHERE;
+					$query = 'SELECT *
+					           FROM tx_wecsermons_sermons
+                                                    INNER JOIN tx_wecsermons_sermons_series_rel
+					             ON tx_wecsermons_sermons.uid = tx_wecsermons_sermons_series_rel.sermonid
+					           WHERE tx_wecsermons_sermons_series_rel.seriesid = ' . $row['uid'] . ' ' . $WHERE;
 					$orderBy = '';
 
 					//	Store previous row and table in local storage as we switch to retreiving detail
@@ -2135,11 +2266,11 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 			//	If table is sermons table, add SERMON_RESOURCES marker back for processing
 			if( !strcmp( $tableName,'tx_wecsermons_sermons') )
-	 		 	$markerArray['###SERMON_RESOURCES###'] = 'resources_uid';
+	 		 	$markerArray['###SERMON_RESOURCES###'] = 'resources';
 
 			//	If table is series table, add SERIES_RESOURCES marker back for processing
 			if( !strcmp( $tableName,'tx_wecsermons_series') )
-	 		 	$markerArray['###SERIES_RESOURCES###'] = 'resources_uid';
+	 		 	$markerArray['###SERIES_RESOURCES###'] = 'resources';
 
 	 	}
 		else {
@@ -2155,10 +2286,10 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						'###SERMON_ALTTITLE###' => 'alttitle',
 						'###SERMON_LINK###' => '',
 						'###ALTERNATING_CLASS###' => '',
-						'###SERMON_TOPICS###' => 'topics_uid',
-						'###SERMON_SERIES###' => 'series_uid',
-						'###SERMON_SPEAKERS###' => 'speakers_uid',
-						'###SERMON_RESOURCES###' => 'resources_uid', // Only included to kick off the processing of resources. Resource markers are defined in the resource_type records or resource record
+						'###SERMON_TOPICS###' => 'topics',
+						'###SERMON_SERIES###' => 'series',
+						'###SERMON_SPEAKERS###' => 'speakers',
+						'###SERMON_RESOURCES###' => 'resources', // Only included to kick off the processing of resources. Resource markers are defined in the resource_type records or resource record
 		 			);
 
 		 		break;
@@ -2173,10 +2304,10 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 						'###SERIES_SCRIPTURE###' => 'scripture',
 						'###SERIES_GRAPHIC###' => 'graphic',
 						'###SERIES_ALTTITLE###' => 'alttitle',
-						'###SERIES_SEASON###' => 'seasons_uid',
-						'###SERIES_TOPICS###' => 'topics_uid',
+						'###SERIES_SEASON###' => 'seasons',
+						'###SERIES_TOPICS###' => 'topics',
 						'###SERIES_SERMONS###' => '',
-						'###SERIES_RESOURCES###' => 'resources_uid',  // Only included to kick off the processing of resources. Resource markers are defined in the resource_type records or resource record
+						'###SERIES_RESOURCES###' => 'resources',  // Only included to kick off the processing of resources. Resource markers are defined in the resource_type records or resource record
 						'###SERIES_LINK###' => '',
 						'###ALTERNATING_CLASS###' => '',
 
@@ -2715,15 +2846,12 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 */
 	function getSermonResources( $sermonUid = '', $resourceUid = '') {
 
-		$pidList = $this->pi_getPidList($this->conf['pidList'],$this->conf['recursive']);
-
 		//	Build query to select resource attributes along with resource type name
 		$WHERE = $sermonUid ? 'AND tx_wecsermons_sermons.uid = ' . $sermonUid . ' ' :'';
 		$WHERE = $resourceUid ? 'AND tx_wecsermons_resources.uid = ' . $resourceUid . ' ' : $WHERE;
 		$WHERE .= $this->cObj->enableFields('tx_wecsermons_sermons');
 		$WHERE .= $this->cObj->enableFields('tx_wecsermons_resources');
 		$WHERE .= " AND( tx_wecsermons_resources.type = '0' OR (" . ltrim( $this->cObj->enableFields('tx_wecsermons_resource_types'), ' AND') . '))';
-		$WHERE .= $sermonUid ? '' : ' AND tx_wecsermons_resources.pid IN ('.$pidList.')';
 
 		$query = 'select distinct
 		tx_wecsermons_resources.uid,
@@ -2752,11 +2880,11 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		tx_wecsermons_resource_types.rendering_page
 
 		from tx_wecsermons_resources
-			left join tx_wecsermons_sermons_resources_uid_mm on tx_wecsermons_resources.uid=tx_wecsermons_sermons_resources_uid_mm.uid_foreign
-			left join tx_wecsermons_sermons on tx_wecsermons_sermons.uid=tx_wecsermons_sermons_resources_uid_mm.uid_local
+			left join tx_wecsermons_sermons_resources_rel on tx_wecsermons_resources.uid=tx_wecsermons_sermons_resources_rel.resourceid
+			left join tx_wecsermons_sermons on tx_wecsermons_sermons.uid=tx_wecsermons_sermons_resources_rel.sermonid
 			left join tx_wecsermons_resource_types on tx_wecsermons_resources.type=tx_wecsermons_resource_types.uid
 	 			where 1=1 ' . $WHERE;
-	 	$query .= ' ORDER BY tx_wecsermons_sermons_resources_uid_mm.sorting';
+	 	$query .= ' ORDER BY tx_wecsermons_sermons_resources_rel.sorting';
 
 		$res = $GLOBALS['TYPO3_DB']->sql_query( $query );
 
@@ -2785,15 +2913,12 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 */
 	function getSeriesResources( $seriesUid = '', $resourceUid = '') {
 
-		$pidList = $this->pi_getPidList($this->conf['pidList'],$this->conf['recursive']);
-
 		//	Build query to select resource attributes along with resource type name
 		$WHERE = $seriesUid ? 'AND tx_wecsermons_series.uid = ' . $seriesUid . ' ' :'';
 		$WHERE = $resourceUid ? 'AND tx_wecsermons_resources.uid = ' . $resourceUid . ' ' : $WHERE;
 		$WHERE .= $this->cObj->enableFields('tx_wecsermons_series');
 		$WHERE .= $this->cObj->enableFields('tx_wecsermons_resources');
 		$WHERE .= " AND( tx_wecsermons_resources.type = '0' OR (" . ltrim( $this->cObj->enableFields('tx_wecsermons_resource_types'), ' AND') . '))';
-		$WHERE .= $seriesUid ? '' : ' AND tx_wecsermons_resources.pid IN ('.$pidList.')';
 
 		$query = 'select distinct
 		tx_wecsermons_resources.uid,
@@ -2822,11 +2947,12 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 		tx_wecsermons_resource_types.rendering_page
 
 		from tx_wecsermons_resources
-			left join tx_wecsermons_series_resources_uid_mm on tx_wecsermons_resources.uid=tx_wecsermons_series_resources_uid_mm.uid_foreign
-			left join tx_wecsermons_series on tx_wecsermons_series.uid=tx_wecsermons_series_resources_uid_mm.uid_local
+			left join tx_wecsermons_series_resources_rel on tx_wecsermons_resources.uid=tx_wecsermons_series_resources_rel.resourceid
+			left join tx_wecsermons_series on tx_wecsermons_series.uid=tx_wecsermons_series_resources_rel.seriesid
 			left join tx_wecsermons_resource_types on tx_wecsermons_resources.type=tx_wecsermons_resource_types.uid
 	 			where 1=1 ' . $WHERE;
-	 	$query .= ' ORDER BY tx_wecsermons_series_resources_uid_mm.sorting';
+		# TODO: add sorting to our intermediate table
+	 	#$query .= ' ORDER BY tx_wecsermons_series_resources_uid_mm.sorting';
 
 		$res = $GLOBALS['TYPO3_DB']->sql_query( $query );
 
