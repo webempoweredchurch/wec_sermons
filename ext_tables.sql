@@ -323,3 +323,11 @@ CREATE TABLE tx_wecsermons_sermons_speakers_rel (
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
+
+#
+# Table structure for our metadata 'tx_wecsermons_meta'
+#
+CREATE TABLE tx_wecsermons_meta (
+	property varchar(50),
+	value varchar(100)
+);
