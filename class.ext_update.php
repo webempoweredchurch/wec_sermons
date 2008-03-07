@@ -8,6 +8,35 @@ class ext_update {
 
 	// this method is only invoked if there is need for updating (as determined by access() and getVersion())
 	function main() {
+		if (t3lib_div::_GP('wecsermons_updateit')) {
+			$this->performUpdate();
+		} else {
+			$codeVersion = $this->current;
+			$schemaVersion = $this->getVersion();
+			$content = <<<EOT
+<p>
+Before updating the Sermons extension database layout, please ensure that you've taken
+appropriate steps to protect your data (e.g., the "Dump to DB" option in the menu dropdown).
+<p>
+The update subsystem has detected a likely upgrade that requires user action.  We've
+detected that your code and schema definition are out of sync.  Specifically:
+<ul>
+<li>Code version: {$codeVersion}</li>
+<li>Schema version: {$schemaVersion}</li>
+</ul>
+</p>
+Are you ready to perform the database definition update/migration?
+<br/>
+<form method="POST"> <!-- no action posts back to the same url, iirc -->
+<input type="hidden" name="wecsermons_updateit" value="true"/>
+<input type="submit" value="Update"/>
+</form>
+EOT;
+			return $content;
+		}
+	}
+	// actually perform the update, after user has explicitly selected to update
+	function performUpdate() {
 		// detect our schema version
 		$version = $this->getVersion();
 

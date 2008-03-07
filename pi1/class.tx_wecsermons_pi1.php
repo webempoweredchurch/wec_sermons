@@ -23,7 +23,9 @@
 ***************************************************************/
 
 require_once(PATH_tslib.'class.tslib_pibase.php');
-require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
+
+require_once(t3lib_extMgm::extPath('wec_api','class.tx_wecapi_list.php'));
+require_once(t3lib_extMgm::extPath('wec_sermons', 'class.ext_update.php'));
 
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -52,7 +54,7 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
  * 2142:     function getMarkerName( $markerName )
  * 2155:     function loadTemplate( $view = 'LIST')
  * 2181:     function getTemplateFile()
- * 2209:     function getGroupResult( $groupTable, $detailTable, $foreignColumn, $lConf, $getCount = 0 )
+ * 2209:     function getGroupResult( $groupTable, $detailTable, $lConf, $getCount = 0 )
  * 2313:     function getSermonResources( $sermonUid = '', $resourceUid = '')
  * 2382:     function getSeriesResources( $seriesUid = '', $resourceUid = '')
  * 2450:     function emptyResourceSubparts( &$subpartArray, $templateContent = '' )
@@ -122,6 +124,17 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 				'WEC Sermon Management System Error!',
 				'The extension template for WEC SMS was not loaded!',
 				'Please edit your template record and add the "WEC SMS" template to the "Include static (from extension)" field.'
+			);
+		}
+
+		// check our code version vs. our schema version
+		$smsUpdater = new ext_update;
+		$schemaVersion = $smsUpdater = $smsUpdater->getVersion();
+		if( $smsUpdater->current != $schemaVersion && $schemaVersion != '0.0.0') {
+			return $this->throwError(
+				'WEC Sermon Management System Error!',
+				'The extension code and schema definitions appear to be out of sync.',
+				'Please run the update tool inside the Extension Manager (for the Sermons extension).'
 			);
 		}
 
@@ -958,17 +971,6 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			}
 			//	Search TCA for relation to previous table where columns.[colName].config.foreign_table = $this->internal['groupTable']
 			$this->internal['currentTable'] = $this->internal['groupTable'] = $groupTable;
-			$foreign_column = $this->get_foreign_column( $detailTable, $this->internal['groupTable'] );
-
-			if( ! $foreign_column ) {
-
-				return $this->throwError(
-					'WEC Sermon Management System Error!',
-					'The "Group By" option was specified, but was no relation was found to the table specified in "Detail"',
-					'Detail: '.$detailTable. ' Group:'.$this->internal['groupTable']
-				);
-
-			}
 
 			$groupTemplate = $this->template['group'];
 			$markerArray = $this->getMarkerArray( $groupTable, $groupTemplate );
@@ -977,11 +979,11 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$detailContent = '';
 
 			//	Get the total count, and set the # results per page
-			list($this->internal['res_count']) = $GLOBALS['TYPO3_DB']->sql_fetch_row( $this->getGroupResult( $groupTable, $detailTable, $foreign_column, $lConf, 1 ) );
+			list($this->internal['res_count']) = $GLOBALS['TYPO3_DB']->sql_fetch_row( $this->getGroupResult( $groupTable, $detailTable, $lConf, 1 ) );
 			$this->internal['results_at_a_time'] = $this->conf['maxGroupResults'];
 
 			// Retreive resultset
-			$res = $this->getGroupResult( $groupTable, $detailTable, $foreign_column, $lConf );
+			$res = $this->getGroupResult( $groupTable, $detailTable, $lConf );
 
 			//	Retreive marker array and template for the detail table
 			$detailTemplate = $this->template['item'] = $this->getNamedSubpart( 'ITEM', $template );
@@ -1028,21 +1030,25 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 					$this->piVars['pointer'] = 0;
 
 					//	Exec query on detail table, for every record related to our group record
-					$detailRes = $this->pi_exec_query( $detailTable, 0, ' AND find_in_set('.$this->internal['previousRow']['uid'].','.$this->internal['currentTable'].'.'.$foreign_column . ')' );
+					#$detailRes = $this->pi_exec_query( $detailTable, 0, ' AND find_in_set('.$this->internal['previousRow']['uid'].','.$this->internal['currentTable'].'.'.$foreign_column . ')' );
+					$detailUids = $this->getRelatedRecords($this->internal['previousRow']['uid'],$currentTable,$groupTable);
+					if ( isArray($detailUids) ) {
+						$detailRes = $this->pi_exec_query( $detailTable, 0, ' AND uid in ( ' . implode(",", $detailUids) . ')' );
 
-					//	Resore results_at_a_time and pointer values
-					$this->internal['results_at_a_time'] = $this->internal['prev_results_at_a_time'];
-					$this->piVars['pointer'] = $prevPointer;
+						//	Resore results_at_a_time and pointer values
+						$this->internal['results_at_a_time'] = $this->internal['prev_results_at_a_time'];
+						$this->piVars['pointer'] = $prevPointer;
 
-					$detailInnerCount = 0;
+						$detailInnerCount = 0;
 
-					//	Iterate over every related detail record to our group record
-					while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $detailRes ) ) {
+						//	Iterate over every related detail record to our group record
+						while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $detailRes ) ) {
 
-						$detailCount++;
-						$detailInnerCount++;
+							$detailCount++;
+							$detailInnerCount++;
 
-						$detailContent .= $this->pi_list_row( $lConf, $detailMarkArray, $detailTemplate, $this->internal['currentRow'], $detailInnerCount );
+							$detailContent .= $this->pi_list_row( $lConf, $detailMarkArray, $detailTemplate, $this->internal['currentRow'], $detailInnerCount );
+						}
 					}
 				}
 
@@ -2633,16 +2639,25 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 	 *
 	 * @param	string				$groupTable: The table name to group by
 	 * @param	string				$detailTable: The table name to display detail records by
-	 * @param	string				$foreignColumn: The column name by which detail records are related back to group records.
 	 * @param	array					$lConf: Locally scoped configuration array from TypoScript
 	 * @param	boolean				$getCount: A boolean value enabling the return of the row count, rather than the rows themselves.
 	 * @return	resource		A sql resource returned from sql_query()
 	 */
-	 function getGroupResult( $groupTable, $detailTable, $foreignColumn, $lConf, $getCount = 0 ) {
+	 function getGroupResult( $groupTable, $detailTable, $lConf, $getCount = 0 ) {
 
 		$pointer = $this->piVars['pointer'];
 		$pointer = intval($pointer);
 		$groupUids = '';
+
+		// get the links (tables, columns) between our group and detail tables
+		$relatables = $this->getRelatables($detailTable, $groupTable);
+		if (!isArray($relatables)) {
+			$this->throwError(
+				'WEC Sermon Management System Error!',
+				'Unable to relate Group and Detail tables.',
+				'Please examine your list setup.'
+			);
+		}
 
 		//	Check if search word was used to filter list.
 		if( $this->piVars['sword'] ) {
@@ -2652,11 +2667,14 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 
 			//	Retrieve result set of series filtered by matching sermons
-			$query = 'select '.$groupTable.'.uid,'.$groupTable.'.title'.chr(10)
-				.'from '.$groupTable.', '.$detailTable .chr(10);
+			$query = 'select '.$groupTable.'uid,'.$groupTable.'.title'.chr(10)
+				.'from '.$detailTable.chr(10)
+				.'inner join '.$relatables['intermediateTable'].chr(10)
+				.' on '.$detailTable.'.uid = '.$relatables['intermediateTable'].'.'.$relatables['current2intermediateColumn'].chr(10)
+				.'inner join '.$groupTable.chr(10)
+				.' on '.$groupTable.'.uid = '.$relatables['intermediateTable'].'.'.$relatables['related2intermediateColumn'].char(10);
 
-			$WHERE = sprintf(' WHERE find_in_set(%s.uid,%s.%s) ', $groupTable,$detailTable,$foreignColumn )
-				.$this->cObj->searchWhere($this->piVars['sword'],$searchFieldList,$detailTable).$this->cObj->enableFields($groupTable) . $this->cObj->enableFields( $detailTable ) .' AND '.$groupTable.'.pid IN ('.$pidList.')';
+			$WHERE = $this->cObj->searchWhere($this->piVars['sword'],$searchFieldList,$detailTable).$this->cObj->enableFields($groupTable) . $this->cObj->enableFields( $detailTable ) .' AND '.$groupTable.'.pid IN ('.$pidList.')';
 
 			//	Retrieve start or end date from plugin or typoscript configuration
 			$startDate = $this->getConfigVal( $this, 'startDate', 'slistView', 'startDate', $lConf );
@@ -2762,8 +2780,12 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 			$pidList = $this->pi_getPidList($this->conf['pidList'],$this->conf['recursive']);
 
 			$select = $getCount ? 'SELECT count(distinct '.$groupTable.'.uid)' : "SELECT distinct " . $groupTable . ".*";
-			$from = " FROM " . $groupTable . ',' . $detailTable;
-			$where = sprintf(' WHERE find_in_set(%s.uid,%s.%s) ', $groupTable,$detailTable,$foreignColumn ) . $this->cObj->enableFields($groupTable)
+                        $from = 'from '.$detailTable.chr(10)
+                                .'inner join '.$relatables['intermediateTable'].chr(10)
+                                .' on '.$detailTable.'.uid = '.$relatables['intermediateTable'].'.'.$relatables['current2intermediateColumn'].chr(10)
+                                .'inner join '.$groupTable.chr(10)
+                                .' on '.$groupTable.'.uid = '.$relatables['intermediateTable'].'.'.$relatables['related2intermediateColumn'].char(10);
+			$where = $this->cObj->enableFields($groupTable)
 				.$this->cObj->enableFields( $detailTable ) . ' AND '.$groupTable.'.pid IN ('.$pidList.')'
 				. ($groupUids ? ' AND '.$groupTable.'.uid in ('.$groupUids.') ' : '');
 			$limit = $getCount ? '' : " LIMIT ".($pointer*$this->internal['results_at_a_time']).",".$this->internal['results_at_a_time'];
@@ -3150,26 +3172,136 @@ require_once(PATH_typo3conf . 'ext/wec_api/class.tx_wecapi_list.php' );
 
 	}
 
-	/**
-	 * get_foreign_column: Searches through the TCA array of the current table name for a related table, returning the column name used to create the relation.
-	 *
-	 * @param	string		$currentTable: Table name to search through
-	 * @param	string		$relatedTable: Related table to search for
-	 * @return	string	The column name that relates currentTable to relatedTable. Returns null if no relation is found.
-	 */
-	function get_foreign_column( $currentTable, $relatedTable ) {
 
-		//	Load up the tca for given table
-		$GLOBALS['TSFE']->includeTCA($TCAloaded = 1);
+	# Note that the following function is very specific to our Sermons datamodel (TCA setup).  It is *not* generic like, say getRelatedRecords
+	/**
+	 * getRelatables: Return an associative array mapping the linkage points (table and column names) between a group/detail table combination
+	 *
+	 * @param	string		$currentTable: The table with details (e.g., tx_wecsermons_sermons)
+	 * @param	string		$relatedTable: The table for grouping (e.g., tx_wecsermons_series)
+	 * @return	mixed		Mapping for the following keys: (1) intermediateTable (2) current2intermediateColumn (3) related2intermediateColumn
+	 *				(false on error)
+	 */
+	function getRelatables( $currentTable, $relatedTable ) {
+		$retMap = array();
+		t3lib_div::loadTCA( $currentTable );
+		foreach( $GLOBALS['TCA'][$currentTable]['columns'] as $columnName => $value ) {
+			$columnConfig = $value['config'];
+			if ( $columnConfing['type'] == 'inline'
+			     && array_key_exists( 'foreign_table', $columnConfig )
+       			     && array_key_exists( 'foreign_field', $columnConfig )
+			     && array_key_exists( 'foreign_selector', $columnConfig ) ) {
+				t3lib_div::loadTCA( $columnConfig['foreign_table'] );
+				// columnEndTable is a variable holding the referenced table (so we move from detail->intermediate->group)
+				$columnEndTable = $GLOBALS['TCA'][$columnConfig['foreign_table']]['columns'][$columnConfig['foreign_selector']]['foreign_table'];
+				if ( $columnEndTable == $relatedTable ) {
+					$retMap['intermediateTable'] = $columnConfig['foreign_table'];
+					$retMap['current2intermediate'] = $columnConfig['foreign_field'];
+					$retMap['related2intermediate'] = $columnConfig['foreign_selector'];
+					return $retMap;
+				}
+			}
+		}
+		return false;
+	}
+
+	# The following function is likely incomplete, as I'm only using (and aware of, for that matter) a small subset of TCA relation types.
+	# In my view, it could be very useful to flesh this out for other extension authors or even t3 core (low hanging fruit).
+        /**
+	 * getRelatedRecords: Return a list of uids from $relatedTable that are tied to $currentTable's provided $uid
+	 *
+	 * @param	int		$uid: The record from $currentTable with which we'll find associated foreign records from $relatedTable
+	 * @param	string		$currentTable: The table (name) for which we're finding foreign associated records
+	 * @param	string		$relatedTable: The foreign table (name) in which we're finding records that tie to $currentTable
+	 * @return	mixed		List of associated uids in foreign table ($relatedTable) (or false on failure)
+	 */
+	function getRelatedRecords( $uid, $currentTable, $relatedTable ) {
+		$retList = array(); // we'll return this to the caller, a list of matching uids
 		t3lib_div::loadTCA( $currentTable );
 
 		foreach( $GLOBALS['TCA'][$currentTable]['columns'] as $columnName => $value ) {
-				if( !strcmp( $value['config']['foreign_table'], $relatedTable) || !strcmp( $value['config']['allowed'], $relatedTable ) )
-					return $columnName;
+			$columnConfig = $value['config'];
+			if ( $columnConfing['type'] == 'inline' 
+			     && array_key_exists( 'foreign_table', $columnConfig )
+			     && array_key_exists( 'foreign_field', $columnConfig )
+			     && array_key_exists( 'foreign_selector', $columnConfig ) ) {
+				//
+				// it's an IRRE n:m (intermediate with selector) relation
+				//
+				t3lib_div::loadTCA( $columnConfig['foreign_table'] );
+
+				// columnEndTable is a variable holding the referenced table (so we move from current->intermediate->referenced)
+				$columnEndTable = $GLOBALS['TCA'][$columnConfig['foreign_table']]['columns'][$columnConfig['foreign_selector']]['foreign_table'];
+
+				if ( $columnEndTable == $relatedTable ) {
+					$res = $GLOBALS['TYPO3_DB']->sql_query("select distinct i." . $columnConfig['foreign_selector'] . "
+					                                        from " . $columnConfig['foreign_table'] . " i
+					                                         inner join " . $currentTable . " c
+					                                          on c.uid = i." . $columnConfig['foreign_field'] . "
+					                                        where c.uid = " . $uid);
+					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row() ) {
+						$retList[] = $row[0];
+					}
+					return $retList;
+				}
+			} else if ( $columnConfig['type'] == 'inline'
+			            && array_key_exists( 'foreign_table', $columnConfig )
+			            && array_key_exists( 'foreign_field', $columnConfig )
+			            && array_key_exists( 'foreign_label', $columnConfig ) ) {
+				//
+				// it's an IRRE but without selector, so we'll hinge upon foreign_label (although this is optional iirc)
+				//
+                                t3lib_div::loadTCA( $columnConfig['foreign_table'] );
+
+                                // columnEndTable is a variable holding the referenced table (so we move from current->intermediate->referenced)
+                                $columnEndTable = $GLOBALS['TCA'][$columnConfig['foreign_table']]['columns'][$columnConfig['foreign_label']]['foreign_table'];
+
+                                if ( $columnEndTable == $relatedTable ) {
+                                        $res = $GLOBALS['TYPO3_DB']->sql_query("select distinct i." . $columnConfig['foreign_label'] . "
+                                                                                from " . $columnConfig['foreign_table'] . " i
+                                                                                 inner join " . $currentTable . " c
+                                                                                  on c.uid = i." . $columnConfig['foreign_field'] . "
+					                                        where c.uid = " . $uid);
+                                        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row() ) {
+                                                $retList[] = $row[0];
+                                        }
+                                        return $retList;
+                                }
+			} else if ( $columnConfig['type'] == 'select'
+			            && array_key_exists( 'foreign_table', $columnConfig )
+			            && $columnConfig['foreign_table'] == $relatedTable ) {
+				//
+				// it's a traditional select-type with a database table
+				//
+				// note: we need to put up the MM subtype before this, "specific before generic"
+				//
+				$res = $GLOBALS['TYPO3_DB']->sql_query("select " . $columnName . " from " . $currentTable . " where uid = " . $uid);
+				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row() ) {
+					$retList[] = $row[0];
+				}
+				return $retList;
+                        } else if ( $columnConfig['type'] == 'group'
+			            && array_key_exists( 'internal_type' )
+			            && $columnConfig['internal_type'] == "db"
+                                    && array_key_exists( 'foreign_table', $columnConfig )
+			            && $columnConfig['foreign_table'] == $relatedTable ) {
+                                //
+                                // it's a traditional select-type with a database table
+                                //
+                                // note: we need to put up the MM subtype before this, "specific before generic"
+                                //
+				$res = $GLOBALS['TYPO3_DB']->sql_query("select " . $columnName . " from " . $currentTable . " where uid = " . $uid);
+				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row() ) {
+					$retList[] = $row[0];
+				}
+				return $retList;
+			} else {
+				continue; // go on to the next field
+			}
 		}
 
-		return '';
-
+		// if we get here, there was no match, so return false
+		return false;
 	}
 
 	/**
