@@ -15,11 +15,13 @@ class ext_update {
 			$schemaVersion = $this->getVersion();
 			$content = <<<EOT
 <p>
-Before updating the Sermons extension database layout, please ensure that you've taken
-appropriate steps to protect your data (e.g., the "Dump to DB" option in the menu dropdown).
+Before proceeding to update the Sermons extension data-definition, please ensure that you've taken
+appropriate steps to protect your data (e.g., use the Extension Manager's
+"Backup/Delete" menu option to generate a SQL-file able to reconstruct the current database
+structure in addition to the records currently in place).
 <p>
-The update subsystem has detected a likely upgrade that requires user action.  We've
-detected that your code and schema definition are out of sync.  Specifically:
+This update subsystem has detected a likely upgrade that requires user action.  We've
+detected that your code and schema definitions are out of sync.  Specifically:
 <ul>
 <li>Code version: {$codeVersion}</li>
 <li>Schema version: {$schemaVersion}</li>
