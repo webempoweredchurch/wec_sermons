@@ -13,6 +13,10 @@ class ext_update {
 		} else {
 			$codeVersion = $this->current;
 			$schemaVersion = $this->getVersion();
+
+
+			$onclick = htmlspecialchars("document.location='".t3lib_div::linkThisScript(array('wecsermons_updateit' => 1))."'; return false;");
+
 			$content = <<<EOT
 <p>
 Before proceeding to update the Sermons extension data-definition, please ensure that you've taken
@@ -30,8 +34,7 @@ detected that your code and schema definitions are out of sync.  Specifically:
 Are you ready to perform the database definition update/migration?
 <br/>
 <form method="POST"> <!-- no action posts back to the same url, iirc -->
-<input type="hidden" name="wecsermons_updateit" value="true"/>
-<input type="submit" value="Update"/>
+<input type="submit" value="Update" onclick="{$onclick}" />
 </form>
 EOT;
 			return $content;

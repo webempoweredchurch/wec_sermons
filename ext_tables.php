@@ -64,6 +64,7 @@ $TCA["tx_wecsermons_sermons_resources_rel"] = Array (
 		"cruser_id" => "cruser_id",
 		"sortby" => "sorting",
 		"dynamicConfigFile" => t3lib_extMgm::extPath($_EXTKEY)."tca.php",
+		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_wecsermons_resources.gif"
 	),
 	"feInterface" => Array (
 		"fe_admin_fieldlist" => "sermonid,resourceid",
@@ -79,6 +80,7 @@ $TCA["tx_wecsermons_series_resources_rel"] = Array (
                 "cruser_id" => "cruser_id",
 		"sortby" => "sorting",
                 "dynamicConfigFile" => t3lib_extMgm::extPath($_EXTKEY)."tca.php",
+		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_wecsermons_resources.gif"
         ),
         "feInterface" => Array (
                 "fe_admin_fieldlist" => "seriesid,resourceid",
@@ -148,7 +150,8 @@ $TCA["tx_wecsermons_sermons_series_rel"] = Array (
 		"tstamp" => "tstamp",
 		"crdate" => "crdate",
 		"cruser_id" => "cruser_id",
-		"dynamicConfigFile" => t3lib_extMgm::extPath($_EXTKEY)."tca.php"
+		"dynamicConfigFile" => t3lib_extMgm::extPath($_EXTKEY)."tca.php",
+		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_wecsermons_series.gif"
 	),
 	"feInterface" => Array (
 		"fe_admin_fieldList" => "",
@@ -182,7 +185,8 @@ $TCA["tx_wecsermons_sermons_topics_rel"] = Array (
 		"tstamp" => "tstamp",
 		"crdate" => "crdate",
 		"cruser_id" => "cruser_id",
-		"dynamicConfigFile" => t3lib_extMgm::extPath($_EXTKEY)."tca.php"
+		"dynamicConfigFile" => t3lib_extMgm::extPath($_EXTKEY)."tca.php",
+		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_wecsermons_topics.gif"
 	),
 	"feInterface" => Array (
 		"fe_admin_fieldList" => ""
@@ -196,7 +200,8 @@ $TCA["tx_wecsermons_series_topics_rel"] = Array (
 		"tstamp" => "tstamp",
 		"crdate" => "crdate",
 		"cruser_id" => "cruser_id",
-		"dynamicConfigFile" => t3lib_extMgm::extPath($_EXTKEY)."tca.php"
+		"dynamicConfigFile" => t3lib_extMgm::extPath($_EXTKEY)."tca.php",
+		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_wecsermons_topics.gif"
 	),
 	"feInterface" => Array (
 		"fe_admin_fieldList" => ""
@@ -230,7 +235,8 @@ $TCA["tx_wecsermons_series_seasons_rel"] = Array (
 		"tstamp" => "tstamp",
 		"crdate" => "crdate",
 		"cruser_id" => "cruser_id",
-		"dynamicConfigFile" => t3lib_extMgm::extPath($_EXTKEY)."tca.php"
+		"dynamicConfigFile" => t3lib_extMgm::extPath($_EXTKEY)."tca.php",
+		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_wecsermons_seasons.gif"
 	),
 	"feInterface" => Array (
 		"fe_admin_fieldList" => ""
@@ -266,7 +272,8 @@ $TCA["tx_wecsermons_sermons_speakers_rel"] = Array (
 		"tstamp" => "tstamp",
 		"crdate" => "crdate",
 		"cruser_id" => "cruser_id",
-		"dynamicConfigFile" => t3lib_extMgm::extPath($_EXTKEY)."tca.php"
+		"dynamicConfigFile" => t3lib_extMgm::extPath($_EXTKEY)."tca.php",
+		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_wecsermons_speakers.gif"
 	),
 	"feInterface" => Array (
 		"fe_admin_fieldList" => "sermonid,speakerid"
