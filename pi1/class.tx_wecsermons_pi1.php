@@ -3206,6 +3206,7 @@ function uniqueCsv()	{
 
 	# The following function is likely incomplete, as I'm only using (and aware of, for that matter) a small subset of TCA relation types.
 	# In my view, it could be very useful to flesh this out for other extension authors or even t3 core (low hanging fruit).
+	# Note that only the first branch (IRRE/selector/combo) is working at present, the others have things backwards (bleh).
         /**
 	 * getRelatedRecords: Return a list of uids from $relatedTable that are tied to $currentTable's provided $uid
 	 *
@@ -3233,11 +3234,11 @@ function uniqueCsv()	{
 				$columnEndTable = rtrim($GLOBALS['TCA'][$columnConfig['foreign_table']]['columns'][$columnConfig['foreign_selector']]['config']['foreign_table']);
 
 				if ( $columnEndTable == $relatedTable ) {
-					$stmt = "select distinct i." . $columnConfig['foreign_selector'] . "
+					$stmt = "select distinct i." . $columnConfig['foreign_field'] . "
 					         from " . $columnConfig['foreign_table'] . " i
-					          inner join " . $currentTable . " c
-					           on c.uid = i." . $columnConfig['foreign_field'] . "
-					         where c.uid = " . $uid;
+					          inner join " . $relatedTable . " g
+					           on g.uid = i." . $columnConfig['foreign_selector'] . "
+					         where g.uid = " . $uid;
 					$res = $GLOBALS['TYPO3_DB']->sql_query($stmt);
 					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res) ) {
 						$retList[] = $row[0];
