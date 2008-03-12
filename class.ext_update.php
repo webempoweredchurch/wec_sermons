@@ -3,7 +3,7 @@
 class ext_update {
 	// NOTE: you have to keep this current with every schema update
 	// this isn't exactly a smooth process, so make your schema changes rare ;-)
-	var $current = "0.9.6";
+	var $current = "0.10.0";
 
 
 	// this method is only invoked if there is need for updating (as determined by access() and getVersion())
