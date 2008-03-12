@@ -130,7 +130,7 @@ function main($content,$conf)	{
 	// check our code version vs. our schema version
 	$smsUpdater = new ext_update;
 	$codeVersion = $smsUpdater->current;
-	$schemaVersion = $smsUpdater = $smsUpdater->getVersion();
+	$schemaVersion = $smsUpdater->getVersion();
 	if( $codeVersion != $schemaVersion ) {
 		return $this->throwError(
 			'WEC Sermon Management System Error!',
@@ -251,7 +251,15 @@ function xmlView ($content, $lConf) {
 	//	Get the related table entries to the group, using 'tx_wecsermons_sermons' if none specified
 	$tableToList = $this->piVars['recordType'] ? htmlspecialchars( $this->piVars['recordType'] ) : ($this->conf['detailTable'] ? $this->conf['detailTable'] : 'tx_wecsermons_sermons' );
 
-	//	TODO: Create a custom query that looks only for sermons with resources of specified enclosure type
+	if ($tableToList == 'tx_wecsermons_sermons') {
+		$tableResourceRel = 'tx_wecsermons_sermons_resources_rel';
+		$tableResourceRelKey = 'sermonid';
+	} else if ($tableToList == 'tx_wecsermons_series') {
+		$tableResourceRel = 'tx_wecsermons_series_resources_rel';
+		$tableResourceRelKey = 'seriesid';
+	} else {
+		; // we should never arrive in this situation
+	}
 
 	//	Retrieve the number we want to limit our items to
 	$this->internal['results_at_a_time'] = $lConf['maxdetailResults'];
@@ -265,8 +273,22 @@ function xmlView ($content, $lConf) {
 
 	$this->conf['pidList'] = $this->pi_getPidList($this->conf['pidList'],$this->conf['recursive']);
 
-	// Make listing query, pass query to SQL database:
-	$res = $this->pi_exec_query($tableToList,0);
+	// Make listing query (can't use the stock pi_exec_query() method because we're doing fancy joins and just getting enclosures)
+	$stmt = "select distinct s.*
+                  from ".$tableToList." s
+                   inner join ".$tableResourceRel." i
+                    on s.uid = i.".$tableResourceRelKey."
+                   inner join tx_wecsermons_resources r
+                    on i.resourceid = r.uid
+                   inner join tx_wecsermons_resource_types t
+                    on r.type = t.uid
+                  where t.typoscript_object_name = ".$lConf['enclosure_Type']."
+                   and s.pid in (".$this->conf['pidList'].")
+                   ".$this->cObj->enableFields($tableToList).chr(10).
+                 ((t3lib_div::inList($this->internal['orderByList'],$this->internal['orderBy'])) ? "order by ".$this->internal['orderBy']." desc" : '').chr(10).
+                 "limit ".$this->internal['results_at_a_time'];
+	// get our results
+	$res = $GLOBALS['TYPO3_DB']->sql_query($stmt);
 
 	$sermons = array();
 	$content = '';
@@ -352,8 +374,17 @@ function xmlView ($content, $lConf) {
 			$this->internal['orderByList'] = $lConf['tx_wecsermons_speakers.']['orderByList'];
 			$this->internal['orderBy'] = $lConf['tx_wecsermons_speakers.']['orderBy'];
 
-			//	Query for related speakers
-			$speakerRes = $this->pi_exec_query('tx_wecsermons_speakers', 0, ' AND uid in (' . $row['speakers_uid'] . ')' );
+			//	Query for related speakers (again, since we're using exotic irre-intermediate tables... can't use stock pi_exec_query())
+			$stmt = "select distinct s.*
+                                  from tx_wecsermons_speakers s
+                                   inner join tx_wecsermons_sermons_speakers_rel r
+                                    on s.uid = r.speakerid
+                                  where r.sermonid = ".$row['uid'].chr(10).
+                                   $this->cObj->enableFields('tx_wecsermons_speakers').chr(10).
+                                  ((t3lib_div::inList($this->internal['orderByList'],$this->internal['orderBy'])) ? "order by ".$this->internal['orderBy']." desc" : '').chr(10).
+                                  'limit 1';
+                                   
+			$speakerRes = $GLOBALS['TYPO3_DB']->sql_query($stmt);
 
 			//	Retreive only the first speaker
 			$speaker = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $speakerRes );
@@ -2337,6 +2368,7 @@ return $lContent;
 					'###SPEAKER_LASTNAME###' => 'lastname',
 					'###SPEAKER_EMAIL###' => 'email',
 					'###SPEAKER_URL###' => 'url',
+					'###SPEAKER_BLOGURL###' => 'blogurl',
 					'###SPEAKER_PHOTO###' => 'photo',
 					'###SPEAKER_ALTTITLE###' => 'alttitle',
 					'###SPEAKER_LINK###' => '',

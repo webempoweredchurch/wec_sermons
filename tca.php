@@ -1523,14 +1523,22 @@ $TCA["tx_wecsermons_speakers"] = Array (
 				"size" => "30",
 			)
 		),
-    "islinked" => Array (        
-        "exclude" => 1,        
-        "label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_speakers.islinked",        
-        "config" => Array (
-            "type" => "check",
-            "default" => "1",
-        )
-    ),
+		"islinked" => Array (        
+			"exclude" => 1,        
+			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_speakers.islinked",        
+			"config" => Array (
+				"type" => "check",
+				"default" => "1",
+			)
+		),
+		"blogurl" => Array (
+			"exclude" => 1,
+			"label" => "LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons_speakers.blogurl",
+			"config" => Array (
+				"type" => "input",
+				"size" => "50"
+			)
+		)
 	),
 	"types" => Array (
 		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;1;;2-2-2, fullname;;2;;3-3-3, email;;;;4-4-4, url, photo;;3")

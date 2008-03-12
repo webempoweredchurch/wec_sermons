@@ -19,19 +19,11 @@ class ext_update {
 
 			$content = <<<EOT
 <p>
-Before proceeding to update the Sermons extension data-definition, please ensure that you've taken
+Before proceeding to update the Sermons extension, please ensure that you've taken
 appropriate steps to protect your data (e.g., use the Extension Manager's
-"Backup/Delete" menu option to generate a SQL-file able to reconstruct the current database
-structure in addition to the records currently in place).
+"Backup/Delete" menu option to generate a .sql dump/backup file).
 <p>
-This update subsystem has detected a likely upgrade that requires user action.  We've
-detected that your code and schema definitions are out of sync.  Specifically:
-<ul>
-<li>Code version: {$codeVersion}</li>
-<li>Schema version: {$schemaVersion}</li>
-</ul>
-</p>
-Are you ready to perform the database definition update/migration?
+Are you ready to perform the extension update?
 <br/>
 <form method="POST"> <!-- no action posts back to the same url, iirc -->
 <input type="submit" value="Update" onclick="{$onclick}" />
@@ -366,6 +358,10 @@ EOT;
 	function upgradeFrom090() {
 		$this->upgradeFrom093(); // close enough
 	}
+}
+
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_sermons/class.ext_update.php']) {
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_sermons/class.ext_update.php']);
 }
 
 ?>

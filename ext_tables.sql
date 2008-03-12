@@ -304,6 +304,7 @@ CREATE TABLE tx_wecsermons_speakers (
 	alttitle tinytext NOT NULL,
 	email tinytext NOT NULL,
 	islinked tinyint(3) DEFAULT '1' NOT NULL,
+	blogurl tinytext NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -328,6 +329,6 @@ CREATE TABLE tx_wecsermons_sermons_speakers_rel (
 # Table structure for our metadata 'tx_wecsermons_meta'
 #
 CREATE TABLE tx_wecsermons_meta (
-	property varchar(50),
-	value varchar(100)
+	property varchar(50) DEFAULT '' NOT NULL,
+	value varchar(100) DEFAULT '' NOT NULL
 );

@@ -22,7 +22,7 @@ plugin.tx_wecsermons_pi1 {
 	
 	enableSmartDisplay = {$plugin.tx_wecsermons_pi1.enableSmartDisplay}
 
-	# Wheather the extension will provide BibleGateway links for scripture
+	# Whether the extension will provide BibleGateway links for scripture
 	# (defaults to false; i.e., BibleGateway is enabled by default)
 	disableBibleGateway = {$plugin.tx_wecsermons_pi1.disableBibleGateway}
 

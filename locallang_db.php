@@ -119,6 +119,7 @@ $LOCAL_LANG = Array (
 		'tx_wecsermons_speakers.photo' => 'Photograph',
 		'tx_wecsermons_speakers.alttitle' => 'Alt / Title Text:',
 		'tx_wecsermons_speakers.islinked' => 'Is Linked:',
+		'tx_wecsermons_speakers.blogurl' => 'Speaker Blog URL',
 		'tx_wecsermons_sermons_speakers_rel' => 'Sermon Speaker',
 		'tx_wecsermons_sermons_speakers_rel.sermonid' => 'Sermon ID',
 		'tx_wecsermons_sermons_speakers_rel.speakerid' => 'Speaker ID',
