@@ -17,3 +17,4 @@ Something along those lines could help with re-inserting data or re-running the 
 
 - templates and tca items entries to allow grouping on Topic (this addresses Sandy's request in the forums)
 - finish Search branch
+- implement the new CSH functionality (and provide CSH entries for new fields, like Speaker Blog URL)
