@@ -2150,6 +2150,14 @@ function pi_list_row($lConf, $markerArray = array(), $rowTemplate, $row ='', $c 
 
 			break;
 
+			case '###SPEAKER_BLOGURL###':
+				if( $row[$fieldName] ) {
+					$this->local_cObj->start( $row, 'tx_wecsermons_speakers' );
+					$markerArray[$key] = $this->local_cObj->cObjGetSingle( $lConf['tx_wecsermons_speakers.']['blogurl'], $lConf['tx_wecsermons_speakers.']['url.'] );
+				}
+
+			break;
+
 			case '###SPEAKER_EMAIL###':
 
 				//	Create link, making sure it is spam protected

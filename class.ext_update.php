@@ -185,6 +185,7 @@ EOT;
 		*/
 
 		// the new hawtness
+		// do sermon resources
 		$stmt = "insert into tx_wecsermons_sermons_resources_rel
                          (uid,pid,tstamp,crdate,cruser_id,sermonid,resourceid,sorting)
                          select null,s.pid,null,null,1,m.uid_local,m.uid_foreign,m.sorting
@@ -194,6 +195,7 @@ EOT;
 
 		$res = $GLOBALS['TYPO3_DB']->sql_query($stmt);
 
+		// do series resources
 		$stmt = "insert into tx_wecsermons_series_resources_rel
                          (uid,pid,tstamp,crdate,cruser_id,seriesid,resourceid,sorting)
                          select null,s.pid,null,null,1,m.uid_local,m.uid_foreign,m.sorting
@@ -205,6 +207,7 @@ EOT;
 
 		// doesn't it suck that mysql v4 lacks subquery support... this could have been one query, alas.
 		// probably could have cleaned up a bit by using aggregate functions, but alas
+		// do sermons first (get our count)
 		$stmt = "select uid from tx_wecsermons_sermons";
 		$res = $GLOBALS['TYPO3_DB']->sql_query($stmt);
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res)) {
@@ -221,6 +224,7 @@ EOT;
 		  $stmtUpdate = "update tx_wecsermons_sermons set resources = {$sermonResourceCount} where uid = {$uid}";
 		  $GLOBALS['TYPO3_DB']->sql_query($stmtUpdate);
 		}
+		// then do series (get our count)
 		$stmt = "select uid from tx_wecsermons_series";
 		$res = $GLOBALS['TYPO3_DB']->sql_query($stmt);
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res)) {
