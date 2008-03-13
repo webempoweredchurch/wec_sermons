@@ -247,7 +247,6 @@ function main($content,$conf)	{
  * @return	string		Complete XML content
  */
 function xmlView ($content, $lConf) {
-
 	//	Get the related table entries to the group, using 'tx_wecsermons_sermons' if none specified
 	$tableToList = $this->piVars['recordType'] ? htmlspecialchars( $this->piVars['recordType'] ) : ($this->conf['detailTable'] ? $this->conf['detailTable'] : 'tx_wecsermons_sermons' );
 
@@ -274,16 +273,16 @@ function xmlView ($content, $lConf) {
 	$this->conf['pidList'] = $this->pi_getPidList($this->conf['pidList'],$this->conf['recursive']);
 
 	// Make listing query (can't use the stock pi_exec_query() method because we're doing fancy joins and just getting enclosures)
-	$stmt = "select distinct s.*
-                  from ".$tableToList." s
-                   inner join ".$tableResourceRel." i
-                    on s.uid = i.".$tableResourceRelKey."
-                   inner join tx_wecsermons_resources r
-                    on i.resourceid = r.uid
-                   inner join tx_wecsermons_resource_types t
-                    on r.type = t.uid
-                  where t.typoscript_object_name = ".$lConf['enclosure_Type']."
-                   and s.pid in (".$this->conf['pidList'].")
+	$stmt = "select distinct ".$tableToList.".*
+                  from ".$tableToList."
+                   inner join ".$tableResourceRel."
+                    on ".$tableToList.".uid = ".$tableResourceRel.".".$tableResourceRelKey."
+                   inner join tx_wecsermons_resources
+                    on ".$tableResourceRel.".resourceid = tx_wecsermons_resources.uid
+                   inner join tx_wecsermons_resource_types
+                    on tx_wecsermons_resources.type = tx_wecsermons_resource_types.uid
+                  where tx_wecsermons_resource_types.typoscript_object_name = '".$lConf['enclosureType']."'
+                   and ".$tableToList.".pid in (".$this->conf['pidList'].")
                    ".$this->cObj->enableFields($tableToList).chr(10).
                  ((t3lib_div::inList($this->internal['orderByList'],$this->internal['orderBy'])) ? "order by ".$this->internal['orderBy']." desc" : '').chr(10).
                  "limit ".$this->internal['results_at_a_time'];
@@ -375,11 +374,11 @@ function xmlView ($content, $lConf) {
 			$this->internal['orderBy'] = $lConf['tx_wecsermons_speakers.']['orderBy'];
 
 			//	Query for related speakers (again, since we're using exotic irre-intermediate tables... can't use stock pi_exec_query())
-			$stmt = "select distinct s.*
-                                  from tx_wecsermons_speakers s
-                                   inner join tx_wecsermons_sermons_speakers_rel r
-                                    on s.uid = r.speakerid
-                                  where r.sermonid = ".$row['uid'].chr(10).
+			$stmt = "select distinct tx_wecsermons_speakers.*
+                                  from tx_wecsermons_speakers
+                                   inner join tx_wecsermons_sermons_speakers_rel
+                                    on tx_wecsermons_speakers.uid = tx_wecsermons_sermons_speakers_rel.speakerid
+                                  where tx_wecsermons_sermons_speakers_rel.sermonid = ".$row['uid'].chr(10).
                                    $this->cObj->enableFields('tx_wecsermons_speakers').chr(10).
                                   ((t3lib_div::inList($this->internal['orderByList'],$this->internal['orderBy'])) ? "order by ".$this->internal['orderBy']." desc" : '').chr(10).
                                   'limit 1';
@@ -3322,7 +3321,7 @@ function uniqueCsv()	{
 				}
 				return $retList;
                         } else if ( $columnConfig['type'] == 'group'
-			            && array_key_exists( 'internal_type' )
+			            && array_key_exists( 'internal_type', $columnConfig )
 			            && $columnConfig['internal_type'] == "db"
                                     && array_key_exists( 'foreign_table', $columnConfig )
 			            && $columnConfig['foreign_table'] == $relatedTable ) {
