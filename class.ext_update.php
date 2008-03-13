@@ -1,5 +1,34 @@
 <?php
+/***************************************************************
+*  Copyright notice
+*
+*  (c) 2008 Web Empowered Church Team, Foundation For Evangelism (sermon@webempoweredchurch.org)
+*  All rights reserved
+*
+*  This script is part of the TYPO3 project. The TYPO3 project is
+*  free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  The GNU General Public License can be found at
+*  http://www.gnu.org/copyleft/gpl.html.
+*
+*  This script is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  This copyright notice MUST APPEAR in all copies of the script!
+***************************************************************/
 
+/**
+ * Class for updating the storage format of calendar events.
+ *
+ * @author Matt Bradshaw <Matt@WebEmpoweredChurch.org>
+ * @package TYPO3
+ * @subpackage wec_sermons
+ */
 class ext_update {
 	// NOTE: you have to keep this current with every schema update
 	// this isn't exactly a smooth process, so make your schema changes rare ;-)
@@ -9,7 +38,7 @@ class ext_update {
 	// this method is only invoked if there is need for updating (as determined by access() and getVersion())
 	function main() {
 		if (t3lib_div::_GP('wecsermons_updateit')) {
-			$this->performUpdate();
+			return $this->performUpdate();
 		} else {
 			$codeVersion = $this->current;
 			$schemaVersion = $this->getVersion();

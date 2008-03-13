@@ -26,6 +26,7 @@ tx_wecsermons_speakers
 tx_wecsermons_sermons_speakers_rel
 tx_wecsermons_sermons_resources_uid_mm
 tx_wecsermons_series_resources_uid_mm
+tx_wecsermons_meta
 EOT);
 
 for tbl in $tablelist; do echo "drop table $tbl;" | mysql -u root $dbname; done 
