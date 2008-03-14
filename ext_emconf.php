@@ -35,7 +35,8 @@ $EM_CONF[$_EXTKEY] = array(
 		'depends' => array(
 			'php' => '4.3.0-0.0.0',
 			'wec_api' => '0.9.1-0.0.0',
-			'typo3' => '4.0.0-0.0.0',
+			'typo3' => '4.1.0-0.0.0',
+			'wec_flashplayer' => '1.3.1-0.0.0'
 		),
 		'conflicts' => array(
 		),
