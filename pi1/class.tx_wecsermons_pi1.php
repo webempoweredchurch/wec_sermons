@@ -103,7 +103,9 @@ function init($conf)	{
 
 	// Unserialize SMS extension configuration, and write it to a TSFE register for access throughout the plugin
 	$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['wec_sermons']);
-	$GLOBALS["TSFE"]->register['wec_sermons_resourceUploadPath'] = $extConf['resourceUploadPath'];
+        $resourcePath = $extConf['resourceUploadPath'];
+	$resourcePath = $resourcePath ? $resourcePath : 'uploads/tx_wecsermons';
+	$GLOBALS["TSFE"]->register['wec_sermons_resourceUploadPath'] = $resourcePath;
 }
 
 /**
