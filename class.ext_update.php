@@ -33,17 +33,43 @@ class ext_update {
 	// NOTE: you have to keep this current with every schema update
 	// this isn't exactly a smooth process, so make your schema changes rare ;-)
 	var $current = "0.10.0";
+	var $tablenames = array (	'tx_wecsermons_meta',
+					'tx_wecsermons_resources',
+					'tx_wecsermons_resource_types',
+					'tx_wecsermons_seasons',
+					'tx_wecsermons_series',
+					'tx_wecsermons_series_resources_rel',
+					'tx_wecsermons_series_seasons_rel',
+					'tx_wecsermons_series_topics_rel',
+					'tx_wecsermons_sermons',
+					'tx_wecsermons_sermons_resources_rel',
+					'tx_wecsermons_sermons_series_rel',
+					'tx_wecsermons_sermons_speakers_rel',
+					'tx_wecsermons_sermons_topics_rel',
+					'tx_wecsermons_speakers',
+					'tx_wecsermons_topics'
+			);
+
+	// our most simple constructor
+        // not much to do, but if we're called from ext_localconf when we don't yet have our DB... construct it
+	function ext_update() {
+		if (!isset($GLOBALS['TYPO3_DB'])) {
+			$GLOBALS['TYPO3_DB'] = t3lib_div::makeInstance('t3lib_DB');
+			$GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password);
+		}
+	}
 
 
 	// this method is only invoked if there is need for updating (as determined by access() and getVersion())
 	function main() {
+		if ($this->missingTables()) {
+			return "Please create new tables before running Update utility\n";
+		}
+		// implicit else...
+
 		if (t3lib_div::_GP('wecsermons_updateit')) {
 			return $this->performUpdate();
 		} else {
-			$codeVersion = $this->current;
-			$schemaVersion = $this->getVersion();
-
-
 			$onclick = htmlspecialchars("document.location='".t3lib_div::linkThisScript(array('wecsermons_updateit' => 1))."'; return false;");
 
 			$content = <<<EOT
@@ -110,6 +136,33 @@ EOT;
 		} else {
 			return false;
 		}
+	}
+
+	function isBlankDB() {
+		$acc = 0;
+		foreach ($this->tablenames as $tablename) {
+			$stmt = "select count(*) from ".$tablename;
+			$res = $GLOBALS['TYPO3_DB']->sql_query($stmt);
+                        $row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
+			$acc = $acc + $row[0];
+		}
+		if ( $acc == 0 ) {
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
+
+	function missingTables() {
+		$tablesOnDB = $GLOBALS['TYPO3_DB']->admin_get_tables();
+		foreach ($this->tablenames as $tablename) {
+			if (!array_key_exists($tablename, $tablesOnDB)) {
+				return TRUE;
+			}
+		}
+		// if we get here, we know that all tables are in existence
+		// so return FALSE... "nope, no tables are missing"
+		return FALSE;
 	}
 
 	function getVersion() {

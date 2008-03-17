@@ -253,7 +253,7 @@ function xmlView ($content, $lConf) {
 	if ($tableToList == 'tx_wecsermons_sermons') {
 		$tableResourceRel = 'tx_wecsermons_sermons_resources_rel';
 		$tableResourceRelKey = 'sermonid';
-	} else if ($tableToList == 'tx_wecsermons_series') {
+	} elseif ($tableToList == 'tx_wecsermons_series') {
 		$tableResourceRel = 'tx_wecsermons_series_resources_rel';
 		$tableResourceRelKey = 'seriesid';
 	} else {
@@ -566,7 +566,7 @@ function singleView($content,$lConf)	{
 		}
 		//	Check if the 'PREVIOUS' view was requested, and retrieve the record previous to record marked as current
 		//	TODO: allow specification of what record to draw from TypoScript
-		else if( !strcmp( 'PREVIOUS', $this->internal['currentCode'] )
+		elseif( !strcmp( 'PREVIOUS', $this->internal['currentCode'] )
 			&& ( !strcmp( 'tx_wecsermons_sermons', $this->internal['currentTable']) || !strcmp( 'tx_wecsermons_series', $this->internal['currentTable']) ) ) {
 
 			// Retrieve the record marked current
@@ -1133,7 +1133,7 @@ function pi_list_makelist($lConf, $template)	 {
 					else
 						$startDate = $formula[0]*86400 - time(); // calculate difference in days
 				}
-				else if( strstr($startDate,'+') ) {
+				elseif( strstr($startDate,'+') ) {
 
 					$formula = explode('+',$startDate);
 					if( !strcmp($formula[0],'date()' ) && t3lib_div::testint($formula[1]) )
@@ -1142,7 +1142,7 @@ function pi_list_makelist($lConf, $template)	 {
 						$startDate = $formula[0]*86400 + time(); // calculate difference in days
 				}
 			}
-			else if( strstr($startDate, '/') || strstr($startDate, '-')) { // If startdate is string that needs to be converted to unixtime
+			elseif( strstr($startDate, '/') || strstr($startDate, '-')) { // If startdate is string that needs to be converted to unixtime
 				$startDate = $startDate ? strtotime($startDate) : '';
 			}
 
@@ -1156,7 +1156,7 @@ function pi_list_makelist($lConf, $template)	 {
 					else
 						$endDate = $formula[0]*86400 - time(); // calculate difference in days
 				}
-				else if( strstr($endDate,'+') ) {
+				elseif( strstr($endDate,'+') ) {
 
 					$formula = explode('+',$endDate);
 					
@@ -1166,7 +1166,7 @@ function pi_list_makelist($lConf, $template)	 {
 						$endDate = $formula[0]*86400 + time(); // calculate difference in days
 				}
 			}
-			else if( strstr($endDate, '/') || strstr($endDate, '-')) { // If enddate is string that needs to be converted to unixtime
+			elseif( strstr($endDate, '/') || strstr($endDate, '-')) { // If enddate is string that needs to be converted to unixtime
 				$endDate = $endDate ? strtotime($endDate) : '';
 			}
 
@@ -1657,7 +1657,7 @@ function pi_list_row($lConf, $markerArray = array(), $rowTemplate, $row ='', $c 
 					if( !strcmp( 'default', $row['type'] ) && $lConf['tx_wecsermons_resources.']['resource_types.'][$row['type'].'.']['typolink'] ) {
 						$wrappedSubpartArray[$key] = $this->local_cObj->typolinkWrap( $lConf['tx_wecsermons_resources.']['resource_types.'][$row['type'].'.']['typolink.'] );
 					}
-					else if( $lConf['tx_wecsermons_resources.']['resource_types.'][$row['typoscript_object_name'].'.']['typolink'] ) { //	If 'typolink' segment is defined, render a link as defined by 'typolink', otherwise render a link to the resources' single view
+					elseif( $lConf['tx_wecsermons_resources.']['resource_types.'][$row['typoscript_object_name'].'.']['typolink'] ) { //	If 'typolink' segment is defined, render a link as defined by 'typolink', otherwise render a link to the resources' single view
 						$wrappedSubpartArray[$key] = $this->local_cObj->typolinkWrap( $lConf['tx_wecsermons_resources.']['resource_types.'][$row['typoscript_object_name'].'.']['typolink.'] );
 
 					}
@@ -2733,7 +2733,7 @@ function getTemplateFile() {
 					else
 						$startDate = $formula[0]*86400 - time(); // calculate difference in days
 				}
-				else if( strstr($startDate,'+') ) {
+				elseif( strstr($startDate,'+') ) {
 
 					$formula = explode('+',$startDate);
 					if( !strcmp($formula[0],'date()' ) && t3lib_div::testint($formula[1]) )
@@ -2742,7 +2742,7 @@ function getTemplateFile() {
 						$startDate = $formula[0]*86400 + time(); // calculate difference in days
 				}
 			}
-			else if( strstr($startDate, '/') || strstr($startDate, '-')) { // If startdate is string that needs to be converted to unixtime
+			elseif( strstr($startDate, '/') || strstr($startDate, '-')) { // If startdate is string that needs to be converted to unixtime
 				$startDate = $startDate ? strtotime($startDate) : '';
 			}
 
@@ -2756,7 +2756,7 @@ function getTemplateFile() {
 					else
 						$endDate = $formula[0]*86400 - time(); // calculate difference in days
 				}
-				else if( strstr($endDate,'+') ) {
+				elseif( strstr($endDate,'+') ) {
 
 					$formula = explode('+',$endDate);
 					
@@ -2766,7 +2766,7 @@ function getTemplateFile() {
 						$endDate = $formula[0]*86400 + time(); // calculate difference in days
 				}
 			}
-			else if( strstr($endDate, '/') || strstr($endDate, '-')) { // If enddate is string that needs to be converted to unixtime
+			elseif( strstr($endDate, '/') || strstr($endDate, '-')) { // If enddate is string that needs to be converted to unixtime
 				$endDate = $endDate ? strtotime($endDate) : '';
 			}
 
@@ -2847,7 +2847,7 @@ function getTemplateFile() {
 					else
 						$startDate = $formula[0]*86400 - time(); // calculate difference in days
 				}
-				else if( strstr($startDate,'+') ) {
+				elseif( strstr($startDate,'+') ) {
 
 					$formula = explode('+',$startDate);
 					if( !strcmp($formula[0],'date()' ) && t3lib_div::testint($formula[1]) )
@@ -2856,7 +2856,7 @@ function getTemplateFile() {
 						$startDate = $formula[0]*86400 + time(); // calculate difference in days
 				}
 			}
-			else if( strstr($startDate, '/') || strstr($startDate, '-')) { // If startdate is string that needs to be converted to unixtime
+			elseif( strstr($startDate, '/') || strstr($startDate, '-')) { // If startdate is string that needs to be converted to unixtime
 				$startDate = $startDate ? strtotime($startDate) : '';
 			}
 
@@ -2870,7 +2870,7 @@ function getTemplateFile() {
 					else
 						$endDate = $formula[0]*86400 - time(); // calculate difference in days
 				}
-				else if( strstr($endDate,'+') ) {
+				elseif( strstr($endDate,'+') ) {
 
 					$formula = explode('+',$endDate);
 					
@@ -2880,7 +2880,7 @@ function getTemplateFile() {
 						$endDate = $formula[0]*86400 + time(); // calculate difference in days
 				}
 			}
-			else if( strstr($endDate, '/') || strstr($endDate, '-')) { // If enddate is string that needs to be converted to unixtime
+			elseif( strstr($endDate, '/') || strstr($endDate, '-')) { // If enddate is string that needs to be converted to unixtime
 				$endDate = $endDate ? strtotime($endDate) : '';
 			}
 
@@ -3284,7 +3284,7 @@ function uniqueCsv()	{
 					}
 					return $retList;
 				}
-			} else if ( $columnConfig['type'] == 'inline'
+			} elseif ( $columnConfig['type'] == 'inline'
 			            && array_key_exists( 'foreign_table', $columnConfig )
 			            && array_key_exists( 'foreign_field', $columnConfig )
 			            && array_key_exists( 'foreign_label', $columnConfig ) ) {
@@ -3307,7 +3307,7 @@ function uniqueCsv()	{
                                         }
                                         return $retList;
                                 }
-			} else if ( $columnConfig['type'] == 'select'
+			} elseif ( $columnConfig['type'] == 'select'
 			            && array_key_exists( 'foreign_table', $columnConfig )
 			            && $columnConfig['foreign_table'] == $relatedTable ) {
 				//
@@ -3320,7 +3320,7 @@ function uniqueCsv()	{
 					$retList[] = $row[0];
 				}
 				return $retList;
-                        } else if ( $columnConfig['type'] == 'group'
+                        } elseif ( $columnConfig['type'] == 'group'
 			            && array_key_exists( 'internal_type', $columnConfig )
 			            && $columnConfig['internal_type'] == "db"
                                     && array_key_exists( 'foreign_table', $columnConfig )

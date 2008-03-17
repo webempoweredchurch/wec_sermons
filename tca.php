@@ -4,6 +4,8 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
 // get extension configuration
 $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['wec_sermons']);
+$uploadpath = $extConf['resourceUploadPath'];
+$uploadpath = $uploadpath ? $uploadpath : 'uploads/tx_wecsermons';
 
 $TCA["tx_wecsermons_resources"] = Array (
 	"ctrl" => $TCA["tx_wecsermons_resources"]["ctrl"],
@@ -177,7 +179,7 @@ $TCA["tx_wecsermons_resources"] = Array (
 				'allowed' => '',	// Must be empty for disallowed to work.
 				'disallowed' => 'php,php3',
 				'max_size' => $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'],
-				'uploadfolder' => $extConf['resourceUploadPath'],
+				'uploadfolder' => $uploadpath,
 				'show_thumbs' => '1',
 				'size' => 4,
 				'autoSizeMax' => 4,

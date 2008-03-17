@@ -13,8 +13,10 @@ LEFT JOIN Target
 WHERE Target.PrimaryKey IS NULL
 
 
-Something along those lines could help with re-inserting data or re-running the conversion later without needing to delete and re-insert data.
+Something along those lines could help with re-inserting data or re-running the conversion later without needing to delete and re-insert data.  Not yet sure on the mechanics...
 
 - templates and tca items entries to allow grouping on Topic (this addresses Sandy's request in the forums)
+- clean up (javadoc documentation)
+- new style csh
 - finish Search branch
 - implement the new CSH functionality (and provide CSH entries for new fields, like Speaker Blog URL)
