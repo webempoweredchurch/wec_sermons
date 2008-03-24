@@ -20,3 +20,4 @@ Something along those lines could help with re-inserting data or re-running the 
 - new style csh
 - finish Search branch
 - implement the new CSH functionality (and provide CSH entries for new fields, like Speaker Blog URL)
+- reorder the records (first come, first served) in ext_tables.php/tca.php so that Sermon Records come first

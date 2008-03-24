@@ -78,7 +78,9 @@ CREATE TABLE tx_wecsermons_sermons_resources_rel (
 	sorting int(10) unsigned DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
-	KEY parent (pid)
+	KEY parent (pid),
+	KEY (sermonid),
+	KEY (resourceid)
 );
 #
 # Table structure for table 'tx_wecsermons_series_resources_rel'
@@ -94,7 +96,9 @@ CREATE TABLE tx_wecsermons_series_resources_rel (
 	sorting int(10) unsigned DEFAULT '0' NOT NULL,
 
         PRIMARY KEY (uid),
-        KEY parent (pid)
+        KEY parent (pid),
+	KEY (seriesid),
+	KEY (resourceid)
 );
 
 
@@ -187,7 +191,9 @@ CREATE TABLE tx_wecsermons_sermons_series_rel (
         seriesid int(11) DEFAULT '0' NOT NULL,
 
         PRIMARY KEY (uid),
-        KEY parent (pid)
+        KEY parent (pid),
+	KEY (sermonid),
+	KEY (seriesid)
 );
 
 
@@ -225,7 +231,9 @@ CREATE TABLE tx_wecsermons_sermons_topics_rel (
         topicid int(11) DEFAULT '0' NOT NULL,
 
         PRIMARY KEY (uid),
-        KEY parent (pid)
+        KEY parent (pid),
+	KEY (sermonid),
+	KEY (topicid),
 );
 #
 # Table structure for table 'tx_wecsermons_series_topics_rel'
@@ -240,7 +248,9 @@ CREATE TABLE tx_wecsermons_series_topics_rel (
         topicid int(11) DEFAULT '0' NOT NULL,
 
         PRIMARY KEY (uid),
-        KEY parent (pid)
+        KEY parent (pid),
+	KEY (seriesid),
+	KEY (topicid)
 );
 
 
@@ -278,7 +288,9 @@ CREATE TABLE tx_wecsermons_series_seasons_rel (
         seasonid int(11) DEFAULT '0' NOT NULL,
 
         PRIMARY KEY (uid),
-        KEY parent (pid)
+        KEY parent (pid),
+	KEY (seriesid),
+	KEY (seasonid)
 );
 
 
@@ -322,7 +334,9 @@ CREATE TABLE tx_wecsermons_sermons_speakers_rel (
 	speakerid int(11) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
-	KEY parent (pid)
+	KEY parent (pid),
+	KEY (sermonid),
+	KEY (speakerid)
 );
 
 #

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # if a table doesn't exist, no worries... we keep on iterating
 
