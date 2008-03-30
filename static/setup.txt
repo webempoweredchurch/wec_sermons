@@ -130,7 +130,7 @@ plugin.tx_wecsermons_pi1 {
 		discussion < plugin.tx_wecdiscussion_pi1
 
 
-		news < plugin.tt_news
+		news = < plugin.tt_news
 		news {
 			code >
 			code = SINGLE
@@ -138,7 +138,7 @@ plugin.tx_wecsermons_pi1 {
 			templateFile = EXT:wec_sermons/res/tt_news_v2_template.html
 		}
 
-		poll < plugin.tx_jkpoll_pi1
+		poll = < plugin.tx_jkpoll_pi1
 		poll {
 			type = 1
 		}
@@ -196,7 +196,7 @@ plugin.tx_wecsermons_pi1 {
 		embedded_mp3 {
 			10 = < plugin.tx_wecsermons_pi1.stdHeader
 
-			20 < plugin.tx_wecflashplayer_pi2
+			20 = < plugin.tx_wecflashplayer_pi2
 			20 {
 				audiobase.value = {register:wec_sermons_resourceUploadPath}/
 				audiobase.insertData = 1
@@ -220,7 +220,7 @@ plugin.tx_wecsermons_pi1 {
 
 			10 = < plugin.tx_wecsermons_pi1.stdHeader
 
-			20 < plugin.tx_wecflashplayer_pi1
+			20 = < plugin.tx_wecflashplayer_pi1
 			20 {
 				videobase.value = {register:wec_sermons_resourceUploadPath}/
 				videobase.insertData = 1
@@ -246,7 +246,7 @@ plugin.tx_wecsermons_pi1 {
 			stdWrap.prefixComment = 2 | SMS Embedded Media:
 
 			//	Default header uses standard header
-			10 < plugin.tx_wecsermons_pi1.stdHeader
+			10 = < plugin.tx_wecsermons_pi1.stdHeader
 			10.10.addParams.title = 1
 			10.10.addParams.title.field = type_description
 			10.10.addParams.title.stripHtml = 1
@@ -284,7 +284,7 @@ plugin.tx_wecsermons_pi1 {
 		default = COA
 		default {
 
-			10 < plugin.tx_wecsermons_pi1.stdHeader
+			10 = < plugin.tx_wecsermons_pi1.stdHeader
 
 			20 = TEXT
 			20.field = file
