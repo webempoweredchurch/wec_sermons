@@ -234,6 +234,10 @@
 	                            <numIndex index="0">LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.detail_table.I.4</numIndex>
 	                            <numIndex index="1">tx_wecsermons_seasons</numIndex>
 	                    </numIndex>
+				<numIndex index="6" type="array">
+					<numIndex index="0">LLL:EXT:wec_sermons/locallang_db.php:tx_wecsermons.pi_flexform.detail_table.I.5</numIndex>
+					<numIndex index="1">tx_wecsermons_speakers</numIndex>
+				</numIndex>
 					</items>
 					<maxitems>1</maxitems>
 					<size>1</size>

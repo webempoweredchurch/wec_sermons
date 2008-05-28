@@ -1952,7 +1952,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 					//	Find all sermons related to this series
 					$WHERE = $this->cObj->enableFields('tx_wecsermons_sermons');
-					$query = 'SELECT *
+					$query = 'SELECT tx_wecsermons_sermons.*
 						   FROM tx_wecsermons_sermons
 						    INNER JOIN tx_wecsermons_sermons_series_rel
 						     ON tx_wecsermons_sermons.uid = tx_wecsermons_sermons_series_rel.sermonid
@@ -2120,7 +2120,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 					//	Find all sermons related to this topic
 					$WHERE = $this->cObj->enableFields('tx_wecsermons_sermons');
-					$query = 'SELECT *
+					$query = 'SELECT tx_wecsermons_sermons.*
 					           FROM tx_wecsermons_sermons
 					            INNER JOIN tx_wecsermons_sermons_topics_rel
 					             ON tx_wecsermons_sermons.uid = tx_wecsermons_sermons_topics_rel.sermonid
@@ -2174,7 +2174,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 					//      Find all series related to this topic
 					$WHERE = $this->cObj->enableFields('tx_wecsermons_series');
-					$query = 'SELECT *
+					$query = 'SELECT tx_wecsermons_series.*
 					           FROM tx_wecsermons_series
 					            INNER JOIN tx_wecsermons_series_topics_rel
 					             ON tx_wecsermons_series.uid = tx_wecsermons_series_topics_rel.seriesid
@@ -2270,7 +2270,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 					//      Find all series related to this season
 					$WHERE = $this->cObj->enableFields('tx_wecsermons_series');
-					$query = 'SELECT *
+					$query = 'SELECT tx_wecsermons_series.*
 					           FROM tx_wecsermons_series
 					            INNER JOIN tx_wecsermons_series_seasons_rel
 					             ON tx_wecsermons_series.uid = tx_wecsermons_series_seasons_rel.seriesid
@@ -2417,7 +2417,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 					//      Find all sermons related to this speaker
 					$WHERE = $this->cObj->enableFields('tx_wecsermons_sermons');
-					$query = 'SELECT *
+					$query = 'SELECT tx_wecsermons_sermons.*
 					           FROM tx_wecsermons_sermons
 					            INNER JOIN tx_wecsermons_sermons_speakers_rel
 					             ON tx_wecsermons_sermons.uid = tx_wecsermons_sermons_speakers_rel.sermonid
@@ -2620,6 +2620,8 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				$markerArray = array (
 					'###TOPIC_TITLE###' => 'title',
 					'###TOPIC_DESCRIPTION###' => 'description',
+					'###TOPIC_SERMONS###' => '',
+					'###TOPIC_SERIES###' => '',
 					'###ALTERNATING_CLASS###' => '',
 					'###TOPIC_LINK###' => '',
 				);
@@ -2634,6 +2636,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 					'###SPEAKER_URL###' => 'url',
 					'###SPEAKER_BLOGURL###' => 'blogurl',
 					'###SPEAKER_PHOTO###' => 'photo',
+					'###SPEAKER_SERMONS###' => '',
 					'###SPEAKER_ALTTITLE###' => 'alttitle',
 					'###SPEAKER_LINK###' => '',
 					'###ALTERNATING_CLASS###' => '',
@@ -2661,6 +2664,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				$markerArray = array (
 					'###SEASON_TITLE###' => 'title',
 					'###SEASON_DESCRIPTION###' => 'description',
+					'###SEASON_SERIES###' => '',
 					'###SEASON_LINK###' => '',
 					'###ALTERNATING_CLASS###' => '',
 				);
