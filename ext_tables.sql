@@ -79,9 +79,9 @@ CREATE TABLE tx_wecsermons_sermons_resources_rel (
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
-	KEY (sermonid),
-	KEY (resourceid)
-);
+	KEY sermon (sermonid),
+	KEY resource (resourceid)
+) ENGINE=InnoDB;
 #
 # Table structure for table 'tx_wecsermons_series_resources_rel'
 #
@@ -97,8 +97,8 @@ CREATE TABLE tx_wecsermons_series_resources_rel (
 
         PRIMARY KEY (uid),
         KEY parent (pid),
-	KEY (seriesid),
-	KEY (resourceid)
+	KEY series (seriesid),
+	KEY resource (resourceid)
 );
 
 
@@ -192,8 +192,8 @@ CREATE TABLE tx_wecsermons_sermons_series_rel (
 
         PRIMARY KEY (uid),
         KEY parent (pid),
-	KEY (sermonid),
-	KEY (seriesid)
+	KEY sermonid (sermonid),
+	KEY seriesid (seriesid)
 );
 
 
@@ -232,8 +232,8 @@ CREATE TABLE tx_wecsermons_sermons_topics_rel (
 
         PRIMARY KEY (uid),
         KEY parent (pid),
-	KEY (sermonid),
-	KEY (topicid),
+	KEY sermonid (sermonid),
+	KEY topicid (topicid),
 );
 #
 # Table structure for table 'tx_wecsermons_series_topics_rel'
@@ -249,8 +249,8 @@ CREATE TABLE tx_wecsermons_series_topics_rel (
 
         PRIMARY KEY (uid),
         KEY parent (pid),
-	KEY (seriesid),
-	KEY (topicid)
+	KEY series (seriesid),
+	KEY topic (topicid)
 );
 
 
@@ -289,8 +289,8 @@ CREATE TABLE tx_wecsermons_series_seasons_rel (
 
         PRIMARY KEY (uid),
         KEY parent (pid),
-	KEY (seriesid),
-	KEY (seasonid)
+	KEY series (seriesid),
+	KEY season (seasonid)
 );
 
 
@@ -335,8 +335,8 @@ CREATE TABLE tx_wecsermons_sermons_speakers_rel (
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
-	KEY (sermonid),
-	KEY (speakerid)
+	KEY sermon (sermonid),
+	KEY speaker (speakerid)
 );
 
 #

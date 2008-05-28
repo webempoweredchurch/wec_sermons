@@ -65,7 +65,7 @@ plugin.tx_wecsermons_pi1 {
 #------
 
 	# cat=plugin.tx_wecsermons_pi1/file/10; type=text; label= Template File Path: The path to a modified HTML template file for display of all the SMS Views.
-	file.templateFile = EXT:wec_sermons/pi1/wecsermons.tmpl
+	file.templateFile = 
 
 	# cat=plugin.tx_wecsermons_pi1/file/20; type=text; label= CSS File Path: The path to a modified .CSS file that will style the SMS Front End output upon rendering of page.
 	file.cssFile = EXT:wec_sermons/res/tx_wecsermons_styles.css

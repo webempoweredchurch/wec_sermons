@@ -22,6 +22,10 @@ plugin.tx_wecsermons_pi1 {
 	
 	enableSmartDisplay = {$plugin.tx_wecsermons_pi1.enableSmartDisplay}
 
+	# Whether the extension will utilize the record's title in the page
+	# title (defaults to true)
+	substitutePageTitle = 1
+
 	# Whether the extension will provide BibleGateway links for scripture
 	# (defaults to false; i.e., BibleGateway is enabled by default)
 	disableBibleGateway = {$plugin.tx_wecsermons_pi1.disableBibleGateway}
@@ -77,6 +81,11 @@ plugin.tx_wecsermons_pi1 {
 
 		# Use the field 'typoscript_object_name' on a tx_wecsermons_resources record
 		key.field = typoscript_object_name
+
+		#YouTube Video
+		youtube = HTML
+		youtube.value = <object width="320" height="240"><param name="movie" value="{field:webaddress1}"></param><param name="wmode" value="transparent"></param><embed src="{field:webaddress1}" type="application/x-shockwave-flash" wmode="transparent" width="320" height="240"></embed></object>	
+		youtube.value.insertData = 1
 
 		# pdf (Portable Document)
 		pdf = COA
@@ -328,6 +337,12 @@ plugin.tx_wecsermons_pi1 {
 		enableMetaDescription = {$plugin.tx_wecsermons_pi1.enableMetaDescription}
 
 		tx_wecsermons_sermons {
+		
+			uid = TEXT
+			uid {
+				wrap = |
+				field = uid
+			}
 
 			# Wrap for the title column
 			title = TEXT
@@ -832,7 +847,13 @@ plugin.tx_wecsermons_pi1 {
 			orderByList = occurrence_date,title,description,crdate
 			orderBy = occurrence_date
 			descFlag = 1
-
+			
+			uid = TEXT
+			uid {
+				wrap = |
+				field = uid
+			}
+			
 			# Wrap for the title column
 			title = TEXT
 			title {
@@ -885,19 +906,12 @@ plugin.tx_wecsermons_pi1 {
 
 			graphic = IMAGE
 			graphic {
-			wrap = <div class="tx-wecsermons-pi1-sermon-graphic">|</div>
+				wrap = <div class="tx-wecsermons-pi1-sermon-graphic">|</div>
 				altText.field = alttitle
 				file {
 					import = uploads/tx_wecsermons/
 					import.field = graphic
-					width = 128m
-					height = 128m
-				}
-				imageLinkWrap = 1
-				imageLinkWrap {
-					enable = 1
-					JSwindow = 1
-					JSwindow.expand = 20,20
+					import.listNum = 0
 				}
 			}
 
