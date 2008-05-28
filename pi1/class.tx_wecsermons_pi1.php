@@ -2922,7 +2922,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 		$templateFile = $templateFile ? 'uploads/tx_wecsermons/'.$templateFile : $this->conf['templateFile'];
 
 		//	If template isn't defined in Typoscript, use our hardcoded defaults (which are different depending on the data source)
-		if (!$templateFile) {
+		if (strpos($templateFile, 'pi1/wecsermons.tmpl') !== FALSE) {
 			$detailTable = $this->getConfigVal( $this, 'detail_table', 'slistView', 'detailTable', $this->conf, 'tx_wecsermons_sermons' );
 			switch ($detailTable) {
 				case 'tx_wecsermons_sermons':
