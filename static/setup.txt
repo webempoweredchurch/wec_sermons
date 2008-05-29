@@ -911,7 +911,14 @@ plugin.tx_wecsermons_pi1 {
 				file {
 					import = uploads/tx_wecsermons/
 					import.field = graphic
-					import.listNum = 0
+					width = 128m
+					height = 128m
+				}
+				imageLinkWrap = 1
+				imageLinkWrap {
+					enable = 1
+					JSwindow = 1
+					JSwindow.expand = 20,20
 				}
 			}
 

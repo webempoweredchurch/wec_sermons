@@ -2379,7 +2379,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				case '###SPEAKER_LINK###':
 
 					// If islinked is false, simply return an empty array
-					if( $row['islinked'] )
+					if( ! $row['islinked'] )
 						$wrappedSubpartArray[$key] = array( 0 => '', 1 => '');
 
 					else	{
