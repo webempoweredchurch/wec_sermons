@@ -245,8 +245,7 @@ EOT;
 	// they just touch the changes i've (mjb) introduced [irre intermediate tables]
 
 	function upgradeFrom_0_10_0() {
-		// part 1
-		// basically add a youtube resource type to all pages w/ resource_types
+		// basically add a youtube resource type to all pages w/ resource_types (we're not worrying about the potential leftover indexes from 0.10.0, no harm)
 		$time = time();
 		$query_pids = "select distinct pid from tx_wecsermons_resource_types";
 		$res_pids = $GLOBALS['TYPO3_DB']->sql_query($query_pids);
@@ -264,10 +263,6 @@ EOT;
 				$res_insert = $GLOBALS['TYPO3_DB']->sql_query($stmt_insert);
 			}
 		}
-
-		// part 2
-		// remove old indexes (the new one will work fine)
-		// yet to come
 	}
 
 	function upgradeFrom095() {

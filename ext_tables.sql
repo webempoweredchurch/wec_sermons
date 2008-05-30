@@ -81,7 +81,7 @@ CREATE TABLE tx_wecsermons_sermons_resources_rel (
 	KEY parent (pid),
 	KEY sermon (sermonid),
 	KEY resource (resourceid)
-) ENGINE=InnoDB;
+);
 #
 # Table structure for table 'tx_wecsermons_series_resources_rel'
 #
