@@ -29,4 +29,7 @@ tx_wecsermons_series_resources_uid_mm
 tx_wecsermons_meta
 EOT);
 
+echo "Note that if the script just finds a handful (<4) of tables missing, this is likely kosher..."
+echo "It simply is a result of trying to delete database structures from previous versions (the uid_mm tables)"
+
 for tbl in $tablelist; do echo "drop table $tbl;" | mysql -u root $dbname; done 
