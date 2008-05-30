@@ -87,6 +87,7 @@ EOT;
 			return $content;
 		}
 	}
+
 	// actually perform the update, after user has explicitly selected to update
 	function performUpdate() {
 		// detect our schema version
@@ -245,22 +246,23 @@ EOT;
 	// they just touch the changes i've (mjb) introduced [irre intermediate tables]
 
 	function upgradeFrom_0_10_0() {
-		$this->upgradeFrom093();
-		// basically add a youtube resource type to all pages w/ resource_types (we're not worrying about the potential leftover indexes from 0.10.0, no harm)
+                // fix our resources
 		$time = time();
+		// basically add a youtube resource type to all pages w/ resource_types (we're not worrying about the potential leftover indexes from 0.10.0, no harm)
 		$query_pids = "select distinct pid from tx_wecsermons_resource_types";
 		$res_pids = $GLOBALS['TYPO3_DB']->sql_query($query_pids);
+		if (!$res_pids) { die("first query borked"); }
 		while ($row_pids = $GLOBALS['TYPO3_DB']->sql_fetch_row($res_pids)) {
-			$query_count = "select count(*) from tx_wecsermons_resource_types where pid = ".$row[0]." and typoscript_object_name = 'youtube'";
+			$query_count = "select count(*) from tx_wecsermons_resource_types where pid = ".$row_pids[0]." and typoscript_object_name = 'youtube'";
 			$res_count = $GLOBALS['TYPO3_DB']->sql_query($query_count);
 			$row_count = $GLOBALS['TYPO3_DB']->sql_fetch_row($res_count);
 			$yt_count = $row_count[0];
 
 			if ($yt_count == 0) {
 				$stmt_insert = "insert into tx_wecsermons_resource_types
-                                                (pid,tstamp,crdate,sorting,cruser_id,sys_language_uid,l18n_parent,deleted,hidden,fe_group,type,title,marker_name,typoscript_object_name,avail_fields)
+				                (pid,tstamp,crdate,sorting,cruser_id,sys_language_uid,l18n_parent,deleted,hidden,fe_group,type,title,marker_name,typoscript_object_name,avail_fields)
 						values
-						({$row[0]},$time,$time,256,1,0,0,0,0,0,0,'YouTube Video','###YOUTUBE_VIDEO###','youtube','webaddress1')";
+				                ({$row_pids[0]},$time,$time,1,1,0,0,0,0,0,0,'YouTube Video','###YOUTUBE_VIDEO###','youtube','webaddress1')";
 				$res_insert = $GLOBALS['TYPO3_DB']->sql_query($stmt_insert);
 			}
 		}
@@ -273,14 +275,15 @@ EOT;
 
 	function upgradeFrom093() {
 		// get our timestamps
+		$time = time();
 
 		// fix our resources
                 // basically add a youtube resource type to all pages w/ resource_types (we're not worrying about the potential leftover indexes from 0.10.0, no harm)
-		$time = time();
 		$query_pids = "select distinct pid from tx_wecsermons_resource_types";
 		$res_pids = $GLOBALS['TYPO3_DB']->sql_query($query_pids);
+		if (!$res_pids) { die("first query borked"); }
 		while ($row_pids = $GLOBALS['TYPO3_DB']->sql_fetch_row($res_pids)) {
-			$query_count = "select count(*) from tx_wecsermons_resource_types where pid = ".$row[0]." and typoscript_object_name = 'youtube'";
+			$query_count = "select count(*) from tx_wecsermons_resource_types where pid = ".$row_pids[0]." and typoscript_object_name = 'youtube'";
 			$res_count = $GLOBALS['TYPO3_DB']->sql_query($query_count);
 			$row_count = $GLOBALS['TYPO3_DB']->sql_fetch_row($res_count);
 			$yt_count = $row_count[0];
@@ -289,7 +292,7 @@ EOT;
 				$stmt_insert = "insert into tx_wecsermons_resource_types
 				                (pid,tstamp,crdate,sorting,cruser_id,sys_language_uid,l18n_parent,deleted,hidden,fe_group,type,title,marker_name,typoscript_object_name,avail_fields)
 				                values
-						({$row[0]},$time,$time,256,1,0,0,0,0,0,0,'YouTube Video','###YOUTUBE_VIDEO###','youtube','webaddress1')";
+						({$row_pids[0]},$time,$time,1,1,0,0,0,0,0,0,'YouTube Video','###YOUTUBE_VIDEO###','youtube','webaddress1')";
 				$res_insert = $GLOBALS['TYPO3_DB']->sql_query($stmt_insert);
 			}
 		}
