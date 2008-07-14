@@ -73,6 +73,9 @@ t3lib_extMgm::addTypoScript($_EXTKEY,'setup','
   t3lib_extMgm::addPageTSConfig('mod.web_list.deniedNewTables := addToList(tx_wecsermons_sermons_resources_rel,tx_wecsermons_series_resources_rel,tx_wecsermons_sermons_series_rel,tx_wecsermons_sermons_topics_rel,tx_wecsermons_series_topics_rel,tx_wecsermons_series_seasons_rel,tx_wecsermons_sermons_speakers_rel)');
 
 /* Register T3D Package */
-$GLOBALS ['TYPO3_CONF_VARS']['EXTCONF']['wec_api']['t3dImport']['wec_sermons'] = 'EXT:wec_sermons/res/tx_wecsermons_resource_types.t3d';
+$GLOBALS ['TYPO3_CONF_VARS']['EXTCONF']['wec_api']['t3dImport']['wec_sermons'] = array(
+	'path' => 'EXT:wec_sermons/res/tx_wecsermons_resource_types.t3d',
+	'allowOnStandardPages' => 0,
+);
 
 ?>
