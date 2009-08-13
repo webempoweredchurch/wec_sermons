@@ -42,7 +42,7 @@ t3lib_extMgm::addTypoScript($_EXTKEY,'setup','
 
   ## the first run... we must check to see if updates are required or not (so a new user isn't hitting the update message by default)
   $extConf = unserialize($TYPO3_CONF_VARS['EXT']['extConf'][$_EXTKEY]);
-  if ( !$extConf['haverunbefore'] ){
+  if (($GLOBALS['TYPO3_DB'] instanceof t3lib_db) && !$extConf['haverunbefore'] ){
 
     # our purpose... determine if this is a blank database, if so we can init our version
 
