@@ -142,8 +142,8 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 		if( $codeVersion != $schemaVersion ) {
 			return $this->throwError(
 			'WEC Sermon Management System Error!',
-			'The extension code and schema definitions appear to be out of sync (' . $codeVersion . ', ' . $schemaVersion . ').',
-			'Please run the update tool inside the Extension Manager (for the Sermons extension).'
+			'The extension code (version ' . $codeVersion . ') and database definitions (version ' . $schemaVersion .') do not match.',
+			'Please go to the WEC Sermon Management System within the TYPO3 Extension Manager and choose the UPDATE! option to fix this.'
 			);
 		}
 
