@@ -1416,6 +1416,7 @@ plugin.tx_wecapi_list {
 		channel_link >
 		channel_link = TEXT
 		channel_link.data = field:channel_link
+		channel_link.htmlSpecialChars = 1
 		channel_link.wrap = <link>|</link>
 
 		item_title.field = title
@@ -1427,14 +1428,21 @@ plugin.tx_wecapi_list {
 		}
 
 		item_author.trim = 1
-		item_link.value = {$constants.wec.siteURL}{field:item_link}
-		item_link.insertData = 1
-		item_link.data >
-		item_link.field >
+
+		item_link {
+			typolink.parameter = {field:item_link}
+			typolink.parameter.insertData = 1
+			typolink.returnLast = url
+			data >
+			field >
+		}
+
 		item_comments.field = comments_link
 		item_pubdate.field = occurrence_date
+
 		item_guid {
-			value = {$constants.wec.siteURL}{field:item_link}
+			typolink.parameter.field = item_link
+			typolink.returnLast = url
 			insertData = 1
 		}
 

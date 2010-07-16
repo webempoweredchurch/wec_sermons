@@ -2753,7 +2753,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 	* @param	boolean		$absolute:	Boolean value indicating whether to return an absolute path.
 	* @return	string		The absolute or relative path to the current page.
 	*/
-	function getUrlToList ( $absolute ) {
+	function getUrlToList ( $absolute = FALSE ) {
 
 		return $absolute ? t3lib_div::getIndpEnv('TYPO3_SITE_URL') .
 			$this->pi_linkTP_keepPIvars_url( array(), $this->conf['allowCaching'], 0 ) :

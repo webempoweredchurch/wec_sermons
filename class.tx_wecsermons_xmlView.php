@@ -75,7 +75,7 @@ require_once(PATH_t3lib.'class.t3lib_div.php');
 	function preProcessPageArray( &$pObj, &$dataArray, &$pageArray ) {
 
 			//	Make a callback to get the URL to the list view. Parent object of tx_wecapi_list must support getUrlToList function call!
-		$pageArray['channel_link'] = $pObj->cObj->getUrlToList( true );
+		$pageArray['channel_link'] = $pObj->cObj->getUrlToList();
 
 	}
 
