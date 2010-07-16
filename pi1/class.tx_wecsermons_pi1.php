@@ -335,8 +335,13 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 						);
 					}
 
+
 					//	Render the relative and absolute paths to the file
+					// @todo	Consider using forceAbsoluteURL when TYPO3 4.4 is required
+					$storedAbsRefPrefix = $GLOBALS['TSFE']->absRefPrefix;
+					$GLOBALS['TSFE']->absRefPrefix = '';
 					$relPath = $this->local_cObj->typolink_URL( $typolinkConf );
+					$GLOBALS['TSFE']->absRefPrefix = $storedAbsRefPrefix;
 					$absPath = t3lib_div::getFileAbsFileName($relPath);
 
 					//	Retrieve file info for the file.
@@ -348,18 +353,28 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 					$row['summary'] = $resource['summary'];
 					$row['subtitle'] = $resource['subtitle'];
 
-					//	Calculate the approximate duration of the file, based on specifed bitrate
-					$duration = 0;
-					$sec = 0;
 
-					if( t3lib_div::testInt($this->conf['bitrate']) ) {
-						$duration = (float) (($fileInfo['size'] * 8) / 1024) / $this->conf['bitrate'];
-						$sec = $duration % 60;
-						$sec = strlen( $sec ) < 2 ? '0'.$sec : $sec;
-						$row['duration'] = (round( $duration / 60)) .':'.$sec;
+					if (t3lib_extMgm::isLoaded('t3getid3')) {
+						require_once(t3lib_extMgm::extPath('t3getid3') . 'getid3/getid3.php');
+						$getID3 = t3lib_div::makeInstance('getID3');
+						$info = $getID3->analyze($absPath);
+						
+						$row['duration'] = $info['playtime_string'];
+					} else {
+						//	Calculate the approximate duration of the file, based on specifed bitrate
+						$duration = 0;
+						$sec = 0;
+
+						if( t3lib_div::testInt($this->conf['bitrate']) ) {
+							$duration = (float) (($fileInfo['size'] * 8) / 1024) / $this->conf['bitrate'];
+							$sec = $duration % 60;
+							$sec = strlen( $sec ) < 2 ? '0'.$sec : $sec;
+							$row['duration'] = (round( $duration / 60)) .':'.$sec;
+						}
+						else {
+							$row['duration'] = 0;
+						}
 					}
-					else
-						$row['duration'] = 0;
 
 					// Check if we should link to the resource single view or the sermon single view
 					if( $lConf['itemLinkToResource'] )
