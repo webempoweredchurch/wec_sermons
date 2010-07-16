@@ -1389,6 +1389,8 @@ plugin.tx_wecsermons_pi1 {
 podcast = PAGE
 podcast {
 	config {
+		# @todo	Make this work with constants.wec.siteURL also
+		absRefPrefix = {$siteURL}
 		disableAllHeaderCode = 1
 		additionalHeaders = Content-type:application/xml
 		xhtml_cleaning = 0
