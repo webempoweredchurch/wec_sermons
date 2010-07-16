@@ -858,10 +858,14 @@ $TCA["tx_wecsermons_sermons"] = Array (
 		),
 	),
 	"types" => Array (
-		"0" => Array("showitem" => "sys_language_uid;;;;1-1-1,l18n_parent,l18n_diffsource,hidden;;1,title;;3;;2-2-2,occurrence_date,scripture,description;;;richtext:rte_transform[mode=ts_css],resources;;;;3-3-3,speakers,series,topics,graphic;;2;;4-4-4,keywords"),
+		"0" => Array("showitem" => "
+			sys_language_uid;;;;1-1-1,l18n_parent,l18n_diffsource,hidden;;1,title;;3;;2-2-2,occurrence_date,description;;;richtext:rte_transform[mode=ts_css],scripture,keywords,graphic;;2;;4-4-4,
+			--div--;LLL:EXT:wec_sermons/locallang_db.xml:tx_wecsermons_sermons.tabs.relations, resources;;;;3-3-3,speakers,series,topics,
+			--div--;LLL:EXT:wec_sermons/locallang_db.xml:tx_wecsermons_sermons.tabs.access, starttime, endtime, fe_group
+		"),
 	),
 	"palettes" => Array (
-		"1" => Array("showitem" => "starttime,endtime,fe_group,islinked,current"),
+		"1" => Array("showitem" => "islinked,current"),
 		"2" => Array("showitem" => "alttitle"),
 		"3" => Array("showitem" => "subtitle"),
 	)
