@@ -19,7 +19,7 @@ plugin.tx_wecsermons_pi1 {
 	pidSingleView = {$plugin.tx_wecsermons_pi1.pidSingleView}
 	pidListView = {$plugin.tx_wecsermons_pi1.pidListView}
 	pidSearchView = {$plugin.tx_wecsermons_pi1.pidSearchView}
-	
+
 	enableSmartDisplay = {$plugin.tx_wecsermons_pi1.enableSmartDisplay}
 
 	# Whether the extension will utilize the record's title in the page
@@ -84,7 +84,7 @@ plugin.tx_wecsermons_pi1 {
 
 		#YouTube Video
 		youtube = HTML
-		youtube.value = <object width="320" height="240"><param name="movie" value="{field:webaddress1}"></param><param name="wmode" value="transparent"></param><embed src="{field:webaddress1}" type="application/x-shockwave-flash" wmode="transparent" width="320" height="240"></embed></object>	
+		youtube.value = <object width="320" height="240"><param name="movie" value="{field:webaddress1}"></param><param name="wmode" value="transparent"></param><embed src="{field:webaddress1}" type="application/x-shockwave-flash" wmode="transparent" width="320" height="240"></embed></object>
 		youtube.value.insertData = 1
 
 		# pdf (Portable Document)
@@ -337,7 +337,7 @@ plugin.tx_wecsermons_pi1 {
 		enableMetaDescription = {$plugin.tx_wecsermons_pi1.enableMetaDescription}
 
 		tx_wecsermons_sermons {
-		
+
 			uid = TEXT
 			uid {
 				wrap = |
@@ -847,13 +847,13 @@ plugin.tx_wecsermons_pi1 {
 			orderByList = occurrence_date,title,description,crdate
 			orderBy = occurrence_date
 			descFlag = 1
-			
+
 			uid = TEXT
 			uid {
 				wrap = |
 				field = uid
 			}
-			
+
 			# Wrap for the title column
 			title = TEXT
 			title {
@@ -1389,7 +1389,6 @@ plugin.tx_wecsermons_pi1 {
 podcast = PAGE
 podcast {
 	config {
-		# @todo	Make this work with constants.wec.siteURL also
 		absRefPrefix = {$siteURL}
 		disableAllHeaderCode = 1
 		additionalHeaders = Content-type:application/xml
@@ -1407,6 +1406,12 @@ podcast {
 	</rss>
 	)
 }
+
+[globalString = LIT:{$siteURL} = http*]
+	# If the site URL is not set, try constants.wec.siteURL
+[else]
+	podcast.config.absRefPrefix = {$constants.wec.siteURL}
+[end]
 
 vodcast < podcast
 vodcast.typeNum = 223
