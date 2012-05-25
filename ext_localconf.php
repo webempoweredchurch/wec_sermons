@@ -36,7 +36,7 @@ $TYPO3_CONF_VARS['EXTCONF']['tx_wecapi_list']['preProcessPageArray'][] = 'tx_wec
 
 t3lib_extMgm::addTypoScript($_EXTKEY,'setup','
 	tt_content.shortcut.20.0.conf.tx_wecsermons_sermons = < plugin.'.t3lib_extMgm::getCN($_EXTKEY).'_pi1
-	tt_content.shortcut.20.0.conf.tx_wecsermons_sermons.CMD = singleView
+	tt_content.shortcut.20.0.conf.tx_wecsermons_sermons.CMD = SINGLE
 ',43);
 
 
@@ -66,7 +66,7 @@ t3lib_extMgm::addTypoScript($_EXTKEY,'setup','
     }
   }
 
-    
+
 
   ## hide the irre-intermediate tables from the backend user (the latter TSConfig is only applicable to T3 v4.2+)
   t3lib_extMgm::addPageTSConfig('mod.web_list.hideTables := addToList(tx_wecsermons_sermons_resources_rel,tx_wecsermons_series_resources_rel,tx_wecsermons_sermons_series_rel,tx_wecsermons_sermons_topics_rel,tx_wecsermons_series_topics_rel,tx_wecsermons_series_seasons_rel,tx_wecsermons_sermons_speakers_rel)');

@@ -6,7 +6,7 @@
 * All rights reserved
 *
 * This file is part of the Web-Empowered Church (WEC)
-* (http://WebEmpoweredChurch.org) ministry of Christian Technology Ministries 
+* (http://WebEmpoweredChurch.org) ministry of Christian Technology Ministries
 * International (http://CTMIinc.org). The WEC is developing TYPO3-based
 * (http://typo3.org) free software for churches around the world. Our desire
 * is to use the Internet to help offer new life through Jesus Christ. Please
@@ -191,6 +191,10 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 		foreach( $codes as $code ) {
 			switch( $code ) {	//	Primary switch for this plugin
 			case 'SINGLE':
+				if (!$this->piVars['showUid'] && $this->cObj->data['uid']) {
+					$this->piVars['showUid'] = $this->cObj->data['uid'];
+				}
+
 				$this->internal['currentCode'] = 'SINGLE';
 				$content = $this->singleView( $content, $this->conf['singleView.'] );
 				break;
@@ -358,7 +362,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 						require_once(t3lib_extMgm::extPath('t3getid3') . 'getid3/getid3.php');
 						$getID3 = t3lib_div::makeInstance('getID3');
 						$info = $getID3->analyze($absPath);
-						
+
 						$row['duration'] = $info['playtime_string'];
 					} else {
 						//	Calculate the approximate duration of the file, based on specifed bitrate
@@ -404,7 +408,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 					   $this->cObj->enableFields('tx_wecsermons_speakers').chr(10).
 					  ((t3lib_div::inList($this->internal['orderByList'],$this->internal['orderBy'])) ? "order by ".$this->internal['orderBy']." desc" : '').chr(10).
 					  'limit 1';
-			   
+
 				$speakerRes = $GLOBALS['TYPO3_DB']->sql_query($stmt);
 
 				//	Retreive only the first speaker
@@ -1082,7 +1086,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 					//	Exec query on detail table, for every record related to our group record
 					#$detailRes = $this->pi_exec_query( $detailTable, 0, ' AND find_in_set('.$this->internal['previousRow']['uid'].','.$this->internal['currentTable'].'.'.$foreign_column . ')' );
 					$detailUids = $this->getRelatedRecords($this->internal['previousRow']['uid'],$detailTable,$groupTable);
-			
+
 					if ( is_array($detailUids) ) {
 						$detailRes = $this->pi_exec_query( $detailTable, 0, ' AND uid in ( ' . implode(",", $detailUids) . ')' );
 
@@ -1148,10 +1152,10 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			}
 
 			// Calculate startdate or end date if specified for sermon or series records
-			if( (!strcmp( $tableToList, 'tx_wecsermons_sermons' ) || !strcmp( $tableToList, 'tx_wecsermons_series' ) ) 
+			if( (!strcmp( $tableToList, 'tx_wecsermons_sermons' ) || !strcmp( $tableToList, 'tx_wecsermons_series' ) )
 				&& ($startDate || $endDate )
 			) {
-		
+
 				// Check if date() function was specified in startdate, and calculate new date if necessary
 				if( strstr($startDate,'date()') ) {
 					if( strstr($startDate,'-') ) {
@@ -1188,7 +1192,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 					elseif( strstr($endDate,'+') ) {
 
 						$formula = explode('+',$endDate);
-				
+
 						if( !strcmp($formula[0],'date()' ) && t3lib_div::testint($formula[1]) )
 							$endDate = time() + $formula[1]*86400; // calculate difference in days
 						else
@@ -1205,7 +1209,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				$where .= ($endDate && !strcmp( $tableToList, 'tx_wecsermons_sermons' )) ? ' AND occurrence_date <= ' .  $endDate : '';
 				$where .= ($startDate && !strcmp( $tableToList, 'tx_wecsermons_series' )) ? ' AND startdate >= ' .  $startDate : '';
 				$where .= ($endDate && !strcmp( $tableToList, 'tx_wecsermons_series' )) ? ' AND enddate <= ' .  $endDate : '';
-			
+
 			}
 			// Get number of records:
 			$res = $this->pi_exec_query($tableToList,1, $where);
@@ -1269,7 +1273,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			$markerArray[$key] = '';
 
 			switch( $key ) {
-				
+
 				case '###SERMON_UID###':
 					if( $row[$fieldName] ) {
 						$this->local_cObj->start( $row, 'tx_wecsermons_sermons' );
@@ -1410,14 +1414,14 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 							$seriesContent .= $this->pi_list_row( $lConf, $seriesMarkerArray, $seriesTemplate, $this->internal['currentRow'] );
 							$count++;
 						}
-				
+
 						//	Make sure we process any sermon tags within the series content section
 						$seriesContent = $this->pi_list_row( $lConf, $this->getMarkerArray('tx_wecsermons_sermons', $seriesContent ), $seriesContent, $previousRow);
 
 						// Restore original row and table
 						$this->internal['currentRow'] = $previousRow;
 						$this->internal['currentTable'] = $previousTable;
-				
+
 						//	Replace marker content with subpart, wrapping stdWrap
 						if( $count > 0 )
 							$subpartArray[$key] = $this->cObj->stdWrap( $seriesContent, $lConf['tx_wecsermons_sermons.']['series.'] );
@@ -1502,7 +1506,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 						$previousTable = $this->internal['currentTable'];
 						$this->internal['currentTable'] = 'tx_wecsermons_topics';
 
-		
+
 						//	Load the topics subpart
 						$topicTemplate = $this->cObj->getSubpart( $rowTemplate, $key );
 						$topicMarkerArray = $this->getMarkerArray('tx_wecsermons_topics',$topicTemplate);
@@ -1559,7 +1563,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 					$this->emptyResourceSubparts( $subpartArray, $rowTemplate );
 
-	
+
 					$previousRow = $this->internal['previousRow'];
 					$this->internal['previousRow'] = $row;
 					$previousTable = $this->internal['previousTable'];
@@ -3060,7 +3064,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 					elseif( strstr($endDate,'+') ) {
 
 						$formula = explode('+',$endDate);
-						
+
 						if( !strcmp($formula[0],'date()' ) && t3lib_div::testint($formula[1]) )
 							$endDate = time() + $formula[1]*86400; // calculate difference in days
 						else
@@ -3174,7 +3178,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 					elseif( strstr($endDate,'+') ) {
 
 						$formula = explode('+',$endDate);
-					
+
 						if( !strcmp($formula[0],'date()' ) && t3lib_div::testint($formula[1]) )
 							$endDate = time() + $formula[1]*86400; // calculate difference in days
 						else
@@ -3486,7 +3490,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 		$ttlString = '';
 		for( $i =0; $i < $max; $i++ )  {
 			$ttlString .=func_get_arg($i) .  ',';
-	
+
 		}
 		return implode(',', array_unique( t3lib_div::trimExplode(',', $ttlString, 1) ) );
 	}
@@ -3557,7 +3561,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 		foreach( $GLOBALS['TCA'][$currentTable]['columns'] as $columnName => $value ) {
 			$columnConfig = $value['config'];
-			if ( $columnConfig['type'] == 'inline' 
+			if ( $columnConfig['type'] == 'inline'
 			     && array_key_exists( 'foreign_table', $columnConfig )
 			     && array_key_exists( 'foreign_field', $columnConfig )
 			     && array_key_exists( 'foreign_selector', $columnConfig ) ) {
@@ -3702,5 +3706,5 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_sermons/pi1/class.tx_wecsermons_pi1.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/wec_sermons/pi1/class.tx_wecsermons_pi1.php']);
 }
- 
+
 ?>
