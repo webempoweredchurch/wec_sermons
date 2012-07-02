@@ -394,7 +394,7 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 			}
 
 			//	If result row has speakers related to it, retrieve the fullname of the first speaker and add to result row as 'author'
-			if( $row['speakers_uid'] ) {
+			if( $row['speakers'] ) {
 
 				$this->internal['orderByList'] = $lConf['tx_wecsermons_speakers.']['orderByList'];
 				$this->internal['orderBy'] = $lConf['tx_wecsermons_speakers.']['orderBy'];
@@ -414,7 +414,6 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 				//	Retreive only the first speaker
 				$speaker = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $speakerRes );
 				$row['author'] = $speaker ? $speaker['fullname'] : '';
-
 			}
 
 
