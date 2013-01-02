@@ -763,11 +763,12 @@ $TCA["tx_wecsermons_sermons"] = Array (
 				"foreign_field" => "sermonid",
 				"foreign_label" => "seriesid",
 				"foreign_selector" => "seriesid",
-				"foreign_unique" => "seriesid",
+				// For TYPO3 4.5.12 and later, foreign_unique does not work properly with the *_rel table and editing forms are blank.
+				// "foreign_unique" => "seriesid",
 				"appearance" => Array (
 					"newRecordLinkAddTitle" => "1",
 					"expandSingle" => "1",
-					"collapseAll" => false,
+					"collapseAll" => TRUE,
 					"useCombination" => "1"
 				),
 				"size" => 4,
@@ -784,11 +785,12 @@ $TCA["tx_wecsermons_sermons"] = Array (
 				"foreign_field" => "sermonid",
 				"foreign_label" => "topicid",
 				"foreign_selector" => "topicid",
-				"foreign_unique" => "topicid",
+				// For TYPO3 4.5.12 and later, foreign_unique does not work properly with the *_rel table and editing forms are blank.
+				// "foreign_unique" => "topicid",
 				"appearance" => Array (
 					"newRecordLinkAddTitle" => "1",
 					"expandSingle" => "1",
-					"collapseAll" => false,
+					"collapseAll" => TRUE,
 					"useCombination" => "1"
 				),
 				"size" => 4,
@@ -805,12 +807,13 @@ $TCA["tx_wecsermons_sermons"] = Array (
 				"foreign_field" => "sermonid",
 				"foreign_label" => "resourceid",
 				"foreign_selector" => "resourceid",
-				"foreign_unique" => "resourceid",
+				// For TYPO3 4.5.12 and later, foreign_unique does not work properly with the *_rel table and editing forms are blank.
+				// "foreign_unique" => "resourceid",
 				"foreign_sortby" => "sorting",
 				"appearance" => Array (
 					"newRecordLinkAddTitle" => "1",
 					"expandSingle" => "1",
-					"collapseAll" => false,
+					"collapseAll" => TRUE,
 					"useCombination" => "1",
 					"useSortable" => "1"
 				),
@@ -828,11 +831,12 @@ $TCA["tx_wecsermons_sermons"] = Array (
 				"foreign_field" => "sermonid",
 				"foreign_label" => "speakerid",
 				"foreign_selector" => "speakerid",
-				"foreign_unique" => "speakerid",
+				// For TYPO3 4.5.12 and later, foreign_unique does not work properly with the *_rel table and editing forms are blank.
+				// "foreign_unique" => "speakerid",
 				"appearance" => Array (
 					"newRecordLinkAddTitle" => "1",
 					"expandSingle" => "1",
-					"collapseAll" => false,
+					"collapseAll" => TRUE,
 					"useCombination" => "1"
 				),
 				"size" => 4,
@@ -1045,11 +1049,12 @@ $TCA["tx_wecsermons_series"] = Array (
 				"foreign_field" => "seriesid",
 				"foreign_label" => "seasonid",
 				"foreign_selector" => "seasonid",
-				"foreign_unique" => "seasonid",
+				// For TYPO3 4.5.12 and later, foreign_unique does not work properly with the *_rel table and editing forms are blank.
+				// "foreign_unique" => "seasonid",
 				"appearance" => Array (
 					"newRecordLinkAddTitle" => "1",
 					"expandSingle" => "1",
-					"collapseAll" => false,
+					"collapseAll" => TRUE,
 					"useCombination" => "1"
 				),
 				"size" => 4,
@@ -1066,11 +1071,12 @@ $TCA["tx_wecsermons_series"] = Array (
 				"foreign_field" => "seriesid",
 				"foreign_label" => "topicid",
 				"foreign_selector" => "topicid",
-				"foreign_unique" => "topicid",
+				// For TYPO3 4.5.12 and later, foreign_unique does not work properly with the *_rel table and editing forms are blank.
+				// "foreign_unique" => "topicid",
 				"appearance" => Array (
 					"newRecordLinkAddTitle" => "1",
 					"expandSingle" => "1",
-					"collapseAll" => false,
+					"collapseAll" => TRUE,
 					"useCombination" => "1"
 				),
 				"size" => 4,
@@ -1087,12 +1093,13 @@ $TCA["tx_wecsermons_series"] = Array (
 				"foreign_field" => "seriesid",
 				"foreign_label" => "resourceid",
 				"foreign_selector" => "resourceid",
-				"foreign_unique" => "resourceid",
+				// For TYPO3 4.5.12 and later, foreign_unique does not work properly with the *_rel table and editing forms are blank.
+				// "foreign_unique" => "resourceid",
 				"foreign_sortby" => "sorting",
 				"appearance" => Array (
 					"newRecordLinkAddTitle" => "1",
 					"expandSingle" => "1",
-					"collapseAll" => false,
+					"collapseAll" => TRUE,
 					"useCombination" => "1",
 					"useSortable" => "1"
 				),
