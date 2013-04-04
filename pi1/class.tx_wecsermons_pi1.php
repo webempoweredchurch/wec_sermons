@@ -640,9 +640,9 @@ class tx_wecsermons_pi1 extends tslib_pibase {
 
 		// This appends the title of the record we're viewing to the HTML TITLE tag, for improved searching
 		$field = $GLOBALS['TCA'][$this->internal['currentTable']]['ctrl']['label'];
-		if ( $field && $this->conf['substitutePageTitle'] && !(strpos( $GLOBALS['TSFE']->page['title'], $row[$field] ) === FALSE) )  {
-			$GLOBALS['TSFE']->indexedDocTitle .= ' : ' .$row[$field];
-			$GLOBALS['TSFE']->page['title'] .= ' : ' .$row[$field];
+		if ( $field && $this->conf['substitutePageTitle'] && (strpos( $GLOBALS['TSFE']->page['title'], $row[$field] ) === FALSE) )  {
+			$GLOBALS['TSFE']->indexedDocTitle = $row[$field] . ' | ' . $GLOBALS['TSFE']->indexedDocTitle;
+			$GLOBALS['TSFE']->page['title'] = $row[$field] . ' | ' . $GLOBALS['TSFE']->page['title'];
 		}
 
 		// If description is present, and option is enabled - append descrption to meta description tag.
